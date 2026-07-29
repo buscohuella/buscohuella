@@ -1,16 +1,23 @@
-## Hi there 👋
+# 🐾 BuscoHuella
 
-<!--
-**buscohuella/buscohuella** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+BuscoHuella es una plataforma tecnológica enfocada en el bienestar animal, la trazabilidad, la adopción responsable y la conexión entre ciudadanos, protectoras, veterinarios e instituciones mediante Inteligencia Artificial, IoT y tecnologías abiertas.
 
-Here are some ideas to get you started:
+## Estado del proyecto
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+🚧 En desarrollo.
+
+## Estructura
+
+```
+apps/
+backend/
+docs/
+frontend/
+infra/
+mobile/
+scripts/
+```
+
+## Licencia
+
+Pendiente de definir.

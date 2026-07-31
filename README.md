@@ -45,7 +45,7 @@ La métrica principal del proyecto es:
 BuscoHuella se encuentra actualmente en fase **Pre-MVP** y en desarrollo activo.
 
 | Área | Estado |
-|---|---|
+| --- | --- |
 | Landing pública | ✅ Operativa |
 | Lista de espera | ✅ 170+ personas registradas |
 | Documentación funcional | 🚧 En revisión y consolidación |
@@ -148,7 +148,7 @@ BuscoHuella utilizará una arquitectura monorepo con aplicaciones web y móvil, 
 ## 🛠️ Stack tecnológico
 
 | Capa | Tecnología |
-|---|---|
+| --- | --- |
 | Web | Next.js, TypeScript, App Router |
 | Estilos | Tailwind CSS |
 | Componentes UI | Shadcn UI |
@@ -206,7 +206,7 @@ La estructura puede evolucionar durante la implementación, pero cualquier cambi
 La documentación completa se encuentra en la carpeta `docs/`.
 
 | Documento | Propósito |
-|---|---|
+| --- | --- |
 | `docs/master/DOCUMENTO_MAESTRO.md` | Fuente única de verdad del proyecto |
 | `docs/product/MVP_SCOPE.md` | Alcance del MVP |
 | `docs/product/ROADMAP.md` | Fases y prioridades |

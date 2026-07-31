@@ -8,14 +8,14 @@
 
 | Dato | Valor |
 |---|---|
-| Generado | 2026-07-31 13:18:08 |
+| Generado | 2026-07-31 19:51:37 |
 | Generador | BuscoHuella CLI |
 | Versión | v1.1 |
 | Ruta | `D:\Proyectos\buscohuella` |
-| Carpetas | 63 |
-| Archivos | 172 |
+| Carpetas | 65 |
+| Archivos | 174 |
 | Documentación | 155 |
-| Total | 235 |
+| Total | 239 |
 
 ---
 
@@ -489,6 +489,8 @@
 ```text
 🐾 buscohuella
 ├── 📄 README.md
+├── 📁 .codex
+│   ├── 📁 skills
 ├── 📁 apps
 │   ├── 📁 mobile
 │   ├── 📁 web
@@ -722,5 +724,7 @@
 │   ├── 📄 menu.ps1
 │   ├── 📄 tree.ps1
 │   ├── 📄 update-docs.ps1
+├── 📄 AGENTS.md
 ├── 📄 ARCHITECTURE_OVERVIEW.md
+├── 📄 CONTRIBUTING.md
 ```

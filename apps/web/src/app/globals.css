@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
+/* =========================================================
+   BuscoHuella — Design tokens
+   Fuente visual única para la aplicación web.
+   ========================================================= */
+
 :root {
+  color-scheme: light;
+
+  --primary: #047857;
+  --primary-hover: #065f46;
+  --primary-soft: #ecfdf5;
+
+  --accent: #e67e22;
+  --accent-hover: #b25e09;
+  --accent-soft: #fff7ed;
+
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #f5f6f7;
+  --surface-elevated: #ffffff;
+
+  --foreground: #1c1c1e;
+  --muted-foreground: #4b5563;
+  --subtle-foreground: #6b7280;
+
+  --border: #a3a3a3;
+  --border-soft: #e5e7eb;
+
+  --success: #047857;
+  --warning: #b25e09;
+  --danger: #b91c1c;
+  --info: #1d4ed8;
+
+  --focus: #047857;
+  --disabled: #d1d5db;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgb(28 28 30 / 0.06);
+  --shadow-md: 0 8px 24px rgb(28 28 30 / 0.1);
+  --shadow-lg: 0 20px 50px rgb(28 28 30 / 0.14);
 }
 
 @theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-focus: var(--focus);
+  --color-disabled: var(--disabled);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
+  min-height: 100%;
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--primary-soft);
+  color: var(--foreground);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+[aria-disabled="true"],
+:disabled {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

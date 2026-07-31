@@ -1,1760 +1,1106 @@
-# BuscoHuella - Arquitectura del Proyecto
+# BuscoHuella — Arquitectura del Sistema
 
-## 1. Visión general
+> Documento técnico principal de arquitectura para el MVP de BuscoHuella.
 
-BuscoHuella es un ecosistema digital de bienestar animal que conecta ciudadanos,
-protectoras, veterinarios, instituciones y tecnología para mejorar la identificación,
-recuperación, adopción y protección de animales.
+## 1. Propósito
 
-La plataforma combina:
+Este documento define la arquitectura técnica vigente de BuscoHuella.
 
-- Aplicación móvil para ciudadanos.
-- Plataforma web pública.
-- Panel administrativo.
-- API centralizada.
-- Inteligencia artificial mediante módulos especializados.
-- Geolocalización.
-- Sistema de identidad animal.
-- Comunidad colaborativa.
-- Integraciones externas.
+Su objetivo es describir:
 
-La arquitectura está diseñada para ser:
+- los límites del sistema;
+- los componentes principales;
+- las responsabilidades de cada capa;
+- las decisiones tecnológicas activas;
+- las reglas de seguridad;
+- los criterios de evolución;
+- las decisiones expresamente fuera del MVP.
 
-- Escalable.
-- Segura.
-- Modular.
-- Preparada para crecimiento internacional.
-- Compatible con futuras integraciones de inteligencia artificial, dispositivos IoT, sistemas inteligentes de identificación y tecnologías descentralizadas cuando aporten valor real al ecosistema.
+Este documento no sustituye a:
 
+```text
+docs/master/DOCUMENTO_MAESTRO.md
+```
+
+Ante cualquier contradicción, prevalece el Documento Maestro.
 
 ---
 
-# 2. Objetivo del sistema
+## 2. Estado del proyecto
 
-El objetivo principal es crear una plataforma universal donde cada animal pueda tener:
+BuscoHuella se encuentra en fase **Pre-MVP**.
 
-- Una identidad digital.
-- Un historial verificable.
-- Un sistema rápido de recuperación.
-- Información sanitaria.
-- Documentación.
-- Conexión con propietarios, veterinarios y organizaciones.
-  
-Además, el sistema gestionará eventos asociados al animal:
+La arquitectura debe permitir validar primero el producto en Sabadell con:
 
-- Pérdidas.
-- Hallazgos.
-- Rescates.
-- Adopciones.
-- Revisiones sanitarias.
-- Avistamientos.
+- bajo coste operativo;
+- complejidad controlada;
+- seguridad por defecto;
+- posibilidad de crecimiento;
+- mínima deuda técnica razonable;
+- documentación suficiente;
+- evolución incremental.
 
-El sistema debe permitir:
-
-## Para ciudadanos
-
-- Registrar animales.
-- Crear perfiles.
-- Gestionar documentos.
-- Reportar pérdidas.
-- Encontrar animales.
-- Participar en rescates.
-- Recibir alertas cercanas.
-
-## Para protectoras
-
-- Gestionar animales disponibles.
-- Publicar adopciones.
-- Gestionar rescates.
-- Administrar voluntarios.
-
-## Para veterinarios
-
-- Gestionar historiales sanitarios.
-- Registrar vacunas.
-- Validar información animal.
-
-## Para instituciones
-
-- Gestionar incidencias.
-- Consultar estadísticas.
-- Coordinar actuaciones.
-
+La arquitectura no debe sobredimensionarse para escenarios futuros que todavía no han sido validados.
 
 ---
 
-# 3. Ecosistema de aplicaciones
-
-
-                    BUSCOHUELLA PLATFORM
-
-
-                         Usuarios
-
-                            |
-
-        ------------------------------------------------
-
-        |                     |                       |
-
-   Mobile App          Plataforma Web          Panel Admin
-
- React Native             Angular                Angular
-
-
-        |                     |                       |
-
-        ------------------------------------------------
-
-                            |
-
-                     API REST / Backend
-
-                         Symfony
-
-
-                            |
-
-        ------------------------------------------------
-
-        |                     |                       |
-
-     Dominio            Infraestructura          Procesos
-
-    Symfony              PostgreSQL             Queue
-
-    Módulos               Database              Jobs
-
-    Negocio               Storage               Messenger
-
-
-
-                            |
-
-                 Servicios e integraciones
-
-
-        ------------------------------------------------
-
-        |            |             |              |
-
-      Maps        Email/SMS      Push          IA
-
-
-        |
-
-
-     Servicios externos
-
-     - Google Maps / OpenStreetMap
-     - Firebase Push
-     - Proveedores Email/SMS
-
-
-
-## Futuro
-
-La arquitectura permitirá incorporar nuevos servicios independientes:
-
-- IoT.
-- Collares inteligentes.
-- Integraciones institucionales.
-- Sistemas avanzados de identificación animal.
-- Servicios de inteligencia artificial especializados.
-
-
-## Principio arquitectónico
-
-La plataforma se diseña con una arquitectura API First donde:
-
-- Mobile consume la API.
-- Web consume la API.
-- Admin consume la API.
-- Servicios futuros pueden integrarse mediante APIs.
-
-El backend Symfony actúa como núcleo del ecosistema.
-
-
-# 5. Modelo de dominio
-
-## Usuario
-
-
-Entidad responsable de la identidad dentro del sistema.
-
-
-Usuario
-
-
-├── Perfil
-
-├── Roles
-
-├── Permisos
-
-├── Animales asociados
-
-├── Actividad
-
-└── Preferencias
-
-## Animal
-
-
-Entidad central del ecosistema.
-
-
-Animal
-
-
-├── Identidad
-
-│   ├── Perfil
-
-│   ├── Fotografías
-
-│   ├── Características
-
-│   └── QR Identificación
-
-
-├── Relaciones
-
-│   ├── Usuarios asociados
-
-│   ├── Protectoras
-
-│   ├── Veterinarios
-
-│   └── Instituciones
-
-
-├── Información clínica
-
-│   ├── Salud
-
-│   ├── Vacunas
-
-│   ├── Medicación
-
-│   └── Documentación
-
-
-├── Geolocalización
-
-│   ├── Ubicaciones
-
-│   ├── Avistamientos
-
-│   └── Eventos
-
-
-└── Historial
-
-    ├── Cambios propietario
-
-    ├── Adopciones
-
-    ├── Rescates
-
-    └── Alertas
-
-
-
-## Datos principales
-
-
-### Perfil
-
-- Nombre
-- Especie
-- Raza
-- Sexo
-- Edad
-- Fotografías
-- Características físicas
-
-
-### Propietario
-
-- Usuario asociado.
-- Datos contacto.
-- Preferencias privacidad.
-
-
-### QR
-
-
-Sistema de identificación rápida asociado al animal.
-
-
-Usos:
-
-- Collar.
-- Placa identificativa.
-- Cartilla digital.
-- Perfil público de emergencia.
-
-
-Funciones:
-
-- Acceso rápido a información básica.
-- Contacto propietario.
-- Reporte de animal encontrado.
-- Actualización de ubicación.
-  
-Seguridad:
-
-- QR único por animal.
-- Control de acceso.
-- Protección de datos propietario.
-- Registro de escaneos.
-
-### Documentos
-
-- Microchip.
-- Vacunas.
-- Pasaporte animal.
-- Certificados.
-
-
-### Salud
-
-- Veterinarios.
-- Revisiones.
-- Medicación.
-- Enfermedades.
-
-
-### Historial
-
-Registro completo:
-
-- Cambios propietarios.
-- Adopciones.
-- Rescates.
-- Revisiones.
-- Alertas.
-
+## 3. Objetivo del sistema
+
+El sistema debe permitir que una persona pueda:
+
+1. registrarse;
+2. iniciar sesión;
+3. registrar una mascota;
+4. publicar una mascota perdida;
+5. publicar una mascota encontrada;
+6. consultar reportes en un mapa;
+7. filtrar por zona, estado, tipo o distancia;
+8. comunicar un avistamiento;
+9. adjuntar fotografías;
+10. recibir notificaciones relevantes;
+11. actualizar el estado del caso;
+12. marcar un caso como resuelto;
+13. documentar un reencuentro.
+
+La métrica principal es:
+
+> Número de mascotas reunidas con sus familias gracias a BuscoHuella.
 
 ---
 
-# 6. Mapa colaborativo
+## 4. Alcance arquitectónico del MVP
 
+### Incluido
 
-Sistema geográfico basado en comunidad.
+- aplicación web;
+- autenticación;
+- perfiles;
+- mascotas;
+- reportes;
+- avistamientos;
+- mapa;
+- filtros;
+- fotografías;
+- notificaciones web;
+- resolución de casos;
+- landing pública;
+- lista de espera;
+- administración mínima necesaria;
+- métricas esenciales.
 
+### Excluido
 
-## Tipos de eventos
-
-
-### Animal perdido
-
-Información:
-
-- Localización.
-- Fecha.
-- Fotos.
-- Características.
-- Nivel urgencia.
-
-
-### Animal encontrado
-
-Información:
-
-- Ubicación.
-- Fotografías.
-- Estado.
-- Contacto.
-
-
-### Riesgo
-
-Ejemplos:
-
-- Avisos de seguridad animal.
-- Zonas con incidencias registradas.
-- Riesgos comunitarios.
-- Zonas con abandono.
-- Accidentes.
-
-
-### Servicios
-
-Puntos de interés:
-
-- Veterinarios.
-- Protectoras.
-- Tiendas.
-- Parques.
-- Hoteles animales.
-
-
-### Comunidad
-
-Elementos:
-
-- Usuarios cercanos.
-- Voluntarios.
-- Rastreadores.
-- Eventos.
-
+- reconocimiento visual mediante IA;
+- chat interno;
+- gamificación;
+- pagos;
+- suscripciones;
+- funciones premium;
+- blockchain;
+- tokens;
+- GPS propio;
+- telemedicina;
+- historiales clínicos completos;
+- adopciones como módulo principal;
+- red social completa;
+- microservicios;
+- colas complejas;
+- integraciones institucionales avanzadas;
+- expansión nacional.
 
 ---
 
-# 7. Tecnologías
+## 5. Principios arquitectónicos
 
+La arquitectura seguirá estos principios:
 
-## Aplicación móvil
-
-### React Native + Expo
-
-
-Responsabilidades:
-
-- Aplicación usuario final.
-- Gestión animales.
-- Geolocalización.
-- Cámara.
-- Escaneo QR.
-- Notificaciones push.
-- Comunicación entre usuarios (futuro).
-
-
----
-
-## Aplicación Web
-
-
-### Angular
-
-
-Usos:
-
-- Plataforma pública.
-- Gestión usuarios.
-- Consultas.
-- Comunidad.
-
+1. Simplicidad antes que complejidad.
+2. MVP antes que expansión.
+3. Seguridad por defecto.
+4. Privacidad desde el diseño.
+5. Accesibilidad desde el diseño.
+6. Bajo acoplamiento.
+7. Alta cohesión.
+8. Contratos tipados.
+9. Evolución incremental.
+10. Observabilidad suficiente.
+11. Coste operativo razonable.
+12. Documentación antes que implementación.
+13. No introducir dependencias sin necesidad.
+14. No crear abstracciones prematuras.
+15. No crear servicios separados sin una razón medible.
 
 ---
 
-## Panel Administración
+## 6. Arquitectura de alto nivel
 
+```text
+┌──────────────────────────────────────────────┐
+│                  Usuarios                    │
+│ Propietarios · Vecinos · Protectoras · Admin │
+└──────────────────────┬───────────────────────┘
+                       │
+              ┌────────▼────────┐
+              │ Aplicación web  │
+              │ Next.js         │
+              │ TypeScript      │
+              └────────┬────────┘
+                       │
+              ┌────────▼────────┐
+              │    Supabase     │
+              │ Auth            │
+              │ Database        │
+              │ Storage         │
+              │ Realtime        │
+              │ Edge Functions  │
+              └────────┬────────┘
+                       │
+              ┌────────▼────────┐
+              │ PostgreSQL      │
+              │ PostGIS         │
+              └─────────────────┘
 
-### Angular
-
-
-Funciones:
-
-- Gestión usuarios.
-- Moderación.
-- Estadísticas.
-- Auditoría.
-- Configuración.
-
-
----
-
-## Backend
-
-
-### Symfony API
-
-
-Responsabilidades:
-
-- Lógica negocio.
-- Autenticación.
-- Seguridad.
-- Gestión permisos.
-- Comunicación externa.
-
-
-Componentes:
-
-- Symfony Framework.
-- API Platform.
-- Doctrine ORM.
-- Messenger.
-- Security Bundle.
-
+              ┌─────────────────┐
+              │ Aplicación móvil│
+              │ Expo React Native
+              │ Fase posterior  │
+              └────────┬────────┘
+                       │
+                       └──────────────► Supabase
+```
 
 ---
 
-## Base de datos
+## 7. Estilo arquitectónico
 
-
-### PostgreSQL
-
-
-Motivos:
-
-- Alta capacidad geoespacial.
-- Escalabilidad.
-- Integración PostGIS.
-- Consultas complejas.
-
-
----
-
-## Storage
-
-
-Almacenamiento:
-
-- Fotografías.
-- Documentos.
-- Archivos veterinarios.
-
-
-Tecnología prevista:
-
-- S3 compatible.
-- MinIO en desarrollo.
-
-
----
-
-## Queue / Jobs
-
-
-Procesos asíncronos:
-
-- Envío emails.
-- Notificaciones.
-- Procesamiento IA.
-- Generación informes.
-
-
-Tecnologías:
-
-- Symfony Messenger.
-- Redis/RabbitMQ.
-
-
----
-
-# 8. Módulos principales del sistema
-
-
-## Módulo usuarios
-
-Responsable de la identidad del sistema.
-
-
-Funciones:
-
-- Registro.
-- Login.
-- Gestión perfiles.
-- Roles.
-- Permisos.
-- Preferencias.
-
-
----
-
-
-## Módulo animales
-
-
-Módulo principal del ecosistema.
-
-
-Funciones:
-
-- Crear perfiles animales.
-- Gestionar propietarios.
-- Gestionar QR.
-- Documentación.
-- Historial.
-- Salud.
-
-
----
-
-
-## Módulo mapa
-
-
-Gestiona información geográfica.
-
-
-Funciones:
-
-- Animales perdidos.
-- Animales encontrados.
-- Avistamientos.
-- Servicios cercanos.
-- Alertas geográficas.
-
-
----
-
-
-## Módulo comunidad
-
-
-Gestiona interacción entre usuarios.
-
-
-Funciones:
-
-- Publicaciones.
-- Eventos.
-- Voluntariado.
-- Colaboración ciudadana.
-
-
----
-
-
-## Módulo adopciones
-
-
-Gestiona procesos de adopción.
-
-
-Funciones:
-
-- Publicación animales.
-- Solicitudes.
-- Seguimiento.
-- Estados adopción.
-
-
----
-
-
-## Módulo notificaciones
-
-
-Gestiona comunicaciones.
-
-
-Funciones:
-
-- Push.
-- Email.
-- SMS.
-- Alertas cercanas.
-- Avisos de estado.
-
-
----
-
-
-## Módulo IA HuellaIA (futuro)
-
-Módulo inteligente preparado para integración futura.
-
-Estado:
-
-- Fuera del MVP inicial.
-- Diseñado para funcionar como servicio independiente.
-
-Funciones:
-
-- Reconocimiento animal mediante imágenes.
-- Comparación fotográfica.
-- Ayuda en identificación.
-- Predicción de zonas de búsqueda.
-  
-# 9. Comunicación entre sistemas
-
-
-## Arquitectura de comunicación
-
-
-Todos los clientes se comunican con el backend mediante una API REST.
-
-          CLIENTES
-
-  Mobile / Web / Admin
-
-
-            |
-
-            |
-
-      HTTPS / JSON API
-
-
-            |
-
-            |
-
-      Symfony Backend
-
-
-            |
-
------------------------------
-
-|             |             |
-
-PostgreSQL / Storage / Queues
-
-Database / Archivos / Jobs
-
-
----
-
-
-## API REST
-
-
-Formato principal:
-
-- JSON.
-- HTTPS.
-- Arquitectura API First.
-
-
-Ejemplos:
-
-
-GET /api/animals
-
-POST /api/lost-reports
-
-GET /api/map/events
-
-POST /api/auth/login
-
-POST /api/adoptions/request
-
-
----
-
-## Comunicación interna del backend
-
-Symfony organiza la lógica mediante módulos independientes:
-
-Symfony Backend
-
-├── Usuarios
-├── Animales
-├── Mapa
-├── Comunidad
-├── Adopciones
-├── Notificaciones
-├── Auditoría
-└── Administración
-
-Cada módulo contiene:
-
-Entidades.
-Servicios.
-Casos de uso.
-Reglas de negocio.
-Eventos internos.
-
-Servicios externos
-Maps
-
-Responsable de:
-
-Geolocalización.
-Mapas interactivos.
-Cálculo de distancias.
-Búsquedas cercanas.
-
-Posibles proveedores:
-
-Google Maps.
-OpenStreetMap.
-Notificaciones
-
-Sistema de comunicación con usuarios.
-
-Canales:
-
-Push.
-Email.
-SMS.
-
-Usos:
-
-Alertas animales perdidos.
-Avisos cercanos.
-Cambios de estado.
-Comunicaciones importantes.
-IA HuellaIA
-
-Servicio inteligente futuro.
-
-Funciones previstas:
-
-Reconocimiento mediante imágenes.
-Comparación fotográfica.
-Identificación asistida.
-Predicción de zonas de búsqueda.
-Recomendaciones inteligentes.
-
-Diseñado para poder separarse como servicio independiente.
-
-QR Identificación
-
-Sistema asociado al animal.
-
-Funciones:
-
-Identificación rápida.
-Acceso al perfil público.
-Reporte de animal encontrado.
-Actualización de información.
+BuscoHuella utilizará inicialmente una arquitectura modular apoyada en servicios gestionados.
 
 Características:
 
-QR único por animal.
-Control de acceso.
-Registro de escaneos.
+- monorepo;
+- frontend web principal;
+- backend gestionado con Supabase;
+- base de datos relacional;
+- geolocalización con PostGIS;
+- seguridad mediante RLS;
+- almacenamiento gestionado;
+- comunicación en tiempo real cuando aporte valor;
+- Edge Functions para lógica sensible o integraciones;
+- despliegue web en Vercel.
 
-## Comunicación principal
-
-React Native
-  |
-
-  |
-
-  HTTPS
-
-  |
-
-  |
-
-  Symfony API
-
-  
+No se utilizará un backend monolítico Symfony ni una API separada como núcleo del MVP.
 
 ---
 
-## API
+## 8. Monorepo
 
+Estructura objetivo:
 
-Formato:
+```text
+buscohuella/
+├── apps/
+│   ├── web/
+│   └── mobile/
+├── packages/
+│   ├── shared-types/
+│   ├── shared-utils/
+│   └── constants/
+├── supabase/
+│   ├── migrations/
+│   ├── functions/
+│   └── seed/
+├── docs/
+├── scripts/
+├── tools/
+├── AGENTS.md
+├── CONTRIBUTING.md
+├── ARCHITECTURE_OVERVIEW.md
+└── README.md
+```
 
-JSON REST API
+Reglas:
 
+- cada aplicación mantiene su propia configuración;
+- la lógica compartida debe ubicarse en `packages/`;
+- las migraciones de Supabase deben versionarse;
+- las funciones de servidor deben estar versionadas;
+- la documentación debe mantenerse centralizada;
+- no duplicar tipos ni constantes entre web y móvil.
 
+---
+
+## 9. Aplicación web
+
+### Tecnologías
+
+- Next.js;
+- TypeScript;
+- App Router;
+- Tailwind CSS;
+- Shadcn UI;
+- Lucide;
+- Framer Motion cuando aporte valor real;
+- Vercel.
+
+### Responsabilidades
+
+- landing pública;
+- registro;
+- inicio de sesión;
+- recuperación de contraseña;
+- perfil;
+- gestión de mascotas;
+- reportes;
+- mapa;
+- feed;
+- filtros;
+- avistamientos;
+- resolución de casos;
+- notificaciones web;
+- administración mínima;
+- internacionalización;
+- accesibilidad.
+
+### Reglas
+
+- TypeScript estricto;
+- componentes pequeños;
+- separación entre UI, dominio y acceso a datos;
+- estados de carga, vacío y error;
+- validación en cliente y servidor;
+- no confiar únicamente en la interfaz;
+- textos preparados para i18n;
+- formularios accesibles;
+- mapas con alternativas textuales cuando proceda.
+
+---
+
+## 10. Aplicación móvil
+
+### Tecnologías previstas
+
+- Expo;
+- React Native;
+- TypeScript;
+- Expo Router.
+
+### Estado
+
+La aplicación móvil se desarrollará después de validar la aplicación web.
+
+### Objetivo
+
+Reutilizar:
+
+- tipos;
+- constantes;
+- validaciones;
+- reglas de dominio;
+- contratos;
+- integración con Supabase.
+
+### No hacer
+
+- duplicar lógica de negocio;
+- crear APIs distintas sin necesidad;
+- crear modelos incompatibles con la web;
+- desarrollar funcionalidades fuera del MVP por comodidad móvil.
+
+---
+
+## 11. Backend con Supabase
+
+Supabase será el backend principal del MVP.
+
+Servicios:
+
+- Supabase Auth;
+- PostgreSQL;
+- PostGIS;
+- Supabase Storage;
+- Supabase Realtime;
+- Edge Functions cuando sea necesario.
+
+### Responsabilidades
+
+- autenticación;
+- autorización;
+- persistencia;
+- consultas;
+- seguridad;
+- almacenamiento;
+- tiempo real;
+- lógica sensible;
+- integraciones externas;
+- auditoría cuando corresponda.
+
+### Regla principal
+
+Las operaciones sensibles no deben depender únicamente del cliente.
+
+---
+
+## 12. Base de datos
+
+### Tecnología
+
+- PostgreSQL;
+- PostGIS.
+
+### Dominios iniciales
+
+- usuarios;
+- perfiles;
+- mascotas;
+- reportes;
+- avistamientos;
+- archivos;
+- notificaciones;
+- organizaciones básicas;
+- estados;
+- auditoría necesaria.
+
+### Reglas de modelado
+
+Toda tabla debe considerar:
+
+- clave primaria;
+- timestamps;
+- restricciones;
+- relaciones;
+- índices;
+- claves foráneas;
+- RLS;
+- estrategia de borrado;
+- conservación;
+- auditoría cuando corresponda;
+- integridad referencial.
+
+### No hacer
+
+- tablas sin políticas de seguridad;
+- columnas duplicadas sin justificación;
+- datos sensibles innecesarios;
+- almacenamiento de secretos;
+- relaciones ambiguas;
+- estados libres si deben ser controlados.
+
+---
+
+## 13. Modelo de dominio del MVP
+
+### Usuario
+
+Representa a la persona o entidad autenticada.
+
+Responsabilidades:
+
+- identidad;
+- perfil;
+- rol;
+- preferencias;
+- relación con mascotas;
+- relación con reportes;
+- relación con avistamientos.
+
+### Perfil
+
+Incluye información pública o semipública del usuario.
+
+Debe minimizar datos personales.
+
+### Mascota
+
+Representa un animal registrado.
+
+Datos principales:
+
+- nombre;
+- especie;
+- raza;
+- sexo;
+- edad aproximada;
+- tamaño;
+- color;
+- descripción;
+- fotografías;
+- microchip cuando proceda;
+- propietario;
+- estado.
+
+### Reporte
+
+Representa una pérdida, hallazgo o caso activo.
+
+Datos principales:
+
+- tipo;
+- mascota relacionada;
+- fecha;
+- ubicación;
+- descripción;
+- fotografías;
+- estado;
+- autor;
+- visibilidad;
+- resolución.
+
+### Avistamiento
+
+Representa una observación asociada a un reporte.
+
+Datos principales:
+
+- reporte;
+- autor;
+- fecha;
+- ubicación;
+- descripción;
+- fotografía;
+- nivel de precisión;
+- validación básica.
+
+### Organización
+
+Representa una protectora, refugio, profesional o entidad colaboradora.
+
+Su alcance inicial debe ser mínimo.
+
+---
+
+## 14. Estados del reporte
+
+Los estados deben ser explícitos y controlados.
+
+Ejemplo conceptual:
+
+```text
+draft
+active
+resolved
+archived
+cancelled
+```
+
+Las transiciones deben validarse.
 
 Ejemplo:
 
-GET /api/animals
+```text
+draft → active
+active → resolved
+active → cancelled
+resolved → archived
+```
 
-POST /api/lost-reports
-
-GET /api/map/events
-
-POST /api/auth/login
-
-
-
----
-
-## Servicios externos
-
-
-## Maps
-
-Uso:
-
-- Localización.
-- Rutas.
-- Radio búsqueda.
-
-
-Ejemplos:
-
-- Google Maps.
-- OpenStreetMap.
-
+No permitir cambios arbitrarios sin autorización.
 
 ---
 
-## Notificaciones
+## 15. Autenticación
 
+### Tecnología
 
-Tipos:
+Supabase Auth.
 
-- Push.
-- Email.
-- SMS.
+### Métodos iniciales
 
+- email y contraseña;
+- recuperación de contraseña;
+- proveedores sociales cuando estén autorizados;
+- sesión persistente segura.
 
-Uso:
+### Reglas
 
-- Alertas pérdida.
-- Avisos cercanos.
-- Cambios estado.
-
-
----
-
-## IA HuellaIA
-
-
-Futuro módulo inteligente.
-
-
-Funciones previstas:
-
-- Reconocimiento de animales mediante imágenes.
-- Comparación fotográfica.
-- Ayuda en identificación.
-- Asistencia inteligente a usuarios.
-- Análisis de patrones de pérdida.
-- Recomendaciones de búsqueda.
-
+- contraseñas gestionadas por Supabase;
+- no almacenar contraseñas propias;
+- no exponer tokens;
+- no versionar secretos;
+- controlar expiración;
+- revocar sesiones cuando proceda;
+- registrar eventos críticos sin datos sensibles.
 
 ---
 
-## QR
+## 16. Autorización
 
+La autorización se implementará mediante:
 
-Sistema:
+- roles;
+- políticas RLS;
+- validaciones de dominio;
+- Edge Functions cuando sea necesario.
 
-- Identificación rápida.
-- Acceso perfil público.
-- Emergencias.
+Roles previstos:
 
+- ciudadano;
+- colaborador;
+- protectora;
+- profesional;
+- administración;
+- invitado;
+- administrador.
 
----
+Los roles deben tener permisos mínimos.
 
-# 10. Seguridad
-
-
-## Autenticación
-
-
-Sistema:
-
-- JWT.
-- Refresh tokens.
-- OAuth futuro.
-
+No confiar en ocultar botones como mecanismo de seguridad.
 
 ---
 
----
+## 17. Row Level Security
 
-## Control de acceso
+RLS es obligatoria para tablas con datos de usuario o datos sensibles.
 
+### Principios
 
-Sistema basado en roles:
+- denegar por defecto;
+- mínimo privilegio;
+- propietario controla sus datos;
+- lectura pública solo cuando esté justificada;
+- escritura limitada;
+- administración mediante roles;
+- políticas simples y auditables.
 
-- Usuario particular.
-- Protectora.
-- Veterinario.
-- Ayuntamiento.
-- Administrador.
+### Ejemplos conceptuales
 
+- un usuario puede editar su perfil;
+- un usuario puede gestionar sus mascotas;
+- un usuario puede gestionar sus reportes;
+- otros usuarios pueden ver solo reportes públicos;
+- un avistamiento puede ser creado por un usuario autenticado;
+- un administrador puede moderar según rol.
 
-Cada rol tendrá:
-
-- Permisos específicos.
-- Acceso limitado a información sensible.
-- Registro de actividad.
-
-## Protección datos
-
-
-Cumplimiento:
-
-- RGPD.
-- LOPDGDD.
-- Privacidad por diseño.
-
+Toda política debe probarse.
 
 ---
 
-## Seguridad backend
+## 18. Edge Functions
 
+Se utilizarán cuando exista necesidad de:
 
-Medidas:
+- lógica sensible;
+- validación de servidor;
+- integraciones externas;
+- envío de notificaciones;
+- operaciones administrativas;
+- protección de secretos;
+- procesos que no deben ejecutarse en cliente.
 
-- Validación entradas.
-- Rate limiting.
-- Logs.
-- Auditoría.
-- Roles.
-
-
----
-
-## Datos sensibles
-
-
-Protección:
-
-- Cifrado.
-- Anonimización.
-- Control acceso.
-
+No usar Edge Functions para lógica simple que PostgreSQL y RLS ya resuelvan correctamente.
 
 ---
 
-# 11. Usuarios y permisos
+## 19. Storage
 
+### Tecnología
 
-## Tipos de usuarios
+Supabase Storage.
 
+### Tipos de archivo
 
-## Particular
+- fotografías de mascotas;
+- imágenes de reportes;
+- imágenes de avistamientos;
+- avatares;
+- documentos estrictamente necesarios.
 
+### Reglas
 
-Puede:
+- buckets separados cuando aporte seguridad;
+- validación de tipo MIME;
+- validación de tamaño;
+- nombres no predecibles;
+- políticas de acceso;
+- estrategia de eliminación;
+- limpieza de archivos huérfanos;
+- privacidad por defecto.
 
-- Crear animales.
-- Gestionar perfiles propios.
-- Reportar pérdidas.
-- Reportar animales encontrados.
-- Participar en comunidad.
-- Solicitar adopciones.
-
-
----
-
-## Protectora
-
-
-Puede:
-
-- Gestionar animales.
-- Publicar adopciones.
-- Gestionar rescates.
-- Administrar voluntarios.
-
+No se utilizará MinIO en el MVP.
 
 ---
 
-## Veterinario
+## 20. Mapas y geolocalización
 
+### Tecnologías
 
-Puede:
+- Mapbox;
+- PostGIS.
 
-- Validar salud.
-- Añadir informes.
-- Gestionar historiales.
+### Casos de uso
 
+- mapa de reportes;
+- búsqueda por radio;
+- filtros por distancia;
+- avistamientos;
+- zonas;
+- proximidad;
+- agrupación de marcadores;
+- ubicación aproximada.
 
----
+### Seguridad
 
-## Ayuntamiento
-
-
-Puede:
-
-- Consultar estadísticas.
-- Gestionar campañas.
-- Crear alertas municipales.
-
-
----
-
-## Administrador
-
-
-Puede:
-
-- Gestionar plataforma.
-- Moderar contenido.
-- Gestionar permisos.
-- Auditar actividad.
-
+- no mostrar coordenadas sensibles exactas cuando no sea necesario;
+- limitar precisión;
+- proteger hogares;
+- evitar exposición de patrones personales;
+- aplicar reglas por rol;
+- registrar consentimiento cuando proceda.
 
 ---
 
-# 12. Roadmap del producto
+## 21. Búsqueda
 
+La búsqueda inicial se apoyará en:
 
-## Fase 1 - MVP
+- consultas PostgreSQL;
+- PostGIS;
+- filtros simples;
+- índices adecuados.
 
+No se introducirá un motor externo de búsqueda sin una necesidad medible.
+
+Filtros iniciales:
+
+- tipo;
+- estado;
+- fecha;
+- distancia;
+- especie;
+- zona.
+
+---
+
+## 22. Realtime
+
+Supabase Realtime podrá utilizarse para:
+
+- actualizaciones de reportes;
+- nuevos avistamientos;
+- cambios de estado;
+- notificaciones relevantes;
+- sincronización ligera.
+
+No utilizar Realtime por defecto para todo.
+
+Debe evaluarse:
+
+- coste;
+- volumen;
+- necesidad real;
+- impacto en batería;
+- impacto en datos móviles;
+- complejidad.
+
+---
+
+## 23. Notificaciones
+
+### MVP
+
+- notificaciones web;
+- email cuando sea necesario.
+
+### Futuro
+
+- notificaciones móviles;
+- canales adicionales.
+
+### Casos de uso
+
+- nuevo avistamiento;
+- cambio de estado;
+- reporte cercano;
+- resolución del caso;
+- mensajes administrativos importantes.
+
+No incluir SMS como canal obligatorio del MVP.
+
+---
+
+## 24. Internacionalización
+
+Idiomas previstos:
+
+- español;
+- catalán;
+- inglés;
+- euskera;
+- gallego.
+
+Reglas:
+
+- español como idioma inicial;
+- claves estables;
+- no concatenar frases;
+- pluralización;
+- textos extensibles;
+- compatibilidad con diferentes longitudes;
+- fallback controlado.
+
+---
+
+## 25. Accesibilidad
 
 Objetivo:
 
-Validación local.
-
-
-Incluye:
-
-- Usuarios.
-- Animales.
-- QR.
-- Mapa.
-- Alertas.
-- Comunidad.
-
-
----
-
-## Fase 2 - Crecimiento
-
-
-Añadir:
-
-- Protectoras.
-- Veterinarios.
-- Adopciones.
-- IA básica.
-
-
----
-
-## Fase 3 - Ecosistema
-
-
-Añadir:
-
-- IoT.
-- Collares inteligentes.
-- APIs públicas.
-- Integración institucional.
-
-
----
- 
-## Fase 4 - Internacionalización
-
-
-Añadir:
-
-- Identidad animal internacional.
-- APIs públicas.
-- Integraciones gubernamentales.
-- Sistemas de certificación.
-- Tecnologías descentralizadas si aportan valor real.
-
-
----
-
-# 13. Decisiones iniciales
-
-
-## Arquitectura modular
-
-
-BuscoHuella comenzará como un monolito modular.
-
-
-Esta decisión permite:
-
-- Desarrollo más rápido.
-- Menor complejidad inicial.
-- Separación clara de dominios.
-- Evolución futura hacia microservicios cuando sea necesario.
-
-
-La prioridad inicial es mantener una arquitectura mantenible antes de distribuir servicios.
-
-
----
-
-## Backend API First
-
-
-La API será el núcleo del ecosistema.
-
-Ventajas:
-
-- Mobile independiente.
-- Web independiente.
-- Integraciones futuras.
-
-
----
-
-## PostgreSQL como base principal
-
-
-Decisión:
-
-Utilizar PostgreSQL desde el inicio.
-
-Motivos:
-
-- Escalabilidad.
-- Datos geográficos.
-- Open source.
-- Preparado para grandes volúmenes.
-
-
----
-
-## React Native para Mobile
-
-
-Motivos:
-
-- Desarrollo multiplataforma.
-- Menor coste.
-- Comunidad amplia.
-
-
----
-
-## Angular para Web
-
-
-Motivos:
-
-- Arquitectura empresarial.
-- Escalabilidad.
-- Tipado.
-- Mantenimiento.
-
-
----
-
-## Symfony como Backend
-
-
-Motivos:
-
-- Seguridad.
-- Arquitectura limpia.
-- Código mantenible.
-- Ecosistema PHP empresarial.
-
-
----
-
-# Conclusión
-
-
-BuscoHuella se construye como una plataforma tecnológica preparada para evolucionar desde un MVP local hasta un ecosistema global de bienestar animal.
-
-
-La arquitectura permite incorporar progresivamente:
-
-- Inteligencia Artificial.
-- Geolocalización avanzada.
-- Sistemas IoT.
-- Integraciones institucionales.
-- Automatización inteligente.
-
-
-La estrategia inicial se basa en construir una plataforma sólida, segura y escalable donde cada animal disponga de una identidad digital y donde la comunidad pueda colaborar para mejorar su protección y recuperación.
-
-
-## Diagrama de flujo de trabajo de un usuario particular
-
-```mermaid
-flowchart LR
-    A[Inicio - Usuario decide usar BuscoHuella] --> B{¿Tiene cuenta?}
-
-    B -- No --> C[Crear cuenta / Registrarse]
-    C --> D[Ver tutorial / Onboarding]
-    C --> E[Configurar perfil]
-    C --> F[Añadir primer animal]
-
-    B -- Sí --> G[Iniciar sesión]
-    G --> H{¿Qué quiere hacer?}
-
-    subgraph "Flujo: Reportar Animal Perdido"
-        H -- "Reportar animal perdido" --> I[Seleccionar animal]
-        I --> J[Rellenar formulario de reporte]
-        J --> K[Añadir ubicación actual]
-        K --> L[Subir fotos]
-        L --> M[Añadir descripción y características]
-        M --> N{¿Tiene QR?}
-        N -- Sí --> O[Escanear QR]
-        N -- No --> P[Generar QR / Actualizar datos]
-        O --> Q[Confirmar reporte]
-        P --> Q
-        Q --> R[Recibir confirmación y número de caso]
-    end
-
-    subgraph "Flujo: Reportar Animal Encontrado"
-        H -- "Reportar animal encontrado" --> S[Seleccionar "Reportar encontrado"]
-        S --> T[Tomar o subir fotos del animal]
-        T --> U[Añadir ubicación donde se encontró]
-        U --> V[Añadir descripción]
-        V --> W{¿Animal identificado?}
-        W -- Sí --> X[Escanear QR]
-        W -- No --> Y[Dejar datos de contacto]
-        X --> Z[Enviar reporte]
-        Y --> Z
-        Z --> AA[Recibir número de caso]
-    end
-
-    subgraph "Flujo: Buscar Animales"
-        H -- "Buscar animales" --> AB[Ver mapa interactivo]
-        AB --> AC[Filtrar por especie / raza / estado]
-        AC --> AD{Encontró animal relevante?}
-        AD -- Sí --> AE[Ver perfil del animal]
-        AD -- No --> AF[Ajustar filtros]
-        AF --> AB
-    end
-
-    subgraph "Flujo: Adoptar"
-        H -- "Adoptar" --> AG[Explorar animales en adopción]
-        AG --> AH[Ver perfil completo]
-        AH --> AI[Contactar protectora]
-        AI --> AJ{Protectora responde?}
-        AJ -- Sí --> AK[Seguir pasos de adopción]
-        AJ -- No --> AL[Contactar otra protectora]
-        AL --> AI
-    end
-
-    subgraph "Flujo: Comunidad"
-        H -- "Ver comunidad" --> AM[Ver eventos locales]
-        AM --> AN[Unirse a voluntariado]
-        AN --> AO[Participar en campañas]
-        AO --> AP[Ver estadísticas personales]
-    end
-
-    %% Conexiones finales de los flujos principales
-    R --> AQ[Recibir notificaciones de actualizaciones]
-    AA --> AQ
-    AE --> AQ
-    AK --> AQ
-    AP --> AQ
-
-    AQ --> H
-
-    %% Estilos
-    classDef user fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef action fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
-    classDef decision fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
-    classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-
-    class A,G user;
-    class B,N,W decision;
-    class C,D,E,F,I,J,K,L,M,O,P,Q,R,S,T,U,V,X,Y,Z,AA,AB,AC,AD,AE,AF,AG,AH,AI,AJ,AK,AL,AM,AN,AO,AP,AQ process;
+```text
+WCAG 2.2 nivel AA
 ```
 
+La accesibilidad forma parte de la definición de terminado.
 
+Requisitos:
+
+- HTML semántico;
+- teclado;
+- foco visible;
+- contraste;
+- labels;
+- lectores de pantalla;
+- mensajes de error claros;
+- áreas táctiles adecuadas;
+- no depender solo del color;
+- estados de carga anunciables;
+- alternativas para mapas;
+- formularios comprensibles.
 
 ---
 
-## Diagrama de flujo de trabajo de una protectora de animales
+## 26. Seguridad y privacidad
 
-```mermaid
-flowchart LR
-    A[Inicio - Protectora inicia operación] --> B[Crear cuenta / Verificar estado legal]
-    B --> C[Configurar perfil de la protectora]
-    C --> D[Añadir animales a la plataforma]
+Principios:
 
-    subgraph "Flujo: Gestión Animal"
-        D --> E{Animal necesita adopción?}
-        E -- Sí --> F[Marcar como "En adopción"]
-        E -- No --> G[Marcar como "Bajo cuidado"]
-        F --> H[Subir fotos y descripción detallada]
-        G --> I[Añadir información médica]
-        H --> J[Publicar perfil]
-        I --> J
-        J --> K[Recibir solicitudes de adopción]
-    end
+- mínimo privilegio;
+- privacidad por defecto;
+- minimización;
+- limitación de finalidad;
+- control de acceso;
+- cifrado en tránsito;
+- no registrar secretos;
+- auditoría;
+- conservación limitada;
+- borrado seguro;
+- cumplimiento de RGPD y LOPDGDD.
 
-    subgraph "Flujo: Adopciones"
-        K --> L{Solicitud válida?}
-        L -- Sí --> M[Contactar adoptante]
-        L -- No --> N[Rechazar con motivo]
-        M --> O[Agendar visita / entrevista]
-        O --> P{Adopción aprobada?}
-        P -- Sí --> Q[Firmar contrato de adopción]
-        P -- No --> R[Rechazar con explicación]
-        Q --> S[Actualizar estado del animal]
-        R --> S
-        S --> T[Enviar informe post-adopción]
-    end
+Datos especialmente sensibles:
 
-    subgraph "Flujo: Rescates"
-        D --> U[Marcar como "Rescate en progreso"]
-        U --> V[Registrar detalles del rescate]
-        V --> W{Requiere atención veterinaria inmediata?}
-        W -- Sí --> X[Contactar veterinario asociado]
-        W -- No --> Y[Trasladar a la protectora]
-        X --> Z[Realizar evaluación médica]
-        Y --> Z
-        Z --> AA[Inicio de recuperación]
-    end
+- ubicación;
+- teléfono;
+- email;
+- fotografías;
+- datos de menores;
+- datos de entidades;
+- información policial o municipal.
 
-    subgraph "Flujo: Voluntariado"
-        C --> AB[Publicar oportunidades de voluntariado]
-        AB --> AC[Gestionar solicitudes de voluntarios]
-        AC --> AD{Voluntario aprobado?}
-        AD -- Sí --> AE[Asignar tareas]
-        AD -- No --> AF[Comunicar decisión]
-        AE --> AG[Seguimiento y evaluaciones]
-    end
+---
 
-    subgraph "Flujo: Comunidad"
-        C --> AH[Publicar eventos]
-        AH --> AI[Recibir donaciones / patrocinios]
-        AI --> AJ[Participar en campañas]
-        AJ --> AK[Colaborar con ayuntamientos]
-    end
+## 27. Validación de datos
 
-    %% Conexiones finales
-    T --> AL[Ver estadísticas de adopciones]
-    S --> AL
-    AG --> AL
-    AK --> AL
-    AL --> H
+Debe existir validación en:
 
-    %% Estilos
-    classDef user fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef action fill:#fff3e0,stroke:#ef6c00,stroke-width:2px;
-    classDef decision fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
-    classDef process fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+- cliente;
+- servidor;
+- base de datos.
 
-    class A,B,C,D,G,J,K,M,P,S,U,V,Y,Z,AA,S user;
-    class E,L,W,AD decision;
-    class F,H,I,M,N,O,Q,R,T,X,Z,AA,AB,AC,AD,AE,AF,AG,AH,AI,AJ,AK process;
+Herramientas posibles:
+
+- schemas tipados;
+- restricciones PostgreSQL;
+- RLS;
+- Edge Functions;
+- validaciones de formularios.
+
+No aceptar datos únicamente porque el cliente los envía.
+
+---
+
+## 28. Gestión de errores
+
+Toda operación debe considerar:
+
+- error de red;
+- sesión expirada;
+- datos inválidos;
+- permisos insuficientes;
+- archivo inválido;
+- fallo de almacenamiento;
+- fallo de mapa;
+- fallo de terceros;
+- conflicto de estado.
+
+Los mensajes deben ser comprensibles y no filtrar información sensible.
+
+---
+
+## 29. Observabilidad
+
+El MVP debe registrar:
+
+- errores;
+- fallos de autenticación;
+- fallos de subida;
+- errores de consultas;
+- eventos críticos;
+- métricas de producto.
+
+No registrar:
+
+- contraseñas;
+- tokens;
+- claves;
+- ubicaciones sensibles completas;
+- datos personales innecesarios.
+
+La observabilidad debe servir para operar el producto, no para acumular datos.
+
+---
+
+## 30. Métricas del producto
+
+Métricas iniciales:
+
+- mascotas reunidas;
+- reportes activos;
+- reportes resueltos;
+- avistamientos;
+- tiempo hasta primer avistamiento;
+- usuarios activos;
+- retención;
+- densidad local;
+- actividad por municipio;
+- colaboraciones activas.
+
+---
+
+## 31. Testing
+
+### Prioridades
+
+1. reglas de dominio;
+2. autenticación;
+3. RLS;
+4. permisos;
+5. registro de mascotas;
+6. reportes;
+7. avistamientos;
+8. resolución;
+9. filtros geográficos;
+10. accesibilidad.
+
+### Tipos
+
+- unitarios;
+- integración;
+- end-to-end;
+- accesibilidad;
+- seguridad;
+- regresión.
+
+No afirmar que una funcionalidad está terminada si no se han ejecutado las validaciones disponibles.
+
+---
+
+## 32. Entornos
+
+Entornos previstos:
+
+- desarrollo;
+- staging cuando sea necesario;
+- producción.
+
+Cada entorno debe tener:
+
+- variables propias;
+- Supabase separado cuando proceda;
+- claves separadas;
+- datos controlados;
+- despliegues independientes.
+
+No mezclar datos de producción con desarrollo.
+
+---
+
+## 33. CI/CD
+
+### Web
+
+```text
+GitHub → GitHub Actions → Vercel
 ```
 
-# 14. Arquitectura evolutiva
+### Backend y datos
 
+```text
+GitHub → migraciones / funciones → Supabase
+```
 
-BuscoHuella comienza como un monolito modular basado en Symfony.
+Validaciones recomendadas:
 
-
-Esta decisión permite:
-
-- Desarrollo más rápido.
-- Menor complejidad inicial.
-- Separación clara de dominios.
-- Fácil mantenimiento.
-- Evolución progresiva.
-
-
-La arquitectura evita crear microservicios prematuramente.
-
+- lint;
+- typecheck;
+- tests;
+- build;
+- comprobaciones de migraciones;
+- seguridad;
+- accesibilidad crítica.
 
 ---
 
+## 34. Gestión de secretos
 
-# Fase inicial
+Nunca versionar:
 
+- `.env.local`;
+- service role key;
+- tokens;
+- claves privadas;
+- secretos de Mapbox;
+- credenciales;
+- contraseñas;
+- claves de terceros.
 
-## Symfony Modular Monolith
+Usar:
 
-
-# Módulo usuarios
-
-
-Responsable de la identidad del sistema.
-
-
-Funciones:
-
-- Registro.
-- Autenticación.
-- Gestión de perfiles.
-- Roles.
-- Permisos.
-- Preferencias.
-- Configuración privacidad.
-
+- variables de entorno;
+- secretos de Vercel;
+- secretos de Supabase;
+- secretos de GitHub Actions.
 
 ---
 
+## 35. Dependencias
 
-# Módulo animales
+Antes de añadir una dependencia:
 
+1. comprobar si ya existe solución;
+2. revisar mantenimiento;
+3. revisar seguridad;
+4. revisar tamaño;
+5. revisar compatibilidad;
+6. justificar su uso;
+7. evitar duplicidad.
 
-Módulo principal del ecosistema.
-
-
-Funciones:
-
-- Creación de perfiles animales.
-- Gestión propietarios.
-- Identificación QR.
-- Fotografías.
-- Documentación.
-- Historial.
-- Información sanitaria.
-
+No añadir dependencias sin uso inmediato.
 
 ---
 
+## 36. Decisiones no vigentes
 
-# Módulo mapa
+No forman parte de la arquitectura activa:
 
+- Angular;
+- Symfony;
+- PHP;
+- API Platform;
+- Doctrine ORM;
+- Symfony Messenger;
+- MinIO;
+- Redis como requisito;
+- RabbitMQ como requisito;
+- JWT propio;
+- Leaflet como solución principal;
+- OpenStreetMap como proveedor principal;
+- Google Maps como proveedor principal.
 
-Gestiona toda la información geográfica.
-
-
-Funciones:
-
-- Animales perdidos.
-- Animales encontrados.
-- Avistamientos.
-- Alertas geográficas.
-- Servicios cercanos.
-- Eventos comunitarios.
-
-
----
-
-
-# Módulo comunidad
-
-
-Gestiona la colaboración ciudadana.
-
-
-Funciones:
-
-- Publicaciones.
-- Comentarios.
-- Eventos.
-- Voluntariado.
-- Participación comunitaria.
-
+Las referencias históricas deben mantenerse únicamente donde aporten contexto.
 
 ---
 
+## 37. Futuras capacidades
 
-# Módulo adopciones
+Podrán evaluarse más adelante:
 
+- IA de reconocimiento;
+- chat;
+- pagos;
+- suscripciones;
+- premium;
+- QR inteligente;
+- gamificación;
+- adopciones;
+- historiales veterinarios;
+- IoT;
+- GPS;
+- integraciones públicas;
+- integraciones institucionales;
+- automatizaciones avanzadas;
+- APIs públicas.
 
-Gestiona el proceso completo de adopción.
-
-
-Funciones:
-
-- Publicación de animales.
-- Solicitudes.
-- Validaciones.
-- Seguimiento.
-- Estados de adopción.
-
-
----
-
-
-# Módulo notificaciones
-
-
-Gestiona las comunicaciones del sistema.
-
-
-Funciones:
-
-- Notificaciones push.
-- Emails.
-- SMS.
-- Alertas geográficas.
-- Comunicaciones automáticas.
-
+No deben condicionar la arquitectura del MVP salvo necesidad real.
 
 ---
 
+## 38. Evolución prevista
 
-# Módulo auditoría
+### Fase 0 — Fundación
 
+- documentación;
+- monorepo;
+- estándares;
+- entornos;
+- seguridad base.
 
-Responsable del seguimiento y trazabilidad.
+### Fase 1 — MVP web
 
+- autenticación;
+- mascotas;
+- reportes;
+- mapa;
+- avistamientos;
+- notificaciones;
+- resolución.
 
-Funciones:
+### Fase 2 — Beta local
 
-- Registro de actividad.
-- Cambios importantes.
-- Acciones administrativas.
-- Historial de modificaciones.
-- Control de seguridad.
+- piloto en Sabadell;
+- métricas;
+- mejora de experiencia;
+- protectoras colaboradoras.
 
+### Fase 3 — Aplicación móvil
+
+- Expo React Native;
+- notificaciones móviles;
+- experiencia de campo.
+
+### Fase 4 — Expansión regional
+
+- Vallès Occidental;
+- más organizaciones;
+- integraciones progresivas.
 
 ---
 
+## 39. Documentación relacionada
 
-# Módulo administración
-
-
-Gestiona la plataforma interna.
-
-
-Funciones:
-
-- Gestión usuarios.
-- Moderación.
-- Configuración global.
-- Estadísticas.
-- Control operativo.
-
-
----
-
-
-# Módulo IA HuellaIA
-
-
-Módulo futuro independiente.
-
-
-Estado:
-
-- Fuera del MVP inicial.
-- Preparado para integración futura.
-
-
-Funciones:
-
-- Reconocimiento animal mediante imágenes.
-- Comparación fotográfica.
-- Asistencia inteligente.
-- Análisis predictivo.
-- Recomendaciones de búsqueda.
-
-
-## Módulo usuarios
-
-Responsable de:
-
-- Registro.
-- Autenticación.
-- Roles.
-- Permisos.
-
-
-## Módulo animales
-
-Responsable de:
-
-- Perfil animal.
-- Relaciones.
-- Documentación.
-- Historial.
-
-
-## Módulo mapa
-
-Responsable de:
-
-- Ubicaciones.
-- Eventos.
-- Alertas.
-- Servicios cercanos.
-
-
-## Módulo comunidad
-
-Responsable de:
-
-- Publicaciones.
-- Eventos.
-- Voluntariado.
-- Colaboración.
-
-
-## Módulo adopciones
-
-Responsable de:
-
-- Publicación animales.
-- Solicitudes.
-- Seguimiento.
-
-
-## Módulo notificaciones
-
-Responsable de:
-
-- Push.
-- Email.
-- SMS.
-- Alertas geográficas.
-
-
-## Módulo IA HuellaIA
-
-
-Módulo inteligente preparado para futuras versiones.
-
-
-Responsable de:
-
-- Reconocimiento de animales mediante imágenes.
-- Comparación fotográfica.
-- Ayuda en identificación.
-- Recomendaciones inteligentes.
-- Análisis de patrones de pérdida.
-
-
-Estado inicial:
-
-- Fuera del MVP.
-- Preparado como servicio independiente futuro.
-- 
-
-# 14. Arquitectura evolutiva
-
-
-BuscoHuella comienza como un monolito modular basado en Symfony.
-
-
-Esta decisión permite:
-
-- Desarrollo más rápido.
-- Menor complejidad inicial.
-- Separación clara de dominios.
-- Fácil mantenimiento.
-- Evolución progresiva.
-
-
-La arquitectura evita crear microservicios prematuramente.
-
+```text
+docs/master/DOCUMENTO_MAESTRO.md
+ARCHITECTURE_OVERVIEW.md
+docs/architecture/SYSTEM_DIAGRAMS.md
+docs/adr/
+docs/technical/TECHNOLOGY_STACK.md
+docs/database/DATABASE_SCHEMA.md
+docs/domain/
+docs/integrations/SUPABASE.md
+docs/maps/MAP_ARCHITECTURE.md
+docs/security/
+docs/ux/ACCESSIBILITY.md
+AGENTS.md
+```
 
 ---
 
+## 40. Regla final
 
-# Fase inicial
+Toda decisión arquitectónica debe favorecer:
 
+- simplicidad;
+- seguridad;
+- accesibilidad;
+- mantenibilidad;
+- coste razonable;
+- validación rápida;
+- crecimiento incremental;
+- trazabilidad.
 
-## Symfony Modular Monolith
-
-
-Todos los módulos viven dentro del mismo backend:
-
-
-Symfony Backend
-
-├── Usuarios
-├── Animales
-├── Mapa
-├── Comunidad
-├── Adopciones
-├── Notificaciones
-├── Auditoría
-└── Administración
-
-
-
-Cada módulo tendrá:
-
-- Entidades propias.
-- Servicios.
-- Casos de uso.
-- Reglas de negocio.
-- Eventos internos.
-
-
----
-
-
-# Evolución futura
-
-
-Cuando exista una necesidad real de escalabilidad, algunos módulos podrán extraerse como servicios independientes:
-
-
-Posibles servicios:
-
-
-- Servicio IA HuellaIA.
-- Servicio Notificaciones.
-- Servicio Analytics.
-- Servicio IoT.
-- Servicio Integraciones institucionales.
-- Servicio Identidad Animal.
-
-
-La extracción se realizará únicamente cuando aporte ventajas técnicas o de negocio.
+> La arquitectura debe servir al MVP y a sus usuarios, no convertirse en un objetivo independiente.

@@ -1,0 +1,33 @@
+# Dependencias
+node_modules/
+
+# Builds y cachés
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+.expo/
+.vercel/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Archivos generados
+docs/project-tree.md
+
+# Lockfiles de otros gestores
+package-lock.json
+yarn.lock
+
+# Recursos binarios
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.pdf
+*.zip

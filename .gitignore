@@ -1,0 +1,69 @@
+# Dependencias
+node_modules/
+
+# Gestores de paquetes alternativos
+package-lock.json
+yarn.lock
+
+# Next.js
+.next/
+out/
+
+# Builds y cobertura
+dist/
+build/
+coverage/
+.turbo/
+
+# Expo / React Native
+.expo/
+.expo-shared/
+web-build/
+
+# Vercel
+.vercel/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+*.old
+
+# TypeScript
+*.tsbuildinfo
+
+# Certificados y secretos
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Archivos locales de herramientas
+.codex/.tmp/

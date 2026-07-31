@@ -25,7 +25,7 @@ apps/web/src/lib/utils.ts
 ## 2. Alcance de producto
 
 | Superficie | Propósito |
-|---|---|
+| --- | --- |
 | `buscohuella.es` | Web pública, marketing, SEO, blog, contacto y lista de espera |
 | `app.buscohuella.es` | Aplicación web funcional y responsive |
 | iOS / Android | Aplicación móvil nativa futura |
@@ -79,7 +79,7 @@ apps/web/src/app/globals.css
 ### 4.1 Marca
 
 | Token | Valor actual | Uso |
-|---|---:|---|
+| --- | ---: | --- |
 | `--primary` | `#047857` | Acción principal, selección activa y enlaces funcionales |
 | `--primary-hover` | `#065F46` | Hover y estado presionado |
 | `--primary-soft` | `#ECFDF5` | Fondos suaves e iconos |
@@ -92,7 +92,7 @@ La marca histórica también utiliza un verde más brillante. Puede mantenerse e
 ### 4.2 Superficies
 
 | Token | Valor |
-|---|---:|
+| --- | ---: |
 | `--background` | `#FFFFFF` |
 | `--surface` | `#F5F6F7` |
 | `--surface-elevated` | `#FFFFFF` |
@@ -100,7 +100,7 @@ La marca histórica también utiliza un verde más brillante. Puede mantenerse e
 ### 4.3 Texto
 
 | Token | Valor | Uso |
-|---|---:|---|
+| --- | ---: | --- |
 | `--foreground` | `#1C1C1E` | Texto principal y títulos |
 | `--muted-foreground` | `#4B5563` | Descripciones y texto secundario |
 | `--subtle-foreground` | `#6B7280` | Placeholder y metadatos |
@@ -108,14 +108,14 @@ La marca histórica también utiliza un verde más brillante. Puede mantenerse e
 ### 4.4 Bordes
 
 | Token | Valor |
-|---|---:|
+| --- | ---: |
 | `--border` | `#A3A3A3` |
 | `--border-soft` | `#E5E7EB` |
 
 ### 4.5 Estados
 
 | Token | Valor | Uso |
-|---|---:|---|
+| --- | ---: | --- |
 | `--success` | `#047857` | Confirmaciones |
 | `--warning` | `#B25E09` | Advertencias |
 | `--danger` | `#B91C1C` | Error, eliminación y peligro |
@@ -128,7 +128,7 @@ La marca histórica también utiliza un verde más brillante. Puede mantenerse e
 ### 5.1 Radios
 
 | Token | Valor |
-|---|---:|
+| --- | ---: |
 | `--radius-sm` | `0.5rem` |
 | `--radius-md` | `0.75rem` |
 | `--radius-lg` | `1rem` |
@@ -145,7 +145,7 @@ Uso recomendado:
 ### 5.2 Sombras
 
 | Token | Uso |
-|---|---|
+| --- | --- |
 | `--shadow-sm` | Separación mínima |
 | `--shadow-md` | Tarjetas elevadas y acción principal |
 | `--shadow-lg` | Navegación flotante, modales o paneles |

@@ -1,170 +1,45 @@
 # BuscoHuella — Autenticación
 
-> Estrategia técnica de FP-002 — Autenticación web con Supabase Auth.
+> Documentación técnica de FP-002 — Autenticación SSR con Supabase.
 
-## 1. Propósito
+## 1. Estado
 
-Este documento define la arquitectura de autenticación de la aplicación web de BuscoHuella.
+- **Feature Pack:** FP-002
+- **Estado:** Implementado y validado en desarrollo local
+- **Aplicación:** `apps/web`
+- **Proveedor de identidad:** Supabase Auth
+- **Renderizado:** Next.js App Router con SSR
+- **Sesión:** Cookies seguras gestionadas mediante `@supabase/ssr`
 
-Su objetivo es garantizar:
-
-- registro e inicio de sesión seguros;
-- sesiones persistentes;
-- protección de rutas;
-- separación entre interfaz y acceso a datos;
-- compatibilidad con Server Components;
-- recuperación de contraseña;
-- evolución futura hacia la app móvil;
-- cumplimiento de principios de seguridad y privacidad.
-
-## 2. Alcance de FP-002
+## 2. Alcance implementado
 
 FP-002 incluye:
 
-- registro mediante correo electrónico y contraseña;
-- confirmación de correo cuando el entorno lo requiera;
+- registro con correo y contraseña;
+- confirmación de correo;
 - inicio de sesión;
+- persistencia de sesión;
+- cierre de sesión;
 - recuperación de contraseña;
 - actualización de contraseña;
-- sesión persistente;
-- actualización segura de sesión;
-- cierre de sesión;
 - protección de rutas privadas;
-- redirección desde rutas públicas;
-- perfil básico vinculado al usuario;
-- estados de carga, éxito y error;
-- documentación técnica;
-- validación manual, lint y build.
+- separación entre rutas públicas, privadas y de autenticación;
+- mensajes de éxito y error;
+- política de contraseña;
+- enfriamiento visual para reenvío de recuperación;
+- protección de acceso directo a `/nueva-contrasena`;
+- prevención de enumeración de cuentas.
 
-## 3. Fuera de alcance
+## 3. Dependencias
 
-No se incluye inicialmente:
-
-- inicio de sesión con Google;
-- inicio de sesión con Apple;
-- autenticación mediante teléfono;
-- MFA;
-- SSO institucional;
-- passkeys;
-- gestión avanzada de organizaciones;
-- roles administrativos completos;
-- invitaciones de equipo;
-- impersonación;
-- enlaces mágicos como método principal.
-
-Estas funciones podrán evaluarse en Feature Packs posteriores.
-
-## 4. Proveedor de autenticación
-
-BuscoHuella utilizará:
-
-```text
-Supabase Auth
+```json
+{
+  "@supabase/supabase-js": "cliente oficial de Supabase",
+  "@supabase/ssr": "integración SSR y cookies"
+}
 ```
 
-Supabase gestionará:
-
-- usuarios;
-- credenciales;
-- tokens;
-- refresh tokens;
-- confirmación de correo;
-- recuperación de contraseña;
-- sesiones;
-- eventos de autenticación.
-
-La aplicación nunca almacenará contraseñas.
-
-## 5. Arquitectura general
-
-```text
-Interfaz
-   ↓
-Feature Auth
-   ↓
-Servicio de autenticación
-   ↓
-Cliente Supabase
-   ↓
-Supabase Auth
-```
-
-Los componentes no deben llamar directamente a Supabase.
-
-## 6. Estructura prevista
-
-```text
-apps/web/src/
-├── app/
-│   ├── (auth)/
-│   │   ├── iniciar-sesion/
-│   │   ├── registro/
-│   │   ├── recuperar-contrasena/
-│   │   └── actualizar-contrasena/
-│   ├── auth/
-│   │   └── callback/
-│   └── (app)/
-├── features/
-│   └── auth/
-│       ├── components/
-│       ├── actions/
-│       ├── services/
-│       ├── schemas/
-│       ├── types/
-│       └── utils/
-├── services/
-│   └── supabase/
-│       ├── client.ts
-│       ├── server.ts
-│       └── middleware.ts
-└── providers/
-    └── auth-provider.tsx
-```
-
-La estructura podrá adaptarse durante la implementación si Next.js o Supabase exigen una organización distinta.
-
-## 7. Clientes Supabase
-
-### Cliente de navegador
-
-Se utilizará en Client Components cuando sea necesario:
-
-- escuchar cambios de sesión;
-- acciones interactivas;
-- cierre de sesión;
-- funcionalidades en tiempo real.
-
-Nunca recibirá claves privadas.
-
-Variables permitidas:
-
-```text
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-```
-
-### Cliente de servidor
-
-Se utilizará en:
-
-- Server Components;
-- Server Actions;
-- Route Handlers;
-- validación de sesión;
-- lectura segura de cookies.
-
-### Cliente de middleware o proxy
-
-Será responsable de:
-
-- refrescar sesión;
-- mantener cookies actualizadas;
-- proteger rutas;
-- aplicar redirecciones.
-
-No ejecutará lógica de negocio.
-
-## 8. Variables de entorno
+## 4. Variables de entorno
 
 Archivo local:
 
@@ -172,536 +47,416 @@ Archivo local:
 apps/web/.env.local
 ```
 
-Variables públicas:
+Variables necesarias:
 
 ```text
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Reglas:
-
-- `.env.local` no se versiona;
-- no usar `service_role` en el navegador;
-- no incluir secretos en commits;
-- usar valores distintos por entorno;
-- documentar las variables en `.env.example`.
-
-## 9. Rutas públicas
-
-Rutas accesibles sin sesión:
+Plantilla versionada:
 
 ```text
-/iniciar-sesion
+apps/web/.env.example
+```
+
+Nunca deben versionarse secretos ni contraseñas SMTP.
+
+## 5. Clientes Supabase
+
+### Cliente de navegador
+
+```text
+apps/web/src/services/supabase/client.ts
+```
+
+Uso:
+
+- componentes cliente;
+- suscripciones;
+- operaciones que deban ejecutarse en el navegador.
+
+### Cliente de servidor
+
+```text
+apps/web/src/services/supabase/server.ts
+```
+
+Uso:
+
+- Server Components;
+- Server Actions;
+- Route Handlers;
+- lectura autenticada con cookies.
+
+### Renovación de sesión
+
+```text
+apps/web/src/services/supabase/proxy.ts
+apps/web/src/proxy.ts
+```
+
+El Proxy renueva cookies de autenticación cuando corresponde.
+
+No contiene lógica de autorización de producto. La protección de rutas se realiza en layouts del servidor.
+
+## 6. Registro
+
+Ruta:
+
+```text
 /registro
-/recuperar-contrasena
-/actualizar-contrasena
-/auth/callback
 ```
 
-Las páginas legales podrán seguir siendo públicas en la web corporativa.
-
-## 10. Rutas privadas
-
-Rutas que requieren sesión:
+Acción:
 
 ```text
-/
-/mapa
-/reportes
-/mascotas
-/perfil
+apps/web/src/features/auth/actions/register.ts
 ```
 
-Una persona sin sesión será redirigida a:
-
-```text
-/iniciar-sesion
-```
-
-La URL original podrá conservarse como destino de retorno.
-
-## 11. Redirecciones
-
-### Sin sesión
-
-```text
-Ruta privada
-→ /iniciar-sesion
-```
-
-### Con sesión
-
-```text
-/iniciar-sesion
-/registro
-→ /
-```
-
-### Recuperación
-
-```text
-Correo de recuperación
-→ /auth/callback
-→ /actualizar-contrasena
-```
-
-### Cierre de sesión
-
-```text
-Logout
-→ /iniciar-sesion
-```
-
-## 12. Flujos
-
-### 12.1 Registro
+Flujo:
 
 ```text
 Formulario
-→ validación
-→ signUp
-→ confirmación de correo
-→ creación o sincronización de perfil
-→ inicio o login según configuración
+→ validación local
+→ supabase.auth.signUp()
+→ envío de correo
+→ confirmación mediante token_hash
+→ sesión autenticada
+→ /inicio
 ```
 
-Campos iniciales:
+Metadatos guardados actualmente:
 
-- nombre;
-- correo;
-- contraseña;
-- confirmación de contraseña;
-- aceptación de términos y privacidad.
-
-### 12.2 Inicio de sesión
-
-```text
-Correo + contraseña
-→ validación
-→ signInWithPassword
-→ sesión
-→ redirección
-```
-
-### 12.3 Recuperación de contraseña
-
-```text
-Correo
-→ resetPasswordForEmail
-→ correo seguro
-→ callback
-→ nueva contraseña
-→ sesión actualizada
-```
-
-### 12.4 Cierre de sesión
-
-```text
-Acción
-→ signOut
-→ eliminar sesión
-→ limpiar estado
-→ redirección
-```
-
-## 13. Validación
-
-La validación debe existir antes de llamar a Supabase.
-
-Reglas iniciales:
-
-### Correo
-
-- obligatorio;
-- formato válido;
-- normalizado;
-- sin espacios accidentales.
-
-### Contraseña
-
-Mínimo inicial:
-
-- 8 caracteres;
-- una mayúscula;
-- una minúscula;
-- un número.
-
-La política podrá reforzarse según configuración de Supabase y evaluación de UX.
-
-### Confirmación
-
-Debe coincidir exactamente con la contraseña.
-
-### Términos
-
-El registro requiere aceptación explícita de:
-
-- términos;
-- política de privacidad.
-
-No se marcarán por defecto.
-
-## 14. Mensajes de error
-
-Los mensajes deben ser comprensibles y no revelar información sensible.
-
-Ejemplos:
-
-```text
-No se ha podido iniciar sesión. Revisa tus datos.
-No se ha podido completar el registro.
-El enlace ha caducado o ya no es válido.
-La contraseña no cumple los requisitos.
-```
-
-Evitar:
-
-- mostrar stack traces;
-- exponer mensajes internos;
-- confirmar si un correo existe cuando pueda facilitar enumeración de usuarios;
-- mostrar tokens o códigos técnicos.
-
-Los errores técnicos deben mapearse a mensajes de producto.
-
-## 15. Estado de autenticación
-
-El estado mínimo incluye:
-
-```ts
-interface AuthState {
-  user: User | null;
-  session: Session | null;
-  isLoading: boolean;
+```json
+{
+  "full_name": "Nombre del usuario"
 }
 ```
 
-No se copiará toda la sesión a stores innecesarios.
+La creación de un perfil persistente en una tabla `profiles` pertenece al siguiente Feature Pack.
 
-La fuente de verdad seguirá siendo Supabase y las cookies seguras.
+## 7. Confirmación de correo
 
-## 16. Auth Provider
-
-El provider podrá exponer:
-
-```ts
-user
-session
-isLoading
-signIn
-signUp
-signOut
-resetPassword
-updatePassword
-```
-
-Responsabilidades:
-
-- escuchar cambios de sesión;
-- mantener estado de interfaz;
-- evitar duplicación;
-- ofrecer una API estable.
-
-No debe sustituir la protección de servidor.
-
-## 17. Server Actions
-
-Las operaciones de formularios podrán implementarse mediante Server Actions cuando sea adecuado.
-
-Ventajas:
-
-- lógica sensible fuera del cliente;
-- integración con formularios;
-- redirecciones del servidor;
-- menor exposición de detalles.
-
-Las acciones deben:
-
-- validar entradas;
-- manejar errores;
-- evitar datos sensibles en logs;
-- devolver estados serializables;
-- no contener lógica ajena a autenticación.
-
-## 18. Perfil de usuario
-
-Supabase Auth mantiene la identidad.
-
-BuscoHuella tendrá una tabla de perfil separada:
+Route Handler:
 
 ```text
-profiles
+apps/web/src/app/auth/confirm/route.ts
 ```
 
-Relación:
+La plantilla de correo utiliza:
+
+```html
+<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">
+  Confirmar correo electrónico
+</a>
+```
+
+El servidor:
+
+1. recibe `token_hash`;
+2. ejecuta `verifyOtp`;
+3. establece la sesión mediante cookies;
+4. redirige a `/inicio?account_confirmed=1`.
+
+## 8. Inicio de sesión
+
+Ruta:
 
 ```text
-profiles.id
-→ auth.users.id
+/login
 ```
 
-Campos mínimos previstos:
+Acción:
 
 ```text
-id
-display_name
-avatar_url
-locale
-created_at
-updated_at
+apps/web/src/features/auth/actions/login.ts
 ```
 
-Los campos definitivos se definirán junto al esquema de base de datos.
-
-## 19. Roles
-
-Para el MVP, toda cuenta nueva empezará con un rol básico:
+Flujo:
 
 ```text
-citizen
+Correo y contraseña
+→ signInWithPassword()
+→ cookies SSR
+→ /inicio?login=success
 ```
 
-Los roles futuros podrán incluir:
+Las credenciales incorrectas producen un mensaje genérico:
 
 ```text
-citizen
-shelter
-professional
-municipality
-admin
+El correo o la contraseña no son correctos.
 ```
 
-El rol nunca debe confiarse únicamente al cliente.
+No se revela qué campo es incorrecto.
 
-La autorización real se aplicará mediante:
+## 9. Cierre de sesión
 
-- RLS;
-- claims autorizados;
-- políticas de servidor;
-- comprobaciones de permisos.
-
-## 20. Row Level Security
-
-Las tablas con datos personales o privados deben activar RLS.
-
-Principio:
+Acción:
 
 ```text
-Un usuario solo puede leer o modificar
-los datos que le pertenecen
-o para los que tiene permiso explícito.
+apps/web/src/features/auth/actions/logout.ts
 ```
 
-Ejemplo conceptual para perfiles:
+Flujo:
 
 ```text
-SELECT propio perfil
-UPDATE propio perfil
+signOut()
+→ cookies eliminadas
+→ /login?logged_out=1
 ```
 
-Las políticas concretas se documentarán en el esquema de base de datos.
+## 10. Recuperación de contraseña
 
-## 21. Modo invitado
-
-El modo invitado no se implementará automáticamente dentro de FP-002.
-
-Decisión provisional:
-
-- se mantiene como opción de producto;
-- se evaluará antes del cierre del Feature Pack;
-- podrá permitir exploración pública limitada;
-- no permitirá crear reportes, mascotas ni avistamientos sin autenticación.
-
-La navegación pública no debe confundirse con una sesión autenticada falsa.
-
-## 22. Seguridad
-
-Reglas obligatorias:
-
-- cookies seguras;
-- tokens gestionados por Supabase;
-- no almacenar tokens manualmente en `localStorage`;
-- no usar `service_role` en cliente;
-- no registrar contraseñas;
-- no incluir secretos en errores;
-- usar HTTPS en producción;
-- validar en servidor;
-- proteger operaciones con RLS;
-- revisar URLs de redirección permitidas;
-- limitar datos personales;
-- aplicar privacidad desde el diseño.
-
-## 23. Correo y redirecciones
-
-Supabase deberá configurar:
+Ruta inicial:
 
 ```text
-Site URL
-Redirect URLs
-Email templates
+/recuperar-contrasena
 ```
 
-Entornos previstos:
+Acción:
 
 ```text
-http://localhost:3000
-https://app.buscohuella.es
+apps/web/src/features/auth/actions/recover-password.ts
 ```
 
-No se permitirán redirecciones abiertas.
-
-## 24. Accesibilidad
-
-Las pantallas de autenticación deben incluir:
-
-- labels visibles;
-- campos con `autocomplete`;
-- mensajes asociados mediante `aria-describedby`;
-- estado `aria-invalid`;
-- foco al primer error;
-- botones con estado loading;
-- contraste AA;
-- navegación completa con teclado;
-- opción de mostrar u ocultar contraseña;
-- mensajes que no dependan solo del color.
-
-Valores de autocompletado recomendados:
+Flujo:
 
 ```text
-email
-current-password
-new-password
-name
+Correo
+→ resetPasswordForEmail()
+→ respuesta genérica
+→ correo de recuperación
+→ /auth/confirm
+→ sesión temporal de recovery
+→ /nueva-contrasena
 ```
 
-## 25. Estados de interfaz
-
-Cada formulario debe contemplar:
+La respuesta es deliberadamente genérica:
 
 ```text
-Inicial
-Escribiendo
-Validando
-Enviando
-Éxito
-Error
-Desactivado
+Si existe una cuenta asociada, recibirás un enlace para cambiar la contraseña.
 ```
 
-Durante el envío:
+Esto evita enumerar qué correos están registrados.
 
-- evitar doble envío;
-- mantener feedback visible;
-- no borrar datos sin necesidad;
-- permitir reintento.
+### Plantilla de recuperación
 
-## 26. Observabilidad
+```html
+<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/nueva-contrasena">
+  Crear nueva contraseña
+</a>
+```
 
-Durante el MVP se registrarán únicamente eventos técnicos necesarios.
+## 11. Protección del flujo de recuperación
 
-No se registrarán:
-
-- contraseñas;
-- tokens;
-- enlaces de recuperación completos;
-- datos personales innecesarios.
-
-Eventos de producto posibles:
+Archivos:
 
 ```text
-UserRegistrationStarted
-UserRegistered
-UserLoginSucceeded
-UserLoginFailed
-PasswordResetRequested
-PasswordUpdated
-UserLoggedOut
+apps/web/src/features/auth/lib/recovery-flow.ts
+apps/web/src/app/(recovery)/layout.tsx
 ```
 
-La analítica deberá respetar privacidad y consentimiento.
+Al validar un token de tipo `recovery`, BuscoHuella crea una cookie HTTP-only temporal:
 
-## 27. Testing
+```text
+buscohuella_recovery_flow
+```
 
-### Validación manual
+Duración actual:
 
-- registro válido;
-- registro inválido;
-- correo duplicado;
-- login válido;
-- login incorrecto;
-- recuperación;
-- enlace caducado;
-- sesión tras recarga;
-- acceso privado sin sesión;
-- acceso a login con sesión;
+```text
+15 minutos
+```
+
+Para acceder a `/nueva-contrasena` se requiere:
+
+- sesión válida emitida por Supabase;
+- cookie temporal de recuperación.
+
+Comportamiento:
+
+```text
+Sin sesión + acceso directo
+→ /recuperar-contrasena
+
+Sesión normal + acceso directo
+→ /inicio
+
+Token válido de recuperación
+→ acceso permitido
+```
+
+Tras actualizar la contraseña:
+
+- se elimina la cookie de recuperación;
+- se cierra la sesión temporal;
+- se redirige al login.
+
+## 12. Política de contraseña
+
+Archivo:
+
+```text
+apps/web/src/features/auth/lib/password-policy.ts
+```
+
+Requisitos actuales:
+
+- mínimo 8 caracteres;
+- al menos una mayúscula;
+- al menos una minúscula;
+- al menos un número.
+
+La misma política se usa en registro y recuperación.
+
+Mensajes específicos informan qué requisito falta.
+
+## 13. Contraseña repetida
+
+Si Supabase devuelve:
+
+```text
+same_password
+```
+
+la aplicación muestra:
+
+```text
+La nueva contraseña no puede ser igual a la contraseña actual.
+```
+
+## 14. Control de reenvío
+
+Después de solicitar recuperación:
+
+- el formulario se reemplaza por un estado de éxito;
+- aparece una cuenta atrás de 60 segundos;
+- el botón de reenvío permanece desactivado;
+- al finalizar puede solicitarse otro enlace.
+
+El cronómetro es una mejora de interfaz.
+
+La protección real se mantiene en el servidor mediante los límites de Supabase.
+
+## 15. SMTP
+
+Proveedor configurado para desarrollo:
+
+```text
+DonDominio
+```
+
+Remitente usado actualmente:
+
+```text
+hola@buscohuella.com
+```
+
+La contraseña SMTP:
+
+- no se guarda en Git;
+- no se documenta;
+- solo se configura en el panel de Supabase.
+
+Pendiente futuro:
+
+- diseño de emails;
+- dominio definitivo de envío;
+- SPF;
+- DKIM;
+- DMARC;
+- reputación de envío;
+- plantillas multiidioma;
+- proveedor transaccional escalable si fuera necesario.
+
+## 16. Mensajes de estado
+
+Actualmente se muestran avisos accesibles dentro de la interfaz para:
+
+- cuenta confirmada;
+- sesión iniciada;
+- sesión cerrada;
+- contraseña actualizada;
+- correo de recuperación solicitado;
+- enlace inválido o caducado;
+- errores de contraseña.
+
+Pendiente transversal:
+
+```text
+Sistema global de toast/notificaciones de interfaz
+```
+
+## 17. Seguridad
+
+Decisiones aplicadas:
+
+- sesiones fuera de la URL;
+- cookies HTTP-only cuando corresponde;
+- validación de usuario mediante `getUser()`;
+- respuestas genéricas para evitar enumeración;
+- redirecciones seguras;
+- rechazo de rutas externas en `next`;
+- cookie temporal para recuperación;
+- política de contraseña común;
+- límites de correo controlados por Supabase;
+- secretos fuera del repositorio.
+
+Pendiente antes de producción:
+
+- CAPTCHA;
+- revisión de límites de Auth;
+- auditoría de eventos;
+- alertas de seguridad;
+- protección antifraude;
+- MFA opcional;
+- gestión de dispositivos;
+- pruebas automatizadas;
+- política de sesiones;
+- eliminación y exportación de cuenta.
+
+## 18. Pruebas manuales realizadas
+
+Se ha validado:
+
+- registro real;
+- recepción de correo;
+- confirmación;
+- usuario confirmado en Supabase;
+- login;
+- persistencia tras recarga;
 - logout;
-- teclado;
-- móvil;
-- escritorio.
+- bloqueo de rutas privadas;
+- acceso público sin cuenta;
+- recuperación;
+- cambio de contraseña;
+- rechazo de contraseña anterior;
+- rechazo de contraseña débil;
+- rechazo de contraseña repetida;
+- acceso directo bloqueado a `/nueva-contrasena`;
+- reenvío con enfriamiento;
+- respuesta genérica para correo no registrado;
+- `pnpm lint`;
+- `pnpm build`.
 
-### Automatización futura
-
-- tests de schemas;
-- tests de servicios;
-- tests de Server Actions;
-- tests de middleware;
-- tests end-to-end.
-
-## 28. Criterios de aceptación
-
-FP-002 se considerará completado cuando:
-
-- el usuario pueda registrarse;
-- pueda iniciar sesión;
-- pueda recuperar su contraseña;
-- la sesión persista;
-- las rutas privadas estén protegidas;
-- las rutas de auth redirijan con sesión;
-- el cierre de sesión funcione;
-- exista un perfil básico;
-- los errores sean accesibles;
-- no haya secretos versionados;
-- lint y build pasen;
-- la documentación esté actualizada;
-- Notion refleje el resultado.
-
-## 29. Validación técnica
+## 19. Comandos de validación
 
 ```powershell
 pnpm --filter @buscohuella/web lint
 pnpm --filter @buscohuella/web build
 ```
 
-Cuando existan tests:
+## 20. Próximo bloque
 
-```powershell
-pnpm --filter @buscohuella/web test
-```
+FP-003 deberá implementar:
 
-## 30. Orden de implementación
-
-```text
-1. Dependencias y variables de entorno
-2. Clientes Supabase
-3. Schemas y tipos
-4. Servicio de autenticación
-5. Route group público
-6. Pantallas de registro y login
-7. Recuperación y actualización
-8. Middleware/proxy
-9. Provider y sesión
-10. Logout y perfil
-11. RLS
-12. Tests
-13. Documentación final
-```
-
-## 31. Estado
-
-```text
-Feature Pack: FP-002
-Nombre: Autenticación
-Estado: Planificado
-Dependencia principal: Supabase
-Anterior: FP-001 — App Shell
-```
+- tabla `profiles`;
+- trigger desde `auth.users`;
+- políticas RLS;
+- alias;
+- avatar;
+- municipio;
+- visibilidad pública;
+- edición de perfil;
+- base para roles y reputación futura.

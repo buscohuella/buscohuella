@@ -774,3 +774,42 @@ funciona
 + está registrada
 + puede entenderla otra persona
 ```
+
+---
+
+## Requisitos transversales obligatorios
+
+Todo Feature Pack debe aplicar los requisitos definidos en:
+
+```text
+docs/project/CROSS_CUTTING_REQUIREMENTS.md
+```
+
+Antes de marcar un Feature Pack como completado debe revisarse:
+
+```text
+docs/project/FEATURE_PACK_DEFINITION_OF_DONE.md
+```
+
+Estos documentos convierten en criterios obligatorios:
+
+- accesibilidad;
+- seguridad;
+- privacidad;
+- responsive;
+- internacionalización;
+- compatibilidad con temas;
+- estados de interfaz;
+- rendimiento;
+- pruebas;
+- documentación;
+- trazabilidad.
+
+No basta con que una funcionalidad compile o funcione en el caso principal.
+
+Las excepciones deben documentarse expresamente y registrar:
+
+- motivo;
+- impacto;
+- solución futura;
+- Feature Pack previsto.

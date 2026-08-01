@@ -261,3 +261,26 @@ También se verifica:
 - contraste;
 - estados disabled y error;
 - navegador incógnito cuando una extensión altera el DOM.
+
+---
+
+## Estrategias transversales relacionadas
+
+Este Design System debe aplicarse junto con:
+
+```text
+docs/ux/ACCESSIBILITY_STRATEGY.md
+docs/frontend/I18N_AND_THEME_STRATEGY.md
+docs/project/CROSS_CUTTING_REQUIREMENTS.md
+docs/project/FEATURE_PACK_DEFINITION_OF_DONE.md
+```
+
+Relación entre documentos:
+
+- `DESIGN_SYSTEM.md` define el lenguaje visual y los componentes.
+- `ACCESSIBILITY_STRATEGY.md` define cómo garantizar una experiencia inclusiva.
+- `I18N_AND_THEME_STRATEGY.md` define la preparación para idiomas y temas.
+- `CROSS_CUTTING_REQUIREMENTS.md` establece requisitos comunes de producto y tecnología.
+- `FEATURE_PACK_DEFINITION_OF_DONE.md` convierte dichos requisitos en una validación obligatoria.
+
+Cualquier componente nuevo debe respetar estos documentos desde su diseño inicial.

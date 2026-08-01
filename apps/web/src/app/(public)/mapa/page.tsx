@@ -8,17 +8,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export default function MapPage() {
+export default function PublicMapPage() {
   return (
     <PageContainer>
       <Card elevated>
         <CardHeader>
-          <span className="mb-4 flex size-14 items-center justify-center rounded-xl bg-primary-soft text-primary">
-            <Map className="size-7" aria-hidden="true" />
-          </span>
-          <CardTitle>Mapa</CardTitle>
+          <Map className="mb-4 size-10 text-primary" aria-hidden="true" />
+          <CardTitle>Mapa público</CardTitle>
           <CardDescription>
-            El mapa interactivo se implementará en su Feature Pack específico.
+            Los casos y avistamientos públicos podrán consultarse sin iniciar sesión.
           </CardDescription>
         </CardHeader>
       </Card>

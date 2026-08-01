@@ -5,11 +5,17 @@ import { usePathname } from 'next/navigation';
 import { PawPrint, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import type { AuthUser } from '@/features/auth/types/auth-user';
 import { cn } from '@/lib/utils';
 
 import { navigationItems } from './navigation-items';
+import { UserMenu } from './user-menu';
 
-export function AppSidebar() {
+export interface AppSidebarProps {
+  user: AuthUser;
+}
+
+export function AppSidebar({ user }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -60,11 +66,13 @@ export function AppSidebar() {
         </ul>
       </nav>
 
-      <div className="border-t border-border-soft p-4">
+      <div className="space-y-3 border-t border-border-soft p-4">
         <Button fullWidth size="lg">
           <Plus className="size-5" aria-hidden="true" />
           Reportar
         </Button>
+
+        <UserMenu user={user} />
       </div>
     </aside>
   );

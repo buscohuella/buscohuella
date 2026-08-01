@@ -1,12 +1,19 @@
-import { Bell, Menu, PawPrint } from 'lucide-react';
+import { Bell, PawPrint } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import type { AuthUser } from '@/features/auth/types/auth-user';
+
+import { UserMenu } from './user-menu';
 
 export interface AppTopbarProps {
+  user: AuthUser;
   title?: string;
 }
 
-export function AppTopbar({ title = 'BuscoHuella' }: AppTopbarProps) {
+export function AppTopbar({
+  user,
+  title = 'BuscoHuella',
+}: AppTopbarProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-border-soft bg-surface-elevated/95 backdrop-blur">
       <div className="flex min-h-18 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -28,20 +35,12 @@ export function AppTopbar({ title = 'BuscoHuella' }: AppTopbarProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" aria-label="Ver notificaciones">
             <Bell className="size-5" aria-hidden="true" />
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden"
-            aria-label="Abrir menú"
-            disabled
-          >
-            <Menu className="size-5" aria-hidden="true" />
-          </Button>
+          <UserMenu user={user} compact />
         </div>
       </div>
     </header>

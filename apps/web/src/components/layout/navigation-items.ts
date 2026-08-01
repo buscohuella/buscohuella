@@ -15,31 +15,11 @@ export interface NavigationItem {
 }
 
 export const navigationItems: NavigationItem[] = [
-  {
-    label: 'Inicio',
-    href: '/',
-    icon: Home,
-  },
-  {
-    label: 'Mapa',
-    href: '/mapa',
-    icon: Map,
-  },
-  {
-    label: 'Reportes',
-    href: '/reportes',
-    icon: ScrollText,
-  },
-  {
-    label: 'Mascotas',
-    href: '/mascotas',
-    icon: PawPrint,
-  },
-  {
-    label: 'Perfil',
-    href: '/perfil',
-    icon: CircleUserRound,
-  },
+  { label: 'Inicio', href: '/inicio', icon: Home },
+  { label: 'Mapa', href: '/mapa', icon: Map },
+  { label: 'Reportes', href: '/mis-reportes', icon: ScrollText },
+  { label: 'Mascotas', href: '/mis-mascotas', icon: PawPrint },
+  { label: 'Perfil', href: '/perfil', icon: CircleUserRound },
 ];
 
 export const reportAction = {

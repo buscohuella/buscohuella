@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ArrowRight, Map, PawPrint, Search } from 'lucide-react';
 
 import { PageContainer } from '@/components/layout/page-container';
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 
 const actions = [
   {
@@ -24,7 +26,13 @@ const actions = [
   },
 ];
 
-export default function PublicHomePage() {
+export default async function PublicHomePage() {
+  const user = await getCurrentUser();
+
+  if (user) {
+    redirect('/inicio');
+  }
+
   return (
     <PageContainer className="space-y-10 py-10 sm:py-14">
       <section className="rounded-xl border border-border-soft bg-primary-soft p-6 sm:p-10">
@@ -65,6 +73,7 @@ export default function PublicHomePage() {
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {actions.map((action) => {
             const Icon = action.icon;
+
             return (
               <Link
                 key={action.title}

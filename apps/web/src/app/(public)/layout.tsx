@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { AppShell } from '@/components/layout/app-shell';
 import { PublicShell } from '@/components/layout/public-shell';
 import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 
@@ -8,5 +9,9 @@ export default async function PublicLayout({
 }: Readonly<{ children: ReactNode }>) {
   const user = await getCurrentUser();
 
-  return <PublicShell user={user}>{children}</PublicShell>;
+  if (user) {
+    return <AppShell user={user}>{children}</AppShell>;
+  }
+
+  return <PublicShell user={null}>{children}</PublicShell>;
 }

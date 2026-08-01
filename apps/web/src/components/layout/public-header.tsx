@@ -34,12 +34,14 @@ export function PublicHeader({ user }: { user: AuthUser | null }) {
 
         {user ? (
           <Link
-            href="/inicio"
+            href="/perfil"
             className="flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 text-sm font-semibold hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+            aria-label={`Abrir el perfil de ${user.fullName}`}
+            title="Mi perfil"
           >
             <CircleUserRound className="size-4" aria-hidden="true" />
             <span className="hidden sm:inline">{user.fullName}</span>
-            <span className="sm:hidden">Mi cuenta</span>
+            <span className="sm:hidden">Mi perfil</span>
           </Link>
         ) : (
           <div className="flex items-center gap-2">

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { LogOut } from 'lucide-react';
 
 import { logoutAction } from '@/features/auth/actions/logout';
@@ -15,18 +16,29 @@ export function UserMenu({ user, compact = false }: UserMenuProps) {
 
   if (compact) {
     return (
-      <div className="flex min-w-0 items-center gap-3">
-        <span
-          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary"
-          aria-hidden="true"
+      <div className="flex min-w-0 items-center gap-2">
+        <Link
+          href="/perfil"
+          className="flex min-w-0 items-center gap-3 rounded-xl px-2 py-1 transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          aria-label={`Abrir el perfil de ${user.fullName}`}
+          title="Mi perfil"
         >
-          {initial}
-        </span>
+          <span
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary"
+            aria-hidden="true"
+          >
+            {initial}
+          </span>
 
-        <div className="hidden min-w-0 sm:block">
-          <p className="truncate text-sm font-semibold">{user.fullName}</p>
-          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-        </div>
+          <div className="hidden min-w-0 sm:block">
+            <p className="truncate text-sm font-semibold">
+              {user.fullName}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">
+              {user.email}
+            </p>
+          </div>
+        </Link>
 
         <form action={logoutAction}>
           <button
@@ -44,7 +56,11 @@ export function UserMenu({ user, compact = false }: UserMenuProps) {
 
   return (
     <div className="rounded-xl border border-border-soft bg-surface p-3">
-      <div className="flex min-w-0 items-center gap-3">
+      <Link
+        href="/perfil"
+        className="flex min-w-0 items-center gap-3 rounded-lg p-1 transition-colors hover:bg-surface-elevated focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+        aria-label={`Abrir el perfil de ${user.fullName}`}
+      >
         <span
           className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary"
           aria-hidden="true"
@@ -53,10 +69,14 @@ export function UserMenu({ user, compact = false }: UserMenuProps) {
         </span>
 
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">{user.fullName}</p>
-          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          <p className="truncate text-sm font-semibold">
+            {user.fullName}
+          </p>
+          <p className="truncate text-xs text-muted-foreground">
+            {user.email}
+          </p>
         </div>
-      </div>
+      </Link>
 
       <form action={logoutAction} className="mt-3">
         <button

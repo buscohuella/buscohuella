@@ -226,7 +226,7 @@ Las páginas no deben repetir manualmente el contenedor principal salvo que una 
 ## 11. Rutas iniciales
 
 | Ruta | Propósito actual |
-|---|---|
+| --- | --- |
 | `/` | Dashboard provisional |
 | `/mapa` | Placeholder del mapa |
 | `/reportes` | Placeholder de reportes |

@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: [
+    '@buscohuella/pet-domain',
+    '@buscohuella/pet-data',
+  ],
 };
 
 export default nextConfig;

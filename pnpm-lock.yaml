@@ -10,6 +10,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@buscohuella/pet-data':
+        specifier: workspace:*
+        version: link:../../packages/pet-data
+      '@buscohuella/pet-domain':
+        specifier: workspace:*
+        version: link:../../packages/pet-domain
       '@supabase/ssr':
         specifier: ^0.12.4
         version: 0.12.4(@supabase/supabase-js@2.111.0)

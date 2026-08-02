@@ -1,4 +1,5 @@
-import { createServerClient } from '@supabase/ssr';
+import type { Database } from '@buscohuella/pet-data';
+import { createServerClient } from '@Supabase/ssr';
 import { cookies } from 'next/headers';
 
 import { env } from '@/lib/env';
@@ -6,7 +7,7 @@ import { env } from '@/lib/env';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     env.supabaseUrl,
     env.supabasePublishableKey,
     {

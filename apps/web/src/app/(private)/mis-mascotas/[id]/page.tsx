@@ -5,6 +5,7 @@ import {
   CalendarDays,
   Dna,
   PawPrint,
+  Pencil,
   Ruler,
   ShieldCheck,
   Weight,
@@ -55,31 +56,53 @@ export default async function PetDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ created?: string }>;
+  searchParams: Promise<{
+    created?: string;
+    updated?: string;
+  }>;
 }) {
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const pet = await loadPet(id);
 
   if (!pet) notFound();
 
+  const successMessage =
+    query.created === '1'
+      ? `${pet.name} se ha registrado correctamente.`
+      : query.updated === '1'
+        ? `Los datos de ${pet.name} se han actualizado correctamente.`
+        : null;
+
   return (
     <PageContainer className="space-y-6">
-      {query.created === '1' ? (
+      {successMessage ? (
         <div
           role="status"
           className="rounded-lg border border-success/30 bg-primary-soft p-4 text-sm font-medium text-success"
         >
-          {pet.name} se ha registrado correctamente.
+          {successMessage}
         </div>
       ) : null}
 
-      <Link
-        href="/mis-mascotas"
-        className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
-      >
-        <ArrowLeft className="size-4" aria-hidden="true" />
-        Volver a mis mascotas
-      </Link>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Link
+          href="/mis-mascotas"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Volver a mis mascotas
+        </Link>
+
+        {pet.status === 'ACTIVE' ? (
+          <Link
+            href={`/mis-mascotas/${pet.id}/editar`}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-sm font-semibold text-foreground hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          >
+            <Pencil className="size-4" aria-hidden="true" />
+            Editar mascota
+          </Link>
+        ) : null}
+      </div>
 
       <header className="flex items-start gap-4">
         <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">

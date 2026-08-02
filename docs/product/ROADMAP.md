@@ -2,6 +2,8 @@
 
 > Roadmap operativo y técnico de alto nivel. El Documento Maestro mantiene la visión global y Notion el seguimiento diario.
 
+> **Roadmap de implementación:** el orden detallado de construcción del MVP se mantiene en [`MVP_IMPLEMENTATION_ROADMAP.md`](./MVP_IMPLEMENTATION_ROADMAP.md).
+
 ## 1. Principios
 
 - Validar primero el problema local.

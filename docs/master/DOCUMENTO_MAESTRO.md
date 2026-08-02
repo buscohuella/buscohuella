@@ -371,16 +371,49 @@ No se desarrollarán funcionalidades únicamente porque parezcan interesantes.
 <a id="210-declaracion-de-enfoque"></a>
 ### 2.10 Declaración de Enfoque
 
-BuscoHuella es una **plataforma de recuperación de mascotas**.
+BuscoHuella es una **plataforma digital colaborativa para la recuperación, protección y bienestar animal**.
 
-**No es:**
-- Una red social.
-- Un *marketplace*.
-- Una aplicación veterinaria.
-- Un GPS para mascotas.
-- Una plataforma de comercio electrónico.
+Su misión principal es aumentar las probabilidades de que un animal perdido regrese con su familia de la forma más rápida, segura y eficaz posible.
 
-Toda decisión de producto deberá reforzar el objetivo principal: **aumentar la probabilidad de que una mascota vuelva con su familia.**
+Durante el MVP y las primeras fases de desarrollo, el producto se centrará exclusivamente en aquellas funcionalidades que contribuyan directamente a dicho objetivo.
+
+## En esta fase, BuscoHuella no pretende ser
+
+- Una red social generalista.
+- Un *marketplace* abierto.
+- Una aplicación de gestión veterinaria.
+- Un sistema de localización GPS propio.
+- Una plataforma de comercio electrónico generalista.
+
+Estas áreas podrán incorporarse en futuras fases únicamente cuando aporten valor directo al propósito principal del proyecto y hayan sido previamente validadas con datos, usuarios y necesidades reales.
+
+## Evolución del producto
+
+BuscoHuella está concebido como un ecosistema vivo que evolucionará de forma progresiva.
+
+En el futuro podrán incorporarse nuevas áreas como:
+
+- Comunidad y colaboración ciudadana.
+- Rutas y paseos para animales.
+- Descubrimiento de espacios *pet friendly*.
+- Directorio y servicios profesionales.
+- Marketplace especializado.
+- Herramientas para protectoras y administraciones.
+- Funcionalidades de bienestar, prevención y salud.
+- Integraciones con dispositivos y tecnologías de localización.
+- Nuevos servicios que mejoren la experiencia de propietarios, organizaciones y profesionales.
+
+La incorporación de cualquier nueva funcionalidad deberá cumplir siempre los siguientes principios:
+
+1. Reforzar la recuperación, protección o bienestar animal.
+2. Resolver un problema real y validado de los usuarios.
+3. Mantener la simplicidad del producto y evitar complejidad innecesaria.
+4. Ser sostenible desde el punto de vista técnico y operativo.
+5. Respetar la privacidad, la seguridad y la confianza de la comunidad.
+
+Toda decisión de producto deberá reforzar el propósito principal de BuscoHuella:
+
+> **Ayudar a proteger a los animales y aumentar las probabilidades de que vuelvan con quienes los quieren.**
 
 <a id="211-estrategia-de-producto"></a>
 ### 2.11 Estrategia de Producto

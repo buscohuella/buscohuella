@@ -1,0 +1,32 @@
+{
+  "name": "@buscohuella/pet-domain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tipos, constantes y validaciones compartidas del dominio Pet de BuscoHuella.",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm build && node --test test/*.test.mjs",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22.12.0 <23"
+  }
+}

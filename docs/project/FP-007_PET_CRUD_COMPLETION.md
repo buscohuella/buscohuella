@@ -1,7 +1,7 @@
 ---
 id: FP-007
 title: Completar CRUD de mascotas
-version: 1.0.0
+version: 1.1.0
 status: In Progress
 owner: Product & Engineering
 last_reviewed: 2026-08-02
@@ -14,59 +14,60 @@ depends_on:
 
 # FP-007 — Completar CRUD de mascotas
 
-## Objetivo
-
-Completar la gestión básica de fichas antes de introducir fotografías,
-catálogo normalizado de razas y reportes.
-
 ## Entrega 1 — Edición
 
 - [x] Ruta `/mis-mascotas/[id]/editar`.
-- [x] Carga privada de mascota mediante RLS.
 - [x] Formulario precargado.
-- [x] Catálogo de especies habilitadas.
-- [x] Validación mediante `updatePetSchema`.
-- [x] Actualización mediante `PetRepository.updatePet()`.
-- [x] Control de sesión.
-- [x] Tratamiento de permisos, ficha inexistente y microchip duplicado.
-- [x] Logging estructurado.
+- [x] Validación y actualización compartidas.
 - [x] Confirmación visible.
-- [x] Acceso desde el detalle.
-- [x] Bloqueo de edición para fichas no activas.
-- [x] Estado de carga.
+- [x] Prueba manual correcta.
+- [x] Commit publicado.
+
+## Entrega 2 — Activas, archivadas y restauración
+
+- [x] Vista de mascotas activas.
+- [x] Vista de mascotas archivadas.
+- [x] Contadores por estado.
+- [x] URLs recargables mediante `estado`.
+- [x] Acción de restauración.
+- [x] Restauración mediante `PetRepository.restorePet()`.
+- [x] Confirmación propia antes de archivar.
+- [x] Confirmación propia antes de restaurar.
+- [x] Diálogo basado en `<dialog>`.
+- [x] Cierre mediante Escape.
+- [x] Bloqueo durante la acción.
+- [x] Mensajes de éxito.
+- [x] Fichas archivadas consultables pero no editables.
+- [x] Logging de fallos de restauración.
 - [ ] Typecheck, lint y build.
 - [ ] Prueba manual.
 - [ ] Commit.
 
-## Accesibilidad aplicada
+## Principio de confirmaciones
 
-- Labels visibles.
-- Navegación mediante teclado.
-- Foco visible.
-- Mensaje general con `role="alert"`.
-- Errores próximos al campo.
-- Preparación de IDs para ayuda y errores.
-- Objetivos táctiles de tamaño suficiente.
-- Estado de acción en progreso.
+Las confirmaciones se aplican según riesgo:
 
-## Seguridad
+- **Guardar cambios:** acción normal y reversible; no requiere una
+  confirmación repetitiva.
+- **Salir con cambios sin guardar:** deberá avisar cuando se implemente
+  detección de formulario modificado.
+- **Archivar:** requiere confirmación porque cambia la visibilidad de la
+  ficha.
+- **Restaurar:** requiere confirmación simple porque cambia el estado.
+- **Eliminar definitivamente:** exigirá confirmación reforzada.
 
-- El identificador de propietario no procede del formulario.
-- La sesión se comprueba en el servidor.
-- RLS limita la actualización a la persona propietaria.
-- No se registra el microchip ni el contenido completo del formulario.
-- Las fichas archivadas no se editan hasta restaurarlas.
+## Accesibilidad
 
-## Pendiente del bloque CRUD
+- Navegación por enlaces reales.
+- Estado seleccionado mediante `aria-current`.
+- Diálogo con título y descripción asociados.
+- Escape cancela mientras no exista una acción en curso.
+- Botones con etiquetas textuales.
+- Mensajes de resultado con `role="status"` o `role="alert"`.
+- Estado no comunicado únicamente mediante color.
 
-1. Separar activas y archivadas.
-2. Restaurar una mascota archivada.
-3. Eliminación definitiva segura.
-4. Historial de cambios.
+## Pendiente para cerrar FP-007
 
-## Fuera de esta entrega
-
-- Catálogo de razas.
-- Selección de dos razas.
-- Fotografías.
-- Informes de pérdida.
+1. Aviso de cambios sin guardar.
+2. Eliminación definitiva segura.
+3. Historial de cambios.

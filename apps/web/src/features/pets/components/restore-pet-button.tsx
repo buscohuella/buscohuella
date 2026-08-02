@@ -1,15 +1,15 @@
 'use client';
 
-import { Archive } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { useActionState, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
-import { archivePetAction } from '../actions/archive-pet';
+import { restorePetAction } from '../actions/restore-pet';
 import { initialPetActionState } from '../types/pet-action-state';
 
-export function ArchivePetButton({
+export function RestorePetButton({
   petId,
   petName,
 }: {
@@ -17,7 +17,7 @@ export function ArchivePetButton({
   petName: string;
 }) {
   const [state, formAction, isPending] = useActionState(
-    archivePetAction,
+    restorePetAction,
     initialPetActionState,
   );
   const [isOpen, setIsOpen] = useState(false);
@@ -38,23 +38,21 @@ export function ArchivePetButton({
         <input type="hidden" name="petId" value={petId} />
         <Button
           type="button"
-          variant="danger"
           disabled={isPending}
           onClick={() => setIsOpen(true)}
         >
-          <Archive className="size-5" aria-hidden="true" />
-          Archivar mascota
+          <RotateCcw className="size-5" aria-hidden="true" />
+          Restaurar mascota
         </Button>
       </form>
 
       <ConfirmationDialog
         open={isOpen}
-        title={`Archivar a ${petName}`}
-        description="La mascota dejará de aparecer entre las fichas activas. No se eliminarán sus datos y podrás restaurarla más adelante."
-        confirmLabel="Archivar mascota"
-        confirmVariant="danger"
+        title={`Restaurar a ${petName}`}
+        description="La mascota volverá a aparecer entre tus fichas activas y podrás editar sus datos."
+        confirmLabel="Restaurar mascota"
         isPending={isPending}
-        icon={<Archive className="size-5" aria-hidden="true" />}
+        icon={<RotateCcw className="size-5" aria-hidden="true" />}
         onCancel={() => setIsOpen(false)}
         onConfirm={() => formRef.current?.requestSubmit()}
       />

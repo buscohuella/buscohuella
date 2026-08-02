@@ -22,6 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ArchivePetButton } from '@/features/pets/components/archive-pet-button';
+import { RestorePetButton } from '@/features/pets/components/restore-pet-button';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -86,7 +87,11 @@ export default async function PetDetailPage({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link
-          href="/mis-mascotas"
+          href={
+            pet.status === 'ARCHIVED'
+              ? '/mis-mascotas?estado=archivadas'
+              : '/mis-mascotas?estado=activas'
+          }
           className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
@@ -121,13 +126,20 @@ export default async function PetDetailPage({
         </div>
       </header>
 
+      {pet.status === 'ARCHIVED' ? (
+        <div className="rounded-lg border border-border bg-surface p-4 text-sm text-muted-foreground">
+          Esta ficha está archivada. Puedes consultarla, pero debes
+          restaurarla para volver a editarla.
+        </div>
+      ) : null}
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <InfoCard icon={<Dna className="size-5" aria-hidden="true" />} title="Sexo" value={sexLabels[pet.sex]} />
-        <InfoCard icon={<Ruler className="size-5" aria-hidden="true" />} title="Tamaño" value={sizeLabels[pet.size]} />
-        <InfoCard icon={<Weight className="size-5" aria-hidden="true" />} title="Peso" value={pet.weightKg !== null ? `${pet.weightKg} kg` : 'No indicado'} />
-        <InfoCard icon={<CalendarDays className="size-5" aria-hidden="true" />} title="Nacimiento" value={pet.birthDate || 'No indicado'} />
-        <InfoCard icon={<ShieldCheck className="size-5" aria-hidden="true" />} title="Microchip" value={pet.hasMicrochip ? 'Registrado' : 'No indicado'} />
-        <InfoCard icon={<PawPrint className="size-5" aria-hidden="true" />} title="Color" value={pet.primaryColor || 'No indicado'} />
+        <InfoCard title="Sexo" value={sexLabels[pet.sex]} icon={<Dna className="size-5" aria-hidden="true" />} />
+        <InfoCard title="Tamaño" value={sizeLabels[pet.size]} icon={<Ruler className="size-5" aria-hidden="true" />} />
+        <InfoCard title="Peso" value={pet.weightKg !== null ? `${pet.weightKg} kg` : 'No indicado'} icon={<Weight className="size-5" aria-hidden="true" />} />
+        <InfoCard title="Nacimiento" value={pet.birthDate || 'No indicado'} icon={<CalendarDays className="size-5" aria-hidden="true" />} />
+        <InfoCard title="Microchip" value={pet.hasMicrochip ? 'Registrado' : 'No indicado'} icon={<ShieldCheck className="size-5" aria-hidden="true" />} />
+        <InfoCard title="Color" value={pet.primaryColor || 'No indicado'} icon={<PawPrint className="size-5" aria-hidden="true" />} />
       </div>
 
       {(pet.description || pet.distinctiveFeatures) ? (
@@ -141,33 +153,45 @@ export default async function PetDetailPage({
           <CardContent className="space-y-5">
             {pet.description ? (
               <div>
-                <h2 className="text-sm font-semibold">Descripción general</h2>
-                <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{pet.description}</p>
+                <h2 className="text-sm font-semibold">
+                  Descripción general
+                </h2>
+                <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
+                  {pet.description}
+                </p>
               </div>
             ) : null}
             {pet.distinctiveFeatures ? (
               <div>
-                <h2 className="text-sm font-semibold">Rasgos distintivos</h2>
-                <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{pet.distinctiveFeatures}</p>
+                <h2 className="text-sm font-semibold">
+                  Rasgos distintivos
+                </h2>
+                <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
+                  {pet.distinctiveFeatures}
+                </p>
               </div>
             ) : null}
           </CardContent>
         </Card>
       ) : null}
 
-      {pet.status === 'ACTIVE' ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Gestión de la ficha</CardTitle>
-            <CardDescription>
-              Archivar oculta la mascota de la gestión activa sin borrar su historial.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle>Gestión de la ficha</CardTitle>
+          <CardDescription>
+            {pet.status === 'ARCHIVED'
+              ? 'Restaura la ficha para volver a gestionarla como activa.'
+              : 'Archivar oculta la mascota de la gestión activa sin borrar su historial.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {pet.status === 'ARCHIVED' ? (
+            <RestorePetButton petId={pet.id} petName={pet.name} />
+          ) : (
             <ArchivePetButton petId={pet.id} petName={pet.name} />
-          </CardContent>
-        </Card>
-      ) : null}
+          )}
+        </CardContent>
+      </Card>
     </PageContainer>
   );
 }

@@ -78,7 +78,7 @@ Este archivo es la **fuente única de verdad** (*single source of truth*) del pr
    &nbsp;&nbsp;&nbsp;&nbsp;5.9.3 [Rendimiento](#593-rendimiento)  
    &nbsp;&nbsp;&nbsp;&nbsp;5.9.4 [Seguridad](#594-seguridad)  
    5.10 [Sistema de Diseño](#510-sistema-de-diseno)
-
+   5.11 [Accesibilidad e Internacionalización](#511-accesibilidad-e-internacionalizacion)
 6. [MVP — Alcance y Funcionalidades](#6-mvp-alcance-y-funcionalidades)
    6.1 [Funcionalidades Incluidas (Fase 1)](#61-funcionalidades-incluidas-fase-1)  
    6.2 [Funcionalidades Excluidas (Fase 2+)](#62-funcionalidades-excluidas-fase-2)  
@@ -828,6 +828,60 @@ Diseño moderno, limpio, intuitivo y minimalista.
 
 ---
 
+<a id="511-accesibilidad-e-internacionalizacion"></a>
+### 5.11 Accesibilidad e Internacionalización
+
+BuscoHuella considera la accesibilidad y la internacionalización requisitos transversales del producto, no mejoras opcionales para una fase final.
+
+#### Accesibilidad
+
+La experiencia principal deberá aspirar como mínimo a **WCAG 2.2 nivel AA**.
+
+Cada funcionalidad deberá contemplar, según corresponda:
+
+- HTML semántico.
+- Navegación completa por teclado.
+- Orden lógico y visibilidad del foco.
+- Etiquetas y nombres accesibles.
+- Mensajes de error asociados a los campos.
+- Estados dinámicos anunciables mediante tecnologías de apoyo.
+- Contraste suficiente.
+- Información comprensible sin depender únicamente del color.
+- Zoom y adaptación a pantallas estrechas sin pérdida funcional.
+- Reducción de movimiento.
+- Estados de carga, vacío, éxito y error accesibles.
+- Alternativas textuales para mapas, imágenes y elementos visuales.
+
+La accesibilidad formará parte de la definición de terminado de cada *Feature Pack*. Antes del piloto y de cada lanzamiento estable se realizarán pruebas manuales y automatizadas, incluyendo teclado, zoom y lectores de pantalla cuando estén disponibles.
+
+#### Internacionalización
+
+Idiomas previstos:
+
+```text
+es — español, idioma por defecto
+ca — catalán
+eu — euskera
+gl — gallego
+en — inglés
+```
+
+Para el piloto inicial se priorizarán español y catalán. Los demás idiomas se incorporarán según expansión y necesidades validadas.
+
+La arquitectura deberá:
+
+- centralizar los textos mediante claves estables;
+- evitar concatenaciones difíciles de traducir;
+- contemplar pluralización y crecimiento del texto;
+- localizar fechas, números, horas, metadatos, correos y notificaciones;
+- separar códigos internos de etiquetas visibles;
+- preservar el idioma original del contenido generado por usuarios;
+- permitir guardar la preferencia del usuario;
+- evitar que añadir idiomas requiera reescribir las pantallas.
+
+Las decisiones técnicas quedan desarrolladas en `ADR-006`, `ADR-007`, `ACCESSIBILITY_STRATEGY.md` e `I18N_AND_THEME_STRATEGY.md`.
+
+---
 <a id="6-mvp-alcance-y-funcionalidades"></a>
 ## 6. MVP — ALCANCE Y FUNCIONALIDADES
 

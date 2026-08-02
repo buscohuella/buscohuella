@@ -1,0 +1,33 @@
+{
+  "name": "@buscohuella/pet-data",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Acceso a datos Supabase y mapeadores del dominio Pet.",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm build && node --test test/*.test.mjs",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@buscohuella/pet-domain": "workspace:*",
+    "@supabase/supabase-js": "^2.111.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22.12.0 <23"
+  }
+}

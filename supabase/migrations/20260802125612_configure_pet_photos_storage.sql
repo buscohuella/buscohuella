@@ -1,0 +1,98 @@
+-- FP-004 — Storage privado de fotografías de mascotas
+-- Bucket, límites y políticas RLS sobre storage.objects.
+
+insert into storage.buckets (
+  id,
+  name,
+  public,
+  file_size_limit,
+  allowed_mime_types
+)
+values (
+  'pet-photos',
+  'pet-photos',
+  false,
+  8388608,
+  array['image/jpeg', 'image/png', 'image/webp']
+)
+on conflict (id) do update
+set
+  name = excluded.name,
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
+
+-- La ruta obligatoria es:
+-- {owner_id}/{pet_id}/{photo_id}.{extension}
+
+create policy pet_photos_storage_select_own
+on storage.objects
+for select
+to authenticated
+using (
+  bucket_id = 'pet-photos'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and exists (
+    select 1
+    from public.pets
+    where pets.id::text = (storage.foldername(name))[2]
+      and pets.owner_id = (select auth.uid())
+  )
+);
+
+create policy pet_photos_storage_insert_own
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'pet-photos'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and array_length(storage.foldername(name), 1) = 2
+  and exists (
+    select 1
+    from public.pets
+    where pets.id::text = (storage.foldername(name))[2]
+      and pets.owner_id = (select auth.uid())
+  )
+);
+
+create policy pet_photos_storage_update_own
+on storage.objects
+for update
+to authenticated
+using (
+  bucket_id = 'pet-photos'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and exists (
+    select 1
+    from public.pets
+    where pets.id::text = (storage.foldername(name))[2]
+      and pets.owner_id = (select auth.uid())
+  )
+)
+with check (
+  bucket_id = 'pet-photos'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and array_length(storage.foldername(name), 1) = 2
+  and exists (
+    select 1
+    from public.pets
+    where pets.id::text = (storage.foldername(name))[2]
+      and pets.owner_id = (select auth.uid())
+  )
+);
+
+create policy pet_photos_storage_delete_own
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'pet-photos'
+  and (storage.foldername(name))[1] = (select auth.uid())::text
+  and exists (
+    select 1
+    from public.pets
+    where pets.id::text = (storage.foldername(name))[2]
+      and pets.owner_id = (select auth.uid())
+  )
+);

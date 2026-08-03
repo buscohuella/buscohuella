@@ -18,6 +18,10 @@ import { redirect } from 'next/navigation';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
+import {
+  BreedFormError,
+  resolveBreedFormData,
+} from '../lib/breed-form-data';
 import type { PetActionState } from '../types/pet-action-state';
 
 function getString(formData: FormData, name: string) {
@@ -26,15 +30,12 @@ function getString(formData: FormData, name: string) {
 }
 
 function getNullableString(formData: FormData, name: string) {
-  const value = getString(formData, name);
-  return value || null;
+  return getString(formData, name) || null;
 }
 
 function getOptionalNumber(formData: FormData, name: string) {
   const value = getString(formData, name);
-
   if (!value) return null;
-
   const number = Number(value);
   return Number.isFinite(number) ? number : Number.NaN;
 }
@@ -61,9 +62,7 @@ function getBirthDatePrecision(
   hasBirthDate: boolean,
 ): BirthDatePrecision {
   if (!hasBirthDate) return 'UNKNOWN';
-
   const value = getString(formData, 'birthDatePrecision');
-
   return isOneOf(value, BIRTH_DATE_PRECISIONS)
     ? value
     : 'EXACT';
@@ -76,46 +75,20 @@ function mapValidationErrors(
 
   for (const issue of issues) {
     const field = String(issue.path[0] ?? 'form');
-
     if (!fieldErrors[field]) {
-      fieldErrors[field] = translateValidationMessage(
-        field,
-        issue.message,
-      );
+      fieldErrors[field] =
+        issue.message === 'PET_PRIMARY_BREED_REQUIRED'
+          ? 'Selecciona una raza principal del catálogo.'
+          : issue.message === 'PET_BREEDS_MUST_DIFFER'
+            ? 'Las dos razas deben ser distintas.'
+            : issue.message ===
+                'PET_SECONDARY_BREED_REQUIRES_MIXED'
+              ? 'Marca que es un cruce antes de añadir otra raza.'
+              : 'Revisa este campo.';
     }
   }
 
   return fieldErrors;
-}
-
-function translateValidationMessage(field: string, message: string) {
-  const messages: Record<string, string> = {
-    PET_BIRTH_DATE_FUTURE:
-      'La fecha de nacimiento no puede ser futura.',
-    PET_BIRTH_DATE_REQUIRED:
-      'Indica una fecha o selecciona que no la conoces.',
-    PET_BIRTH_DATE_PRECISION_INVALID:
-      'Selecciona si la fecha es exacta o aproximada.',
-    PET_MICROCHIP_WITHOUT_FLAG:
-      'Marca que tiene microchip antes de introducir el número.',
-  };
-
-  if (messages[message]) return messages[message];
-
-  const fallbacks: Record<string, string> = {
-    speciesId: 'Selecciona un tipo de animal.',
-    name: 'Introduce un nombre válido.',
-    breed: 'La raza es demasiado larga.',
-    birthDate: 'Introduce una fecha válida.',
-    weightKg: 'Introduce un peso válido.',
-    primaryColor: 'El color es demasiado largo.',
-    description: 'La descripción es demasiado larga.',
-    distinctiveFeatures:
-      'Los rasgos distintivos son demasiado largos.',
-    microchipNumber: 'Introduce un microchip válido.',
-  };
-
-  return fallbacks[field] ?? 'Revisa este campo.';
 }
 
 export async function updatePetAction(
@@ -131,43 +104,9 @@ export async function updatePetAction(
     };
   }
 
+  const speciesId = Number(getString(formData, 'speciesId'));
   const birthDate = getNullableString(formData, 'birthDate');
   const hasMicrochip = formData.get('hasMicrochip') === 'on';
-
-  const rawInput: UpdatePetInput = {
-    speciesId: Number(getString(formData, 'speciesId')),
-    name: getString(formData, 'name'),
-    breed: getNullableString(formData, 'breed'),
-    isMixedBreed: formData.get('isMixedBreed') === 'on',
-    sex: getPetSex(formData),
-    birthDate,
-    birthDatePrecision: getBirthDatePrecision(
-      formData,
-      Boolean(birthDate),
-    ),
-    size: getPetSize(formData),
-    weightKg: getOptionalNumber(formData, 'weightKg'),
-    primaryColor: getNullableString(formData, 'primaryColor'),
-    description: getNullableString(formData, 'description'),
-    distinctiveFeatures: getNullableString(
-      formData,
-      'distinctiveFeatures',
-    ),
-    hasMicrochip,
-    microchipNumber: hasMicrochip
-      ? getNullableString(formData, 'microchipNumber')
-      : null,
-  };
-
-  const parsed = updatePetSchema.safeParse(rawInput);
-
-  if (!parsed.success) {
-    return {
-      status: 'error',
-      message: 'Revisa los campos indicados.',
-      fieldErrors: mapValidationErrors(parsed.error.issues),
-    };
-  }
 
   const supabase = await createClient();
   const {
@@ -181,14 +120,67 @@ export async function updatePetAction(
     };
   }
 
+  const repository = new PetRepository(supabase);
+
   try {
-    const repository = new PetRepository(supabase);
+    const currentPet = await repository.getOwnPetById(petId);
+    const breedData = await resolveBreedFormData({
+      repository,
+      speciesId,
+      formData,
+      currentLegacyBreed: currentPet.breed,
+    });
+
+    const rawInput: UpdatePetInput = {
+      speciesId,
+      name: getString(formData, 'name'),
+      ...breedData,
+      sex: getPetSex(formData),
+      birthDate,
+      birthDatePrecision: getBirthDatePrecision(
+        formData,
+        Boolean(birthDate),
+      ),
+      size: getPetSize(formData),
+      weightKg: getOptionalNumber(formData, 'weightKg'),
+      primaryColor: getNullableString(formData, 'primaryColor'),
+      description: getNullableString(formData, 'description'),
+      distinctiveFeatures: getNullableString(
+        formData,
+        'distinctiveFeatures',
+      ),
+      hasMicrochip,
+      microchipNumber: hasMicrochip
+        ? getNullableString(formData, 'microchipNumber')
+        : null,
+    };
+
+    const parsed = updatePetSchema.safeParse(rawInput);
+
+    if (!parsed.success) {
+      return {
+        status: 'error',
+        message: 'Revisa los campos indicados.',
+        fieldErrors: mapValidationErrors(parsed.error.issues),
+      };
+    }
+
     await repository.updatePet(petId, parsed.data);
   } catch (error) {
+    if (error instanceof BreedFormError) {
+      return {
+        status: 'error',
+        message: 'Revisa la información sobre la raza.',
+        fieldErrors: {
+          [error.field]: error.userMessage,
+        },
+      };
+    }
+
     logServerError('pet.update.failed', error, {
       userId: user.id,
       petId,
-      speciesId: parsed.data.speciesId,
+      speciesId,
     });
 
     if (error instanceof PetDomainError) {
@@ -197,16 +189,8 @@ export async function updatePetAction(
           status: 'error',
           message: 'Ese microchip ya está registrado.',
           fieldErrors: {
-            microchipNumber:
-              'Comprueba el número o revisa tus mascotas existentes.',
+            microchipNumber: 'Comprueba el número introducido.',
           },
-        };
-      }
-
-      if (error.code === 'PET_FORBIDDEN') {
-        return {
-          status: 'error',
-          message: 'No tienes permisos para modificar esta mascota.',
         };
       }
 
@@ -220,8 +204,7 @@ export async function updatePetAction(
 
     return {
       status: 'error',
-      message:
-        'No se han podido guardar los cambios. Inténtalo de nuevo.',
+      message: 'No se han podido guardar los cambios.',
     };
   }
 

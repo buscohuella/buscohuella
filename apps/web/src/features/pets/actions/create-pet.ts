@@ -18,6 +18,10 @@ import { redirect } from 'next/navigation';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
+import {
+  BreedFormError,
+  resolveBreedFormData,
+} from '../lib/breed-form-data';
 import type { PetActionState } from '../types/pet-action-state';
 
 function getString(formData: FormData, name: string) {
@@ -26,15 +30,12 @@ function getString(formData: FormData, name: string) {
 }
 
 function getNullableString(formData: FormData, name: string) {
-  const value = getString(formData, name);
-  return value || null;
+  return getString(formData, name) || null;
 }
 
 function getOptionalNumber(formData: FormData, name: string) {
   const value = getString(formData, name);
-
   if (!value) return null;
-
   const number = Number(value);
   return Number.isFinite(number) ? number : Number.NaN;
 }
@@ -61,9 +62,7 @@ function getBirthDatePrecision(
   hasBirthDate: boolean,
 ): BirthDatePrecision {
   if (!hasBirthDate) return 'UNKNOWN';
-
   const value = getString(formData, 'birthDatePrecision');
-
   return isOneOf(value, BIRTH_DATE_PRECISIONS)
     ? value
     : 'EXACT';
@@ -76,7 +75,6 @@ function mapValidationErrors(
 
   for (const issue of issues) {
     const field = String(issue.path[0] ?? 'form');
-
     if (!fieldErrors[field]) {
       fieldErrors[field] = translateValidationMessage(
         field,
@@ -94,40 +92,77 @@ function translateValidationMessage(field: string, message: string) {
       'La fecha de nacimiento no puede ser futura.',
     PET_BIRTH_DATE_REQUIRED:
       'Indica una fecha o selecciona que no la conoces.',
-    PET_BIRTH_DATE_PRECISION_INVALID:
-      'Selecciona si la fecha es exacta o aproximada.',
     PET_MICROCHIP_WITHOUT_FLAG:
       'Marca que tiene microchip antes de introducir el número.',
+    PET_PRIMARY_BREED_REQUIRED:
+      'Selecciona una raza principal del catálogo.',
+    PET_SECONDARY_BREED_REQUIRES_MIXED:
+      'Marca que es un cruce antes de añadir otra raza.',
+    PET_BREEDS_MUST_DIFFER:
+      'Las dos razas deben ser distintas.',
   };
 
-  if (messages[message]) return messages[message];
-
-  const fallbacks: Record<string, string> = {
-    speciesId: 'Selecciona un tipo de animal.',
-    name: 'Introduce un nombre válido.',
-    breed: 'La raza es demasiado larga.',
-    birthDate: 'Introduce una fecha válida.',
-    weightKg: 'Introduce un peso válido.',
-    primaryColor: 'El color es demasiado largo.',
-    description: 'La descripción es demasiado larga.',
-    microchipNumber: 'Introduce un microchip válido.',
-  };
-
-  return fallbacks[field] ?? 'Revisa este campo.';
+  return (
+    messages[message] ??
+    {
+      speciesId: 'Selecciona un tipo de animal.',
+      name: 'Introduce un nombre válido.',
+      weightKg: 'Introduce un peso válido.',
+      primaryColor: 'El color es demasiado largo.',
+      description: 'La descripción es demasiado larga.',
+      microchipNumber: 'Introduce un microchip válido.',
+    }[field] ??
+    'Revisa este campo.'
+  );
 }
 
 export async function createPetAction(
   _previousState: PetActionState,
   formData: FormData,
 ): Promise<PetActionState> {
+  const speciesId = Number(getString(formData, 'speciesId'));
   const birthDate = getNullableString(formData, 'birthDate');
   const hasMicrochip = formData.get('hasMicrochip') === 'on';
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      status: 'error',
+      message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
+    };
+  }
+
+  const repository = new PetRepository(supabase);
+
+  let breedData;
+
+  try {
+    breedData = await resolveBreedFormData({
+      repository,
+      speciesId,
+      formData,
+    });
+  } catch (error) {
+    if (error instanceof BreedFormError) {
+      return {
+        status: 'error',
+        message: 'Revisa la información sobre la raza.',
+        fieldErrors: {
+          [error.field]: error.userMessage,
+        },
+      };
+    }
+    throw error;
+  }
+
   const rawInput: CreatePetRawInput = {
-    speciesId: Number(getString(formData, 'speciesId')),
+    speciesId,
     name: getString(formData, 'name'),
-    breed: getNullableString(formData, 'breed'),
-    isMixedBreed: formData.get('isMixedBreed') === 'on',
+    ...breedData,
     sex: getPetSex(formData),
     birthDate,
     birthDatePrecision: getBirthDatePrecision(
@@ -162,58 +197,36 @@ export async function createPetAction(
     };
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return {
-      status: 'error',
-      message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
-    };
-  }
-
   let petId: string;
 
   try {
-    const repository = new PetRepository(supabase);
     const pet = await repository.createPet(user.id, parsed.data);
     petId = pet.id;
   } catch (error) {
     logServerError('pet.create.failed', error, {
       userId: user.id,
-      speciesId: parsed.data.speciesId,
+      speciesId,
     });
 
-    if (error instanceof PetDomainError) {
-      if (error.code === 'PET_MICROCHIP_DUPLICATE') {
-        return {
-          status: 'error',
-          message: 'Ese microchip ya está registrado.',
-          fieldErrors: {
-            microchipNumber:
-              'Comprueba el número o revisa tus mascotas existentes.',
-          },
-        };
-      }
-
-      if (error.code === 'PET_FORBIDDEN') {
-        return {
-          status: 'error',
-          message:
-            'No tienes permisos para registrar esta mascota.',
-        };
-      }
+    if (
+      error instanceof PetDomainError &&
+      error.code === 'PET_MICROCHIP_DUPLICATE'
+    ) {
+      return {
+        status: 'error',
+        message: 'Ese microchip ya está registrado.',
+        fieldErrors: {
+          microchipNumber: 'Comprueba el número introducido.',
+        },
+      };
     }
 
     return {
       status: 'error',
-      message:
-        'No se ha podido registrar la mascota. Inténtalo de nuevo.',
+      message: 'No se ha podido registrar la mascota.',
     };
   }
 
   revalidatePath('/mis-mascotas');
-  redirect(`/mis-mascotas/${petId}`);
+  redirect(`/mis-mascotas/${petId}?created=1`);
 }

@@ -1,5 +1,8 @@
 import { PetRepository } from '@buscohuella/pet-data';
-import type { PetSpecies } from '@buscohuella/pet-domain';
+import type {
+  PetBreed,
+  PetSpecies,
+} from '@buscohuella/pet-domain';
 import { AlertCircle, PawPrint } from 'lucide-react';
 
 import { PageContainer } from '@/components/layout/page-container';
@@ -13,23 +16,37 @@ import {
 import { CreatePetForm } from '@/features/pets/components/create-pet-form';
 import { createClient } from '@/services/supabase/server';
 
-async function loadSpecies(): Promise<PetSpecies[] | null> {
+async function loadCatalogs(): Promise<{
+  species: PetSpecies[];
+  breeds: PetBreed[];
+} | null> {
   try {
     const supabase = await createClient();
     const repository = new PetRepository(supabase);
-
-    return await repository.listEnabledSpecies({
+    const species = await repository.listEnabledSpecies({
       mvpOnly: true,
     });
+
+    const breeds = (
+      await Promise.all(
+        species.map((item) =>
+          repository.listEnabledBreeds(item.id, {
+            mvpOnly: true,
+          }),
+        ),
+      )
+    ).flat();
+
+    return { species, breeds };
   } catch {
     return null;
   }
 }
 
 export default async function NewPetPage() {
-  const species = await loadSpecies();
+  const catalogs = await loadCatalogs();
 
-  if (!species) {
+  if (!catalogs) {
     return <NewPetErrorState />;
   }
 
@@ -43,8 +60,8 @@ export default async function NewPetPage() {
           Registrar mascota
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Crea su ficha privada. Más adelante podrás añadir
-          fotografías y vincularla a reportes.
+          Crea su ficha privada y selecciona su raza desde el
+          catálogo cuando la conozcas.
         </p>
       </header>
 
@@ -55,12 +72,14 @@ export default async function NewPetPage() {
           </span>
           <CardTitle>Datos de la mascota</CardTitle>
           <CardDescription>
-            Los campos obligatorios están limitados al tipo de
-            animal y el nombre.
+            Solo son obligatorios el tipo de animal y el nombre.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <CreatePetForm species={species} />
+          <CreatePetForm
+            species={catalogs.species}
+            breeds={catalogs.breeds}
+          />
         </CardContent>
       </Card>
     </PageContainer>
@@ -70,26 +89,14 @@ export default async function NewPetPage() {
 function NewPetErrorState() {
   return (
     <PageContainer className="space-y-6">
-      <header>
-        <p className="text-sm font-semibold text-primary">
-          Mis mascotas
-        </p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-foreground">
-          Registrar mascota
-        </h1>
-      </header>
-
       <Card elevated>
         <CardHeader>
           <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-danger/10 text-danger">
             <AlertCircle className="size-6" aria-hidden="true" />
           </span>
-          <CardTitle>
-            No hemos podido preparar el formulario
-          </CardTitle>
+          <CardTitle>No hemos podido preparar el formulario</CardTitle>
           <CardDescription>
-            No se ha podido cargar el catálogo de animales.
-            Inténtalo de nuevo dentro de unos instantes.
+            No se han podido cargar los catálogos de animales y razas.
           </CardDescription>
         </CardHeader>
       </Card>

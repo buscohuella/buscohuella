@@ -1,5 +1,9 @@
 import { PetRepository } from '@buscohuella/pet-data';
-import type { Pet, PetSpecies } from '@buscohuella/pet-domain';
+import type {
+  Pet,
+  PetBreed,
+  PetSpecies,
+} from '@buscohuella/pet-domain';
 import { AlertCircle, Pencil } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
@@ -15,9 +19,11 @@ import { EditPetForm } from '@/features/pets/components/edit-pet-form';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
-async function loadEditData(
-  id: string,
-): Promise<{ pet: Pet; species: PetSpecies[] } | null> {
+async function loadEditData(id: string): Promise<{
+  pet: Pet;
+  species: PetSpecies[];
+  breeds: PetBreed[];
+} | null> {
   try {
     const supabase = await createClient();
     const repository = new PetRepository(supabase);
@@ -27,7 +33,15 @@ async function loadEditData(
       repository.listEnabledSpecies(),
     ]);
 
-    return { pet, species };
+    const breeds = (
+      await Promise.all(
+        species.map((item) =>
+          repository.listEnabledBreeds(item.id),
+        ),
+      )
+    ).flat();
+
+    return { pet, species, breeds };
   } catch (error) {
     logServerError('pet.edit.load_failed', error, { petId: id });
     return null;
@@ -72,7 +86,7 @@ export default async function EditPetPage({
           Editar {data.pet.name}
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Revisa y actualiza la información de su ficha privada.
+          Actualiza su ficha y normaliza la raza cuando sea posible.
         </p>
       </header>
 
@@ -83,14 +97,15 @@ export default async function EditPetPage({
           </span>
           <CardTitle>Datos de la mascota</CardTitle>
           <CardDescription>
-            Los cambios se guardarán en la misma ficha y conservarán
-            su historial.
+            Las fichas antiguas conservan su raza hasta que elijas
+            una opción del catálogo.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <EditPetForm
             pet={data.pet}
             species={data.species}
+            breeds={data.breeds}
           />
         </CardContent>
       </Card>

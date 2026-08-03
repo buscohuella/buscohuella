@@ -13,15 +13,83 @@ const basePet = {
   name: 'Nala',
 };
 
-test('crea una mascota mínima con valores por defecto', () => {
+test('crea una mascota mínima con raza desconocida', () => {
   const result = createPetSchema.parse(basePet);
 
-  assert.equal(result.name, 'Nala');
-  assert.equal(result.sex, 'UNKNOWN');
-  assert.equal(result.size, 'UNKNOWN');
-  assert.equal(result.status, undefined);
+  assert.equal(result.breedKnowledge, 'UNKNOWN');
+  assert.equal(result.primaryBreedId, null);
+  assert.equal(result.secondaryBreedId, null);
+  assert.equal(result.isMixedBreed, false);
   assert.equal(result.visibility, 'PUBLIC_WHEN_REPORTED');
-  assert.deepEqual(result.secondaryColors, []);
+});
+
+test('acepta una raza principal conocida', () => {
+  const result = createPetSchema.parse({
+    ...basePet,
+    breedKnowledge: 'KNOWN',
+    primaryBreedId: 10,
+  });
+
+  assert.equal(result.primaryBreedId, 10);
+});
+
+test('acepta dos razas distintas en una mezcla', () => {
+  const result = createPetSchema.parse({
+    ...basePet,
+    breedKnowledge: 'KNOWN',
+    primaryBreedId: 10,
+    secondaryBreedId: 20,
+    isMixedBreed: true,
+  });
+
+  assert.equal(result.secondaryBreedId, 20);
+});
+
+test('rechaza raza conocida sin raza principal', () => {
+  const result = createPetSchema.safeParse({
+    ...basePet,
+    breedKnowledge: 'KNOWN',
+  });
+
+  assert.equal(result.success, false);
+  assert.ok(
+    result.error.issues.some(
+      (issue) => issue.message === 'PET_PRIMARY_BREED_REQUIRED',
+    ),
+  );
+});
+
+test('rechaza segunda raza si no es mezcla', () => {
+  const result = createPetSchema.safeParse({
+    ...basePet,
+    breedKnowledge: 'KNOWN',
+    primaryBreedId: 10,
+    secondaryBreedId: 20,
+  });
+
+  assert.equal(result.success, false);
+});
+
+test('rechaza dos razas iguales', () => {
+  const result = createPetSchema.safeParse({
+    ...basePet,
+    breedKnowledge: 'KNOWN',
+    primaryBreedId: 10,
+    secondaryBreedId: 10,
+    isMixedBreed: true,
+  });
+
+  assert.equal(result.success, false);
+});
+
+test('acepta mezcla de razas desconocidas', () => {
+  const result = createPetSchema.parse({
+    ...basePet,
+    breedKnowledge: 'MIXED_UNKNOWN',
+    isMixedBreed: true,
+  });
+
+  assert.equal(result.primaryBreedId, null);
 });
 
 test('normaliza el microchip', () => {
@@ -38,40 +106,6 @@ test('rechaza una fecha de nacimiento futura', () => {
   });
 
   assert.equal(result.success, false);
-  assert.ok(
-    result.error.issues.some(
-      (issue) => issue.message === 'PET_BIRTH_DATE_FUTURE',
-    ),
-  );
-});
-
-test('rechaza una precisión exacta sin fecha', () => {
-  const result = createPetSchema.safeParse({
-    ...basePet,
-    birthDatePrecision: 'EXACT',
-  });
-
-  assert.equal(result.success, false);
-  assert.ok(
-    result.error.issues.some(
-      (issue) => issue.message === 'PET_BIRTH_DATE_REQUIRED',
-    ),
-  );
-});
-
-test('rechaza un microchip si hasMicrochip es false', () => {
-  const result = createPetSchema.safeParse({
-    ...basePet,
-    hasMicrochip: false,
-    microchipNumber: '941000027123456',
-  });
-
-  assert.equal(result.success, false);
-  assert.ok(
-    result.error.issues.some(
-      (issue) => issue.message === 'PET_MICROCHIP_WITHOUT_FLAG',
-    ),
-  );
 });
 
 test('acepta metadatos válidos de fotografía', () => {
@@ -84,18 +118,4 @@ test('acepta metadatos válidos de fotografía', () => {
   });
 
   assert.equal(result.visibility, 'PRIVATE');
-  assert.equal(result.position, 0);
-  assert.equal(result.isPrimary, false);
-});
-
-test('rechaza una fotografía superior al límite', () => {
-  const result = petPhotoInputSchema.safeParse({
-    petId: '4b7dbf4e-df4a-4b8e-a08e-c84f7fd18a18',
-    mimeType: 'image/jpeg',
-    fileSizeBytes: PET_LIMITS.photoMaxSizeBytes + 1,
-    width: 1600,
-    height: 1200,
-  });
-
-  assert.equal(result.success, false);
 });

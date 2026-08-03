@@ -23,6 +23,12 @@ export const BIRTH_DATE_PRECISIONS = [
   'UNKNOWN',
 ] as const;
 
+export const BREED_KNOWLEDGE_VALUES = [
+  'KNOWN',
+  'UNKNOWN',
+  'MIXED_UNKNOWN',
+] as const;
+
 export const PET_PHOTO_VISIBILITIES = [
   'PRIVATE',
   'PUBLIC_PROFILE',
@@ -60,6 +66,9 @@ export const PET_PHOTO_MIME_TYPES = [
 ] as const;
 
 export const DEFAULT_PET_VALUES = {
+  breedKnowledge: 'UNKNOWN',
+  primaryBreedId: null,
+  secondaryBreedId: null,
   isMixedBreed: false,
   sex: 'UNKNOWN',
   birthDatePrecision: 'UNKNOWN',

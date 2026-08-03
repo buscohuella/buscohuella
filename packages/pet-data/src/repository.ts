@@ -1,17 +1,26 @@
-import type { CreatePetData, Pet, PetSpecies, UpdatePetData } from '@buscohuella/pet-domain';
+import type {
+  CreatePetData,
+  Pet,
+  PetBreed,
+  PetSpecies,
+  UpdatePetData,
+} from '@buscohuella/pet-domain';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import type { Database } from './database.types.js';
 import { normalizePetDataError } from './errors.js';
 import {
   mapCreatePetToInsert,
+  mapPetBreedRow,
   mapPetRow,
   mapPetSpeciesRow,
   mapUpdatePetToUpdate,
 } from './mappers.js';
 
 export class PetRepository {
-  constructor(private readonly client: SupabaseClient<Database>) {}
+  constructor(
+    private readonly client: SupabaseClient<Database>,
+  ) {}
 
   async listEnabledSpecies(options?: {
     mvpOnly?: boolean;
@@ -33,6 +42,29 @@ export class PetRepository {
     return (data ?? []).map(mapPetSpeciesRow);
   }
 
+  async listEnabledBreeds(
+    speciesId: number,
+    options?: { mvpOnly?: boolean },
+  ): Promise<PetBreed[]> {
+    let query = this.client
+      .from('pet_breeds')
+      .select('*')
+      .eq('species_id', speciesId)
+      .eq('is_enabled', true)
+      .order('sort_order', { ascending: true })
+      .order('canonical_name', { ascending: true });
+
+    if (options?.mvpOnly) {
+      query = query.eq('mvp_enabled', true);
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw normalizePetDataError(error);
+
+    return (data ?? []).map(mapPetBreedRow);
+  }
+
   async listOwnPets(): Promise<Pet[]> {
     const { data, error } = await this.client
       .from('pets')
@@ -51,12 +83,17 @@ export class PetRepository {
       .eq('id', id)
       .single();
 
-    if (error) throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    if (error) {
+      throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    }
 
     return mapPetRow(data);
   }
 
-  async createPet(ownerId: string, input: CreatePetData): Promise<Pet> {
+  async createPet(
+    ownerId: string,
+    input: CreatePetData,
+  ): Promise<Pet> {
     const { data, error } = await this.client
       .from('pets')
       .insert(mapCreatePetToInsert(ownerId, input))
@@ -68,7 +105,10 @@ export class PetRepository {
     return mapPetRow(data);
   }
 
-  async updatePet(id: string, input: UpdatePetData): Promise<Pet> {
+  async updatePet(
+    id: string,
+    input: UpdatePetData,
+  ): Promise<Pet> {
     const { data, error } = await this.client
       .from('pets')
       .update(mapUpdatePetToUpdate(input))
@@ -76,12 +116,17 @@ export class PetRepository {
       .select('*')
       .single();
 
-    if (error) throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    if (error) {
+      throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    }
 
     return mapPetRow(data);
   }
 
-  async archivePet(id: string, archivedAt = new Date().toISOString()): Promise<Pet> {
+  async archivePet(
+    id: string,
+    archivedAt = new Date().toISOString(),
+  ): Promise<Pet> {
     const { data, error } = await this.client
       .from('pets')
       .update({
@@ -93,7 +138,9 @@ export class PetRepository {
       .select('*')
       .single();
 
-    if (error) throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    if (error) {
+      throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    }
 
     return mapPetRow(data);
   }
@@ -110,12 +157,17 @@ export class PetRepository {
       .select('*')
       .single();
 
-    if (error) throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    if (error) {
+      throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    }
 
     return mapPetRow(data);
   }
 
-  async markPetAsDeceased(id: string, deceasedAt: string): Promise<Pet> {
+  async markPetAsDeceased(
+    id: string,
+    deceasedAt: string,
+  ): Promise<Pet> {
     const { data, error } = await this.client
       .from('pets')
       .update({
@@ -127,7 +179,9 @@ export class PetRepository {
       .select('*')
       .single();
 
-    if (error) throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    if (error) {
+      throw normalizePetDataError(error, 'PET_NOT_FOUND');
+    }
 
     return mapPetRow(data);
   }

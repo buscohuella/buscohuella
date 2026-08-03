@@ -1,7 +1,9 @@
 import type {
   BirthDatePrecision,
+  BreedKnowledge,
   CreatePetData,
   Pet,
+  PetBreed,
   PetPhoto,
   PetPhotoMimeType,
   PetPhotoVisibility,
@@ -15,6 +17,7 @@ import type {
 } from '@buscohuella/pet-domain';
 
 import type {
+  PetBreedRow,
   PetInsert,
   PetPhotoRow,
   PetRow,
@@ -31,16 +34,31 @@ export const mapPetSpeciesRow = (row: PetSpeciesRow): PetSpecies => ({
   mvpEnabled: row.mvp_enabled,
 });
 
+export const mapPetBreedRow = (row: PetBreedRow): PetBreed => ({
+  id: row.id,
+  speciesId: row.species_id,
+  code: row.code,
+  canonicalName: row.canonical_name,
+  aliases: row.aliases,
+  sortOrder: row.sort_order,
+  isEnabled: row.is_enabled,
+  mvpEnabled: row.mvp_enabled,
+});
+
 export const mapPetRow = (row: PetRow): Pet => ({
   id: row.id,
   ownerId: row.owner_id,
   speciesId: row.species_id,
   name: row.name,
   breed: row.breed,
+  breedKnowledge: row.breed_knowledge as BreedKnowledge,
+  primaryBreedId: row.primary_breed_id,
+  secondaryBreedId: row.secondary_breed_id,
   isMixedBreed: row.is_mixed_breed,
   sex: row.sex as PetSex,
   birthDate: row.birth_date,
-  birthDatePrecision: row.birth_date_precision as BirthDatePrecision,
+  birthDatePrecision:
+    row.birth_date_precision as BirthDatePrecision,
   size: row.size as PetSize,
   weightKg: row.weight_kg,
   primaryColor: row.primary_color,
@@ -83,6 +101,9 @@ export const mapCreatePetToInsert = (
   species_id: input.speciesId,
   name: input.name,
   breed: input.breed ?? null,
+  breed_knowledge: input.breedKnowledge,
+  primary_breed_id: input.primaryBreedId ?? null,
+  secondary_breed_id: input.secondaryBreedId ?? null,
   is_mixed_breed: input.isMixedBreed,
   sex: input.sex,
   birth_date: input.birthDate ?? null,
@@ -100,37 +121,74 @@ export const mapCreatePetToInsert = (
   visibility: input.visibility,
 });
 
-export const mapUpdatePetToUpdate = (input: UpdatePetData): PetUpdate => {
+export const mapUpdatePetToUpdate = (
+  input: UpdatePetData,
+): PetUpdate => {
   const update: PetUpdate = {};
 
-  if (input.speciesId !== undefined) update.species_id = input.speciesId;
-  if (input.name !== undefined) update.name = input.name;
-  if (input.breed !== undefined) update.breed = input.breed;
-  if (input.isMixedBreed !== undefined) update.is_mixed_breed = input.isMixedBreed;
-  if (input.sex !== undefined) update.sex = input.sex;
-  if (input.birthDate !== undefined) update.birth_date = input.birthDate;
+  if (input.speciesId !== undefined) {
+    update.species_id = input.speciesId;
+  }
+  if (input.name !== undefined) {
+    update.name = input.name;
+  }
+  if (input.breed !== undefined) {
+    update.breed = input.breed;
+  }
+  if (input.breedKnowledge !== undefined) {
+    update.breed_knowledge = input.breedKnowledge;
+  }
+  if (input.primaryBreedId !== undefined) {
+    update.primary_breed_id = input.primaryBreedId;
+  }
+  if (input.secondaryBreedId !== undefined) {
+    update.secondary_breed_id = input.secondaryBreedId;
+  }
+  if (input.isMixedBreed !== undefined) {
+    update.is_mixed_breed = input.isMixedBreed;
+  }
+  if (input.sex !== undefined) {
+    update.sex = input.sex;
+  }
+  if (input.birthDate !== undefined) {
+    update.birth_date = input.birthDate;
+  }
   if (input.birthDatePrecision !== undefined) {
     update.birth_date_precision = input.birthDatePrecision;
   }
-  if (input.size !== undefined) update.size = input.size;
-  if (input.weightKg !== undefined) update.weight_kg = input.weightKg;
-  if (input.primaryColor !== undefined) update.primary_color = input.primaryColor;
+  if (input.size !== undefined) {
+    update.size = input.size;
+  }
+  if (input.weightKg !== undefined) {
+    update.weight_kg = input.weightKg;
+  }
+  if (input.primaryColor !== undefined) {
+    update.primary_color = input.primaryColor;
+  }
   if (input.secondaryColors !== undefined) {
     update.secondary_colors = input.secondaryColors;
   }
-  if (input.description !== undefined) update.description = input.description;
+  if (input.description !== undefined) {
+    update.description = input.description;
+  }
   if (input.distinctiveFeatures !== undefined) {
     update.distinctive_features = input.distinctiveFeatures;
   }
-  if (input.hasMicrochip !== undefined) update.has_microchip = input.hasMicrochip;
+  if (input.hasMicrochip !== undefined) {
+    update.has_microchip = input.hasMicrochip;
+  }
   if (input.microchipNumber !== undefined) {
     update.microchip_number = input.microchipNumber;
   }
   if (input.identificationNotes !== undefined) {
     update.identification_notes = input.identificationNotes;
   }
-  if (input.privateNotes !== undefined) update.private_notes = input.privateNotes;
-  if (input.visibility !== undefined) update.visibility = input.visibility;
+  if (input.privateNotes !== undefined) {
+    update.private_notes = input.privateNotes;
+  }
+  if (input.visibility !== undefined) {
+    update.visibility = input.visibility;
+  }
 
   return update;
 };

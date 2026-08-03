@@ -1,5 +1,6 @@
 import type {
   BIRTH_DATE_PRECISIONS,
+  BREED_KNOWLEDGE_VALUES,
   PET_PHOTO_MIME_TYPES,
   PET_PHOTO_VISIBILITIES,
   PET_SEXES,
@@ -14,6 +15,7 @@ export type PetVisibility = (typeof PET_VISIBILITIES)[number];
 export type PetSex = (typeof PET_SEXES)[number];
 export type PetSize = (typeof PET_SIZES)[number];
 export type BirthDatePrecision = (typeof BIRTH_DATE_PRECISIONS)[number];
+export type BreedKnowledge = (typeof BREED_KNOWLEDGE_VALUES)[number];
 export type PetPhotoVisibility = (typeof PET_PHOTO_VISIBILITIES)[number];
 export type PetPhotoMimeType = (typeof PET_PHOTO_MIME_TYPES)[number];
 export type PetSpeciesCategory = (typeof PET_SPECIES_CATEGORIES)[number];
@@ -27,12 +29,26 @@ export interface PetSpecies {
   mvpEnabled: boolean;
 }
 
+export interface PetBreed {
+  id: number;
+  speciesId: number;
+  code: string;
+  canonicalName: string;
+  aliases: string[];
+  sortOrder: number;
+  isEnabled: boolean;
+  mvpEnabled: boolean;
+}
+
 export interface Pet {
   id: string;
   ownerId: string;
   speciesId: number;
   name: string;
   breed: string | null;
+  breedKnowledge: BreedKnowledge;
+  primaryBreedId: number | null;
+  secondaryBreedId: number | null;
   isMixedBreed: boolean;
   sex: PetSex;
   birthDate: string | null;
@@ -75,6 +91,9 @@ export interface CreatePetInput {
   speciesId: number;
   name: string;
   breed?: string | null;
+  breedKnowledge?: BreedKnowledge;
+  primaryBreedId?: number | null;
+  secondaryBreedId?: number | null;
   isMixedBreed?: boolean;
   sex?: PetSex;
   birthDate?: string | null;

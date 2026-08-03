@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import {
   BIRTH_DATE_PRECISIONS,
+  BREED_KNOWLEDGE_VALUES,
   DEFAULT_PET_VALUES,
   PET_LIMITS,
   PET_PHOTO_MIME_TYPES,
@@ -22,11 +23,19 @@ const nullableTrimmedString = (maxLength: number) =>
     .optional()
     .transform((value) => (value === '' ? null : value));
 
+const nullablePositiveInteger = z
+  .number()
+  .int()
+  .positive()
+  .nullable()
+  .optional();
+
 export const petStatusSchema = z.enum(PET_STATUSES);
 export const petVisibilitySchema = z.enum(PET_VISIBILITIES);
 export const petSexSchema = z.enum(PET_SEXES);
 export const petSizeSchema = z.enum(PET_SIZES);
 export const birthDatePrecisionSchema = z.enum(BIRTH_DATE_PRECISIONS);
+export const breedKnowledgeSchema = z.enum(BREED_KNOWLEDGE_VALUES);
 export const petPhotoVisibilitySchema = z.enum(PET_PHOTO_VISIBILITIES);
 export const petPhotoMimeTypeSchema = z.enum(PET_PHOTO_MIME_TYPES);
 export const petSpeciesCategorySchema = z.enum(PET_SPECIES_CATEGORIES);
@@ -51,6 +60,15 @@ const petInputShape = {
     .min(PET_LIMITS.nameMinLength)
     .max(PET_LIMITS.nameMaxLength),
   breed: nullableTrimmedString(PET_LIMITS.breedMaxLength),
+  breedKnowledge: breedKnowledgeSchema.default(
+    DEFAULT_PET_VALUES.breedKnowledge,
+  ),
+  primaryBreedId: nullablePositiveInteger.default(
+    DEFAULT_PET_VALUES.primaryBreedId,
+  ),
+  secondaryBreedId: nullablePositiveInteger.default(
+    DEFAULT_PET_VALUES.secondaryBreedId,
+  ),
   isMixedBreed: z.boolean().default(DEFAULT_PET_VALUES.isMixedBreed),
   sex: petSexSchema.default(DEFAULT_PET_VALUES.sex),
   birthDate: z.iso.date().nullable().optional(),
@@ -84,6 +102,12 @@ type PetInputForCrossValidation = {
     | undefined;
   hasMicrochip?: boolean | undefined;
   microchipNumber?: string | null | undefined;
+  breedKnowledge?:
+    | (typeof BREED_KNOWLEDGE_VALUES)[number]
+    | undefined;
+  primaryBreedId?: number | null | undefined;
+  secondaryBreedId?: number | null | undefined;
+  isMixedBreed?: boolean | undefined;
 };
 
 const validatePetInputConsistency = (
@@ -131,6 +155,57 @@ const validatePetInputConsistency = (
       message: 'PET_MICROCHIP_WITHOUT_FLAG',
     });
   }
+
+  if (value.breedKnowledge === 'KNOWN' && !value.primaryBreedId) {
+    context.addIssue({
+      code: 'custom',
+      path: ['primaryBreedId'],
+      message: 'PET_PRIMARY_BREED_REQUIRED',
+    });
+  }
+
+  if (
+    value.breedKnowledge !== undefined &&
+    value.breedKnowledge !== 'KNOWN' &&
+    (value.primaryBreedId || value.secondaryBreedId)
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['breedKnowledge'],
+      message: 'PET_BREED_IDS_NOT_ALLOWED',
+    });
+  }
+
+  if (value.secondaryBreedId && value.isMixedBreed !== true) {
+    context.addIssue({
+      code: 'custom',
+      path: ['secondaryBreedId'],
+      message: 'PET_SECONDARY_BREED_REQUIRES_MIXED',
+    });
+  }
+
+  if (
+    value.primaryBreedId &&
+    value.secondaryBreedId &&
+    value.primaryBreedId === value.secondaryBreedId
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['secondaryBreedId'],
+      message: 'PET_BREEDS_MUST_DIFFER',
+    });
+  }
+
+  if (
+    value.breedKnowledge === 'MIXED_UNKNOWN' &&
+    value.isMixedBreed !== true
+  ) {
+    context.addIssue({
+      code: 'custom',
+      path: ['isMixedBreed'],
+      message: 'PET_MIXED_UNKNOWN_REQUIRES_MIXED',
+    });
+  }
 };
 
 const createPetBaseSchema = z.object(petInputShape);
@@ -151,7 +226,11 @@ export const petPhotoInputSchema = z.object({
   visibility: petPhotoVisibilitySchema.default('PRIVATE'),
   altText: nullableTrimmedString(PET_LIMITS.photoAltTextMaxLength),
   mimeType: petPhotoMimeTypeSchema,
-  fileSizeBytes: z.number().int().positive().max(PET_LIMITS.photoMaxSizeBytes),
+  fileSizeBytes: z
+    .number()
+    .int()
+    .positive()
+    .max(PET_LIMITS.photoMaxSizeBytes),
   width: z.number().int().positive(),
   height: z.number().int().positive(),
 });

@@ -201,7 +201,7 @@ Pendiente para cierre:
 
 ### FP-008 — Catálogo de razas y cruces
 
-**Estado:** `Ready`
+**Estado:** `Completed`
 
 Objetivo:
 

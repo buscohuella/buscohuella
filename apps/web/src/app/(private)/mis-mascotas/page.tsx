@@ -19,6 +19,11 @@ import {
 } from '@/components/ui/card';
 import { createClient } from '@/services/supabase/server';
 
+interface PetPrimaryPhoto {
+  signedUrl: string;
+  altText: string | null;
+}
+
 function EmptyPetsState({ archived }: { archived: boolean }) {
   return (
     <Card elevated>
@@ -72,27 +77,52 @@ function PetsErrorState() {
   );
 }
 
-function PetCard({ pet }: { pet: Pet }) {
+function PetCard({
+  pet,
+  primaryPhoto,
+}: {
+  pet: Pet;
+  primaryPhoto?: PetPrimaryPhoto;
+}) {
   return (
     <Link
       href={`/mis-mascotas/${pet.id}`}
       className="group block rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
     >
-      <Card className="h-full transition-[border-color,box-shadow,transform] duration-150 group-hover:-translate-y-0.5 group-hover:border-primary/30 group-hover:shadow-[var(--shadow-md)]">
+      <Card className="h-full overflow-hidden transition-[border-color,box-shadow,transform] duration-150 group-hover:-translate-y-0.5 group-hover:border-primary/30 group-hover:shadow-[var(--shadow-md)]">
+        <div className="relative aspect-[4/3] overflow-hidden bg-black/5">
+          {primaryPhoto ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={primaryPhoto.signedUrl}
+              alt={
+                primaryPhoto.altText ||
+                `Fotografía principal de ${pet.name}`
+              }
+              className="size-full object-contain p-2 transition-transform duration-200 group-hover:scale-[1.02]"
+              loading="lazy"
+            />
+          ) : (
+            <span className="flex size-full items-center justify-center text-primary">
+              <PawPrint className="size-16" aria-hidden="true" />
+              <span className="sr-only">
+                {pet.name} todavía no tiene fotografía de portada
+              </span>
+            </span>
+          )}
+
+          <span className="absolute right-3 top-3 rounded-full bg-surface-elevated/95 px-3 py-1 text-xs font-semibold text-muted-foreground shadow-[var(--shadow-sm)]">
+            {pet.status === 'ARCHIVED' ? 'Archivada' : 'Activa'}
+          </span>
+        </div>
+
         <CardHeader>
-          <div className="flex items-start justify-between gap-4">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-              <PawPrint className="size-6" aria-hidden="true" />
-            </span>
-            <span className="rounded-full bg-surface px-3 py-1 text-xs font-semibold text-muted-foreground">
-              {pet.status === 'ARCHIVED' ? 'Archivada' : 'Activa'}
-            </span>
-          </div>
-          <CardTitle className="pt-3">{pet.name}</CardTitle>
+          <CardTitle>{pet.name}</CardTitle>
           <CardDescription>
             {pet.breed || 'Raza no especificada'}
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <div className="flex items-center justify-between gap-3 border-t border-border-soft pt-4 text-sm">
             <span className="text-muted-foreground">
@@ -109,6 +139,49 @@ function PetCard({ pet }: { pet: Pet }) {
       </Card>
     </Link>
   );
+}
+
+async function loadPrimaryPhotos(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  pets: Pet[],
+): Promise<Map<string, PetPrimaryPhoto>> {
+  const result = new Map<string, PetPrimaryPhoto>();
+
+  if (!pets.length) return result;
+
+  const { data: rows, error } = await supabase
+    .from('pet_photos')
+    .select('pet_id, storage_path, alt_text')
+    .in(
+      'pet_id',
+      pets.map((pet) => pet.id),
+    )
+    .eq('is_primary', true);
+
+  if (error || !rows?.length) return result;
+
+  const { data: signedRows, error: signedError } =
+    await supabase.storage
+      .from('pet-photos')
+      .createSignedUrls(
+        rows.map((row) => row.storage_path),
+        60 * 10,
+      );
+
+  if (signedError) return result;
+
+  rows.forEach((row, index) => {
+    const signedUrl = signedRows[index]?.signedUrl;
+
+    if (signedUrl) {
+      result.set(row.pet_id, {
+        signedUrl,
+        altText: row.alt_text,
+      });
+    }
+  });
+
+  return result;
 }
 
 export default async function PetsPage({
@@ -153,6 +226,7 @@ export default async function PetsPage({
   );
   const visiblePets =
     selectedState === 'archivadas' ? archivedPets : activePets;
+  const primaryPhotos = await loadPrimaryPhotos(supabase, visiblePets);
 
   return (
     <PageContainer className="space-y-6">
@@ -220,13 +294,15 @@ export default async function PetsPage({
         <>
           <p className="text-sm text-muted-foreground">
             {visiblePets.length}{' '}
-            {visiblePets.length === 1
-              ? 'mascota'
-              : 'mascotas'}
+            {visiblePets.length === 1 ? 'mascota' : 'mascotas'}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {visiblePets.map((pet) => (
-              <PetCard key={pet.id} pet={pet} />
+              <PetCard
+                key={pet.id}
+                pet={pet}
+                primaryPhoto={primaryPhotos.get(pet.id)}
+              />
             ))}
           </div>
         </>

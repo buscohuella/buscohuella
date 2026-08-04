@@ -1,5 +1,11 @@
-import { PetRepository } from '@buscohuella/pet-data';
-import type { Pet } from '@buscohuella/pet-domain';
+import {
+  PetPhotoRepository,
+  PetRepository,
+} from '@buscohuella/pet-data';
+import type {
+  Pet,
+  PetPhotoWithSignedUrl,
+} from '@buscohuella/pet-domain';
 import {
   ArrowLeft,
   CalendarDays,
@@ -22,6 +28,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ArchivePetButton } from '@/features/pets/components/archive-pet-button';
+import { PetPhotoGallery } from '@/features/pets/components/pet-photo-gallery';
 import { RestorePetButton } from '@/features/pets/components/restore-pet-button';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
@@ -41,11 +48,28 @@ const sizeLabels: Record<Pet['size'], string> = {
   UNKNOWN: 'No indicado',
 };
 
-async function loadPet(id: string): Promise<Pet | null> {
+async function loadPetDetail(id: string): Promise<{
+  pet: Pet;
+  photos: PetPhotoWithSignedUrl[];
+} | null> {
   try {
     const supabase = await createClient();
-    const repository = new PetRepository(supabase);
-    return await repository.getOwnPetById(id);
+    const petRepository = new PetRepository(supabase);
+    const photoRepository = new PetPhotoRepository(supabase);
+    const pet = await petRepository.getOwnPetById(id);
+
+    try {
+      const photos =
+        await photoRepository.listPetPhotosWithSignedUrls(id);
+
+      return { pet, photos };
+    } catch (error) {
+      logServerError('pet.photos.load_failed', error, {
+        petId: id,
+      });
+
+      return { pet, photos: [] };
+    }
   } catch (error) {
     logServerError('pet.detail.load_failed', error, { petId: id });
     return null;
@@ -63,9 +87,11 @@ export default async function PetDetailPage({
   }>;
 }) {
   const [{ id }, query] = await Promise.all([params, searchParams]);
-  const pet = await loadPet(id);
+  const detail = await loadPetDetail(id);
 
-  if (!pet) notFound();
+  if (!detail) notFound();
+
+  const { pet, photos } = detail;
 
   const successMessage =
     query.created === '1'
@@ -133,16 +159,55 @@ export default async function PetDetailPage({
         </div>
       ) : null}
 
+      <Card elevated>
+        <CardContent className="pt-5">
+          <PetPhotoGallery
+            petId={pet.id}
+            petName={pet.name}
+            photos={photos}
+            canManage={pet.status === 'ACTIVE'}
+          />
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <InfoCard title="Sexo" value={sexLabels[pet.sex]} icon={<Dna className="size-5" aria-hidden="true" />} />
-        <InfoCard title="Tamaño" value={sizeLabels[pet.size]} icon={<Ruler className="size-5" aria-hidden="true" />} />
-        <InfoCard title="Peso" value={pet.weightKg !== null ? `${pet.weightKg} kg` : 'No indicado'} icon={<Weight className="size-5" aria-hidden="true" />} />
-        <InfoCard title="Nacimiento" value={pet.birthDate || 'No indicado'} icon={<CalendarDays className="size-5" aria-hidden="true" />} />
-        <InfoCard title="Microchip" value={pet.hasMicrochip ? 'Registrado' : 'No indicado'} icon={<ShieldCheck className="size-5" aria-hidden="true" />} />
-        <InfoCard title="Color" value={pet.primaryColor || 'No indicado'} icon={<PawPrint className="size-5" aria-hidden="true" />} />
+        <InfoCard
+          title="Sexo"
+          value={sexLabels[pet.sex]}
+          icon={<Dna className="size-5" aria-hidden="true" />}
+        />
+        <InfoCard
+          title="Tamaño"
+          value={sizeLabels[pet.size]}
+          icon={<Ruler className="size-5" aria-hidden="true" />}
+        />
+        <InfoCard
+          title="Peso"
+          value={
+            pet.weightKg !== null
+              ? `${pet.weightKg} kg`
+              : 'No indicado'
+          }
+          icon={<Weight className="size-5" aria-hidden="true" />}
+        />
+        <InfoCard
+          title="Nacimiento"
+          value={pet.birthDate || 'No indicado'}
+          icon={<CalendarDays className="size-5" aria-hidden="true" />}
+        />
+        <InfoCard
+          title="Microchip"
+          value={pet.hasMicrochip ? 'Registrado' : 'No indicado'}
+          icon={<ShieldCheck className="size-5" aria-hidden="true" />}
+        />
+        <InfoCard
+          title="Color"
+          value={pet.primaryColor || 'No indicado'}
+          icon={<PawPrint className="size-5" aria-hidden="true" />}
+        />
       </div>
 
-      {(pet.description || pet.distinctiveFeatures) ? (
+      {pet.description || pet.distinctiveFeatures ? (
         <Card elevated>
           <CardHeader>
             <CardTitle>Descripción</CardTitle>
@@ -161,6 +226,7 @@ export default async function PetDetailPage({
                 </p>
               </div>
             ) : null}
+
             {pet.distinctiveFeatures ? (
               <div>
                 <h2 className="text-sm font-semibold">
@@ -186,9 +252,15 @@ export default async function PetDetailPage({
         </CardHeader>
         <CardContent>
           {pet.status === 'ARCHIVED' ? (
-            <RestorePetButton petId={pet.id} petName={pet.name} />
+            <RestorePetButton
+              petId={pet.id}
+              petName={pet.name}
+            />
           ) : (
-            <ArchivePetButton petId={pet.id} petName={pet.name} />
+            <ArchivePetButton
+              petId={pet.id}
+              petName={pet.name}
+            />
           )}
         </CardContent>
       </Card>

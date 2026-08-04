@@ -1,10 +1,10 @@
 ---
 id: MVP-IMPLEMENTATION-ROADMAP
 title: Roadmap de implementación del MVP
-version: 1.0.0
+version: 1.1.0
 status: Active
 owner: Product & Engineering
-last_reviewed: 2026-08-02
+last_reviewed: 2026-08-05
 depends_on:
   - DOCUMENTO_MAESTRO
   - ROADMAP
@@ -181,7 +181,7 @@ Antes del piloto ampliado:
 
 ### FP-007 — Completar CRUD de mascotas
 
-**Estado:** `In Progress`
+**Estado:** `Completed`
 
 Completado:
 
@@ -189,12 +189,11 @@ Completado:
 - separación entre activas y archivadas;
 - restauración;
 - confirmaciones accesibles;
-- mensajes de éxito y error.
+- mensajes de éxito y error;
+- commits funcionales publicados.
 
-Pendiente para cierre:
+Pendientes no bloqueantes:
 
-- validación final;
-- commit;
 - aviso de cambios sin guardar, si se prioriza;
 - definición de eliminación definitiva;
 - decisión sobre historial de cambios.
@@ -225,22 +224,37 @@ Entregables:
 
 ### FP-009 — Fotografías de mascotas
 
-**Estado:** `Planned`
+**Estado:** `In Progress`
 
-Objetivo:
+**Progreso estimado:** 90–95 %
 
-- subida segura;
-- varias fotografías;
-- foto principal;
-- miniaturas;
-- orden;
-- eliminación;
-- límites de tamaño y formato;
-- preparación para matching visual futuro.
+Completado:
+
+- bucket privado, tabla, límites y políticas RLS;
+- dominio y repositorio compartidos;
+- subida múltiple secuencial;
+- validación real de tipo, firma, tamaño y dimensiones;
+- URLs firmadas;
+- galería privada;
+- visor ampliado y navegación con teclado;
+- cambio de portada;
+- edición del texto alternativo;
+- eliminación con confirmación;
+- portada en el listado de mascotas;
+- integración responsive y accesible;
+- commits `4a49699` y `de6314b`.
+
+Pendiente para cierre:
+
+- reordenado accesible y persistente;
+- prueba explícita con 10 fotografías;
+- prueba de compensación de errores;
+- validación final;
+- actualización a `Completed`.
 
 Dependencias:
 
-- bucket privado ya disponible;
+- bucket privado disponible;
 - tabla `pet_photos`;
 - ficha de mascota estable.
 

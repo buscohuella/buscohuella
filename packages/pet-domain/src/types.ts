@@ -87,6 +87,41 @@ export interface PetPhoto {
   updatedAt: string;
 }
 
+export interface PetPhotoWithSignedUrl extends PetPhoto {
+  signedUrl: string;
+}
+
+export interface CreatePetPhotoMetadataInput {
+  id: string;
+  petId: string;
+  storagePath: string;
+  position?: number;
+  isPrimary?: boolean;
+  visibility?: PetPhotoVisibility;
+  altText?: string | null;
+  mimeType: PetPhotoMimeType;
+  fileSizeBytes: number;
+  width: number;
+  height: number;
+}
+
+export interface UpdatePetPhotoInput {
+  altText?: string | null;
+  visibility?: PetPhotoVisibility;
+}
+
+export interface ReorderPetPhotosInput {
+  petId: string;
+  photoIds: string[];
+}
+
+export interface PetPhotoUploadDescriptor {
+  ownerId: string;
+  petId: string;
+  photoId: string;
+  mimeType: PetPhotoMimeType;
+}
+
 export interface CreatePetInput {
   speciesId: number;
   name: string;

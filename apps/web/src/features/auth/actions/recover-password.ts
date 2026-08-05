@@ -1,22 +1,26 @@
 'use server';
 
+import { createClient } from '@/services/supabase/server';
+
+import { validateEmail } from '../lib/email-policy';
 import { recoveryEmailCooldownSeconds } from '../lib/recovery-flow';
 import type { AuthActionState } from '../types/auth-action-state';
-import { createClient } from '@/services/supabase/server';
 import { getRequestOrigin, getString } from './helpers';
 
 export async function recoverPasswordAction(
   _previousState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
-  const email = getString(formData, 'email').toLowerCase();
+  const emailValidation = validateEmail(
+    getString(formData, 'email'),
+  );
 
-  if (!email) {
+  if (!emailValidation.isValid) {
     return {
       status: 'error',
       message: 'Revisa los campos indicados.',
       fieldErrors: {
-        email: 'Introduce tu correo electrónico.',
+        email: emailValidation.error,
       },
     };
   }
@@ -24,9 +28,13 @@ export async function recoverPasswordAction(
   const origin = await getRequestOrigin();
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/nueva-contrasena`,
-  });
+  const { error } =
+    await supabase.auth.resetPasswordForEmail(
+      emailValidation.normalizedEmail,
+      {
+        redirectTo: `${origin}/nueva-contrasena`,
+      },
+    );
 
   if (
     error?.code === 'over_email_send_rate_limit' ||

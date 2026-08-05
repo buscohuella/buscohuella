@@ -224,16 +224,17 @@ Entregables:
 
 ### FP-009 — Fotografías de mascotas
 
-**Estado:** `In Progress`
-
-**Progreso estimado:** 90–95 %
+**Estado:** `Completed`
 
 Completado:
 
 - bucket privado, tabla, límites y políticas RLS;
 - dominio y repositorio compartidos;
 - subida múltiple secuencial;
-- validación real de tipo, firma, tamaño y dimensiones;
+- validación real de tipo, firma, tamaño, dimensiones y megapíxeles;
+- procesamiento seguro con Sharp;
+- orientación automática y eliminación de EXIF/GPS;
+- redimensionado y conversión a WebP;
 - URLs firmadas;
 - galería privada;
 - visor ampliado y navegación con teclado;
@@ -241,23 +242,25 @@ Completado:
 - edición del texto alternativo;
 - eliminación con confirmación;
 - portada en el listado de mascotas;
-- integración responsive y accesible;
-- commits `4a49699` y `de6314b`.
-
-Pendiente para cierre:
-
 - reordenado accesible y persistente;
-- prueba explícita con 10 fotografías;
-- prueba de compensación de errores;
-- validación final;
-- actualización a `Completed`.
+- compensación de archivos huérfanos;
+- límite de 10 fotografías validado;
+- integración responsive y accesible;
+- migraciones y Storage validados en Supabase;
+- commits `4a49699`, `de6314b` y `165bd2b`.
 
-Dependencias:
+Pendientes no bloqueantes:
+
+- moderación asistida de contenido;
+- detección orientativa de animales;
+- generación de variantes o miniaturas dedicadas;
+- migración opcional de fotografías antiguas a WebP.
+
+Dependencias satisfechas:
 
 - bucket privado disponible;
 - tabla `pet_photos`;
 - ficha de mascota estable.
-
 ### FP-010 — Dominio y base de datos de reportes
 
 **Estado:** `Planned`

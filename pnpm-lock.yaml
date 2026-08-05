@@ -92,6 +92,16 @@ importers:
         specifier: ^5.9.0
         version: 5.9.3
 
+  packages/report-domain:
+    dependencies:
+      zod:
+        specifier: 4.4.3
+        version: 4.4.3
+    devDependencies:
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
+
 packages:
 
   '@alloc/quick-lru@5.2.0':

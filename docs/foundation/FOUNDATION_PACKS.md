@@ -1,10 +1,10 @@
 ---
 id: FOUNDATION_PACKS
 title: Foundation Packs
-version: 1.0.0
+version: 1.1.0
 status: Active
 owner: Product & Engineering
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 ---
 
 # Foundation Packs
@@ -13,10 +13,6 @@ last_reviewed: 2026-08-05
 
 Un Foundation Pack define una capacidad transversal que soporta varios
 Feature Packs, aplicaciones o fases del producto.
-
-No representa necesariamente una función visible para el usuario.
-
-## Diferencia frente a un Feature Pack
 
 ```text
 Foundation Pack
@@ -35,77 +31,52 @@ Feature Pack
 - `Evolving`;
 - `Deferred`.
 
-`Evolving` significa que la base está operativa, pero se seguirá ampliando.
+`Evolving` significa que la base está operativa, pero continuará ampliándose.
 
-## Catálogo inicial
+## Catálogo canónico
 
 ### FD-001 — Arquitectura territorial y geoespacial
 
 **Estado:** `In Progress`
 
-Incluye:
+La arquitectura documental está definida, pero sus contratos mínimos todavía
+deben implementarse en datos y servicios antes de considerarla operativa.
 
-- territorios;
-- jerarquías;
-- límites;
-- lugares;
-- direcciones;
-- malla;
-- proximidad;
-- privacidad;
-- jurisdicciones;
-- routing;
-- cobertura profesional;
-- España como primera configuración;
-- expansión internacional.
+Incluye territorios, jerarquías, límites, lugares, direcciones, malla,
+proximidad, privacidad, jurisdicciones, routing, coberturas, España como
+primera configuración y expansión internacional.
 
 ### FD-002 — i18n, accesibilidad y temas
 
 **Estado:** `In Progress`
 
-Incluye:
+Incluye infraestructura i18n, namespaces, claves, formatos regionales,
+español y catalán, preparación de otros idiomas, teclado, lectores de
+pantalla, diseño inclusivo, tokens semánticos y temas.
 
-- infraestructura i18n;
-- namespaces;
-- claves;
-- formatos regionales;
-- español y catalán;
-- componentes accesibles;
-- formularios;
-- teclado;
-- lectores de pantalla;
-- tokens semánticos;
-- tema claro, oscuro y sistema.
+### FD-003 — Design System
 
-### FD-003 — Identidad, roles y permisos
+**Estado:** `In Progress`
 
-**Estado:** `Planned`
+Incluye tokens, temas, tipografía, espaciado, movimiento, foco, componentes,
+formularios, mapas, patrones responsive y contratos compartidos web/móvil.
 
-Incluye:
+Estado operativo:
 
-- organizaciones;
-- membresías;
-- roles;
-- capacidades;
-- asignaciones;
-- verificación;
-- permisos profesionales;
-- auditoría.
+- Entregas 1, 2 y 3 completadas;
+- Auth migrado;
+- siguiente: i18n mínimo y Perfil;
+- pendiente: catálogo, migraciones restantes y auditoría final.
 
-### FD-004 — Eventos y notificaciones
+### FD-004 — Identidad, organizaciones, roles y permisos
 
 **Estado:** `Planned`
 
-Incluye:
+Incluye organizaciones, membresías, roles, capacidades, asignaciones,
+verificación, permisos profesionales y auditoría.
 
-- eventos de dominio;
-- preferencias;
-- correo;
-- push;
-- colas;
-- reintentos;
-- límites;
-- privacidad.
+Preparará intranets de protectoras, veterinarios, policías,
+administraciones y equipo interno.
 
 ### FD-005 — Observabilidad y operaciones
 
@@ -113,33 +84,55 @@ Incluye:
 
 Incluye:
 
-- logs;
-- métricas;
-- trazas;
+- gestión de errores;
+- logs estructurados;
+- sanitización;
+- códigos de incidencia;
+- correlación;
+- error boundaries;
+- métricas y trazas;
 - alertas;
-- auditoría operativa;
 - salud del sistema;
-- respuesta a incidentes.
+- respuesta a incidentes;
+- consulta administrativa;
+- retención y privacidad.
+
+La primera entrega se activará antes de finalizar los flujos críticos de
+FP-011. No se implementa durante el cierre de FD-003.
+
+### FD-006 — Eventos y notificaciones
+
+**Estado:** `Planned`
+
+Incluye eventos de dominio, preferencias, correo, push, colas, reintentos,
+límites, contexto geográfico y privacidad.
+
+## Corrección de numeración
+
+La versión anterior contenía dos capacidades diferentes con el identificador
+`FD-003`. Desde esta versión, el catálogo canónico utiliza identificadores
+únicos:
+
+```text
+FD-003 → Design System
+FD-004 → Identidad, organizaciones, roles y permisos
+FD-005 → Observabilidad y operaciones
+FD-006 → Eventos y notificaciones
+```
 
 ## Regla de dependencia
 
-Los Feature Packs declaran únicamente los Foundation Packs que realmente
-necesitan. No se bloquea el MVP por capacidades futuras que no sean necesarias.
+Los Feature Packs declaran únicamente los Foundation Packs que necesitan.
 
-### FD-003 — Design System
+Una idea transversal nueva se clasifica así:
 
-**Estado:** `In Progress`
+```text
+bloquea el trabajo actual
+→ se incorpora ahora
 
-Incluye:
+debe existir antes del siguiente flujo crítico
+→ se programa como próximo
 
-- tokens;
-- temas;
-- tipografía;
-- espaciado;
-- movimiento;
-- foco;
-- componentes;
-- formularios;
-- mapas;
-- patrones responsive;
-- contratos compartidos web/móvil.
+mejora futura
+→ se registra en backlog
+```

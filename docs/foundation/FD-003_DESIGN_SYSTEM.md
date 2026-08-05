@@ -1,10 +1,10 @@
 ---
 id: FD-003
 title: Design System
-version: 0.1.0
+version: 0.2.0
 status: In Progress
 owner: Product, Design, Frontend & Accessibility
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 depends_on:
   - ARCHITECTURE_PRINCIPLES
   - FD-002
@@ -19,8 +19,7 @@ Crear un sistema de diseño funcional, inclusivo y multiplataforma que permita
 construir web, futura aplicación móvil e intranets profesionales sin repetir
 decisiones visuales, de interacción o accesibilidad.
 
-El Design System no es una colección de pantallas ni una guía de marca.
-Define contratos estables:
+El Design System define contratos estables:
 
 ```text
 principios
@@ -37,27 +36,31 @@ principios
 
 **Estado:** `In Progress`
 
-La web ya dispone de una base útil:
+### Completado
 
-- tokens semánticos iniciales en `globals.css`;
-- foco visible global;
-- reducción de movimiento;
-- botones con tamaños táctiles;
-- inputs con estado de error;
-- componentes reutilizables.
+- documentación, auditoría y ADR iniciales;
+- tokens primitivos y semánticos;
+- temas claro y oscuro;
+- detección inicial del tema del dispositivo;
+- persistencia y prevención del parpadeo inicial;
+- primitivas accesibles;
+- migración completa de autenticación;
+- selector de tema en navegación pública y pantallas de acceso;
+- validación robusta de correo;
+- requisitos de contraseña en tiempo real;
+- resumen accesible de errores;
+- flujos reales de registro, confirmación, recuperación y cambio de contraseña;
+- typecheck, lint, build y pruebas manuales.
 
-Todavía falta formalizar:
+### Pendiente para cierre
 
-- escala completa de tokens;
-- tema oscuro y preferencia del sistema;
-- tipografía;
-- espaciado y densidad;
-- estados coherentes;
-- contratos de componentes;
-- patrones de formularios;
-- patrones geográficos;
-- documentación y pruebas visuales;
-- estrategia compartida web/móvil.
+- infraestructura i18n mínima real;
+- migración de Perfil;
+- migración de Mascotas;
+- patrones de galería, búsqueda, filtros y mapa/lista;
+- catálogo interno del Design System;
+- auditoría final de accesibilidad y calidad;
+- documentación final de migración.
 
 ## Principios
 
@@ -69,14 +72,16 @@ Todavía falta formalizar:
 6. La personalización no rompe contraste, foco ni legibilidad.
 7. Los patrones urgentes reducen carga cognitiva.
 8. Los estados son explícitos y consistentes.
-9. Se evita crear componentes de una sola pantalla cuando existe un patrón común.
+9. No se recrea manualmente un patrón que ya exista en el Design System.
 10. El sistema evoluciona con versiones y migraciones controladas.
 
 ## Entregas
 
 ### Entrega 1 — Definición y auditoría
 
-- [x] Foundation Pack.
+**Estado:** `Completed`
+
+- [x] Foundation Pack;
 - [x] arquitectura documental;
 - [x] inventario inicial de deuda;
 - [x] principios;
@@ -90,6 +95,8 @@ Todavía falta formalizar:
 
 ### Entrega 2 — Tokens y temas web
 
+**Estado:** `Completed`
+
 - [x] tokens primitivos;
 - [x] tokens semánticos;
 - [x] tema claro;
@@ -97,15 +104,23 @@ Todavía falta formalizar:
 - [x] detección inicial del tema del dispositivo;
 - [x] persistencia;
 - [x] evitar parpadeo inicial;
-- [ ] contraste validado;
 - [x] movimiento y elevación;
-- [x] actualización inicial de Button e Input.
+- [x] Button e Input;
+- [ ] contraste final auditado en todas las pantallas.
 
 ### Entrega 3 — Primitivas web
 
-- [ ] Button;
+**Estado:** `Completed`
+
+Commit principal:
+
+```text
+a338982 — feat(design-system): completar primitivas accesibles
+```
+
+- [x] Button;
 - [x] IconButton;
-- [ ] Input;
+- [x] Input;
 - [x] Textarea;
 - [x] Select;
 - [x] Checkbox;
@@ -124,21 +139,42 @@ Todavía falta formalizar:
 - [x] FormErrorSummary;
 - [x] ErrorState.
 
-### Entrega 4 — Patrones
+### Entrega 4 — Patrones y migración
 
-- [ ] formularios por pasos;
-- [ ] confirmación y resumen;
+**Estado:** `In Progress`
+
+#### Completado
+
+- [x] autenticación completa;
+- [x] confirmaciones y acciones destructivas;
 - [x] estados vacíos;
 - [x] carga y error;
-- [x] acciones destructivas mediante ConfirmationDialog compatible;
+- [x] formularios con resumen accesible;
+- [x] tema público y de acceso;
+- [x] validaciones de correo y contraseña.
+
+Commits de referencia:
+
+```text
+8bd8dd6 — refactor(auth): migrar login al design system
+f88c049 — refactor(auth): mejorar registro y experiencia publica
+```
+
+#### Siguiente
+
+- [ ] infraestructura i18n mínima;
+- [ ] Perfil;
+- [ ] Mascotas;
 - [ ] galería;
 - [ ] búsqueda;
 - [ ] filtros;
 - [ ] mapa y lista equivalente;
 - [ ] avisos urgentes;
-- [ ] navegación responsive.
+- [ ] navegación responsive final.
 
-### Entrega 5 — Calidad
+### Entrega 5 — Calidad y cierre
+
+**Estado:** `Planned`
 
 - [ ] catálogo o entorno de demostración;
 - [ ] pruebas de teclado;
@@ -150,7 +186,23 @@ Todavía falta formalizar:
 - [ ] textos largos;
 - [ ] viewport móvil;
 - [ ] documentación de migración;
-- [ ] build y tests.
+- [ ] build y tests;
+- [ ] actualización final de roadmap y Notion.
+
+## Regla transversal
+
+Cada pantalla migrada debe revisar conjuntamente:
+
+```text
+Design System
+i18n
+accesibilidad
+seguridad y privacidad
+validación y UX
+gestión visible de errores
+temas y responsive
+documentación
+```
 
 ## Dependencia de FP-011
 
@@ -160,4 +212,6 @@ FP-011 puede continuar con dominio y datos, pero su interfaz final debe usar:
 - infraestructura de temas;
 - componentes base validados;
 - patrones de formulario accesibles;
-- textos traducibles.
+- textos traducibles;
+- ubicación pública protegida;
+- gestión de errores compatible con FD-005.

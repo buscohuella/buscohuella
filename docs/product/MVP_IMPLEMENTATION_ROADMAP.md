@@ -1,10 +1,10 @@
 ---
 id: MVP-IMPLEMENTATION-ROADMAP
 title: Roadmap de implementación del MVP
-version: 1.4.0
+version: 1.5.0
 status: Active
 owner: Product & Engineering
-last_reviewed: 2026-08-05
+last_reviewed: 2026-08-06
 depends_on:
   - DOCUMENTO_MAESTRO
   - ROADMAP
@@ -329,6 +329,57 @@ Objetivo:
 - preparar FP-011 para web, móvil e intranets futuras;
 - evitar componentes, colores y patrones inconsistentes.
 
+### Estado operativo de FD-003
+
+**Estado:** `In Progress`
+
+Completado:
+
+- Entregas 1, 2 y 3;
+- temas claro y oscuro;
+- primitivas accesibles;
+- autenticación completa migrada;
+- validación robusta de correo y contraseña;
+- selector de tema público;
+- typecheck, lint, build y flujos reales de Supabase.
+
+Commits de referencia:
+
+- `a338982`;
+- `8bd8dd6`;
+- `f88c049`.
+
+Consolidación documental:
+
+- completada;
+- numeración canónica de Foundation Packs corregida;
+- roadmap, FP-006, FD-003, backlog y Notion alineados.
+
+Bloque activo:
+
+1. infraestructura i18n mínima;
+2. migración de Perfil.
+
+Próximo:
+
+- Mascotas;
+- patrones restantes;
+- catálogo interno;
+- auditoría final;
+- cierre de FD-003.
+
+Futuro registrado sin activar:
+
+- `FD-005` — observabilidad y operaciones;
+- `FD-004` — identidad, organizaciones, roles y permisos;
+- `FD-006` — eventos y notificaciones.
+
+Regla:
+
+> Toda pantalla nueva o migrada revisará Design System, i18n, accesibilidad,
+> seguridad y privacidad, validaciones, gestión visible de errores, temas,
+> responsive y documentación.
+
 ### FP-011 — Reportar mascota perdida
 
 **Estado:** `Planned`
@@ -475,7 +526,7 @@ FP-007 CRUD mascotas
 
 Podrán aplazarse si ponen en riesgo el piloto:
 
-- modo oscuro completo;
+- mejoras visuales no críticas posteriores al piloto;
 - web push avanzada;
 - eliminación definitiva desde la interfaz;
 - historial visual completo;

@@ -263,31 +263,48 @@ Dependencias satisfechas:
 - ficha de mascota estable.
 ### FP-010 — Dominio y base de datos de reportes
 
-**Estado:** `Planned`
+**Estado:** `Completed`
 
-Objetivo:
+Completado:
 
-Definir el núcleo común para:
-
-- mascota perdida;
-- animal encontrado;
-- avistamiento;
-- estados;
-- ubicación;
-- privacidad;
-- evidencias;
-- resolución.
-
-Incluye:
-
-- reglas;
-- ciclo de vida;
-- esquema;
+- dominio funcional documentado;
+- ciclo de vida y transiciones;
+- privacidad geográfica y contacto protegido;
+- esquema relacional;
+- PostGIS;
+- tablas `reports`, `report_photos`, `sightings`, `sighting_photos` y `report_events`;
+- restricciones e índices;
 - RLS;
-- auditoría;
-- dominio compartido;
-- repositorio.
+- auditoría automática;
+- proyección pública segura mediante `get_public_reports`;
+- bloqueo de dos pérdidas abiertas para una misma mascota;
+- paquete `@buscohuella/report-domain`;
+- 17 tests de dominio;
+- paquete `@buscohuella/report-data`;
+- conversión PostGIS ↔ dominio;
+- repositorios y mapeadores;
+- 13 tests de datos;
+- typecheck y build global;
+- migración validada en Supabase;
+- commits `6c3dbcb`, `1c68990` y `d3013c5`.
 
+Base preparada para:
+
+- web;
+- aplicación móvil;
+- intranets profesionales;
+- mapa;
+- notificaciones;
+- avistamientos;
+- resolución y reencuentros.
+
+Pendientes no bloqueantes:
+
+- roles y membresías de organizaciones;
+- moderación y antifraude;
+- asignación profesional de casos;
+- optimización geográfica con volumen real;
+- pruebas de carga antes de expansión.
 ### FP-011 — Reportar mascota perdida
 
 **Estado:** `Planned`

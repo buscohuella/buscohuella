@@ -5,6 +5,8 @@ import {
   type PetPhotoWithSignedUrl,
 } from '@buscohuella/pet-domain';
 import {
+  AlertTriangle,
+  CheckCircle2,
   ImagePlus,
   LoaderCircle,
   Star,
@@ -26,6 +28,12 @@ import { PetPhotoControls } from './pet-photo-controls';
 import { PetPhotoLightbox } from './pet-photo-lightbox';
 
 type PendingStatus = 'ready' | 'uploading' | 'success' | 'error';
+type SelectionMessageTone = 'success' | 'error';
+
+interface SelectionMessage {
+  tone: SelectionMessageTone;
+  text: string;
+}
 
 interface PendingPhoto {
   id: string;
@@ -60,9 +68,8 @@ export function PetPhotoGallery({
   const pendingRef = useRef<PendingPhoto[]>([]);
 
   const [pending, setPending] = useState<PendingPhoto[]>([]);
-  const [selectionMessage, setSelectionMessage] = useState<string | null>(
-    null,
-  );
+  const [selectionMessage, setSelectionMessage] =
+    useState<SelectionMessage | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(
     null,
@@ -93,9 +100,10 @@ export function PetPhotoGallery({
     const available = Math.max(0, remainingSlots - pending.length);
 
     if (available === 0) {
-      setSelectionMessage(
-        'No puedes añadir más fotografías. El máximo es 10.',
-      );
+      setSelectionMessage({
+        tone: 'error',
+        text: 'No puedes añadir más fotografías. El máximo es 10.',
+      });
       return;
     }
 
@@ -109,16 +117,18 @@ export function PetPhotoGallery({
           file.type as (typeof ACCEPTED_TYPES)[number],
         )
       ) {
-        setSelectionMessage(
-          `${file.name} no es JPEG, PNG o WebP.`,
-        );
+        setSelectionMessage({
+          tone: 'error',
+          text: `${file.name} no es JPEG, PNG o WebP.`,
+        });
         continue;
       }
 
       if (file.size > PET_LIMITS.photoMaxSizeBytes) {
-        setSelectionMessage(
-          `${file.name} supera el límite de 8 MB.`,
-        );
+        setSelectionMessage({
+          tone: 'error',
+          text: `${file.name} supera el límite de 8 MB.`,
+        });
         continue;
       }
 
@@ -135,16 +145,18 @@ export function PetPhotoGallery({
           status: 'ready',
         });
       } catch {
-        setSelectionMessage(
-          `No se ha podido leer la imagen ${file.name}.`,
-        );
+        setSelectionMessage({
+          tone: 'error',
+          text: `No se ha podido leer la imagen ${file.name}.`,
+        });
       }
     }
 
     if (rejectedCount > 0) {
-      setSelectionMessage(
-        `Solo se han preparado ${available} archivos porque el máximo es 10 fotografías.`,
-      );
+      setSelectionMessage({
+        tone: 'error',
+        text: `Solo se han preparado ${available} archivos porque el máximo es 10 fotografías.`,
+      });
     }
 
     setPending((current) => [...current, ...prepared]);
@@ -236,11 +248,12 @@ export function PetPhotoGallery({
     setIsUploading(false);
 
     if (uploadedCount > 0) {
-      setSelectionMessage(
-        `${uploadedCount} ${
+      setSelectionMessage({
+        tone: 'success',
+        text: `${uploadedCount} ${
           uploadedCount === 1 ? 'fotografía subida' : 'fotografías subidas'
         } correctamente.`,
-      );
+      });
 
       setPending((current) => {
         const failed = current.filter(
@@ -270,7 +283,7 @@ export function PetPhotoGallery({
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {photos.length} de {PET_LIMITS.photosMaxCount} fotografías.
-            La primera se usa como portada.
+            La fotografía marcada como portada aparece en el listado.
           </p>
         </div>
 
@@ -292,11 +305,29 @@ export function PetPhotoGallery({
 
       {selectionMessage ? (
         <div
-          role="status"
-          aria-live="polite"
-          className="rounded-lg border border-border-soft bg-surface p-4 text-sm text-foreground"
+          role={selectionMessage.tone === 'error' ? 'alert' : 'status'}
+          aria-live={
+            selectionMessage.tone === 'error' ? 'assertive' : 'polite'
+          }
+          className={cn(
+            'flex items-start gap-3 rounded-lg border p-4 text-sm font-medium',
+            selectionMessage.tone === 'error'
+              ? 'border-danger/35 bg-danger/10 text-danger'
+              : 'border-success/30 bg-primary-soft text-success',
+          )}
         >
-          {selectionMessage}
+          {selectionMessage.tone === 'error' ? (
+            <AlertTriangle
+              className="mt-0.5 size-5 shrink-0"
+              aria-hidden="true"
+            />
+          ) : (
+            <CheckCircle2
+              className="mt-0.5 size-5 shrink-0"
+              aria-hidden="true"
+            />
+          )}
+          <span>{selectionMessage.text}</span>
         </div>
       ) : null}
 
@@ -354,6 +385,7 @@ export function PetPhotoGallery({
                       petId={petId}
                       petName={petName}
                       photo={photo}
+                      photoCount={photos.length}
                     />
                   ) : null}
                 </div>

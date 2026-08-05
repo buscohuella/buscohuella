@@ -14,6 +14,10 @@ import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
 import { detectPetPhotoMimeType } from '../lib/detect-photo-mime';
+import {
+  PetPhotoProcessingError,
+  processPetPhoto,
+} from '../lib/process-pet-photo';
 import type { PetPhotoActionState } from '../types/pet-photo-action-state';
 
 function getString(formData: FormData, name: string) {
@@ -21,17 +25,26 @@ function getString(formData: FormData, name: string) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function getPositiveInteger(formData: FormData, name: string) {
-  const value = Number(getString(formData, name));
-  return Number.isInteger(value) && value > 0 ? value : null;
+function processingErrorMessage(
+  error: PetPhotoProcessingError,
+): string {
+  switch (error.code) {
+    case 'IMAGE_TOO_SMALL':
+    case 'IMAGE_TOO_LARGE':
+    case 'ANIMATED_IMAGE':
+    case 'OUTPUT_TOO_LARGE':
+      return error.message;
+    case 'UNSUPPORTED_IMAGE':
+      return 'El formato de la fotografía no está permitido.';
+    default:
+      return 'La fotografía está dañada o no se puede procesar.';
+  }
 }
 
 export async function uploadPetPhotoAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
   const petId = getString(formData, 'petId');
-  const width = getPositiveInteger(formData, 'width');
-  const height = getPositiveInteger(formData, 'height');
   const altText = getString(formData, 'altText') || null;
   const file = formData.get('photo');
 
@@ -52,24 +65,41 @@ export async function uploadPetPhotoAction(
   if (file.size > PET_LIMITS.photoMaxSizeBytes) {
     return {
       status: 'error',
-      message: 'La fotografía supera el límite de 8 MB.',
+      message: 'La fotografía supera el límite de entrada de 8 MB.',
     };
   }
 
-  if (!width || !height) {
-    return {
-      status: 'error',
-      message: 'No se han podido leer las dimensiones de la imagen.',
-    };
-  }
-
-  const bytes = await file.arrayBuffer();
-  const detectedMimeType = detectPetPhotoMimeType(bytes);
+  const originalBytes = await file.arrayBuffer();
+  const detectedMimeType = detectPetPhotoMimeType(originalBytes);
 
   if (!detectedMimeType) {
     return {
       status: 'error',
       message: 'El archivo no es una imagen JPEG, PNG o WebP válida.',
+    };
+  }
+
+  let processed;
+
+  try {
+    processed = await processPetPhoto(originalBytes);
+  } catch (error) {
+    if (error instanceof PetPhotoProcessingError) {
+      return {
+        status: 'error',
+        message: processingErrorMessage(error),
+      };
+    }
+
+    logServerError('pet.photo.processing_failed', error, {
+      petId,
+      fileSizeBytes: file.size,
+      detectedMimeType,
+    });
+
+    return {
+      status: 'error',
+      message: 'No se ha podido procesar la fotografía.',
     };
   }
 
@@ -115,11 +145,11 @@ export async function uploadPetPhotoAction(
       ownerId: user.id,
       petId,
       photoId,
-      mimeType: detectedMimeType,
-      bytes,
-      fileSizeBytes: file.size,
-      width,
-      height,
+      mimeType: processed.mimeType,
+      bytes: processed.bytes,
+      fileSizeBytes: processed.fileSizeBytes,
+      width: processed.width,
+      height: processed.height,
       altText,
       position: currentPhotos.length,
     });
@@ -129,15 +159,17 @@ export async function uploadPetPhotoAction(
 
     return {
       status: 'success',
-      message: `${file.name} se ha subido correctamente.`,
+      message: `${file.name} se ha orientado, optimizado y subido correctamente.`,
       photoId,
     };
   } catch (error) {
     logServerError('pet.photo.upload_failed', error, {
       userId: user.id,
       petId,
-      fileSizeBytes: file.size,
+      originalFileSizeBytes: file.size,
+      processedFileSizeBytes: processed.fileSizeBytes,
       detectedMimeType,
+      storedMimeType: processed.mimeType,
     });
 
     if (error instanceof PetDomainError) {
@@ -152,7 +184,7 @@ export async function uploadPetPhotoAction(
       if (error.code === 'PET_PHOTO_TOO_LARGE') {
         return {
           status: 'error',
-          message: 'La fotografía supera el límite de 8 MB.',
+          message: 'La fotografía procesada supera el límite permitido.',
         };
       }
 

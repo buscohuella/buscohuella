@@ -2,6 +2,8 @@
 
 import type { PetPhotoWithSignedUrl } from '@buscohuella/pet-domain';
 import {
+  ArrowLeft,
+  ArrowRight,
   Pencil,
   Star,
   Trash2,
@@ -17,6 +19,7 @@ import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 import {
   deletePetPhotoAction,
+  reorderPetPhotosAction,
   setPrimaryPetPhotoAction,
   updatePetPhotoAltTextAction,
 } from '../actions/manage-pet-photo';
@@ -25,10 +28,12 @@ export function PetPhotoControls({
   petId,
   petName,
   photo,
+  photoCount,
 }: {
   petId: string;
   petName: string;
   photo: PetPhotoWithSignedUrl;
+  photoCount: number;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -66,8 +71,50 @@ export function PetPhotoControls({
     });
   }
 
+  function movePhoto(direction: 'before' | 'after') {
+    runAction(
+      reorderPetPhotosAction,
+      (formData) => formData.set('direction', direction),
+    );
+  }
+
   return (
     <div className="space-y-3">
+      <div
+        aria-label={`Orden actual: posición ${photo.position + 1}`}
+        className="flex flex-wrap items-center gap-2 rounded-lg border border-border-soft bg-surface p-3"
+      >
+        <span className="mr-auto text-xs font-semibold text-muted-foreground">
+          Posición {photo.position + 1} de {photoCount}
+        </span>
+
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          disabled={isPending || photo.position === 0}
+          aria-label={`Mover esta fotografía antes. Posición actual ${photo.position + 1} de ${photoCount}`}
+          onClick={() => movePhoto('before')}
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Mover antes
+        </Button>
+
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          disabled={
+            isPending || photo.position >= photoCount - 1
+          }
+          aria-label={`Mover esta fotografía después. Posición actual ${photo.position + 1} de ${photoCount}`}
+          onClick={() => movePhoto('after')}
+        >
+          Mover después
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Button>
+      </div>
+
       <div className="flex flex-wrap gap-2">
         {!photo.isPrimary ? (
           <Button
@@ -154,6 +201,7 @@ export function PetPhotoControls({
       {message ? (
         <p
           role={isError ? 'alert' : 'status'}
+          aria-live="polite"
           className={
             isError
               ? 'text-sm font-medium text-danger'

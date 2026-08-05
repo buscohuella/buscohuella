@@ -2,6 +2,7 @@
 
 import {
   PetDomainError,
+  reorderPetPhotosSchema,
   updatePetPhotoSchema,
 } from '@buscohuella/pet-domain';
 import {
@@ -113,7 +114,8 @@ function mapError(
     if (error.code === 'PET_FORBIDDEN') {
       return {
         status: 'error',
-        message: 'No tienes permiso para gestionar esta fotografía.',
+        message:
+          'No tienes permiso o el orden ya no coincide. Recarga la página.',
       };
     }
   }
@@ -152,6 +154,88 @@ export async function setPrimaryPetPhotoAction(
       error,
       { userId: user.id, petId, photoId },
       'No se ha podido cambiar la portada.',
+    );
+  }
+}
+
+export async function reorderPetPhotosAction(
+  formData: FormData,
+): Promise<PetPhotoActionState> {
+  const context = await getContext(formData);
+
+  if ('error' in context && context.error) {
+    return context.error;
+  }
+
+  const { supabase, petId, photoId, user } = context;
+  const direction = getString(formData, 'direction');
+
+  if (direction !== 'before' && direction !== 'after') {
+    return {
+      status: 'error',
+      message: 'El movimiento solicitado no es válido.',
+    };
+  }
+
+  try {
+    const repository = new PetPhotoRepository(supabase);
+    const current = await repository.listPetPhotos(petId);
+    const currentIndex = current.findIndex(
+      (photo) => photo.id === photoId,
+    );
+
+    if (currentIndex < 0) {
+      return {
+        status: 'error',
+        message: 'La fotografía ya no existe.',
+      };
+    }
+
+    const targetIndex =
+      direction === 'before'
+        ? currentIndex - 1
+        : currentIndex + 1;
+
+    if (targetIndex < 0 || targetIndex >= current.length) {
+      return {
+        status: 'success',
+        message:
+          direction === 'before'
+            ? 'La fotografía ya está en la primera posición.'
+            : 'La fotografía ya está en la última posición.',
+        photoId,
+      };
+    }
+
+    const nextOrder = current.map((photo) => photo.id);
+    [nextOrder[currentIndex], nextOrder[targetIndex]] = [
+      nextOrder[targetIndex],
+      nextOrder[currentIndex],
+    ];
+
+    const parsed = reorderPetPhotosSchema.parse({
+      petId,
+      photoIds: nextOrder,
+    });
+
+    const ordered = await repository.reorderPhotos(parsed);
+    const newIndex = ordered.findIndex(
+      (photo) => photo.id === photoId,
+    );
+
+    revalidatePetPhotos(petId);
+
+    return {
+      status: 'success',
+      message: `Fotografía movida a la posición ${newIndex + 1} de ${ordered.length}.`,
+      photoId,
+    };
+  } catch (error) {
+    return mapError(
+      'pet.photo.reorder_failed',
+      error,
+      { userId: user.id, petId, photoId, direction },
+      'No se ha podido cambiar el orden de las fotografías.',
     );
   }
 }

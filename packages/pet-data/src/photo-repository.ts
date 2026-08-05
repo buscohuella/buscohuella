@@ -21,8 +21,20 @@ import {
 
 const DEFAULT_SIGNED_URL_TTL_SECONDS = 60 * 10;
 
+type PetPhotoRow = Database['public']['Tables']['pet_photos']['Row'];
+
 type SetPrimaryRpcResult = {
-  data: Database['public']['Tables']['pet_photos']['Row'] | null;
+  data: PetPhotoRow | null;
+  error: {
+    code?: string;
+    message?: string;
+    details?: string;
+    hint?: string;
+  } | null;
+};
+
+type ReorderRpcResult = {
+  data: PetPhotoRow[] | null;
   error: {
     code?: string;
     message?: string;
@@ -214,30 +226,28 @@ export class PetPhotoRepository {
     input: ReorderPetPhotosInput,
   ): Promise<PetPhoto[]> {
     const parsed = reorderPetPhotosSchema.parse(input);
-    const current = await this.listPetPhotos(parsed.petId);
-    const currentIds = new Set(current.map((photo) => photo.id));
 
-    if (
-      current.length !== parsed.photoIds.length ||
-      parsed.photoIds.some((id) => !currentIds.has(id))
-    ) {
+    const rpc = this.client.rpc.bind(this.client) as unknown as (
+      functionName: string,
+      args: {
+        target_pet_id: string;
+        ordered_photo_ids: string[];
+      },
+    ) => Promise<ReorderRpcResult>;
+
+    const { data, error } = await rpc('reorder_pet_photos', {
+      target_pet_id: parsed.petId,
+      ordered_photo_ids: parsed.photoIds,
+    });
+
+    if (error || !data) {
       throw normalizePetDataError(
-        { message: 'PET_PHOTO_ORDER_MISMATCH' },
+        error ?? { message: 'PET_PHOTO_ORDER_MISMATCH' },
         'PET_FORBIDDEN',
       );
     }
 
-    for (const [position, photoId] of parsed.photoIds.entries()) {
-      const { error } = await this.client
-        .from('pet_photos')
-        .update({ position })
-        .eq('id', photoId)
-        .eq('pet_id', parsed.petId);
-
-      if (error) throw normalizePetDataError(error);
-    }
-
-    return this.listPetPhotos(parsed.petId);
+    return data.map(mapPetPhotoRow);
   }
 
   async deletePhoto(photoId: string): Promise<void> {

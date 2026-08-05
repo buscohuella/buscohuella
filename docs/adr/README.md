@@ -21,6 +21,13 @@ Este directorio contiene las decisiones arquitectónicas relevantes de BuscoHuel
 | [ADR-005](./ADR-005_LIBRERIAS_DE_DOMINIO_COMPARTIDAS.md) | Librerías de dominio compartidas | Accepted |
 | [ADR-006](./ADR-006_INTERNACIONALIZACION.md) | Estrategia de internacionalización | Accepted |
 | [ADR-007](./ADR-007_ACCESIBILIDAD_COMO_REQUISITO.md) | Accesibilidad como requisito de calidad | Accepted |
+| [ADR-008](./ADR-008_GRID_AND_POLYGONS.md) | Combinar malla y polígonos | Accepted |
+| [ADR-009](./ADR-009_PUBLIC_LOCATION_PRIVACY.md) | Separar ubicación exacta y pública | Accepted |
+| [ADR-010](./ADR-010_CONFIGURABLE_TERRITORIAL_ROUTING.md) | Routing territorial configurable | Accepted |
+| [ADR-011](./ADR-011_FOUNDATIONS_BEFORE_FP011.md) | Activar fundamentos antes de FP-011 | Accepted |
+| [ADR-012](./ADR-012_UNIFIED_LOCATION_MODEL.md) | Modelo unificado de ubicación | Accepted |
+| [ADR-013](./ADR-013_INCLUSIVE_EMERGENCY_DESIGN.md) | Diseño inclusivo para urgencias | Accepted |
+| [ADR-014](./ADR-014_GEOGRAPHIC_NOTIFICATION_CONTEXT.md) | Alertas por proximidad y contexto | Accepted |
 
 ## Cuándo crear una ADR
 

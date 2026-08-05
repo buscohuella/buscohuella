@@ -104,30 +104,33 @@ Todavía falta formalizar:
 ### Entrega 3 — Primitivas web
 
 - [ ] Button;
-- [ ] IconButton;
+- [x] IconButton;
 - [ ] Input;
-- [ ] Textarea;
-- [ ] Select;
-- [ ] Checkbox;
-- [ ] Radio;
-- [ ] Switch;
-- [ ] Field;
-- [ ] Alert;
-- [ ] Dialog;
-- [ ] Sheet;
-- [ ] Card;
-- [ ] Badge;
-- [ ] Skeleton;
-- [ ] Progress;
-- [ ] LiveRegion.
+- [x] Textarea;
+- [x] Select;
+- [x] Checkbox;
+- [x] Radio;
+- [x] Switch;
+- [x] Field;
+- [x] Alert;
+- [x] Dialog;
+- [x] Sheet;
+- [x] Card;
+- [x] Badge;
+- [x] Skeleton;
+- [x] Spinner;
+- [x] Progress;
+- [x] LiveRegion;
+- [x] FormErrorSummary;
+- [x] ErrorState.
 
 ### Entrega 4 — Patrones
 
 - [ ] formularios por pasos;
 - [ ] confirmación y resumen;
-- [ ] estados vacíos;
-- [ ] carga y error;
-- [ ] acciones destructivas;
+- [x] estados vacíos;
+- [x] carga y error;
+- [x] acciones destructivas mediante ConfirmationDialog compatible;
 - [ ] galería;
 - [ ] búsqueda;
 - [ ] filtros;

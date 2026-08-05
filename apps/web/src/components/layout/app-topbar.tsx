@@ -1,6 +1,7 @@
 import { Bell, PawPrint } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import type { AuthUser } from '@/features/auth/types/auth-user';
 
 import { UserMenu } from './user-menu';
@@ -36,7 +37,13 @@ export function AppTopbar({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" aria-label="Ver notificaciones">
+          <ThemeToggle />
+
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-label="Ver notificaciones"
+          >
             <Bell className="size-5" aria-hidden="true" />
           </Button>
 

@@ -28,6 +28,9 @@ Este directorio contiene las decisiones arquitectónicas relevantes de BuscoHuel
 | [ADR-012](./ADR-012_UNIFIED_LOCATION_MODEL.md) | Modelo unificado de ubicación | Accepted |
 | [ADR-013](./ADR-013_INCLUSIVE_EMERGENCY_DESIGN.md) | Diseño inclusivo para urgencias | Accepted |
 | [ADR-014](./ADR-014_GEOGRAPHIC_NOTIFICATION_CONTEXT.md) | Alertas por proximidad y contexto | Accepted |
+| [ADR-015](./ADR-015_SEMANTIC_DESIGN_TOKENS.md) | Tokens semánticos | Accepted |
+| [ADR-016](./ADR-016_SHARED_DESIGN_CONTRACTS.md) | Contratos compartidos web/móvil | Accepted |
+| [ADR-017](./ADR-017_DESIGN_SYSTEM_BEFORE_FP011_UI.md) | Design System antes de FP-011 UI | Accepted |
 
 ## Cuándo crear una ADR
 

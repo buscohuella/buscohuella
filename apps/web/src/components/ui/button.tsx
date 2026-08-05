@@ -1,8 +1,13 @@
 import * as React from 'react';
+import { LoaderCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps
@@ -10,17 +15,19 @@ export interface ButtonProps
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary text-white hover:bg-primary-hover active:bg-primary-hover',
+    'bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active',
   secondary:
-    'border border-border bg-surface-elevated text-foreground hover:bg-surface',
+    'border border-border bg-surface-elevated text-foreground hover:bg-surface-hover active:bg-surface-sunken',
   ghost:
-    'bg-transparent text-foreground hover:bg-surface',
+    'bg-transparent text-foreground hover:bg-surface-hover active:bg-surface-sunken',
   danger:
-    'bg-danger text-white hover:opacity-90 active:opacity-90',
+    'bg-danger text-danger-foreground hover:bg-danger-hover active:bg-danger-hover',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -29,27 +36,38 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: 'min-h-14 px-6 text-lg',
 };
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>(
   (
     {
+      children,
       className,
       variant = 'primary',
       size = 'md',
       fullWidth = false,
+      isLoading = false,
+      loadingText,
+      disabled,
       type = 'button',
       ...props
     },
     ref,
   ) => {
+    const isDisabled = disabled || isLoading;
+
     return (
       <button
         ref={ref}
         type={type}
+        disabled={isDisabled}
+        aria-busy={isLoading || undefined}
         className={cn(
           'inline-flex items-center justify-center gap-2 rounded-full font-semibold',
           'transition-[background-color,color,border-color,opacity,transform] duration-150',
-          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20',
-          'disabled:pointer-events-none disabled:opacity-50',
+          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft',
+          'disabled:pointer-events-none disabled:opacity-55',
           'active:scale-[0.98]',
           variantClasses[variant],
           sizeClasses[size],
@@ -57,7 +75,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         )}
         {...props}
-      />
+      >
+        {isLoading ? (
+          <LoaderCircle
+            className="size-5 animate-spin"
+            aria-hidden="true"
+          />
+        ) : null}
+        {isLoading && loadingText ? loadingText : children}
+      </button>
     );
   },
 );

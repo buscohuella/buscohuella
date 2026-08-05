@@ -5,78 +5,220 @@
    Fuente visual única para la aplicación web.
    ========================================================= */
 
-:root {
+:root,
+[data-theme="light"] {
   color-scheme: light;
 
+  /* Brand and actions */
   --primary: #047857;
   --primary-hover: #065f46;
+  --primary-active: #064e3b;
   --primary-soft: #ecfdf5;
+  --primary-foreground: #ffffff;
 
-  --accent: #e67e22;
-  --accent-hover: #b25e09;
+  --accent: #c45f0a;
+  --accent-hover: #9a4a08;
+  --accent-active: #7c3a06;
   --accent-soft: #fff7ed;
+  --accent-foreground: #ffffff;
 
+  /* Surfaces */
   --background: #ffffff;
   --surface: #f5f6f7;
   --surface-elevated: #ffffff;
+  --surface-sunken: #eceff1;
+  --surface-hover: #eef2f3;
+  --overlay: rgb(15 23 42 / 0.62);
 
+  /* Text */
   --foreground: #1c1c1e;
   --muted-foreground: #4b5563;
   --subtle-foreground: #6b7280;
+  --inverse-foreground: #ffffff;
 
+  /* Borders and focus */
   --border: #a3a3a3;
   --border-soft: #e5e7eb;
-
-  --success: #047857;
-  --warning: #b25e09;
-  --danger: #b91c1c;
-  --info: #1d4ed8;
-
+  --border-strong: #737373;
   --focus: #047857;
-  --disabled: #d1d5db;
+  --focus-soft: rgb(4 120 87 / 0.2);
 
+  /* Status */
+  --success: #047857;
+  --success-soft: #ecfdf5;
+  --success-foreground: #ffffff;
+
+  --warning: #9a4a08;
+  --warning-soft: #fff7ed;
+  --warning-foreground: #ffffff;
+
+  --danger: #b91c1c;
+  --danger-hover: #991b1b;
+  --danger-soft: #fef2f2;
+  --danger-foreground: #ffffff;
+
+  --info: #1d4ed8;
+  --info-soft: #eff6ff;
+  --info-foreground: #ffffff;
+
+  --disabled: #d1d5db;
+  --disabled-foreground: #6b7280;
+
+  /* Shape */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
 
+  /* Elevation */
   --shadow-sm: 0 1px 2px rgb(28 28 30 / 0.06);
   --shadow-md: 0 8px 24px rgb(28 28 30 / 0.1);
   --shadow-lg: 0 20px 50px rgb(28 28 30 / 0.14);
+
+  /* Motion */
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-normal: 180ms;
+  --duration-slow: 280ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Layering */
+  --z-base: 0;
+  --z-sticky: 30;
+  --z-dropdown: 40;
+  --z-popover: 50;
+  --z-overlay: 60;
+  --z-dialog: 70;
+  --z-toast: 80;
+  --z-critical: 90;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Brand and actions */
+  --primary: #34d399;
+  --primary-hover: #6ee7b7;
+  --primary-active: #a7f3d0;
+  --primary-soft: #063f35;
+  --primary-foreground: #052e27;
+
+  --accent: #fb923c;
+  --accent-hover: #fdba74;
+  --accent-active: #fed7aa;
+  --accent-soft: #4a2409;
+  --accent-foreground: #3a1905;
+
+  /* Surfaces */
+  --background: #111513;
+  --surface: #181e1b;
+  --surface-elevated: #202723;
+  --surface-sunken: #0b0f0d;
+  --surface-hover: #29322d;
+  --overlay: rgb(0 0 0 / 0.72);
+
+  /* Text */
+  --foreground: #f4f7f5;
+  --muted-foreground: #c5cec9;
+  --subtle-foreground: #a5b0aa;
+  --inverse-foreground: #111513;
+
+  /* Borders and focus */
+  --border: #64706a;
+  --border-soft: #37413c;
+  --border-strong: #909b95;
+  --focus: #6ee7b7;
+  --focus-soft: rgb(110 231 183 / 0.24);
+
+  /* Status */
+  --success: #34d399;
+  --success-soft: #063f35;
+  --success-foreground: #052e27;
+
+  --warning: #fb923c;
+  --warning-soft: #4a2409;
+  --warning-foreground: #3a1905;
+
+  --danger: #f87171;
+  --danger-hover: #fca5a5;
+  --danger-soft: #4c1717;
+  --danger-foreground: #450a0a;
+
+  --info: #60a5fa;
+  --info-soft: #172554;
+  --info-foreground: #0c1f45;
+
+  --disabled: #3f4944;
+  --disabled-foreground: #9ba59f;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.24);
+  --shadow-md: 0 8px 24px rgb(0 0 0 / 0.34);
+  --shadow-lg: 0 20px 50px rgb(0 0 0 / 0.46);
 }
 
 @theme inline {
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
   --color-primary-soft: var(--primary-soft);
+  --color-primary-foreground: var(--primary-foreground);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-foreground: var(--accent-foreground);
 
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-hover: var(--surface-hover);
+  --color-overlay: var(--overlay);
 
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
   --color-subtle-foreground: var(--subtle-foreground);
+  --color-inverse-foreground: var(--inverse-foreground);
 
   --color-border: var(--border);
   --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
+  --color-focus: var(--focus);
+  --color-focus-soft: var(--focus-soft);
 
   --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-foreground: var(--success-foreground);
+
   --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-foreground: var(--warning-foreground);
+
   --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-foreground: var(--danger-foreground);
+
   --color-info: var(--info);
-  --color-focus: var(--focus);
+  --color-info-soft: var(--info-soft);
+  --color-info-foreground: var(--info-foreground);
+
   --color-disabled: var(--disabled);
+  --color-disabled-foreground: var(--disabled-foreground);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
 }
 
 * {
@@ -89,6 +231,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background: var(--background);
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -96,7 +240,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   font-size: 1rem;
   line-height: 1.6;
   overflow-x: hidden;

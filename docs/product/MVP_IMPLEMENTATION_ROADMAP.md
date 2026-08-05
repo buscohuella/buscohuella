@@ -1,7 +1,7 @@
 ---
 id: MVP-IMPLEMENTATION-ROADMAP
 title: Roadmap de implementación del MVP
-version: 1.3.0
+version: 1.4.0
 status: Active
 owner: Product & Engineering
 last_reviewed: 2026-08-05
@@ -313,6 +313,7 @@ Antes de finalizar la interfaz de FP-011 se activan:
 
 - `FD-001` — arquitectura territorial y geoespacial;
 - `FD-002` — i18n, accesibilidad y temas;
+- `FD-003` — Design System;
 - `FP-006` — infraestructura transversal real;
 - principios de arquitectura;
 - modelo unificado de ubicación;
@@ -325,7 +326,8 @@ Objetivo:
 - evitar deuda de traducción;
 - evitar rehacer formularios inaccesibles;
 - evitar un modelo geográfico limitado a municipio y coordenadas;
-- preparar FP-011 para web, móvil e intranets futuras.
+- preparar FP-011 para web, móvil e intranets futuras;
+- evitar componentes, colores y patrones inconsistentes.
 
 ### FP-011 — Reportar mascota perdida
 

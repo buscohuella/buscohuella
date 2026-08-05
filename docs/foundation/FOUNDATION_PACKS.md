@@ -125,3 +125,21 @@ Incluye:
 
 Los Feature Packs declaran únicamente los Foundation Packs que realmente
 necesitan. No se bloquea el MVP por capacidades futuras que no sean necesarias.
+
+### FD-003 — Design System
+
+**Estado:** `In Progress`
+
+Incluye:
+
+- tokens;
+- temas;
+- tipografía;
+- espaciado;
+- movimiento;
+- foco;
+- componentes;
+- formularios;
+- mapas;
+- patrones responsive;
+- contratos compartidos web/móvil.

@@ -45,7 +45,7 @@ pantallas nazcan traducibles, accesibles y compatibles con temas.
 ### Temas
 
 - tokens semánticos;
-- `light`, `dark`, `system`;
+- `light` y `dark`;
 - persistencia;
 - evitar parpadeo inicial;
 - contraste en ambos temas;

@@ -2,7 +2,6 @@
 
 import type { ReactNode } from 'react';
 import { useFormStatus } from 'react-dom';
-import { LoaderCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -18,14 +17,14 @@ export function SubmitButton({
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" size="lg" fullWidth disabled={pending}>
-      {pending && (
-        <LoaderCircle
-          className="size-5 animate-spin"
-          aria-hidden="true"
-        />
-      )}
-      {pending ? pendingText : children}
+    <Button
+      type="submit"
+      size="lg"
+      fullWidth
+      isLoading={pending}
+      loadingText={pendingText}
+    >
+      {children}
     </Button>
   );
 }

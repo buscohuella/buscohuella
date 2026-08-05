@@ -1,3 +1,5 @@
+import { Alert } from '@/components/ui/alert';
+
 import type { AuthActionState } from '../types/auth-action-state';
 
 export interface ActionMessageProps {
@@ -10,15 +12,12 @@ export function ActionMessage({ state }: ActionMessageProps) {
   }
 
   return (
-    <div
-      role={state.status === 'error' ? 'alert' : 'status'}
-      className={
-        state.status === 'error'
-          ? 'rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm font-medium text-danger'
-          : 'rounded-lg border border-success/30 bg-primary-soft p-4 text-sm font-medium text-success'
+    <Alert
+      variant={
+        state.status === 'error' ? 'danger' : 'success'
       }
     >
       {state.message}
-    </div>
+    </Alert>
   );
 }

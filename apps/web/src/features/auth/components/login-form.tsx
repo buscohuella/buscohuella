@@ -1,8 +1,13 @@
 'use client';
 
+import { LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useActionState } from 'react';
-import { LogIn } from 'lucide-react';
+
+import {
+  FormErrorSummary,
+  type FormErrorItem,
+} from '@/components/ui/form-error-summary';
 
 import { loginAction } from '../actions/login';
 import { initialAuthActionState } from '../types/auth-action-state';
@@ -16,9 +21,28 @@ export function LoginForm() {
     initialAuthActionState,
   );
 
+ const formErrors: FormErrorItem[] = [];
+
+if (state.fieldErrors?.email) {
+  formErrors.push({
+    id: 'email',
+    fieldId: 'email',
+    message: state.fieldErrors.email,
+  });
+}
+
+if (state.fieldErrors?.password) {
+  formErrors.push({
+    id: 'password',
+    fieldId: 'password',
+    message: state.fieldErrors.password,
+  });
+}
+
   return (
     <form action={formAction} className="space-y-5">
       <ActionMessage state={state} />
+      <FormErrorSummary errors={formErrors} />
 
       <FormField
         id="email"
@@ -46,7 +70,7 @@ export function LoginForm() {
       <div className="flex items-center justify-end">
         <Link
           href="/recuperar-contrasena"
-          className="rounded text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          className="rounded text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           ¿Has olvidado tu contraseña?
         </Link>
@@ -61,7 +85,7 @@ export function LoginForm() {
         ¿Todavía no tienes cuenta?{' '}
         <Link
           href="/registro"
-          className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           Crear cuenta
         </Link>

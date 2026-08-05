@@ -7,7 +7,9 @@ export interface FieldProps
   label: React.ReactNode;
   htmlFor?: string;
   description?: React.ReactNode;
+  descriptionId?: string;
   error?: React.ReactNode;
+  errorId?: string;
   optional?: boolean;
   required?: boolean;
 }
@@ -18,7 +20,9 @@ export function Field({
   label,
   htmlFor,
   description,
+  descriptionId,
   error,
+  errorId,
   optional = false,
   required = false,
   ...props
@@ -30,11 +34,13 @@ export function Field({
         className="flex flex-wrap items-baseline gap-x-2 text-sm font-semibold text-foreground"
       >
         <span>{label}</span>
+
         {optional ? (
           <span className="text-xs font-normal text-muted-foreground">
             Opcional
           </span>
         ) : null}
+
         {required ? (
           <span className="text-danger" aria-hidden="true">
             *
@@ -43,7 +49,10 @@ export function Field({
       </label>
 
       {description ? (
-        <p className="text-sm text-muted-foreground">
+        <p
+          id={descriptionId}
+          className="text-sm text-muted-foreground"
+        >
           {description}
         </p>
       ) : null}
@@ -51,7 +60,11 @@ export function Field({
       {children}
 
       {error ? (
-        <p className="text-sm font-medium text-danger" role="alert">
+        <p
+          id={errorId}
+          className="text-sm font-medium text-danger"
+          role="alert"
+        >
           {error}
         </p>
       ) : null}

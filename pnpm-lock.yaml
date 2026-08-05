@@ -92,6 +92,19 @@ importers:
         specifier: ^5.9.0
         version: 5.9.3
 
+  packages/report-data:
+    dependencies:
+      '@buscohuella/report-domain':
+        specifier: workspace:*
+        version: link:../report-domain
+      '@supabase/supabase-js':
+        specifier: ^2.111.0
+        version: 2.111.0
+    devDependencies:
+      typescript:
+        specifier: ^5.9.0
+        version: 5.9.3
+
   packages/report-domain:
     dependencies:
       zod:

@@ -1,7 +1,10 @@
 'use server';
 
+import { redirect } from 'next/navigation';
+
 import { createClient } from '@/services/supabase/server';
 
+import { validateEmail } from '../lib/email-policy';
 import { validatePassword } from '../lib/password-policy';
 import type { AuthActionState } from '../types/auth-action-state';
 import { getRequestOrigin, getString } from './helpers';
@@ -11,28 +14,39 @@ export async function registerAction(
   formData: FormData,
 ): Promise<AuthActionState> {
   const fullName = getString(formData, 'fullName');
-  const email = getString(formData, 'email').toLowerCase();
+  const emailValidation = validateEmail(
+    getString(formData, 'email'),
+  );
   const password = getString(formData, 'password');
-  const confirmPassword = getString(formData, 'confirmPassword');
-  const acceptTerms = formData.get('acceptTerms') === 'on';
-  const passwordValidation = validatePassword(password);
+  const confirmPassword = getString(
+    formData,
+    'confirmPassword',
+  );
+  const acceptTerms =
+    formData.get('acceptTerms') === 'on';
+  const passwordValidation =
+    validatePassword(password);
 
-  const fieldErrors: AuthActionState['fieldErrors'] = {};
+  const fieldErrors: AuthActionState['fieldErrors'] =
+    {};
 
   if (!fullName) {
-    fieldErrors.fullName = 'Introduce tu nombre completo.';
+    fieldErrors.fullName =
+      'Introduce tu nombre completo.';
   }
 
-  if (!email) {
-    fieldErrors.email = 'Introduce tu correo electrónico.';
+  if (!emailValidation.isValid) {
+    fieldErrors.email = emailValidation.error;
   }
 
   if (!passwordValidation.isValid) {
-    fieldErrors.password = passwordValidation.errors.join(' ');
+    fieldErrors.password =
+      passwordValidation.errors.join(' ');
   }
 
   if (password !== confirmPassword) {
-    fieldErrors.confirmPassword = 'Las contraseñas no coinciden.';
+    fieldErrors.confirmPassword =
+      'Las contraseñas no coinciden.';
   }
 
   if (!acceptTerms) {
@@ -52,7 +66,7 @@ export async function registerAction(
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signUp({
-    email,
+    email: emailValidation.normalizedEmail,
     password,
     options: {
       data: {
@@ -93,9 +107,5 @@ export async function registerAction(
     };
   }
 
-  return {
-    status: 'success',
-    message:
-      'Revisa tu correo electrónico y confirma la cuenta para continuar.',
-  };
+  redirect('/login?registered=1');
 }

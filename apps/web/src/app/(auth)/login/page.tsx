@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 interface LoginPageProps {
   searchParams: Promise<{
+    registered?: string;
     password_updated?: string;
     logged_out?: string;
     auth_error?: string;
@@ -24,11 +25,13 @@ export default async function LoginPage({
   const params = await searchParams;
 
   const notice =
-    params.password_updated === '1'
-      ? 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.'
-      : params.logged_out === '1'
-        ? 'La sesión se ha cerrado correctamente.'
-        : undefined;
+    params.registered === '1'
+      ? 'Cuenta creada. Revisa tu correo electrónico y confirma la cuenta antes de iniciar sesión.'
+      : params.password_updated === '1'
+        ? 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.'
+        : params.logged_out === '1'
+          ? 'La sesión se ha cerrado correctamente.'
+          : undefined;
 
   return (
     <AuthShell

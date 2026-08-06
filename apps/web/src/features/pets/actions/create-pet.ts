@@ -15,6 +15,7 @@ import { PetRepository } from '@buscohuella/pet-data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -70,56 +71,42 @@ function getBirthDatePrecision(
 
 function mapValidationErrors(
   issues: Array<{ path: PropertyKey[]; message: string }>,
+  translate: (key: string) => string,
 ) {
   const fieldErrors: Record<string, string> = {};
+  const codeKeys: Record<string, string> = {
+    PET_BIRTH_DATE_FUTURE: 'pets.validation.birthFuture',
+    PET_BIRTH_DATE_REQUIRED: 'pets.validation.birthRequired',
+    PET_MICROCHIP_WITHOUT_FLAG: 'pets.validation.microchipFlag',
+    PET_PRIMARY_BREED_REQUIRED: 'pets.validation.primaryBreed',
+    PET_SECONDARY_BREED_REQUIRES_MIXED: 'pets.validation.secondaryMixed',
+    PET_BREEDS_MUST_DIFFER: 'pets.validation.breedsDiffer',
+  };
+  const fieldKeys: Record<string, string> = {
+    speciesId: 'pets.validation.species',
+    name: 'pets.validation.name',
+    weightKg: 'pets.validation.weight',
+    primaryColor: 'pets.validation.color',
+    description: 'pets.validation.description',
+    microchipNumber: 'pets.validation.microchip',
+  };
 
   for (const issue of issues) {
     const field = String(issue.path[0] ?? 'form');
     if (!fieldErrors[field]) {
-      fieldErrors[field] = translateValidationMessage(
-        field,
-        issue.message,
+      fieldErrors[field] = translate(
+        codeKeys[issue.message] ?? fieldKeys[field] ?? 'pets.validation.field',
       );
     }
   }
-
   return fieldErrors;
-}
-
-function translateValidationMessage(field: string, message: string) {
-  const messages: Record<string, string> = {
-    PET_BIRTH_DATE_FUTURE:
-      'La fecha de nacimiento no puede ser futura.',
-    PET_BIRTH_DATE_REQUIRED:
-      'Indica una fecha o selecciona que no la conoces.',
-    PET_MICROCHIP_WITHOUT_FLAG:
-      'Marca que tiene microchip antes de introducir el número.',
-    PET_PRIMARY_BREED_REQUIRED:
-      'Selecciona una raza principal del catálogo.',
-    PET_SECONDARY_BREED_REQUIRES_MIXED:
-      'Marca que es un cruce antes de añadir otra raza.',
-    PET_BREEDS_MUST_DIFFER:
-      'Las dos razas deben ser distintas.',
-  };
-
-  return (
-    messages[message] ??
-    {
-      speciesId: 'Selecciona un tipo de animal.',
-      name: 'Introduce un nombre válido.',
-      weightKg: 'Introduce un peso válido.',
-      primaryColor: 'El color es demasiado largo.',
-      description: 'La descripción es demasiado larga.',
-      microchipNumber: 'Introduce un microchip válido.',
-    }[field] ??
-    'Revisa este campo.'
-  );
 }
 
 export async function createPetAction(
   _previousState: PetActionState,
   formData: FormData,
 ): Promise<PetActionState> {
+  const { translate } = await getServerTranslator();
   const speciesId = Number(getString(formData, 'speciesId'));
   const birthDate = getNullableString(formData, 'birthDate');
   const hasMicrochip = formData.get('hasMicrochip') === 'on';
@@ -132,7 +119,7 @@ export async function createPetAction(
   if (!user) {
     return {
       status: 'error',
-      message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
+      message: translate('pets.result.sessionExpired'),
     };
   }
 
@@ -150,7 +137,7 @@ export async function createPetAction(
     if (error instanceof BreedFormError) {
       return {
         status: 'error',
-        message: 'Revisa la información sobre la raza.',
+        message: translate('pets.validation.breedReview'),
         fieldErrors: {
           [error.field]: error.userMessage,
         },
@@ -192,8 +179,8 @@ export async function createPetAction(
   if (!parsed.success) {
     return {
       status: 'error',
-      message: 'Revisa los campos indicados.',
-      fieldErrors: mapValidationErrors(parsed.error.issues),
+      message: translate('pets.validation.review'),
+      fieldErrors: mapValidationErrors(parsed.error.issues, translate),
     };
   }
 
@@ -214,16 +201,16 @@ export async function createPetAction(
     ) {
       return {
         status: 'error',
-        message: 'Ese microchip ya está registrado.',
+        message: translate('pets.result.microchipDuplicate'),
         fieldErrors: {
-          microchipNumber: 'Comprueba el número introducido.',
+          microchipNumber: translate('pets.result.microchipCheck'),
         },
       };
     }
 
     return {
       status: 'error',
-      message: 'No se ha podido registrar la mascota.',
+      message: translate('pets.result.createError'),
     };
   }
 

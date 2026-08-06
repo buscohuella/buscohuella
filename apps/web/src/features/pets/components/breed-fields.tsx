@@ -1,9 +1,6 @@
 'use client';
 
-import type {
-  BreedKnowledge,
-  PetBreed,
-} from '@buscohuella/pet-domain';
+import type { BreedKnowledge, PetBreed } from '@buscohuella/pet-domain';
 import { Check, ChevronDown, Info, Search } from 'lucide-react';
 import {
   useEffect,
@@ -13,6 +10,9 @@ import {
   useState,
 } from 'react';
 
+import { Checkbox } from '@/components/ui/checkbox';
+import { Radio } from '@/components/ui/radio';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 import { cn } from '@/lib/utils';
 
 function normalize(value: string) {
@@ -23,12 +23,8 @@ function normalize(value: string) {
     .trim();
 }
 
-function findBreed(
-  breeds: PetBreed[],
-  value: string,
-): PetBreed | undefined {
+function findBreed(breeds: PetBreed[], value: string) {
   const normalized = normalize(value);
-
   return breeds.find(
     (breed) =>
       normalize(breed.canonicalName) === normalized ||
@@ -36,28 +32,22 @@ function findBreed(
   );
 }
 
-function filterBreeds(breeds: PetBreed[], query: string) {
+function filterBreeds(breeds: PetBreed[], query: string, locale: string) {
   const normalizedQuery = normalize(query);
 
-  if (!normalizedQuery) {
-    return breeds.slice(0, 12);
-  }
+  if (!normalizedQuery) return breeds.slice(0, 12);
 
   return breeds
     .map((breed) => {
       const canonical = normalize(breed.canonicalName);
       const aliases = breed.aliases.map(normalize);
-
       let score = 99;
 
       if (canonical === normalizedQuery) score = 0;
       else if (canonical.startsWith(normalizedQuery)) score = 1;
-      else if (aliases.some((alias) => alias.startsWith(normalizedQuery))) {
-        score = 2;
-      } else if (canonical.includes(normalizedQuery)) score = 3;
-      else if (aliases.some((alias) => alias.includes(normalizedQuery))) {
-        score = 4;
-      }
+      else if (aliases.some((alias) => alias.startsWith(normalizedQuery))) score = 2;
+      else if (canonical.includes(normalizedQuery)) score = 3;
+      else if (aliases.some((alias) => alias.includes(normalizedQuery))) score = 4;
 
       return { breed, score };
     })
@@ -68,7 +58,7 @@ function filterBreeds(breeds: PetBreed[], query: string) {
         left.breed.sortOrder - right.breed.sortOrder ||
         left.breed.canonicalName.localeCompare(
           right.breed.canonicalName,
-          'es',
+          locale,
         ),
     )
     .slice(0, 12)
@@ -96,6 +86,7 @@ export function BreedFields({
   preserveLegacy?: boolean;
   fieldErrors?: Record<string, string>;
 }) {
+  const { locale, t } = useTranslations('pets');
   const availableBreeds = useMemo(
     () => breeds.filter((breed) => breed.speciesId === speciesId),
     [breeds, speciesId],
@@ -110,8 +101,7 @@ export function BreedFields({
     ? 'KNOWN'
     : initialBreedKnowledge;
 
-  const [knowledge, setKnowledge] =
-    useState<BreedKnowledge>(inferredKnowledge);
+  const [knowledge, setKnowledge] = useState<BreedKnowledge>(inferredKnowledge);
   const [primaryId, setPrimaryId] = useState<number | null>(
     initialPrimaryBreedId ?? inferredLegacyBreed?.id ?? null,
   );
@@ -119,9 +109,7 @@ export function BreedFields({
     initialSecondaryBreedId,
   );
   const [isMixed, setIsMixed] = useState(
-    inferredKnowledge === 'MIXED_UNKNOWN'
-      ? true
-      : initialIsMixedBreed,
+    inferredKnowledge === 'MIXED_UNKNOWN' ? true : initialIsMixedBreed,
   );
   const [keepLegacy, setKeepLegacy] = useState(
     preserveLegacy && !inferredLegacyBreed,
@@ -152,21 +140,18 @@ export function BreedFields({
   return (
     <fieldset className="space-y-5 md:col-span-2">
       <legend className="text-sm font-semibold">
-        Información sobre la raza
+        {t('breed.legend')}
       </legend>
 
       {keepLegacy && legacyBreed ? (
         <div className="rounded-lg border border-border-soft bg-surface p-4">
-          <p className="font-semibold">Dato anterior: {legacyBreed}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            No coincide todavía con el catálogo. Se conservará mientras
-            no elijas otra opción.
+          <p className="font-semibold">
+            {t('breed.legacyTitle', { breed: legacyBreed })}
           </p>
-          <input
-            type="hidden"
-            name="preserveLegacyBreed"
-            value="1"
-          />
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t('breed.legacyDescription')}
+          </p>
+          <input type="hidden" name="preserveLegacyBreed" value="1" />
         </div>
       ) : null}
 
@@ -175,44 +160,36 @@ export function BreedFields({
           value="KNOWN"
           checked={knowledge === 'KNOWN'}
           disabled={!speciesId}
-          label="Conozco la raza"
-          description="Selecciona una raza y, si es un cruce, una segunda."
+          label={t('breed.knownTitle')}
+          description={t('breed.knownDescription')}
           onChange={() => chooseKnowledge('KNOWN')}
         />
         <KnowledgeOption
           value="UNKNOWN"
           checked={knowledge === 'UNKNOWN'}
           disabled={!speciesId}
-          label="No conozco la raza"
-          description="La ficha quedará como raza desconocida."
+          label={t('breed.unknownTitle')}
+          description={t('breed.unknownDescription')}
           onChange={() => chooseKnowledge('UNKNOWN')}
         />
         <KnowledgeOption
           value="MIXED_UNKNOWN"
           checked={knowledge === 'MIXED_UNKNOWN'}
           disabled={!speciesId}
-          label="Mestiza, razas desconocidas"
-          description="Sabes que es un cruce, pero no cuáles."
+          label={t('breed.mixedUnknownTitle')}
+          description={t('breed.mixedUnknownDescription')}
           onChange={() => chooseKnowledge('MIXED_UNKNOWN')}
         />
       </div>
 
       <input type="hidden" name="breedKnowledge" value={knowledge} />
-      <input
-        type="hidden"
-        name="primaryBreedId"
-        value={primaryId ?? ''}
-      />
-      <input
-        type="hidden"
-        name="secondaryBreedId"
-        value={secondaryId ?? ''}
-      />
+      <input type="hidden" name="primaryBreedId" value={primaryId ?? ''} />
+      <input type="hidden" name="secondaryBreedId" value={secondaryId ?? ''} />
 
       {!speciesId ? (
         <InformationState
-          title="Selecciona primero el tipo de animal"
-          description="Necesitamos conocer la especie para mostrar únicamente las razas compatibles."
+          title={t('breed.selectSpeciesTitle')}
+          description={t('breed.selectSpeciesDescription')}
         />
       ) : null}
 
@@ -220,10 +197,11 @@ export function BreedFields({
         <div className="grid gap-5 md:grid-cols-2">
           <BreedCombobox
             id="pet-primary-breed"
-            label="Raza principal"
+            label={t('breed.primaryLabel')}
             breeds={availableBreeds}
             selectedBreed={primaryBreed}
             error={fieldErrors?.primaryBreedId}
+            locale={locale}
             onSelect={(breed) => {
               setPrimaryId(breed?.id ?? null);
               setKeepLegacy(false);
@@ -235,40 +213,28 @@ export function BreedFields({
           />
 
           <div className="flex items-end">
-            <label className="flex min-h-12 w-full cursor-pointer items-center gap-3 rounded-lg border border-border-soft bg-surface p-4">
-              <input
-                type="checkbox"
+            <div className="w-full rounded-lg border border-border-soft bg-surface p-4">
+              <Checkbox
                 name="isMixedBreed"
                 checked={isMixed}
                 onChange={(event) => {
                   setIsMixed(event.target.checked);
-
-                  if (!event.target.checked) {
-                    setSecondaryId(null);
-                  }
+                  if (!event.target.checked) setSecondaryId(null);
                 }}
-                className="size-5 accent-[var(--primary)]"
+                label={t('breed.mixedLabel')}
+                description={t('breed.mixedDescription')}
               />
-              <span>
-                <span className="block font-semibold">
-                  Es un cruce de razas
-                </span>
-                <span className="mt-1 block text-sm text-muted-foreground">
-                  Añade una segunda raza cuando la conozcas.
-                </span>
-              </span>
-            </label>
+            </div>
           </div>
 
           {isMixed ? (
             <BreedCombobox
               id="pet-secondary-breed"
-              label="Segunda raza"
-              breeds={availableBreeds.filter(
-                (breed) => breed.id !== primaryId,
-              )}
+              label={t('breed.secondaryLabel')}
+              breeds={availableBreeds.filter((breed) => breed.id !== primaryId)}
               selectedBreed={secondaryBreed}
               error={fieldErrors?.secondaryBreedId}
+              locale={locale}
               onSelect={(breed) => setSecondaryId(breed?.id ?? null)}
             />
           ) : null}
@@ -277,8 +243,8 @@ export function BreedFields({
 
       {speciesId && knowledge === 'UNKNOWN' ? (
         <InformationState
-          title="Raza desconocida"
-          description="Guardaremos que no conoces la raza. Podrás completarla más adelante desde la edición de la ficha."
+          title={t('breed.unknownStateTitle')}
+          description={t('breed.unknownStateDescription')}
         />
       ) : null}
 
@@ -286,8 +252,8 @@ export function BreedFields({
         <>
           <input type="hidden" name="isMixedBreed" value="on" />
           <InformationState
-            title="Mascota mestiza"
-            description="Registraremos que es un cruce, aunque no conozcas las razas que lo forman."
+            title={t('breed.mixedStateTitle')}
+            description={t('breed.mixedStateDescription')}
           />
         </>
       ) : null}
@@ -307,6 +273,7 @@ function BreedCombobox({
   breeds,
   selectedBreed,
   error,
+  locale,
   onSelect,
 }: {
   id: string;
@@ -314,25 +281,23 @@ function BreedCombobox({
   breeds: PetBreed[];
   selectedBreed: PetBreed | null;
   error?: string;
+  locale: string;
   onSelect: (breed: PetBreed | null) => void;
 }) {
+  const { t } = useTranslations('pets');
   const generatedId = useId();
   const listboxId = `${id}-${generatedId}-listbox`;
   const statusId = `${id}-${generatedId}-status`;
   const errorId = error ? `${id}-${generatedId}-error` : undefined;
-
   const containerRef = useRef<HTMLDivElement>(null);
-  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  const [query, setQuery] = useState(
-    selectedBreed?.canonicalName ?? '',
-  );
+  const [query, setQuery] = useState(selectedBreed?.canonicalName ?? '');
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const matches = useMemo(
-    () => filterBreeds(breeds, query),
-    [breeds, query],
+    () => filterBreeds(breeds, query, locale),
+    [breeds, query, locale],
   );
 
   useEffect(() => {
@@ -348,9 +313,7 @@ function BreedCombobox({
     }
 
     document.addEventListener('pointerdown', handlePointerDown);
-
-    return () =>
-      document.removeEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isOpen]);
 
   function selectBreed(breed: PetBreed) {
@@ -364,47 +327,29 @@ function BreedCombobox({
     setQuery(value);
     setIsOpen(true);
     setActiveIndex(0);
-
-    const exact = findBreed(breeds, value);
-    onSelect(exact ?? null);
+    onSelect(findBreed(breeds, value) ?? null);
   }
 
-  function handleKeyDown(
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) {
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       setIsOpen(true);
       setActiveIndex((current) =>
-        matches.length
-          ? Math.min(current + 1, matches.length - 1)
-          : 0,
+        matches.length ? Math.min(current + 1, matches.length - 1) : 0,
       );
-      return;
-    }
-
-    if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp') {
       event.preventDefault();
       setIsOpen(true);
       setActiveIndex((current) =>
         matches.length ? Math.max(current - 1, 0) : 0,
       );
-      return;
-    }
-
-    if (event.key === 'Enter' && isOpen && matches[activeIndex]) {
+    } else if (event.key === 'Enter' && isOpen && matches[activeIndex]) {
       event.preventDefault();
       selectBreed(matches[activeIndex]);
-      return;
-    }
-
-    if (event.key === 'Escape') {
+    } else if (event.key === 'Escape') {
       event.preventDefault();
       setIsOpen(false);
-      return;
-    }
-
-    if (event.key === 'Tab') {
+    } else if (event.key === 'Tab') {
       setIsOpen(false);
     }
   }
@@ -420,7 +365,6 @@ function BreedCombobox({
           className="pointer-events-none absolute left-3 top-3.5 size-5 text-muted-foreground"
           aria-hidden="true"
         />
-
         <input
           id={id}
           type="text"
@@ -436,58 +380,46 @@ function BreedCombobox({
               : undefined
           }
           aria-invalid={Boolean(error) || undefined}
-          aria-describedby={
-            [statusId, errorId].filter(Boolean).join(' ') || undefined
-          }
-          placeholder="Empieza a escribir, por ejemplo: Pas..."
+          aria-describedby={[statusId, errorId].filter(Boolean).join(' ') || undefined}
+          placeholder={t('breed.searchPlaceholder')}
           onFocus={() => setIsOpen(true)}
           onChange={(event) => handleInput(event.target.value)}
           onKeyDown={handleKeyDown}
           className={cn(
-            'min-h-12 w-full rounded-lg border bg-surface-elevated py-2 pl-10 pr-11 text-base text-foreground',
+            'min-h-12 w-full rounded-lg border bg-surface-elevated py-2 pl-10 pr-11 text-base',
             'focus-visible:outline-none focus-visible:ring-4',
             error
-              ? 'border-danger focus-visible:ring-danger/15'
-              : 'border-border focus-visible:border-primary focus-visible:ring-primary/15',
+              ? 'border-danger focus-visible:ring-danger-soft'
+              : 'border-border focus-visible:border-primary focus-visible:ring-focus-soft',
           )}
         />
-
         <button
           type="button"
-          aria-label={isOpen ? 'Cerrar sugerencias' : 'Mostrar sugerencias'}
+          aria-label={t(
+            isOpen ? 'breed.closeSuggestions' : 'breed.showSuggestions',
+          )}
           onClick={() => setIsOpen((current) => !current)}
-          className="absolute right-1.5 top-1.5 flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          className="absolute right-1.5 top-1.5 flex size-9 items-center justify-center rounded-full text-muted-foreground hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           <ChevronDown
-            className={cn(
-              'size-5 transition-transform',
-              isOpen && 'rotate-180',
-            )}
+            className={cn('size-5 transition-transform', isOpen && 'rotate-180')}
             aria-hidden="true"
           />
         </button>
       </div>
 
-      <p
-        id={statusId}
-        aria-live="polite"
-        className="mt-2 text-sm text-muted-foreground"
-      >
+      <p id={statusId} aria-live="polite" className="mt-2 text-sm text-muted-foreground">
         {selectedBreed
-          ? `Seleccionada: ${selectedBreed.canonicalName}.`
+          ? t('breed.selectedStatus', { breed: selectedBreed.canonicalName })
           : query
-            ? `${matches.length} ${
-                matches.length === 1 ? 'resultado' : 'resultados'
-              } disponibles.`
-            : 'Escribe para buscar o abre la lista de sugerencias.'}
+            ? t(matches.length === 1 ? 'breed.oneResult' : 'breed.manyResults', {
+                count: matches.length,
+              })
+            : t('breed.searchHint')}
       </p>
 
       {error ? (
-        <p
-          id={errorId}
-          role="alert"
-          className="mt-2 text-sm font-medium text-danger"
-        >
+        <p id={errorId} role="alert" className="mt-2 text-sm font-medium text-danger">
           {error}
         </p>
       ) : null}
@@ -496,7 +428,7 @@ function BreedCombobox({
         <div
           id={listboxId}
           role="listbox"
-          aria-label={`Resultados para ${label}`}
+          aria-label={t('breed.resultsLabel', { label })}
           className="absolute z-30 mt-2 max-h-72 w-full overflow-y-auto rounded-xl border border-border bg-surface-elevated p-1 shadow-[var(--shadow-md)]"
         >
           {matches.length ? (
@@ -507,9 +439,6 @@ function BreedCombobox({
               return (
                 <button
                   key={breed.id}
-                  ref={(element) => {
-                    optionRefs.current[index] = element;
-                  }}
                   id={`${listboxId}-option-${breed.id}`}
                   type="button"
                   role="option"
@@ -519,7 +448,7 @@ function BreedCombobox({
                   onClick={() => selectBreed(breed)}
                   className={cn(
                     'flex w-full items-start justify-between gap-3 rounded-lg px-3 py-3 text-left',
-                    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20',
+                    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft',
                     isActive && 'bg-surface',
                     isSelected && 'font-semibold text-primary',
                   )}
@@ -528,23 +457,21 @@ function BreedCombobox({
                     <span className="block">{breed.canonicalName}</span>
                     {breed.aliases.length ? (
                       <span className="mt-1 block text-xs text-muted-foreground">
-                        También: {breed.aliases.slice(0, 3).join(', ')}
+                        {t('breed.also', {
+                          aliases: breed.aliases.slice(0, 3).join(', '),
+                        })}
                       </span>
                     ) : null}
                   </span>
-
                   {isSelected ? (
-                    <Check
-                      className="mt-0.5 size-5 shrink-0"
-                      aria-hidden="true"
-                    />
+                    <Check className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
                   ) : null}
                 </button>
               );
             })
           ) : (
             <div className="px-3 py-4 text-sm text-muted-foreground">
-              No hay razas que coincidan con “{query}”.
+              {t('breed.noResults', { query })}
             </div>
           )}
         </div>
@@ -578,23 +505,15 @@ function KnowledgeOption({
           : 'border-border-soft bg-surface',
       )}
     >
-      <span className="flex items-start gap-3">
-        <input
-          type="radio"
-          name="breedKnowledgeChoice"
-          value={value}
-          checked={checked}
-          disabled={disabled}
-          onChange={onChange}
-          className="mt-1 size-5 accent-[var(--primary)]"
-        />
-        <span>
-          <span className="block font-semibold">{label}</span>
-          <span className="mt-1 block text-sm text-muted-foreground">
-            {description}
-          </span>
-        </span>
-      </span>
+      <Radio
+        name="breedKnowledgeChoice"
+        value={value}
+        checked={checked}
+        disabled={disabled}
+        onChange={onChange}
+        label={label}
+        description={description}
+      />
     </label>
   );
 }
@@ -614,9 +533,7 @@ function InformationState({
       />
       <div>
         <p className="font-semibold">{title}</p>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {description}
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
       </div>
     </div>
   );

@@ -66,7 +66,6 @@
   "lostPet": {
     "title": "¿Qué mascota se ha perdido?",
     "microchip": "Con microchip",
-    "nextUnavailable": "El paso de fecha y ubicación se habilitará en la siguiente entrega.",
     "selectedDescription": "Usaremos los datos registrados de {name}.",
     "selectAria": "Seleccionar a {name} como mascota perdida",
     "selected": "Seleccionada",
@@ -79,12 +78,66 @@
     "continue": "Continuar",
     "color": "Color: {color}",
     "selectedTitle": "Mascota seleccionada",
-    "nextHint": "El siguiente paso pedirá cuándo y dónde ocurrió, sin repetir los datos de la mascota.",
+    "nextHint": "Ahora indicaremos cuándo ocurrió.",
     "selectHint": "Selecciona una mascota para continuar.",
     "groupLabel": "Seleccionar mascota perdida",
     "back": "Volver al tipo de aviso",
     "emptyTitle": "No tienes mascotas activas",
     "registerPet": "Registrar mascota",
     "select": "Seleccionar"
+  },
+  "incidentTime": {
+    "groupLabel": "Seleccionar cuándo ocurrió la pérdida",
+    "customHelp": "No puede ser una fecha futura.",
+    "eyebrow": "Mascota perdida",
+    "back": "Volver a la mascota",
+    "summary": {
+      "NOW": "Ahora mismo",
+      "RECENT": "Hace menos de una hora",
+      "TODAY": "Hoy",
+      "YESTERDAY": "Ayer",
+      "CUSTOM": "Fecha y hora personalizadas"
+    },
+    "continue": "Continuar a ubicación",
+    "futureError": "La fecha y la hora no pueden estar en el futuro.",
+    "questionHelp": "Elige la respuesta más cercana. No hace falta recordar la hora exacta.",
+    "description": "Indica cuándo se perdió {name}. Puedes responder de forma aproximada.",
+    "question": "¿Cuándo viste a tu mascota por última vez?",
+    "customLabel": "Fecha y hora",
+    "title": "¿Cuándo ocurrió?",
+    "options": {
+      "now": {
+        "label": "Ahora mismo",
+        "description": "Ha ocurrido hace pocos minutos."
+      },
+      "recent": {
+        "label": "Hace menos de una hora",
+        "description": "Ha ocurrido recientemente."
+      },
+      "today": {
+        "label": "Hoy",
+        "description": "Ha ocurrido hoy, pero no necesitas precisar la hora."
+      },
+      "yesterday": {
+        "label": "Ayer",
+        "description": "Ha ocurrido durante el día de ayer."
+      },
+      "custom": {
+        "label": "Elegir fecha y hora",
+        "description": "Para pérdidas anteriores o cuando conoces el momento."
+      }
+    },
+    "nextHint": "Ahora indicaremos cuándo ocurrió.",
+    "petSelected": "Mascota seleccionada",
+    "selectHint": "Selecciona una opción para continuar."
+  },
+  "location": {
+    "eyebrow": "Mascota perdida",
+    "title": "¿Dónde ocurrió?",
+    "savedSummary": "Hemos conservado la selección de {name}: {moment}.",
+    "description": "Indica dónde se perdió {name}.",
+    "back": "Volver al momento",
+    "nextTitle": "La ubicación es el siguiente paso",
+    "nextDescription": "Podrás usar el GPS, buscar una dirección o marcar el lugar en el mapa."
   }
 }

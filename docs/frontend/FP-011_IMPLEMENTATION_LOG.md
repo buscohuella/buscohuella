@@ -93,3 +93,24 @@ No incluye todavía:
 - Cuando `Mis avisos` está vacío, se oculta el CTA superior y se mantiene el CTA principal del estado vacío.
 - Cuando existen avisos, vuelve a mostrarse el CTA superior.
 - La navegación `Inicio` conserva la ruta canónica `/inicio`.
+## Entrega 3 — Momento del incidente
+
+Estado: en implementación.
+
+Incluye:
+
+- opciones rápidas: ahora, hace menos de una hora, hoy y ayer;
+- fecha y hora personalizada;
+- bloqueo de fechas futuras;
+- conservación de la mascota y del momento en la URL;
+- semántica de radiogrupo;
+- feedback accesible y foco visible;
+- ES/CA;
+- ruta preparada para el paso de ubicación.
+
+Decisión de datos:
+
+- las respuestas aproximadas se conservan como `NOW`, `RECENT`, `TODAY` o `YESTERDAY`;
+- no se inventa una hora exacta para una respuesta aproximada;
+- únicamente `CUSTOM` transporta un instante ISO exacto;
+- el borrador todavía no se crea hasta disponer también de ubicación.

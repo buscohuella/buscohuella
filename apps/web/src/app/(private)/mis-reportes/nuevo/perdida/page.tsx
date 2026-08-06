@@ -169,11 +169,11 @@ export default async function SelectLostPetPage({
                   )}
                 </p>
 
-                <button
-                  type="button"
-                  disabled
-                  aria-describedby="lost-pet-next-hint"
-                  className="inline-flex min-h-12 cursor-not-allowed items-center justify-center gap-2 rounded-full border border-border bg-surface px-5 font-semibold text-muted-foreground opacity-75"
+                <Link
+                  href={`/mis-reportes/nuevo/perdida/cuando?mascota=${encodeURIComponent(
+                    selectedPet.id,
+                  )}`}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
                 >
                   {translate(
                     'reports.lostPet.continue',
@@ -182,16 +182,7 @@ export default async function SelectLostPetPage({
                     className="size-5"
                     aria-hidden="true"
                   />
-                </button>
-
-                <span
-                  id="lost-pet-next-hint"
-                  className="sr-only"
-                >
-                  {translate(
-                    'reports.lostPet.nextUnavailable',
-                  )}
-                </span>
+                </Link>
               </CardContent>
             </Card>
           ) : (

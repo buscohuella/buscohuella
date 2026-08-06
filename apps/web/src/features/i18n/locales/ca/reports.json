@@ -66,7 +66,6 @@
   "lostPet": {
     "title": "Quina mascota s'ha perdut?",
     "microchip": "Amb microxip",
-    "nextUnavailable": "El pas de data i ubicació s'habilitarà en la propera entrega.",
     "selectedDescription": "Utilitzarem les dades registrades de {name}.",
     "selectAria": "Selecciona {name} com a mascota perduda",
     "selected": "Seleccionada",
@@ -79,12 +78,66 @@
     "continue": "Continua",
     "color": "Color: {color}",
     "selectedTitle": "Mascota seleccionada",
-    "nextHint": "El pas següent demanarà quan i on va passar, sense repetir les dades de la mascota.",
+    "nextHint": "Ara indicarem quan va passar.",
     "selectHint": "Selecciona una mascota per continuar.",
     "groupLabel": "Selecciona la mascota perduda",
     "back": "Torna al tipus d'avís",
     "emptyTitle": "No tens mascotes actives",
     "registerPet": "Registra una mascota",
     "select": "Selecciona"
+  },
+  "incidentTime": {
+    "groupLabel": "Selecciona quan va passar la pèrdua",
+    "customHelp": "No pot ser una data futura.",
+    "eyebrow": "Mascota perduda",
+    "back": "Torna a la mascota",
+    "summary": {
+      "NOW": "Ara mateix",
+      "RECENT": "Fa menys d'una hora",
+      "TODAY": "Avui",
+      "YESTERDAY": "Ahir",
+      "CUSTOM": "Data i hora personalitzades"
+    },
+    "continue": "Continua a la ubicació",
+    "futureError": "La data i l'hora no poden ser futures.",
+    "questionHelp": "Tria la resposta més propera. No cal recordar l'hora exacta.",
+    "description": "Indica quan es va perdre {name}. Pots respondre de manera aproximada.",
+    "question": "Quan vas veure la teva mascota per última vegada?",
+    "customLabel": "Data i hora",
+    "title": "Quan va passar?",
+    "options": {
+      "now": {
+        "label": "Ara mateix",
+        "description": "Ha passat fa pocs minuts."
+      },
+      "recent": {
+        "label": "Fa menys d'una hora",
+        "description": "Ha passat recentment."
+      },
+      "today": {
+        "label": "Avui",
+        "description": "Ha passat avui, però no cal precisar l'hora."
+      },
+      "yesterday": {
+        "label": "Ahir",
+        "description": "Ha passat durant el dia d'ahir."
+      },
+      "custom": {
+        "label": "Tria la data i l'hora",
+        "description": "Per a pèrdues anteriors o quan coneixes el moment."
+      }
+    },
+    "nextHint": "Ara indicarem quan va passar.",
+    "petSelected": "Mascota seleccionada",
+    "selectHint": "Selecciona una opció per continuar."
+  },
+  "location": {
+    "eyebrow": "Mascota perduda",
+    "title": "On va passar?",
+    "savedSummary": "Hem conservat la selecció de {name}: {moment}.",
+    "description": "Indica on es va perdre {name}.",
+    "back": "Torna al moment",
+    "nextTitle": "La ubicació és el pas següent",
+    "nextDescription": "Podràs utilitzar el GPS, cercar una adreça o marcar el lloc al mapa."
   }
 }

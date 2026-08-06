@@ -137,3 +137,48 @@ Decisión de privacidad:
 - la ubicación no se persiste todavía en Supabase;
 - el borrador se creará cuando estén disponibles los datos mínimos y se ejecute validación de servidor;
 - la geocodificación y el ajuste mediante Mapbox se conectarán sobre esta capa sin cambiar el contrato del flujo.
+## Entrega 5 — Descripción y datos esenciales
+
+Estado: en implementación.
+
+Incluye:
+
+- descripción breve obligatoria de 10 a 800 caracteres;
+- contador y validación accesible;
+- detalles rápidos opcionales: collar o arnés, medicación, miedo y sociabilidad;
+- preferencia para reutilizar fotografías de la ficha;
+- almacenamiento temporal en `sessionStorage`;
+- ES/CA;
+- ruta preparada para revisión final.
+
+Decisión de dominio:
+
+- los detalles rápidos no crean columnas nuevas en `reports`;
+- se utilizarán para componer una descripción pública coherente durante la revisión;
+- la preferencia de fotografías se resolverá mediante `report_photos`;
+- el borrador no se crea hasta que la revisión reúna mascota, momento, ubicación y descripción;
+- la validación final se realizará también en servidor con `createReportSchema`.
+## Entrega 6 — Revisión y creación del borrador
+
+Estado: en implementación.
+
+Incluye:
+
+- revisión conjunta de mascota, momento, ubicación, descripción, detalles y fotografías;
+- creación real de `reports` con estado `DRAFT`;
+- validación de cliente y `createReportSchema` en servidor;
+- verificación de sesión y propiedad de la mascota;
+- logging sanitizado;
+- limpieza de `sessionStorage` solo después de crear correctamente;
+- redirección a `Mis avisos`;
+- ES/CA.
+
+Decisiones de integridad:
+
+- `NOW` se persiste con el instante de creación;
+- `CUSTOM` conserva el instante ISO seleccionado;
+- `RECENT`, `TODAY` y `YESTERDAY` no generan una hora ficticia y dejan `incident_at` pendiente;
+- GPS persiste ubicación exacta privada y ubicación pública aproximada;
+- una referencia manual se guarda provisionalmente como nombre de zona sin inventar coordenadas;
+- el borrador permanece privado hasta una publicación explícita;
+- la preferencia de reutilizar fotos queda pendiente de copiar metadatos en la entrega de fotografías.

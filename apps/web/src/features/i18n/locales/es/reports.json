@@ -167,12 +167,71 @@
     "gpsConfirmed": "Zona pública aproximada: {latitude}, {longitude}"
   },
   "description": {
-    "locationSaved": "La ubicación exacta no se ha incluido en la URL y permanece temporalmente en esta sesión.",
+    "formDescription": "Una descripción clara ayuda más que un formulario largo.",
+    "formTitle": "Información esencial",
     "eyebrow": "Mascota perdida",
     "title": "Añade información útil",
     "description": "Cuenta brevemente qué ocurrió con {name}.",
     "back": "Volver a la ubicación",
-    "nextTitle": "La ubicación se ha conservado",
-    "nextDescription": "En la siguiente entrega añadiremos una descripción breve y las opciones esenciales."
+    "form": {
+      "descriptionLabel": "Descripción breve",
+      "descriptionPrompt": "Explica dónde fue vista {name} por última vez y cualquier detalle importante.",
+      "descriptionPlaceholder": "Ejemplo: Se escapó cerca del parque. Llevaba un collar rojo y responde a su nombre.",
+      "descriptionHelp": "Escribe entre {min} y {max} caracteres.",
+      "descriptionTooShort": "Faltan {remaining} caracteres para poder continuar.",
+      "characterCount": "{count} de {max} caracteres",
+      "quickDetailsTitle": "Detalles rápidos",
+      "quickDetailsDescription": "Son opcionales y se incorporarán al resumen del aviso.",
+      "hasCollar": "Lleva collar o arnés",
+      "needsMedication": "Necesita medicación",
+      "isFearful": "Puede estar asustada",
+      "isFriendly": "Es sociable",
+      "usePhotosTitle": "Usar las fotos de la ficha",
+      "usePhotosDescription": "Prepararemos las fotografías registradas para el aviso.",
+      "reviewHint": "Podrás revisar todo antes de crear el borrador.",
+      "continue": "Revisar aviso"
+    }
+  },
+  "review": {
+    "eyebrow": "Mascota perdida",
+    "creating": "Guardando borrador…",
+    "back": "Volver a la información",
+    "sections": {
+      "pet": "Mascota",
+      "moment": "Momento",
+      "location": "Ubicación",
+      "photos": "Fotografías",
+      "description": "Descripción y detalles"
+    },
+    "success": "Borrador guardado correctamente.",
+    "photosYes": "Se reutilizarán las fotos de la ficha.",
+    "errors": {
+      "incomplete": "Faltan datos necesarios para guardar el borrador.",
+      "location": "La ubicación GPS no es válida. Vuelve a seleccionarla.",
+      "session": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+      "pet": "No hemos podido verificar la mascota seleccionada.",
+      "validation": "Revisa la información antes de guardar el borrador.",
+      "create": "No hemos podido guardar el borrador. Inténtalo de nuevo."
+    },
+    "generatedTitle": "{name} se ha perdido",
+    "formDescription": "Todavía no será público. Podrás editarlo y publicarlo después.",
+    "loading": "Preparando la revisión…",
+    "title": "Revisa el aviso",
+    "formTitle": "Resumen del aviso",
+    "createDraft": "Guardar borrador",
+    "missingDescription": "Vuelve a los pasos anteriores para completar ubicación y descripción.",
+    "photosNo": "No se reutilizarán las fotos de la ficha.",
+    "missingTitle": "Faltan datos del aviso",
+    "description": "Comprueba la información de {name} antes de guardar el borrador.",
+    "draftPrivacy": "El borrador es privado. La ubicación exacta no se mostrará públicamente y no se publicará nada en este paso.",
+    "createHint": "Después podrás revisar el borrador desde Mis avisos.",
+    "locationGps": "Zona aproximada: {latitude}, {longitude}",
+    "details": {
+      "heading": "Detalles importantes:",
+      "hasCollar": "Lleva collar o arnés.",
+      "needsMedication": "Necesita medicación.",
+      "isFearful": "Puede estar asustada.",
+      "isFriendly": "Es sociable."
+    }
   }
 }

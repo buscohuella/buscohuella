@@ -167,12 +167,71 @@
     "gpsConfirmed": "Zona pública aproximada: {latitude}, {longitude}"
   },
   "description": {
-    "locationSaved": "La ubicació exacta no s'ha inclòs a l'URL i es manté temporalment en aquesta sessió.",
+    "formDescription": "Una descripció clara ajuda més que un formulari llarg.",
+    "formTitle": "Informació essencial",
     "eyebrow": "Mascota perduda",
     "title": "Afegeix informació útil",
     "description": "Explica breument què va passar amb {name}.",
     "back": "Torna a la ubicació",
-    "nextTitle": "La ubicació s'ha conservat",
-    "nextDescription": "A la propera entrega afegirem una descripció breu i les opcions essencials."
+    "form": {
+      "descriptionLabel": "Descripció breu",
+      "descriptionPrompt": "Explica on es va veure {name} per última vegada i qualsevol detall important.",
+      "descriptionPlaceholder": "Exemple: Va escapar-se a prop del parc. Portava un collar vermell i respon al seu nom.",
+      "descriptionHelp": "Escriu entre {min} i {max} caràcters.",
+      "descriptionTooShort": "Falten {remaining} caràcters per poder continuar.",
+      "characterCount": "{count} de {max} caràcters",
+      "quickDetailsTitle": "Detalls ràpids",
+      "quickDetailsDescription": "Són opcionals i s'incorporaran al resum de l'avís.",
+      "hasCollar": "Porta collar o arnès",
+      "needsMedication": "Necessita medicació",
+      "isFearful": "Pot estar espantada",
+      "isFriendly": "És sociable",
+      "usePhotosTitle": "Utilitza les fotos de la fitxa",
+      "usePhotosDescription": "Prepararem les fotografies registrades per a l'avís.",
+      "reviewHint": "Podràs revisar-ho tot abans de crear l'esborrany.",
+      "continue": "Revisa l'avís"
+    }
+  },
+  "review": {
+    "eyebrow": "Mascota perduda",
+    "creating": "Desant l'esborrany…",
+    "back": "Torna a la informació",
+    "sections": {
+      "pet": "Mascota",
+      "moment": "Moment",
+      "location": "Ubicació",
+      "photos": "Fotografies",
+      "description": "Descripció i detalls"
+    },
+    "success": "Esborrany desat correctament.",
+    "photosYes": "Es reutilitzaran les fotos de la fitxa.",
+    "errors": {
+      "incomplete": "Falten dades necessàries per desar l'esborrany.",
+      "location": "La ubicació GPS no és vàlida. Torna a seleccionar-la.",
+      "session": "La teva sessió ha caducat. Inicia la sessió de nou.",
+      "pet": "No hem pogut verificar la mascota seleccionada.",
+      "validation": "Revisa la informació abans de desar l'esborrany.",
+      "create": "No hem pogut desar l'esborrany. Torna-ho a provar."
+    },
+    "generatedTitle": "{name} s'ha perdut",
+    "formDescription": "Encara no serà públic. Podràs editar-lo i publicar-lo després.",
+    "loading": "Preparant la revisió…",
+    "title": "Revisa l'avís",
+    "formTitle": "Resum de l'avís",
+    "createDraft": "Desa l'esborrany",
+    "missingDescription": "Torna als passos anteriors per completar la ubicació i la descripció.",
+    "photosNo": "No es reutilitzaran les fotos de la fitxa.",
+    "missingTitle": "Falten dades de l'avís",
+    "description": "Comprova la informació de {name} abans de desar l'esborrany.",
+    "draftPrivacy": "L'esborrany és privat. La ubicació exacta no es mostrarà públicament i no es publicarà res en aquest pas.",
+    "createHint": "Després podràs revisar l'esborrany des d'Els meus avisos.",
+    "locationGps": "Zona aproximada: {latitude}, {longitude}",
+    "details": {
+      "heading": "Detalls importants:",
+      "hasCollar": "Porta collar o arnès.",
+      "needsMedication": "Necessita medicació.",
+      "isFearful": "Pot estar espantada.",
+      "isFriendly": "És sociable."
+    }
   }
 }

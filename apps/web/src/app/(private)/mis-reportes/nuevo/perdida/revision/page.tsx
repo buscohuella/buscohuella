@@ -2,7 +2,7 @@ import { PetRepository } from '@buscohuella/pet-data';
 import type { Pet } from '@buscohuella/pet-domain';
 import {
   ArrowLeft,
-  MessageSquareText,
+  ClipboardCheck,
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
-import { LostReportDetailsStep } from '@/features/reports/components/lost-report-details-step';
+import { LostReportReview } from '@/features/reports/components/lost-report-review';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -44,7 +44,7 @@ async function loadSelectedPet(
       : null;
   } catch (error) {
     logServerError(
-      'report.description.pet_load_failed',
+      'report.review.pet_load_failed',
       error,
       { petId },
     );
@@ -52,7 +52,7 @@ async function loadSelectedPet(
   }
 }
 
-export default async function DescriptionPage({
+export default async function ReviewPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -105,7 +105,7 @@ export default async function DescriptionPage({
   return (
     <PageContainer className="space-y-6">
       <Link
-        href={`/mis-reportes/nuevo/perdida/ubicacion?${backParams.toString()}`}
+        href={`/mis-reportes/nuevo/perdida/descripcion?${backParams.toString()}`}
         className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
       >
         <ArrowLeft
@@ -113,26 +113,26 @@ export default async function DescriptionPage({
           aria-hidden="true"
         />
         {translate(
-          'reports.description.back',
+          'reports.review.back',
         )}
       </Link>
 
       <header>
         <p className="text-sm font-semibold text-primary">
           {translate(
-            'reports.description.eyebrow',
+            'reports.review.eyebrow',
           )}
         </p>
 
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {translate(
-            'reports.description.title',
+            'reports.review.title',
           )}
         </h1>
 
         <p className="mt-2 max-w-2xl text-muted-foreground">
           {translate(
-            'reports.description.description',
+            'reports.review.description',
             { name: pet.name },
           )}
         </p>
@@ -141,7 +141,7 @@ export default async function DescriptionPage({
       <Card elevated>
         <CardHeader>
           <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
-            <MessageSquareText
+            <ClipboardCheck
               className="size-6"
               aria-hidden="true"
             />
@@ -149,19 +149,19 @@ export default async function DescriptionPage({
 
           <CardTitle>
             {translate(
-              'reports.description.formTitle',
+              'reports.review.formTitle',
             )}
           </CardTitle>
 
           <CardDescription>
             {translate(
-              'reports.description.formDescription',
+              'reports.review.formDescription',
             )}
           </CardDescription>
         </CardHeader>
 
         <CardContent>
-          <LostReportDetailsStep
+          <LostReportReview
             petId={pet.id}
             petName={pet.name}
             moment={query.momento}

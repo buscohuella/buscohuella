@@ -19,12 +19,26 @@
     "publicLabel": "Navegació pública",
     "homeAria": "BuscoHuella, inici públic",
     "map": "Mapa",
-    "reports": "Reportes",
+    "reports": "Avisos",
     "login": "Entra",
     "register": "Crea un compte",
     "registerShort": "Registre",
     "profile": "El meu perfil",
-    "openProfile": "Obre el perfil de {name}"
+    "openProfile": "Obre el perfil de {name}",
+    "private": {
+      "home": "Inici",
+      "map": "Mapa",
+      "profile": "Perfil",
+      "reports": "Avisos",
+      "logout": "Tanca la sessió",
+      "openProfile": "Obre el perfil de {name}",
+      "mobileLabel": "Navegació principal mòbil",
+      "report": "Crea un avís",
+      "notifications": "Mostra les notificacions",
+      "pets": "Mascotes",
+      "brandHome": "BuscoHuella, ves a l'inici",
+      "mainLabel": "Navegació principal"
+    }
   },
   "actions": {
     "close": "Tanca",

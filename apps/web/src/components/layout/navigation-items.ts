@@ -9,20 +9,40 @@ import {
 } from 'lucide-react';
 
 export interface NavigationItem {
-  label: string;
+  labelKey: string;
   href: string;
   icon: LucideIcon;
 }
 
 export const navigationItems: NavigationItem[] = [
-  { label: 'Inicio', href: '/inicio', icon: Home },
-  { label: 'Mapa', href: '/mapa', icon: Map },
-  { label: 'Reportes', href: '/mis-reportes', icon: ScrollText },
-  { label: 'Mascotas', href: '/mis-mascotas', icon: PawPrint },
-  { label: 'Perfil', href: '/perfil', icon: CircleUserRound },
+  {
+    labelKey: 'navigation.private.home',
+    href: '/inicio',
+    icon: Home,
+  },
+  {
+    labelKey: 'navigation.private.map',
+    href: '/mapa',
+    icon: Map,
+  },
+  {
+    labelKey: 'navigation.private.reports',
+    href: '/mis-reportes',
+    icon: ScrollText,
+  },
+  {
+    labelKey: 'navigation.private.pets',
+    href: '/mis-mascotas',
+    icon: PawPrint,
+  },
+  {
+    labelKey: 'navigation.private.profile',
+    href: '/perfil',
+    icon: CircleUserRound,
+  },
 ];
 
 export const reportAction = {
-  label: 'Reportar',
+  labelKey: 'navigation.private.report',
   icon: Plus,
 };

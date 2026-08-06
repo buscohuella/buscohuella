@@ -24,7 +24,21 @@
     "register": "Crear cuenta",
     "registerShort": "Registro",
     "profile": "Mi perfil",
-    "openProfile": "Abrir el perfil de {name}"
+    "openProfile": "Abrir el perfil de {name}",
+    "private": {
+      "home": "Inicio",
+      "map": "Mapa",
+      "profile": "Perfil",
+      "reports": "Reportes",
+      "logout": "Cerrar sesión",
+      "openProfile": "Abrir el perfil de {name}",
+      "mobileLabel": "Navegación principal móvil",
+      "report": "Reportar",
+      "notifications": "Ver notificaciones",
+      "pets": "Mascotas",
+      "brandHome": "BuscoHuella, ir al inicio",
+      "mainLabel": "Navegación principal"
+    }
   },
   "actions": {
     "close": "Cerrar",

@@ -1,9 +1,15 @@
 'use client';
 
-import { Languages } from 'lucide-react';
+import {
+  Check,
+  ChevronDown,
+  Languages,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
   startTransition,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -22,21 +28,79 @@ const shortLabels: Record<AppLocale, string> = {
 
 export function LanguageSelector() {
   const router = useRouter();
-  const { locale, t } = useTranslations('common');
+  const { locale, t } =
+    useTranslations('common');
+
+  const [isOpen, setIsOpen] =
+    useState(false);
+
   const [isChanging, setIsChanging] =
     useState(false);
 
-  function changeLocale(
-    nextLocale: AppLocale,
-  ) {
-    if (nextLocale === locale) {
+  const [
+    requestedLocale,
+    setRequestedLocale,
+  ] = useState<AppLocale | null>(null);
+
+  const containerRef =
+    useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
       return;
     }
 
-    setIsChanging(true);
+    function handlePointerDown(
+      event: PointerEvent,
+    ) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(
+          event.target as Node,
+        )
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    function handleKeyDown(
+      event: KeyboardEvent,
+    ) {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      'pointerdown',
+      handlePointerDown,
+    );
+
+    document.addEventListener(
+      'keydown',
+      handleKeyDown,
+    );
+
+    return () => {
+      document.removeEventListener(
+        'pointerdown',
+        handlePointerDown,
+      );
+
+      document.removeEventListener(
+        'keydown',
+        handleKeyDown,
+      );
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!requestedLocale) {
+      return;
+    }
 
     document.cookie = [
-      `${localeCookieName}=${nextLocale}`,
+      `${localeCookieName}=${requestedLocale}`,
       'Path=/',
       `Max-Age=${localeCookieMaxAge}`,
       'SameSite=Lax',
@@ -44,68 +108,134 @@ export function LanguageSelector() {
 
     startTransition(() => {
       router.refresh();
+      setRequestedLocale(null);
       setIsChanging(false);
     });
+  }, [requestedLocale, router]);
+
+  function changeLocale(
+    nextLocale: AppLocale,
+  ) {
+    if (
+      nextLocale === locale ||
+      isChanging
+    ) {
+      setIsOpen(false);
+      return;
+    }
+
+    setIsChanging(true);
+    setIsOpen(false);
+    setRequestedLocale(nextLocale);
   }
 
   return (
-    <div className="relative shrink-0">
-      <label
-        htmlFor="app-language"
-        className="sr-only"
-      >
-        {t('language.label')}
-      </label>
-
-      <select
-        id="app-language"
-        value={locale}
-        disabled={isChanging}
+    <div
+      ref={containerRef}
+      className="relative shrink-0"
+    >
+      <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
         aria-label={t('language.label')}
-        title={t('language.label')}
-        className={[
-          'peer absolute inset-0 z-10 size-full cursor-pointer appearance-none rounded-full opacity-0',
-          'focus:outline-none',
-          'disabled:cursor-wait',
-        ].join(' ')}
-        onChange={(event) =>
-          changeLocale(
-            event.currentTarget.value as AppLocale,
+        disabled={isChanging}
+        onClick={() =>
+          setIsOpen(
+            (current) => !current,
           )
         }
-      >
-        {supportedLocales.map(
-          (supportedLocale) => (
-            <option
-              key={supportedLocale}
-              value={supportedLocale}
-            >
-              {shortLabels[supportedLocale]}
-              {' — '}
-              {t(
-                `language.options.${supportedLocale}`,
-              )}
-            </option>
-          ),
-        )}
-      </select>
-
-      <div
         className={[
-          'pointer-events-none flex min-h-10 items-center gap-1.5 rounded-full',
-          'border border-border bg-surface-elevated px-2.5',
-          'text-sm font-semibold text-foreground',
-          'transition-[border-color,box-shadow,background-color,opacity]',
-          'peer-hover:bg-surface-hover',
-          'peer-focus-visible:border-primary',
-          'peer-focus-visible:ring-4 peer-focus-visible:ring-focus-soft',
-          isChanging ? 'opacity-65' : '',
+          'flex min-h-10 items-center gap-1.5 rounded-full',
+          'border border-border bg-surface px-2.5',
+          'text-sm font-semibold text-foreground shadow-[var(--shadow-sm)]',
+          'hover:bg-surface-hover',
+          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft',
+          'disabled:cursor-wait disabled:opacity-65',
         ].join(' ')}
-        aria-hidden="true"
       >
-        <Languages className="size-4" />
-        <span>{shortLabels[locale]}</span>
-      </div>
+        <Languages
+          className="size-4 text-primary"
+          aria-hidden="true"
+        />
+
+        <span>
+          {shortLabels[locale]}
+        </span>
+
+        <ChevronDown
+          className={[
+            'size-4 text-muted-foreground transition-transform',
+            isOpen
+              ? 'rotate-180'
+              : '',
+          ].join(' ')}
+          aria-hidden="true"
+        />
+      </button>
+
+      {isOpen ? (
+        <div
+          role="menu"
+          aria-label={t(
+            'language.label',
+          )}
+          className="absolute right-0 top-full z-50 mt-2 min-w-44 overflow-hidden rounded-xl border border-border bg-surface-elevated p-1 shadow-[var(--shadow-lg)]"
+        >
+          {supportedLocales.map(
+            (supportedLocale) => {
+              const isSelected =
+                supportedLocale ===
+                locale;
+
+              return (
+                <button
+                  key={supportedLocale}
+                  type="button"
+                  role="menuitemradio"
+                  aria-checked={
+                    isSelected
+                  }
+                  onClick={() =>
+                    changeLocale(
+                      supportedLocale,
+                    )
+                  }
+                  className={[
+                    'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg px-3 text-left text-sm',
+                    'hover:bg-surface',
+                    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft',
+                    isSelected
+                      ? 'font-semibold text-primary'
+                      : 'text-foreground',
+                  ].join(' ')}
+                >
+                  <span>
+                    <span className="mr-2 font-semibold">
+                      {
+                        shortLabels[
+                          supportedLocale
+                        ]
+                      }
+                    </span>
+
+                    {t(
+                      `language.options.${supportedLocale}`,
+                    )}
+                  </span>
+
+                  {isSelected ? (
+                    <Check
+                      className="size-4"
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                </button>
+              );
+            },
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

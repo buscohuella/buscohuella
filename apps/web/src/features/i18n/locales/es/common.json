@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "BuscoHuella",
+    "tagline": "Encuentra. Protege. Conecta."
+  },
+  "theme": {
+    "activateLight": "Activar tema claro",
+    "activateDark": "Activar tema oscuro"
+  },
+  "actions": {
+    "close": "Cerrar",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "save": "Guardar",
+    "retry": "Volver a intentar"
+  },
+  "status": {
+    "loading": "Cargando…"
+  }
+}

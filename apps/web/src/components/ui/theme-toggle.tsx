@@ -2,17 +2,19 @@
 
 import { Moon, Sun } from 'lucide-react';
 
+import { useTranslations } from '@/features/i18n/i18n-provider';
 import { useTheme } from '@/features/theme/theme-provider';
 import { cn } from '@/lib/utils';
 
 export function ThemeToggle() {
+  const { t } = useTranslations('common');
   const { preference, setPreference } = useTheme();
 
   const isDark = preference === 'dark';
   const nextPreference = isDark ? 'light' : 'dark';
   const label = isDark
-    ? 'Activar tema claro'
-    : 'Activar tema oscuro';
+    ? t('theme.activateLight')
+    : t('theme.activateDark');
   const Icon = isDark ? Sun : Moon;
 
   return (

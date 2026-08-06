@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "BuscoHuella",
+    "tagline": "Troba. Protegeix. Connecta."
+  },
+  "theme": {
+    "activateLight": "Activa el tema clar",
+    "activateDark": "Activa el tema fosc"
+  },
+  "actions": {
+    "close": "Tanca",
+    "cancel": "Cancel·la",
+    "continue": "Continua",
+    "save": "Desa",
+    "retry": "Torna-ho a provar"
+  },
+  "status": {
+    "loading": "Carregant…"
+  }
+}

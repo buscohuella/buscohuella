@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "notFound": "Avís no disponible | BuscoHuella"
+  },
+  "back": "Torna als avisos públics",
+  "active": "Actiu",
+  "animalFallback": "Animal",
+  "galleryAlt": "Fotografies de {name}",
+  "type": {
+    "LOST_PET": "Mascota perduda",
+    "FOUND_ANIMAL": "Animal trobat"
+  },
+  "details": {
+    "title": "Informació de l'avís",
+    "description": "Dades públiques útils per ajudar en la cerca.",
+    "name": "Nom",
+    "zone": "Zona aproximada",
+    "when": "Última vegada vist",
+    "breed": "Raça",
+    "size": "Mida",
+    "color": "Color principal",
+    "unknown": "No indicat",
+    "approximateTime": "Moment aproximat"
+  },
+  "petSize": {
+    "TOY": "Molt petit",
+    "SMALL": "Petit",
+    "MEDIUM": "Mitjà",
+    "LARGE": "Gran",
+    "GIANT": "Molt gran"
+  },
+  "privacy": {
+    "title": "La ubicació exacta està protegida",
+    "description": "BuscoHuella només mostra una zona aproximada. No es publica el domicili ni la coordenada privada de l'avís."
+  },
+  "sighting": {
+    "title": "Has vist aquesta mascota?",
+    "description": "Un avistament recent pot ser decisiu per trobar-la.",
+    "button": "He vist aquesta mascota",
+    "comingSoon": "Els avistaments s'habilitaran en la propera entrega."
+  },
+  "contact": {
+    "title": "Contacte públic",
+    "description": "La persona responsable ha autoritzat mostrar aquestes dades.",
+    "platformTitle": "Contacte protegit",
+    "platformDescription": "La persona responsable ha triat no publicar telèfon ni correu. El contacte mitjançant BuscoHuella s'habilitarà properament."
+  },
+  "share": {
+    "button": "Comparteix l'avís",
+    "copied": "Enllaç copiat",
+    "text": "Ajuda a difondre: {title}"
+  },
+  "list": {
+    "eyebrow": "Comunitat",
+    "title": "Avisos públics",
+    "description": "Mascotes perdudes i animals trobats que necessiten ajuda a prop teu.",
+    "emptyTitle": "No hi ha avisos actius",
+    "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",
+    "noPhoto": "Sense fotografia"
+  }
+}

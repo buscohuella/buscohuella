@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "notFound": "Aviso no disponible | BuscoHuella"
+  },
+  "back": "Volver a avisos públicos",
+  "active": "Activo",
+  "animalFallback": "Animal",
+  "galleryAlt": "Fotografías de {name}",
+  "type": {
+    "LOST_PET": "Mascota perdida",
+    "FOUND_ANIMAL": "Animal encontrado"
+  },
+  "details": {
+    "title": "Información del aviso",
+    "description": "Datos públicos útiles para ayudar en la búsqueda.",
+    "name": "Nombre",
+    "zone": "Zona aproximada",
+    "when": "Última vez visto",
+    "breed": "Raza",
+    "size": "Tamaño",
+    "color": "Color principal",
+    "unknown": "No indicado",
+    "approximateTime": "Momento aproximado"
+  },
+  "petSize": {
+    "TOY": "Muy pequeño",
+    "SMALL": "Pequeño",
+    "MEDIUM": "Mediano",
+    "LARGE": "Grande",
+    "GIANT": "Muy grande"
+  },
+  "privacy": {
+    "title": "La ubicación exacta está protegida",
+    "description": "BuscoHuella solo muestra una zona aproximada. No se publica el domicilio ni la coordenada privada del aviso."
+  },
+  "sighting": {
+    "title": "¿Has visto esta mascota?",
+    "description": "Un avistamiento reciente puede ser decisivo para encontrarla.",
+    "button": "He visto esta mascota",
+    "comingSoon": "Los avistamientos se habilitarán en la siguiente entrega."
+  },
+  "contact": {
+    "title": "Contacto público",
+    "description": "El responsable ha autorizado mostrar estos datos.",
+    "platformTitle": "Contacto protegido",
+    "platformDescription": "El responsable ha elegido no publicar teléfono ni correo. El contacto mediante BuscoHuella se habilitará próximamente."
+  },
+  "share": {
+    "button": "Compartir aviso",
+    "copied": "Enlace copiado",
+    "text": "Ayuda a difundir: {title}"
+  },
+  "list": {
+    "eyebrow": "Comunidad",
+    "title": "Avisos públicos",
+    "description": "Mascotas perdidas y animales encontrados que necesitan ayuda cerca de ti.",
+    "emptyTitle": "No hay avisos activos",
+    "emptyDescription": "Cuando se publique un aviso activo aparecerá aquí.",
+    "noPhoto": "Sin fotografía"
+  }
+}

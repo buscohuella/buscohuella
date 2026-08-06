@@ -13,6 +13,7 @@ o una funcionalidad crítica.
 - [ ] Separar y normalizar de forma consistente descripción y “Detalles
   importantes”.
 - [ ] Revisar textos de zona aproximada y formato oficial de lugares.
+- [ ] Revisar confirmaciones y feedback después de acciones importantes.
 
 ## Ubicaciones
 
@@ -22,12 +23,15 @@ o una funcionalidad crítica.
 - [ ] Conservar coordenada exacta privada y publicar solo una versión
   aproximada.
 - [ ] No inventar coordenadas cuando la entrada sea manual.
+- [ ] Normalizar nombres oficiales de calles, plazas, municipios y barrios.
 
 ## Internacionalización
 
 - [ ] Auditoría completa ES/CA pantalla por pantalla.
 - [ ] Unificar terminología: aviso, reporte, avistamiento, zona aproximada.
 - [ ] Revisar mayúsculas, plurales, fechas y textos truncados.
+- [ ] Garantizar que los textos generados por el sistema se traduzcan sin
+  alterar textos escritos por usuarios.
 - [ ] Preparar ampliación posterior a EN, EU y GL sin duplicar lógica.
 
 ## Interfaz y accesibilidad
@@ -37,6 +41,8 @@ o una funcionalidad crítica.
 - [ ] Estados de carga, vacíos, error y confirmación coherentes.
 - [ ] Skeletons y microinteracciones sin perjudicar rendimiento.
 - [ ] Revisar modo oscuro en todas las pantallas.
+- [ ] Revisar jerarquía de CTA y navegación entre área privada y contenido
+  público.
 
 ## Técnica
 
@@ -46,6 +52,19 @@ o una funcionalidad crítica.
 - [ ] Revisar logs estructurados y evitar datos sensibles.
 - [ ] Auditoría de SEO, Open Graph, rendimiento y accesibilidad.
 - [ ] Revisar políticas RLS y permisos base para los flujos anónimos.
+- [ ] Revisar eventos de auditoría para evitar duplicados y asegurar
+  idempotencia.
+- [ ] Revisar límites, rate limiting y protección anti-spam antes de beta
+  pública.
+
+## Avistamientos
+
+- [ ] Fotografías opcionales del avistamiento.
+- [ ] Bandeja del propietario con contador y estados de revisión.
+- [ ] Confirmación/descartado de avistamientos.
+- [ ] Mostrar ubicación aproximada y exacta según permisos.
+- [ ] Notificación interna al propietario cuando recibe un nuevo avistamiento.
+- [ ] Preparar el modelo para conversación privada asociada a un avistamiento.
 
 ## Criterio de cierre
 
@@ -56,3 +75,7 @@ La auditoría global se realizará cuando estén completos:
 3. avistamientos y panel del propietario;
 4. mapa;
 5. notificaciones y filtros esenciales.
+
+Las funciones de comunidad avanzada, chat completo, autoridades y grupos de
+búsqueda se gestionan en documentación de roadmap y no se consideran deuda del
+MVP.

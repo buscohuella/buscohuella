@@ -9,6 +9,7 @@ import caProfile from './locales/ca/profile.json';
 import caPublicReport from './locales/ca/public-report.json';
 import caReportEdit from './locales/ca/report-edit.json';
 import caReports from './locales/ca/reports.json';
+import caSightingCreate from './locales/ca/sighting-create.json';
 import caReportVisual from './locales/ca/report-visual.json';
 import esAuth from './locales/es/auth.json';
 import esCommon from './locales/es/common.json';
@@ -18,6 +19,7 @@ import esProfile from './locales/es/profile.json';
 import esPublicReport from './locales/es/public-report.json';
 import esReportEdit from './locales/es/report-edit.json';
 import esReports from './locales/es/reports.json';
+import esSightingCreate from './locales/es/sighting-create.json';
 import esReportVisual from './locales/es/report-visual.json';
 
 const dictionaries = {
@@ -31,6 +33,7 @@ const dictionaries = {
     reportEdit: esReportEdit,
     reportVisual: esReportVisual,
     publicReport: esPublicReport,
+    sightingCreate: esSightingCreate,
   },
   ca: {
     common: caCommon,
@@ -42,6 +45,7 @@ const dictionaries = {
     reportEdit: caReportEdit,
     reportVisual: caReportVisual,
     publicReport: caPublicReport,
+    sightingCreate: caSightingCreate,
   },
 } satisfies Record<AppLocale, TranslationDictionary>;
 

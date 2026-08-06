@@ -37,7 +37,9 @@
     "title": "¿Has visto esta mascota?",
     "description": "Un avistamiento reciente puede ser decisivo para encontrarla.",
     "button": "He visto esta mascota",
-    "comingSoon": "Los avistamientos se habilitarán en la siguiente entrega."
+    "comingSoon": "Los avistamientos se habilitarán en la siguiente entrega.",
+    "successTitle": "Avistamiento enviado",
+    "successDescription": "Gracias. La información se ha guardado y queda vinculada a este aviso."
   },
   "contact": {
     "title": "Contacto público",
@@ -57,5 +59,8 @@
     "emptyTitle": "No hay avisos activos",
     "emptyDescription": "Cuando se publique un aviso activo aparecerá aquí.",
     "noPhoto": "Sin fotografía"
+  },
+  "generatedTitle": {
+    "LOST_PET": "{name} se ha perdido"
   }
 }

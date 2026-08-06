@@ -4,6 +4,7 @@ import {
   Map,
   PawPrint,
   Plus,
+  Search,
   ScrollText,
   type LucideIcon,
 } from 'lucide-react';
@@ -24,6 +25,11 @@ export const navigationItems: NavigationItem[] = [
     labelKey: 'navigation.private.map',
     href: '/mapa',
     icon: Map,
+  },
+  {
+    labelKey: 'navigation.private.publicReports',
+    href: '/reportes',
+    icon: Search,
   },
   {
     labelKey: 'navigation.private.reports',

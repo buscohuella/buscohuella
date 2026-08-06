@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import {
   CalendarClock,
+  CircleCheckBig,
   Eye,
   Mail,
   MapPin,
@@ -26,6 +27,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 import { PublicReportGallery } from '@/features/reports/components/public-report-gallery';
 import { PublicReportShareButton } from '@/features/reports/components/public-report-share-button';
 import { getPublicReport } from '@/features/reports/lib/public-report';
+import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 
 const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL ??
@@ -33,6 +35,9 @@ const APP_URL =
 
 type PageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    avistamiento?: string;
+  }>;
 };
 
 export async function generateMetadata({
@@ -85,13 +90,15 @@ export async function generateMetadata({
         modifiedTime:
           report.updatedAt,
         images: primaryPhoto
-          ? [{
-              url:
-                primaryPhoto.signedUrl,
-              alt:
-                primaryPhoto.altText ??
-                report.title,
-            }]
+          ? [
+              {
+                url:
+                  primaryPhoto.signedUrl,
+                alt:
+                  primaryPhoto.altText ??
+                  report.title,
+              },
+            ]
           : undefined,
       },
       twitter: {
@@ -120,12 +127,17 @@ export async function generateMetadata({
 
 export default async function PublicReportPage({
   params,
+  searchParams,
 }: PageProps) {
-  const [{ id }, { locale, translate }] =
-    await Promise.all([
-      params,
-      getServerTranslator(),
-    ]);
+  const [
+    { id },
+    query,
+    { locale, translate },
+  ] = await Promise.all([
+    params,
+    searchParams,
+    getServerTranslator(),
+  ]);
   const report =
     await getPublicReport(id);
 
@@ -150,6 +162,14 @@ export default async function PublicReportPage({
       'publicReport.animalFallback',
     );
 
+  const displayTitle =
+    getLocalizedPublicReportTitle({
+      rawTitle: report.title,
+      reportType: report.reportType,
+      petName: report.petName,
+      translate,
+    });
+
   return (
     <PageContainer className="space-y-6 py-6 sm:py-10">
       <Link
@@ -160,6 +180,30 @@ export default async function PublicReportPage({
           'publicReport.back',
         )}
       </Link>
+
+      {query.avistamiento === 'creado' ? (
+        <div
+          role="status"
+          className="flex items-start gap-3 rounded-xl border border-primary/30 bg-primary-soft/40 p-4"
+        >
+          <CircleCheckBig
+            className="mt-0.5 size-5 shrink-0 text-primary"
+            aria-hidden="true"
+          />
+          <div>
+            <p className="font-semibold text-foreground">
+              {translate(
+                'publicReport.sighting.successTitle',
+              )}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {translate(
+                'publicReport.sighting.successDescription',
+              )}
+            </p>
+          </div>
+        </div>
+      ) : null}
 
       <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <main className="space-y-6">
@@ -185,7 +229,7 @@ export default async function PublicReportPage({
               </span>
             </div>
             <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              {report.title}
+              {displayTitle}
             </h1>
             <p className="mt-3 whitespace-pre-wrap text-lg leading-8 text-muted-foreground">
               {report.description}
@@ -302,7 +346,10 @@ export default async function PublicReportPage({
           <Card elevated>
             <CardHeader>
               <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-danger/10 text-danger">
-                <Eye className="size-6" />
+                <Eye
+                  className="size-6"
+                  aria-hidden="true"
+                />
               </span>
               <CardTitle>
                 {translate(
@@ -316,25 +363,21 @@ export default async function PublicReportPage({
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <button
-                type="button"
-                disabled
-                className="inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full bg-danger px-5 font-semibold text-white opacity-65"
+              <Link
+                href={`/reportes/${id}/avistamiento`}
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-danger px-5 font-semibold text-white hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
               >
                 <MessageCircleMore
                   className="size-5"
+                  aria-hidden="true"
                 />
                 {translate(
                   'publicReport.sighting.button',
                 )}
-              </button>
-              <p className="text-center text-xs text-muted-foreground">
-                {translate(
-                  'publicReport.sighting.comingSoon',
-                )}
-              </p>
+              </Link>
+
               <PublicReportShareButton
-                title={report.title}
+                title={displayTitle}
               />
             </CardContent>
           </Card>
@@ -430,7 +473,10 @@ function ContactCard({
             href={`tel:${phone}`}
             className="flex min-h-11 items-center gap-3 rounded-xl border border-border px-4 font-semibold hover:bg-surface-elevated"
           >
-            <Phone className="size-5 text-primary" />
+            <Phone
+              className="size-5 text-primary"
+              aria-hidden="true"
+            />
             {phone}
           </a>
         ) : null}
@@ -439,7 +485,10 @@ function ContactCard({
             href={`mailto:${email}`}
             className="flex min-h-11 items-center gap-3 rounded-xl border border-border px-4 font-semibold hover:bg-surface-elevated"
           >
-            <Mail className="size-5 text-primary" />
+            <Mail
+              className="size-5 text-primary"
+              aria-hidden="true"
+            />
             {email}
           </a>
         ) : null}

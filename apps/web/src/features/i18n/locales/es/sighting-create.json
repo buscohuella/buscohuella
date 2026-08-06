@@ -1,0 +1,70 @@
+{
+  "back": "Volver al aviso",
+  "eyebrow": "Avistamiento",
+  "title": "He visto esta mascota",
+  "description": "Comparte información sobre {title}. El propietario podrá revisarla para continuar la búsqueda.",
+  "formTitle": "Información del avistamiento",
+  "formDescription": "Indica cuándo y dónde la viste. No te acerques si existe algún riesgo.",
+  "submit": "Enviar avistamiento",
+  "submitting": "Enviando…",
+  "fields": {
+    "when": "¿Cuándo la viste?",
+    "whenHelp": "Indica el momento más aproximado posible.",
+    "locationLabel": "Lugar o referencia",
+    "locationLabelHelp": "Escribe una zona reconocible. El autocompletado se añadirá con el mapa.",
+    "locationPlaceholder": "Ej.: Plaça Catalunya, Sabadell",
+    "notes": "¿Qué ocurrió?",
+    "notesHelp": "Añade dirección de marcha, comportamiento u otros detalles útiles.",
+    "notesPlaceholder": "La vi ir hacia el parque. Parecía asustada…"
+  },
+  "location": {
+    "title": "¿Dónde la viste?",
+    "description": "Usa la posición del dispositivo o escribe una referencia manual.",
+    "options": {
+      "GPS": {
+        "label": "Usar mi ubicación",
+        "description": "La posición exacta se guardará de forma privada."
+      },
+      "MANUAL": {
+        "label": "Escribir el lugar",
+        "description": "No inventaremos coordenadas si solo recuerdas una referencia."
+      }
+    },
+    "useGps": "Obtener mi ubicación",
+    "gpsReady": "Ubicación obtenida",
+    "gpsSuccess": "La posición está preparada y se enviará de forma segura.",
+    "gpsError": "No hemos podido obtener la ubicación. Revisa permisos o usa la opción manual."
+  },
+  "confidence": {
+    "title": "¿Qué seguridad tienes?",
+    "options": {
+      "CERTAIN": {
+        "label": "La vi claramente",
+        "description": "Estoy bastante seguro de que era esta mascota."
+      },
+      "LIKELY": {
+        "label": "Creo que era ella",
+        "description": "Coincidía bastante, aunque no pude confirmarlo."
+      },
+      "UNSURE": {
+        "label": "No estoy seguro",
+        "description": "Puede ser útil, pero la identificación es dudosa."
+      }
+    }
+  },
+  "privacy": {
+    "title": "Ubicación protegida",
+    "description": "La coordenada exacta solo será accesible para las personas autorizadas. Públicamente se usará una referencia aproximada."
+  },
+  "errors": {
+    "session": "Inicia sesión para enviar un avistamiento.",
+    "report": "Este aviso ya no acepta avistamientos.",
+    "time": "Indica una fecha y hora válidas que no estén en el futuro.",
+    "confidence": "Selecciona un nivel de confianza válido.",
+    "notes": "El comentario no puede superar los 1.000 caracteres.",
+    "coordinates": "Obtén de nuevo la ubicación o usa la opción manual.",
+    "location": "Indica el lugar donde viste la mascota.",
+    "required": "Completa los campos obligatorios.",
+    "generic": "No hemos podido guardar el avistamiento. Inténtalo de nuevo."
+  }
+}

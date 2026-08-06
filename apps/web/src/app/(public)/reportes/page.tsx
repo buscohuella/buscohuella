@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { getServerTranslator } from '@/features/i18n/server';
+import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 import { createClient } from '@/services/supabase/server';
 
 type PublicReportRow = {
@@ -197,6 +198,13 @@ export default async function PublicReportsPage() {
                     ) ?? null
                   : null;
 
+              const displayTitle =
+                getLocalizedPublicReportTitle({
+                  rawTitle: report.title,
+                  reportType: report.report_type,
+                  translate,
+                });
+
               return (
                 <Link
                   key={report.id}
@@ -208,7 +216,7 @@ export default async function PublicReportsPage() {
                       {photoUrl ? (
                         <Image
                           src={photoUrl}
-                          alt={report.title}
+                          alt={displayTitle}
                           fill
                           unoptimized
                           sizes="(max-width: 768px) 100vw, 33vw"
@@ -239,7 +247,7 @@ export default async function PublicReportsPage() {
                         </span>
                       </div>
                       <CardTitle className="pt-2">
-                        {report.title}
+                        {displayTitle}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3 text-sm">

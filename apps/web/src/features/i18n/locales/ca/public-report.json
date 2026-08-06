@@ -37,7 +37,9 @@
     "title": "Has vist aquesta mascota?",
     "description": "Un avistament recent pot ser decisiu per trobar-la.",
     "button": "He vist aquesta mascota",
-    "comingSoon": "Els avistaments s'habilitaran en la propera entrega."
+    "comingSoon": "Els avistaments s'habilitaran en la propera entrega.",
+    "successTitle": "Avistament enviat",
+    "successDescription": "Gràcies. La informació s'ha desat i queda vinculada a aquest avís."
   },
   "contact": {
     "title": "Contacte públic",
@@ -57,5 +59,8 @@
     "emptyTitle": "No hi ha avisos actius",
     "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",
     "noPhoto": "Sense fotografia"
+  },
+  "generatedTitle": {
+    "LOST_PET": "{name} s'ha perdut"
   }
 }

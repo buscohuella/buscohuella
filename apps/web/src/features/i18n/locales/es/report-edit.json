@@ -1,0 +1,52 @@
+{
+  "back": "Volver al aviso",
+  "eyebrow": "Aviso publicado",
+  "title": "Editar aviso",
+  "description": "Actualiza la información que verá la comunidad.",
+  "formTitle": "Contenido público",
+  "formDescription": "La mascota asociada y el tipo de aviso no pueden cambiarse después de publicar.",
+  "save": "Guardar cambios",
+  "saving": "Guardando…",
+  "fields": {
+    "title": "Título",
+    "titleHelp": "Entre 3 y 120 caracteres.",
+    "description": "Descripción",
+    "descriptionHelp": "Entre 10 y 2.000 caracteres.",
+    "location": "Zona o referencia pública",
+    "locationHelp": "No incluyas portal, piso ni datos que revelen una ubicación privada.",
+    "publicPhone": "Teléfono público",
+    "publicPhoneHelp": "Será visible para cualquier persona que consulte el aviso.",
+    "publicEmail": "Correo público",
+    "publicEmailHelp": "Será visible para cualquier persona que consulte el aviso."
+  },
+  "contact": {
+    "title": "Cómo pueden contactar contigo",
+    "description": "Elige qué información se mostrará públicamente.",
+    "options": {
+      "PLATFORM_ONLY": {
+        "label": "Solo mediante BuscoHuella",
+        "description": "No se mostrará teléfono ni correo."
+      },
+      "PUBLIC_PHONE": {
+        "label": "Mostrar un teléfono",
+        "description": "Las personas podrán llamarte directamente."
+      },
+      "PUBLIC_EMAIL": {
+        "label": "Mostrar un correo",
+        "description": "Las personas podrán escribirte directamente."
+      }
+    }
+  },
+  "errors": {
+    "session": "Tu sesión ha caducado.",
+    "notFound": "No hemos encontrado este aviso.",
+    "state": "Este aviso no se puede editar en su estado actual.",
+    "title": "El título debe tener entre 3 y 120 caracteres.",
+    "description": "La descripción debe tener entre 10 y 2.000 caracteres.",
+    "location": "Indica una zona o referencia pública.",
+    "contact": "Selecciona un modo de contacto válido.",
+    "phone": "Indica un teléfono público.",
+    "email": "Indica un correo público válido.",
+    "generic": "No hemos podido guardar los cambios. Inténtalo de nuevo."
+  }
+}

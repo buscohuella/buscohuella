@@ -1,0 +1,11 @@
+{
+  "approximateZone": "Zona aproximada",
+  "manage": "Gestionar aviso",
+  "primaryPhotoAlt": "Fotografía principal del aviso",
+  "historyRecent": "Actividad reciente",
+  "historyDescription": "Mostramos los cambios más recientes de forma resumida.",
+  "historyMore": "El historial completo se conserva aunque aquí solo se muestren los últimos cambios.",
+  "photosUpdated": "Fotografías actualizadas",
+  "changes": "{count} cambios",
+  "noPhoto": "Sin fotografía principal"
+}

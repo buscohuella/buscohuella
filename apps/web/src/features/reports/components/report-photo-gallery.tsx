@@ -50,6 +50,7 @@ export function ReportPhotoGallery({
                 `${labels.fallbackAlt} ${index + 1}`
               }
               fill
+              unoptimized
               sizes="(max-width: 640px) 100vw, 33vw"
               className="object-cover"
             />

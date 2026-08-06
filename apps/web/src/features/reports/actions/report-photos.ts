@@ -48,6 +48,12 @@ type ReorderPhotosRpcResult = {
   error: RpcError;
 };
 
+
+type RecordPhotoUpdateRpcResult = {
+  data: null;
+  error: RpcError;
+};
+
 function getString(
   formData: FormData,
   name: string,
@@ -96,7 +102,46 @@ function getReorderPhotosRpc(
   ) => Promise<ReorderPhotosRpcResult>;
 }
 
-async function verifyDraftOwnership(
+
+function getRecordPhotoUpdateRpc(
+  client: SupabaseClient<ReportDatabase>,
+) {
+  return client.rpc.bind(
+    client,
+  ) as unknown as (
+    functionName:
+      'record_report_photo_update',
+    args: {
+      target_report_id: string;
+      target_change: string;
+    },
+  ) => Promise<RecordPhotoUpdateRpcResult>;
+}
+
+async function recordPhotoUpdate(
+  client: SupabaseClient<ReportDatabase>,
+  reportId: string,
+  change: string,
+) {
+  const rpc = getRecordPhotoUpdateRpc(client);
+  const { error } = await rpc(
+    'record_report_photo_update',
+    {
+      target_report_id: reportId,
+      target_change: change,
+    },
+  );
+
+  if (error) {
+    logServerError(
+      'report.photo.event_failed',
+      error,
+      { reportId, change },
+    );
+  }
+}
+
+async function verifyEditableOwnership(
   reportId: string,
 ) {
   const supabase = await createClient();
@@ -126,7 +171,7 @@ async function verifyDraftOwnership(
     error ||
     !report ||
     report.created_by !== user.id ||
-    report.status !== 'DRAFT'
+    !['DRAFT', 'ACTIVE', 'PAUSED'].includes(report.status)
   ) {
     return {
       ok: false as const,
@@ -217,7 +262,7 @@ export async function uploadReportPhotoAction(
   }
 
   const ownership =
-    await verifyDraftOwnership(reportId);
+    await verifyEditableOwnership(reportId);
 
   if (!ownership.ok) {
     return {
@@ -375,10 +420,20 @@ export async function uploadReportPhotoAction(
     };
   }
 
+  await recordPhotoUpdate(
+    reportClient,
+    reportId,
+    'UPLOADED',
+  );
+
   revalidatePath(
     `/mis-reportes/${reportId}/fotos`,
   );
+  revalidatePath(
+    `/mis-reportes/${reportId}`,
+  );
   revalidatePath('/mis-reportes');
+  revalidatePath('/reportes');
 
   return {
     status: 'success',
@@ -402,7 +457,7 @@ export async function deleteReportPhotoAction(
   );
 
   const ownership =
-    await verifyDraftOwnership(reportId);
+    await verifyEditableOwnership(reportId);
 
   if (
     !ownership.ok ||
@@ -433,9 +488,20 @@ export async function deleteReportPhotoAction(
     .eq('id', photoId)
     .eq('report_id', reportId);
 
+  await recordPhotoUpdate(
+    ownership.reportClient,
+    reportId,
+    'DELETED',
+  );
+
   revalidatePath(
     `/mis-reportes/${reportId}/fotos`,
   );
+  revalidatePath(
+    `/mis-reportes/${reportId}`,
+  );
+  revalidatePath('/mis-reportes');
+  revalidatePath('/reportes');
 }
 
 export async function setReportPrimaryPhotoAction(
@@ -451,7 +517,7 @@ export async function setReportPrimaryPhotoAction(
   );
 
   const ownership =
-    await verifyDraftOwnership(reportId);
+    await verifyEditableOwnership(reportId);
 
   if (
     !ownership.ok ||
@@ -484,9 +550,20 @@ export async function setReportPrimaryPhotoAction(
     return;
   }
 
+  await recordPhotoUpdate(
+    ownership.reportClient,
+    reportId,
+    'PRIMARY_CHANGED',
+  );
+
   revalidatePath(
     `/mis-reportes/${reportId}/fotos`,
   );
+  revalidatePath(
+    `/mis-reportes/${reportId}`,
+  );
+  revalidatePath('/mis-reportes');
+  revalidatePath('/reportes');
 }
 
 export async function moveReportPhotoAction(
@@ -506,7 +583,7 @@ export async function moveReportPhotoAction(
   );
 
   const ownership =
-    await verifyDraftOwnership(reportId);
+    await verifyEditableOwnership(reportId);
 
   if (
     !ownership.ok ||
@@ -579,7 +656,18 @@ export async function moveReportPhotoAction(
     return;
   }
 
+  await recordPhotoUpdate(
+    ownership.reportClient,
+    reportId,
+    'REORDERED',
+  );
+
   revalidatePath(
     `/mis-reportes/${reportId}/fotos`,
   );
+  revalidatePath(
+    `/mis-reportes/${reportId}`,
+  );
+  revalidatePath('/mis-reportes');
+  revalidatePath('/reportes');
 }

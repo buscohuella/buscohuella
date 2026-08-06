@@ -1,0 +1,11 @@
+{
+  "approximateZone": "Zona aproximada",
+  "manage": "Gestiona l'avís",
+  "primaryPhotoAlt": "Fotografia principal de l'avís",
+  "historyRecent": "Activitat recent",
+  "historyDescription": "Mostrem els canvis més recents de manera resumida.",
+  "historyMore": "L'historial complet es conserva encara que aquí només es mostrin els últims canvis.",
+  "photosUpdated": "Fotografies actualitzades",
+  "changes": "{count} canvis",
+  "noPhoto": "Sense fotografia principal"
+}

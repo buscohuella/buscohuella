@@ -1,0 +1,52 @@
+{
+  "back": "Torna a l'avís",
+  "eyebrow": "Avís publicat",
+  "title": "Edita l'avís",
+  "description": "Actualitza la informació que veurà la comunitat.",
+  "formTitle": "Contingut públic",
+  "formDescription": "La mascota associada i el tipus d'avís no es poden canviar després de publicar.",
+  "save": "Desa els canvis",
+  "saving": "Desant…",
+  "fields": {
+    "title": "Títol",
+    "titleHelp": "Entre 3 i 120 caràcters.",
+    "description": "Descripció",
+    "descriptionHelp": "Entre 10 i 2.000 caràcters.",
+    "location": "Zona o referència pública",
+    "locationHelp": "No hi incloguis portal, pis ni dades que revelin una ubicació privada.",
+    "publicPhone": "Telèfon públic",
+    "publicPhoneHelp": "Serà visible per a qualsevol persona que consulti l'avís.",
+    "publicEmail": "Correu públic",
+    "publicEmailHelp": "Serà visible per a qualsevol persona que consulti l'avís."
+  },
+  "contact": {
+    "title": "Com poden contactar amb tu",
+    "description": "Tria quina informació es mostrarà públicament.",
+    "options": {
+      "PLATFORM_ONLY": {
+        "label": "Només mitjançant BuscoHuella",
+        "description": "No es mostrarà cap telèfon ni correu."
+      },
+      "PUBLIC_PHONE": {
+        "label": "Mostra un telèfon",
+        "description": "Les persones et podran trucar directament."
+      },
+      "PUBLIC_EMAIL": {
+        "label": "Mostra un correu",
+        "description": "Les persones et podran escriure directament."
+      }
+    }
+  },
+  "errors": {
+    "session": "La teva sessió ha caducat.",
+    "notFound": "No hem trobat aquest avís.",
+    "state": "Aquest avís no es pot editar en l'estat actual.",
+    "title": "El títol ha de tenir entre 3 i 120 caràcters.",
+    "description": "La descripció ha de tenir entre 10 i 2.000 caràcters.",
+    "location": "Indica una zona o referència pública.",
+    "contact": "Selecciona un mode de contacte vàlid.",
+    "phone": "Indica un telèfon públic.",
+    "email": "Indica un correu públic vàlid.",
+    "generic": "No hem pogut desar els canvis. Torna-ho a provar."
+  }
+}

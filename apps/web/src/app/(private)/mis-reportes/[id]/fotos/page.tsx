@@ -52,7 +52,11 @@ async function loadData(
       reportId,
     );
 
-  if (report.status !== 'DRAFT') {
+  if (
+    !['DRAFT', 'ACTIVE', 'PAUSED'].includes(
+      report.status,
+    )
+  ) {
     notFound();
   }
 
@@ -148,10 +152,24 @@ export default async function ReportPhotosPage({
     notFound();
   }
 
+  const isDraft =
+    data.report.status === 'DRAFT';
+  const backHref = isDraft
+    ? '/mis-reportes'
+    : `/mis-reportes/${id}`;
+  const nextHref = isDraft
+    ? `/mis-reportes/${id}/publicar`
+    : `/mis-reportes/${id}`;
+  const nextLabel = isDraft
+    ? translate(
+        'reports.photos.continueToPublish',
+      )
+    : translate('reportEdit.back');
+
   return (
     <PageContainer className="space-y-6">
       <Link
-        href="/mis-reportes"
+        href={backHref}
         className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
       >
         <ArrowLeft
@@ -264,16 +282,14 @@ export default async function ReportPhotosPage({
 
       <div className="flex justify-end">
         <Link
-          href={`/mis-reportes/${id}/publicar`}
+          href={nextHref}
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           <CheckCircle2
             className="size-5"
             aria-hidden="true"
           />
-          {translate(
-            'reports.photos.continueToPublish',
-          )}
+          {nextLabel}
         </Link>
       </div>
     </PageContainer>

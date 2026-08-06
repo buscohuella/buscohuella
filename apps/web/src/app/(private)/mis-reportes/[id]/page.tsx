@@ -12,8 +12,10 @@ import {
   History,
   MapPin,
   PawPrint,
+  Images,
   Settings2,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -26,6 +28,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
+import { CompactReportHistory } from '@/features/reports/components/compact-report-history';
+import { EditReportLink } from '@/features/reports/components/edit-report-link';
 import {
   ReportLifecycleActions,
 } from '@/features/reports/components/report-lifecycle-actions';
@@ -47,8 +51,8 @@ async function loadReportDetail(
       reportId,
     );
 
-  const { data: events, error } =
-    await reportClient
+  const [{ data: events, error }, { data: primaryPhoto, error: photoError }] = await Promise.all([
+    reportClient
       .from('report_events')
       .select(
         'id, event_type, from_status, to_status, metadata, created_at',
@@ -57,16 +61,28 @@ async function loadReportDetail(
       .order('created_at', {
         ascending: false,
       })
-      .limit(20);
+      .limit(30),
+    reportClient
+      .from('report_photos')
+      .select('storage_path')
+      .eq('report_id', reportId)
+      .eq('is_primary', true)
+      .maybeSingle(),
+  ]);
 
-  if (error) {
-    throw error;
+  if (error) throw error;
+  if (photoError) throw photoError;
+
+  let primaryPhotoUrl: string | null = null;
+  if (primaryPhoto) {
+    const { data: signed, error: signError } = await supabase.storage
+      .from('report-photos')
+      .createSignedUrl(primaryPhoto.storage_path, 600);
+    if (signError) throw signError;
+    primaryPhotoUrl = signed.signedUrl;
   }
 
-  return {
-    report,
-    events: events ?? [],
-  };
+  return { report, events: events ?? [], primaryPhotoUrl };
 }
 
 export default async function ReportDetailPage({
@@ -166,6 +182,12 @@ export default async function ReportDetailPage({
         )}
       </Link>
 
+      {data.primaryPhotoUrl ? (
+        <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border">
+          <Image src={data.primaryPhotoUrl} alt={translate('reportVisual.primaryPhotoAlt')} fill unoptimized sizes="(max-width: 1024px) 100vw, 66vw" className="object-cover" />
+        </div>
+      ) : null}
+
       <header>
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-danger/10 px-3 py-1 text-xs font-semibold text-danger">
@@ -186,6 +208,30 @@ export default async function ReportDetailPage({
         <p className="mt-2 max-w-3xl whitespace-pre-wrap text-muted-foreground">
           {data.report.description}
         </p>
+
+        {data.report.status === 'ACTIVE' ||
+        data.report.status === 'PAUSED' ? (
+          <div className="mt-4 flex flex-wrap gap-3">
+            <EditReportLink
+              reportId={id}
+              label={translate(
+                'reportEdit.title',
+              )}
+            />
+            <Link
+              href={`/mis-reportes/${id}/fotos`}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border px-4 font-semibold text-foreground hover:bg-surface-elevated focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            >
+              <Images
+                className="size-4"
+                aria-hidden="true"
+              />
+              {translate(
+                'reports.photos.title',
+              )}
+            </Link>
+          </div>
+        ) : null}
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
@@ -271,48 +317,24 @@ export default async function ReportDetailPage({
                 />
                 <CardTitle>
                   {translate(
-                    'reports.detail.historyTitle',
+                    'reportVisual.historyRecent',
                   )}
                 </CardTitle>
               </div>
               <CardDescription>
                 {translate(
-                  'reports.detail.historyDescription',
+                  'reportVisual.historyDescription',
                 )}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {data.events.length > 0 ? (
-                <ol className="space-y-3">
-                  {data.events.map(
-                    (event) => (
-                      <li
-                        key={event.id}
-                        className="rounded-xl border border-border bg-surface p-3"
-                      >
-                        <p className="font-semibold">
-                          {translate(
-                            `reports.detail.events.${event.event_type}`,
-                          )}
-                        </p>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {dateFormatter.format(
-                            new Date(
-                              event.created_at,
-                            ),
-                          )}
-                        </p>
-                      </li>
-                    ),
-                  )}
-                </ol>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  {translate(
-                    'reports.detail.historyEmpty',
-                  )}
-                </p>
-              )}
+              <CompactReportHistory
+                events={data.events}
+                translate={translate}
+                formatDate={(value) =>
+                  dateFormatter.format(new Date(value))
+                }
+              />
             </CardContent>
           </Card>
         </div>

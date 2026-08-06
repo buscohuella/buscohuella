@@ -8,14 +8,18 @@ import {
   Star,
   Trash2,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   useState,
   useTransition,
 } from 'react';
-import { useRouter } from 'next/navigation';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { Field } from '@/components/ui/field';
+import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import {
   deletePetPhotoAction,
@@ -36,16 +40,29 @@ export function PetPhotoControls({
   photoCount: number;
 }) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [altText, setAltText] = useState(photo.altText ?? '');
-  const [message, setMessage] = useState<string | null>(null);
-  const [isError, setIsError] = useState(false);
+  const { t } = useTranslations('pets');
+  const [isPending, startTransition] =
+    useTransition();
+  const [isEditing, setIsEditing] =
+    useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] =
+    useState(false);
+  const [altText, setAltText] = useState(
+    photo.altText ?? '',
+  );
+  const [message, setMessage] =
+    useState<string | null>(null);
+  const [isError, setIsError] =
+    useState(false);
 
   function runAction(
-    action: (formData: FormData) => Promise<{
-      status: 'idle' | 'success' | 'error';
+    action: (
+      formData: FormData,
+    ) => Promise<{
+      status:
+        | 'idle'
+        | 'success'
+        | 'error';
       message?: string;
     }>,
     extra?: (formData: FormData) => void,
@@ -62,7 +79,9 @@ export function PetPhotoControls({
 
       const result = await action(formData);
       setMessage(result.message ?? null);
-      setIsError(result.status === 'error');
+      setIsError(
+        result.status === 'error',
+      );
 
       if (result.status === 'success') {
         onSuccess?.();
@@ -71,33 +90,61 @@ export function PetPhotoControls({
     });
   }
 
-  function movePhoto(direction: 'before' | 'after') {
+  function movePhoto(
+    direction: 'before' | 'after',
+  ) {
     runAction(
       reorderPetPhotosAction,
-      (formData) => formData.set('direction', direction),
+      (formData) =>
+        formData.set(
+          'direction',
+          direction,
+        ),
     );
   }
+
+  const positionValues = {
+    current: photo.position + 1,
+    total: photoCount,
+  };
 
   return (
     <div className="space-y-3">
       <div
-        aria-label={`Orden actual: posición ${photo.position + 1}`}
+        aria-label={t(
+          'photos.currentOrder',
+          positionValues,
+        )}
         className="flex flex-wrap items-center gap-2 rounded-lg border border-border-soft bg-surface p-3"
       >
         <span className="mr-auto text-xs font-semibold text-muted-foreground">
-          Posición {photo.position + 1} de {photoCount}
+          {t(
+            'photos.position',
+            positionValues,
+          )}
         </span>
 
         <Button
           type="button"
           size="sm"
           variant="ghost"
-          disabled={isPending || photo.position === 0}
-          aria-label={`Mover esta fotografía antes. Posición actual ${photo.position + 1} de ${photoCount}`}
-          onClick={() => movePhoto('before')}
+          disabled={
+            isPending ||
+            photo.position === 0
+          }
+          aria-label={t(
+            'photos.moveBeforeAria',
+            positionValues,
+          )}
+          onClick={() =>
+            movePhoto('before')
+          }
         >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          Mover antes
+          <ArrowLeft
+            className="size-4"
+            aria-hidden="true"
+          />
+          {t('photos.moveBefore')}
         </Button>
 
         <Button
@@ -105,13 +152,23 @@ export function PetPhotoControls({
           size="sm"
           variant="ghost"
           disabled={
-            isPending || photo.position >= photoCount - 1
+            isPending ||
+            photo.position >=
+              photoCount - 1
           }
-          aria-label={`Mover esta fotografía después. Posición actual ${photo.position + 1} de ${photoCount}`}
-          onClick={() => movePhoto('after')}
+          aria-label={t(
+            'photos.moveAfterAria',
+            positionValues,
+          )}
+          onClick={() =>
+            movePhoto('after')
+          }
         >
-          Mover después
-          <ArrowRight className="size-4" aria-hidden="true" />
+          {t('photos.moveAfter')}
+          <ArrowRight
+            className="size-4"
+            aria-hidden="true"
+          />
         </Button>
       </div>
 
@@ -123,11 +180,16 @@ export function PetPhotoControls({
             variant="secondary"
             disabled={isPending}
             onClick={() =>
-              runAction(setPrimaryPetPhotoAction)
+              runAction(
+                setPrimaryPetPhotoAction,
+              )
             }
           >
-            <Star className="size-4" aria-hidden="true" />
-            Usar como portada
+            <Star
+              className="size-4"
+              aria-hidden="true"
+            />
+            {t('photos.useAsCover')}
           </Button>
         ) : null}
 
@@ -138,11 +200,20 @@ export function PetPhotoControls({
           disabled={isPending}
           onClick={() => {
             setMessage(null);
-            setIsEditing((current) => !current);
+            setIsEditing(
+              (current) => !current,
+            );
           }}
         >
-          <Pencil className="size-4" aria-hidden="true" />
-          {isEditing ? 'Cancelar edición' : 'Editar descripción'}
+          <Pencil
+            className="size-4"
+            aria-hidden="true"
+          />
+          {t(
+            isEditing
+              ? 'photos.cancelEditing'
+              : 'photos.editDescription',
+          )}
         </Button>
 
         <Button
@@ -151,31 +222,45 @@ export function PetPhotoControls({
           variant="ghost"
           disabled={isPending}
           className="text-danger hover:bg-danger/10"
-          onClick={() => setIsDeleteOpen(true)}
+          onClick={() =>
+            setIsDeleteOpen(true)
+          }
         >
-          <Trash2 className="size-4" aria-hidden="true" />
-          Eliminar
+          <Trash2
+            className="size-4"
+            aria-hidden="true"
+          />
+          {t('photos.delete')}
         </Button>
       </div>
 
       {isEditing ? (
-        <div className="space-y-2 rounded-lg border border-border-soft bg-surface p-3">
-          <label
+        <div className="space-y-3 rounded-lg border border-border-soft bg-surface p-3">
+          <Field
             htmlFor={`saved-photo-alt-${photo.id}`}
-            className="block text-sm font-semibold"
+            label={t('photos.altText')}
+            description={t(
+              'photos.altTextHint',
+            )}
           >
-            Texto alternativo
-          </label>
-          <textarea
-            id={`saved-photo-alt-${photo.id}`}
-            value={altText}
-            maxLength={300}
-            rows={3}
-            disabled={isPending}
-            placeholder={`Describe brevemente a ${petName} en esta fotografía`}
-            onChange={(event) => setAltText(event.target.value)}
-            className="w-full rounded-lg border border-border bg-surface-elevated px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15 disabled:opacity-60"
-          />
+            <Textarea
+              id={`saved-photo-alt-${photo.id}`}
+              value={altText}
+              maxLength={300}
+              rows={3}
+              disabled={isPending}
+              placeholder={t(
+                'photos.altPlaceholder',
+                { name: petName },
+              )}
+              onChange={(event) =>
+                setAltText(
+                  event.target.value,
+                )
+              }
+            />
+          </Field>
+
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs text-muted-foreground">
               {altText.length}/300
@@ -183,53 +268,74 @@ export function PetPhotoControls({
             <Button
               type="button"
               size="sm"
-              disabled={isPending}
+              isLoading={isPending}
+              loadingText={t(
+                'photos.savingDescription',
+              )}
               onClick={() =>
                 runAction(
                   updatePetPhotoAltTextAction,
-                  (formData) => formData.set('altText', altText),
-                  () => setIsEditing(false),
+                  (formData) =>
+                    formData.set(
+                      'altText',
+                      altText,
+                    ),
+                  () =>
+                    setIsEditing(false),
                 )
               }
             >
-              Guardar descripción
+              {t(
+                'photos.saveDescription',
+              )}
             </Button>
           </div>
         </div>
       ) : null}
 
       {message ? (
-        <p
-          role={isError ? 'alert' : 'status'}
-          aria-live="polite"
-          className={
+        <Alert
+          variant={
             isError
-              ? 'text-sm font-medium text-danger'
-              : 'text-sm text-success'
+              ? 'danger'
+              : 'success'
           }
         >
           {message}
-        </p>
+        </Alert>
       ) : null}
 
       <ConfirmationDialog
         open={isDeleteOpen}
-        title="Eliminar fotografía"
-        description={
+        title={t(
+          'photos.deleteDialogTitle',
+        )}
+        description={t(
           photo.isPrimary
-            ? `Eliminarás la portada actual de ${petName}. La primera fotografía restante pasará a ser la nueva portada.`
-            : `Eliminarás esta fotografía de ${petName}. Esta acción no se puede deshacer.`
-        }
-        confirmLabel="Eliminar definitivamente"
+            ? 'photos.deleteCoverDescription'
+            : 'photos.deleteDescription',
+          { name: petName },
+        )}
+        confirmLabel={t(
+          'photos.deleteConfirm',
+        )}
         confirmVariant="danger"
         isPending={isPending}
-        icon={<Trash2 className="size-5" aria-hidden="true" />}
-        onCancel={() => setIsDeleteOpen(false)}
+        icon={
+          <Trash2
+            className="size-5"
+            aria-hidden="true"
+          />
+        }
+        onCancel={() =>
+          setIsDeleteOpen(false)
+        }
         onConfirm={() =>
           runAction(
             deletePetPhotoAction,
             undefined,
-            () => setIsDeleteOpen(false),
+            () =>
+              setIsDeleteOpen(false),
           )
         }
       />

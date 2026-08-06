@@ -10,6 +10,7 @@ import {
 } from '@buscohuella/pet-data';
 import { revalidatePath } from 'next/cache';
 
+import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -27,6 +28,7 @@ function getString(formData: FormData, name: string) {
 
 function processingErrorMessage(
   error: PetPhotoProcessingError,
+  translate: (key: string) => string,
 ): string {
   switch (error.code) {
     case 'IMAGE_TOO_SMALL':
@@ -35,15 +37,16 @@ function processingErrorMessage(
     case 'OUTPUT_TOO_LARGE':
       return error.message;
     case 'UNSUPPORTED_IMAGE':
-      return 'El formato de la fotografía no está permitido.';
+      return translate('pets.photos.unsupported');
     default:
-      return 'La fotografía está dañada o no se puede procesar.';
+      return translate('pets.photos.damaged');
   }
 }
 
 export async function uploadPetPhotoAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
+  const { translate } = await getServerTranslator();
   const petId = getString(formData, 'petId');
   const altText = getString(formData, 'altText') || null;
   const file = formData.get('photo');
@@ -51,21 +54,21 @@ export async function uploadPetPhotoAction(
   if (!petId) {
     return {
       status: 'error',
-      message: 'No se ha podido identificar la mascota.',
+      message: translate('pets.result.petMissing'),
     };
   }
 
   if (!(file instanceof File) || file.size === 0) {
     return {
       status: 'error',
-      message: 'Selecciona una fotografía válida.',
+      message: translate('pets.photos.selectValid'),
     };
   }
 
   if (file.size > PET_LIMITS.photoMaxSizeBytes) {
     return {
       status: 'error',
-      message: 'La fotografía supera el límite de entrada de 8 MB.',
+      message: translate('pets.photos.inputTooLarge'),
     };
   }
 
@@ -75,7 +78,7 @@ export async function uploadPetPhotoAction(
   if (!detectedMimeType) {
     return {
       status: 'error',
-      message: 'El archivo no es una imagen JPEG, PNG o WebP válida.',
+      message: translate('pets.photos.invalidFile'),
     };
   }
 
@@ -87,7 +90,7 @@ export async function uploadPetPhotoAction(
     if (error instanceof PetPhotoProcessingError) {
       return {
         status: 'error',
-        message: processingErrorMessage(error),
+        message: processingErrorMessage(error, translate),
       };
     }
 
@@ -99,7 +102,7 @@ export async function uploadPetPhotoAction(
 
     return {
       status: 'error',
-      message: 'No se ha podido procesar la fotografía.',
+      message: translate('pets.photos.processingError'),
     };
   }
 
@@ -111,7 +114,7 @@ export async function uploadPetPhotoAction(
   if (!user) {
     return {
       status: 'error',
-      message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
+      message: translate('pets.result.sessionExpired'),
     };
   }
 
@@ -124,8 +127,7 @@ export async function uploadPetPhotoAction(
     if (pet.status !== 'ACTIVE') {
       return {
         status: 'error',
-        message:
-          'Restaura la mascota antes de añadir fotografías.',
+        message: translate('pets.photos.restoreBeforeAdd'),
       };
     }
 
@@ -135,7 +137,7 @@ export async function uploadPetPhotoAction(
     if (currentPhotos.length >= PET_LIMITS.photosMaxCount) {
       return {
         status: 'error',
-        message: 'Esta mascota ya tiene el máximo de 10 fotografías.',
+        message: translate('pets.photos.maxReached'),
       };
     }
 
@@ -159,7 +161,9 @@ export async function uploadPetPhotoAction(
 
     return {
       status: 'success',
-      message: `${file.name} se ha orientado, optimizado y subido correctamente.`,
+      message: translate('pets.photos.uploadSuccess', {
+        file: file.name,
+      }),
       photoId,
     };
   } catch (error) {
@@ -176,37 +180,35 @@ export async function uploadPetPhotoAction(
       if (error.code === 'PET_PHOTO_LIMIT_REACHED') {
         return {
           status: 'error',
-          message:
-            'Esta mascota ya tiene el máximo de 10 fotografías.',
+          message: translate('pets.photos.maxReached'),
         };
       }
 
       if (error.code === 'PET_PHOTO_TOO_LARGE') {
         return {
           status: 'error',
-          message: 'La fotografía procesada supera el límite permitido.',
+          message: translate('pets.photos.processedTooLarge'),
         };
       }
 
       if (error.code === 'PET_PHOTO_UNSUPPORTED_TYPE') {
         return {
           status: 'error',
-          message: 'El formato de la fotografía no está permitido.',
+          message: translate('pets.photos.unsupported'),
         };
       }
 
       if (error.code === 'PET_FORBIDDEN') {
         return {
           status: 'error',
-          message: 'No tienes permiso para modificar esta mascota.',
+          message: translate('pets.photos.forbidden'),
         };
       }
     }
 
     return {
       status: 'error',
-      message:
-        'No se ha podido subir la fotografía. Inténtalo de nuevo.',
+      message: translate('pets.photos.uploadRetry'),
     };
   }
 }

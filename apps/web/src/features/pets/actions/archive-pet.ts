@@ -1,10 +1,11 @@
 'use server';
 
-import { PetDomainError } from '@buscohuella/pet-domain';
 import { PetRepository } from '@buscohuella/pet-data';
+import { PetDomainError } from '@buscohuella/pet-domain';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -14,12 +15,16 @@ export async function archivePetAction(
   _previousState: PetActionState,
   formData: FormData,
 ): Promise<PetActionState> {
+  const { translate } =
+    await getServerTranslator();
   const petId = formData.get('petId');
 
   if (typeof petId !== 'string' || !petId) {
     return {
       status: 'error',
-      message: 'No se ha podido identificar la mascota.',
+      message: translate(
+        'pets.result.petMissing',
+      ),
     };
   }
 
@@ -31,38 +36,51 @@ export async function archivePetAction(
   if (!user) {
     return {
       status: 'error',
-      message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
+      message: translate(
+        'pets.result.sessionExpired',
+      ),
     };
   }
 
   try {
-    const repository = new PetRepository(supabase);
+    const repository =
+      new PetRepository(supabase);
     await repository.archivePet(petId);
   } catch (error) {
-    logServerError('pet.archive.failed', error, {
-      userId: user.id,
-      petId,
-    });
+    logServerError(
+      'pet.archive.failed',
+      error,
+      {
+        userId: user.id,
+        petId,
+      },
+    );
 
     if (error instanceof PetDomainError) {
       if (error.code === 'PET_FORBIDDEN') {
         return {
           status: 'error',
-          message: 'No tienes permisos para archivar esta mascota.',
+          message: translate(
+            'pets.management.archiveForbidden',
+          ),
         };
       }
 
       if (error.code === 'PET_NOT_FOUND') {
         return {
           status: 'error',
-          message: 'La mascota ya no está disponible.',
+          message: translate(
+            'pets.result.notAvailable',
+          ),
         };
       }
     }
 
     return {
       status: 'error',
-      message: 'No se ha podido archivar la mascota.',
+      message: translate(
+        'pets.management.archiveError',
+      ),
     };
   }
 

@@ -11,6 +11,7 @@ import {
 } from '@buscohuella/pet-data';
 import { revalidatePath } from 'next/cache';
 
+import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -22,6 +23,7 @@ function getString(formData: FormData, name: string) {
 }
 
 async function getContext(formData: FormData) {
+  const { translate } = await getServerTranslator();
   const petId = getString(formData, 'petId');
   const photoId = getString(formData, 'photoId');
 
@@ -29,7 +31,7 @@ async function getContext(formData: FormData) {
     return {
       error: {
         status: 'error',
-        message: 'No se ha podido identificar la fotografía.',
+        message: translate('pets.photos.identifyPhoto'),
       } satisfies PetPhotoActionState,
     };
   }
@@ -43,7 +45,7 @@ async function getContext(formData: FormData) {
     return {
       error: {
         status: 'error',
-        message: 'Tu sesión ha caducado. Inicia sesión de nuevo.',
+        message: translate('pets.result.sessionExpired'),
       } satisfies PetPhotoActionState,
     };
   }
@@ -56,8 +58,7 @@ async function getContext(formData: FormData) {
       return {
         error: {
           status: 'error',
-          message:
-            'Restaura la mascota antes de gestionar sus fotografías.',
+          message: translate('pets.photos.restoreBeforeManage'),
         } satisfies PetPhotoActionState,
       };
     }
@@ -65,9 +66,9 @@ async function getContext(formData: FormData) {
     return {
       supabase,
       user,
-      pet,
       petId,
       photoId,
+      translate,
     };
   } catch (error) {
     logServerError('pet.photo.context_failed', error, {
@@ -79,7 +80,7 @@ async function getContext(formData: FormData) {
     return {
       error: {
         status: 'error',
-        message: 'No se ha podido validar la fotografía.',
+        message: translate('pets.photos.validateError'),
       } satisfies PetPhotoActionState,
     };
   }
@@ -100,6 +101,7 @@ function mapError(
   error: unknown,
   context: PhotoLogContext,
   fallback: string,
+  translate: (key: string) => string,
 ): PetPhotoActionState {
   logServerError(event, error, context);
 
@@ -107,45 +109,37 @@ function mapError(
     if (error.code === 'PET_NOT_FOUND') {
       return {
         status: 'error',
-        message: 'La fotografía ya no existe.',
+        message: translate('pets.photos.photoMissing'),
       };
     }
 
     if (error.code === 'PET_FORBIDDEN') {
       return {
         status: 'error',
-        message:
-          'No tienes permiso o el orden ya no coincide. Recarga la página.',
+        message: translate('pets.photos.permissionOrOrder'),
       };
     }
   }
 
-  return {
-    status: 'error',
-    message: fallback,
-  };
+  return { status: 'error', message: fallback };
 }
 
 export async function setPrimaryPetPhotoAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
   const context = await getContext(formData);
+  if ('error' in context && context.error) return context.error;
 
-  if ('error' in context && context.error) {
-    return context.error;
-  }
-
-  const { supabase, petId, photoId, user } = context;
+  const { supabase, petId, photoId, user, translate } = context;
 
   try {
     const repository = new PetPhotoRepository(supabase);
     await repository.setPrimaryPhoto(photoId);
-
     revalidatePetPhotos(petId);
 
     return {
       status: 'success',
-      message: 'La portada se ha actualizado correctamente.',
+      message: translate('pets.photos.coverUpdated'),
       photoId,
     };
   } catch (error) {
@@ -153,7 +147,8 @@ export async function setPrimaryPetPhotoAction(
       'pet.photo.set_primary_failed',
       error,
       { userId: user.id, petId, photoId },
-      'No se ha podido cambiar la portada.',
+      translate('pets.photos.coverError'),
+      translate,
     );
   }
 }
@@ -162,32 +157,27 @@ export async function reorderPetPhotosAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
   const context = await getContext(formData);
+  if ('error' in context && context.error) return context.error;
 
-  if ('error' in context && context.error) {
-    return context.error;
-  }
-
-  const { supabase, petId, photoId, user } = context;
+  const { supabase, petId, photoId, user, translate } = context;
   const direction = getString(formData, 'direction');
 
   if (direction !== 'before' && direction !== 'after') {
     return {
       status: 'error',
-      message: 'El movimiento solicitado no es válido.',
+      message: translate('pets.photos.invalidMove'),
     };
   }
 
   try {
     const repository = new PetPhotoRepository(supabase);
     const current = await repository.listPetPhotos(petId);
-    const currentIndex = current.findIndex(
-      (photo) => photo.id === photoId,
-    );
+    const currentIndex = current.findIndex((photo) => photo.id === photoId);
 
     if (currentIndex < 0) {
       return {
         status: 'error',
-        message: 'La fotografía ya no existe.',
+        message: translate('pets.photos.photoMissing'),
       };
     }
 
@@ -199,10 +189,11 @@ export async function reorderPetPhotosAction(
     if (targetIndex < 0 || targetIndex >= current.length) {
       return {
         status: 'success',
-        message:
+        message: translate(
           direction === 'before'
-            ? 'La fotografía ya está en la primera posición.'
-            : 'La fotografía ya está en la última posición.',
+            ? 'pets.photos.alreadyFirst'
+            : 'pets.photos.alreadyLast',
+        ),
         photoId,
       };
     }
@@ -217,17 +208,17 @@ export async function reorderPetPhotosAction(
       petId,
       photoIds: nextOrder,
     });
-
     const ordered = await repository.reorderPhotos(parsed);
-    const newIndex = ordered.findIndex(
-      (photo) => photo.id === photoId,
-    );
+    const newIndex = ordered.findIndex((photo) => photo.id === photoId);
 
     revalidatePetPhotos(petId);
 
     return {
       status: 'success',
-      message: `Fotografía movida a la posición ${newIndex + 1} de ${ordered.length}.`,
+      message: translate('pets.photos.moved', {
+        current: newIndex + 1,
+        total: ordered.length,
+      }),
       photoId,
     };
   } catch (error) {
@@ -235,7 +226,8 @@ export async function reorderPetPhotosAction(
       'pet.photo.reorder_failed',
       error,
       { userId: user.id, petId, photoId, direction },
-      'No se ha podido cambiar el orden de las fotografías.',
+      translate('pets.photos.reorderError'),
+      translate,
     );
   }
 }
@@ -244,12 +236,9 @@ export async function updatePetPhotoAltTextAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
   const context = await getContext(formData);
+  if ('error' in context && context.error) return context.error;
 
-  if ('error' in context && context.error) {
-    return context.error;
-  }
-
-  const { supabase, petId, photoId, user } = context;
+  const { supabase, petId, photoId, user, translate } = context;
   const altText = getString(formData, 'altText');
 
   const parsed = updatePetPhotoSchema.safeParse({
@@ -259,19 +248,18 @@ export async function updatePetPhotoAltTextAction(
   if (!parsed.success) {
     return {
       status: 'error',
-      message: 'El texto alternativo no puede superar 300 caracteres.',
+      message: translate('pets.photos.altTooLong'),
     };
   }
 
   try {
     const repository = new PetPhotoRepository(supabase);
     await repository.updatePhoto(photoId, parsed.data);
-
     revalidatePetPhotos(petId);
 
     return {
       status: 'success',
-      message: 'La descripción de la fotografía se ha actualizado.',
+      message: translate('pets.photos.altUpdated'),
       photoId,
     };
   } catch (error) {
@@ -279,7 +267,8 @@ export async function updatePetPhotoAltTextAction(
       'pet.photo.update_alt_failed',
       error,
       { userId: user.id, petId, photoId },
-      'No se ha podido actualizar la descripción.',
+      translate('pets.photos.altUpdateError'),
+      translate,
     );
   }
 }
@@ -288,22 +277,18 @@ export async function deletePetPhotoAction(
   formData: FormData,
 ): Promise<PetPhotoActionState> {
   const context = await getContext(formData);
+  if ('error' in context && context.error) return context.error;
 
-  if ('error' in context && context.error) {
-    return context.error;
-  }
-
-  const { supabase, petId, photoId, user } = context;
+  const { supabase, petId, photoId, user, translate } = context;
 
   try {
     const repository = new PetPhotoRepository(supabase);
     await repository.deletePhoto(photoId);
-
     revalidatePetPhotos(petId);
 
     return {
       status: 'success',
-      message: 'La fotografía se ha eliminado correctamente.',
+      message: translate('pets.photos.deleted'),
       photoId,
     };
   } catch (error) {
@@ -311,7 +296,8 @@ export async function deletePetPhotoAction(
       'pet.photo.delete_failed',
       error,
       { userId: user.id, petId, photoId },
-      'No se ha podido eliminar la fotografía.',
+      translate('pets.photos.deleteError'),
+      translate,
     );
   }
 }

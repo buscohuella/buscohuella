@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
+import { Alert } from '@/components/ui/alert';
 import {
   Card,
   CardContent,
@@ -27,26 +28,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate, formatNumber } from '@/features/i18n/format';
+import { getServerTranslator } from '@/features/i18n/server';
 import { ArchivePetButton } from '@/features/pets/components/archive-pet-button';
 import { PetPhotoGallery } from '@/features/pets/components/pet-photo-gallery';
 import { RestorePetButton } from '@/features/pets/components/restore-pet-button';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
-
-const sexLabels: Record<Pet['sex'], string> = {
-  FEMALE: 'Hembra',
-  MALE: 'Macho',
-  UNKNOWN: 'No indicado',
-};
-
-const sizeLabels: Record<Pet['size'], string> = {
-  TINY: 'Muy pequeño',
-  SMALL: 'Pequeño',
-  MEDIUM: 'Mediano',
-  LARGE: 'Grande',
-  GIANT: 'Gigante',
-  UNKNOWN: 'No indicado',
-};
 
 async function loadPetDetail(id: string): Promise<{
   pet: Pet;
@@ -71,7 +59,9 @@ async function loadPetDetail(id: string): Promise<{
       return { pet, photos: [] };
     }
   } catch (error) {
-    logServerError('pet.detail.load_failed', error, { petId: id });
+    logServerError('pet.detail.load_failed', error, {
+      petId: id,
+    });
     return null;
   }
 }
@@ -86,7 +76,13 @@ export default async function PetDetailPage({
     updated?: string;
   }>;
 }) {
-  const [{ id }, query] = await Promise.all([params, searchParams]);
+  const [{ id }, query, { locale, translate }] =
+    await Promise.all([
+      params,
+      searchParams,
+      getServerTranslator(),
+    ]);
+
   const detail = await loadPetDetail(id);
 
   if (!detail) notFound();
@@ -95,68 +91,79 @@ export default async function PetDetailPage({
 
   const successMessage =
     query.created === '1'
-      ? `${pet.name} se ha registrado correctamente.`
+      ? translate('pets.detail.created', {
+          name: pet.name,
+        })
       : query.updated === '1'
-        ? `Los datos de ${pet.name} se han actualizado correctamente.`
+        ? translate('pets.detail.updated', {
+            name: pet.name,
+          })
         : null;
+
+  const backHref =
+    pet.status === 'ARCHIVED'
+      ? '/mis-mascotas?estado=archivadas'
+      : '/mis-mascotas?estado=activas';
 
   return (
     <PageContainer className="space-y-6">
       {successMessage ? (
-        <div
-          role="status"
-          className="rounded-lg border border-success/30 bg-primary-soft p-4 text-sm font-medium text-success"
-        >
+        <Alert variant="success">
           {successMessage}
-        </div>
+        </Alert>
       ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link
-          href={
-            pet.status === 'ARCHIVED'
-              ? '/mis-mascotas?estado=archivadas'
-              : '/mis-mascotas?estado=activas'
-          }
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+          href={backHref}
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          Volver a mis mascotas
+          <ArrowLeft
+            className="size-4"
+            aria-hidden="true"
+          />
+          {translate('pets.detail.back')}
         </Link>
 
         {pet.status === 'ACTIVE' ? (
           <Link
             href={`/mis-mascotas/${pet.id}/editar`}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-sm font-semibold text-foreground hover:bg-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-sm font-semibold hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
-            <Pencil className="size-4" aria-hidden="true" />
-            Editar mascota
+            <Pencil
+              className="size-4"
+              aria-hidden="true"
+            />
+            {translate('pets.detail.edit')}
           </Link>
         ) : null}
       </div>
 
       <header className="flex items-start gap-4">
         <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-          <PawPrint className="size-7" aria-hidden="true" />
+          <PawPrint
+            className="size-7"
+            aria-hidden="true"
+          />
         </span>
         <div>
           <p className="text-sm font-semibold text-primary">
-            Ficha privada
+            {translate('pets.detail.eyebrow')}
           </p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="mt-1 text-3xl font-bold tracking-tight">
             {pet.name}
           </h1>
           <p className="mt-2 text-muted-foreground">
-            {pet.breed || 'Raza no especificada'}
+            {pet.breed ||
+              translate('pets.list.breedUnknown')}
           </p>
         </div>
       </header>
 
       {pet.status === 'ARCHIVED' ? (
-        <div className="rounded-lg border border-border bg-surface p-4 text-sm text-muted-foreground">
-          Esta ficha está archivada. Puedes consultarla, pero debes
-          restaurarla para volver a editarla.
-        </div>
+        <Alert variant="info">
+          {translate('pets.detail.archivedNotice')}
+        </Alert>
       ) : null}
 
       <Card elevated>
@@ -172,54 +179,119 @@ export default async function PetDetailPage({
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <InfoCard
-          title="Sexo"
-          value={sexLabels[pet.sex]}
-          icon={<Dna className="size-5" aria-hidden="true" />}
+          title={translate('pets.detail.sex')}
+          value={translate(
+            `pets.form.sexOptions.${pet.sex}`,
+          )}
+          icon={
+            <Dna
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
         <InfoCard
-          title="Tamaño"
-          value={sizeLabels[pet.size]}
-          icon={<Ruler className="size-5" aria-hidden="true" />}
+          title={translate('pets.detail.size')}
+          value={translate(
+            `pets.form.sizeOptions.${pet.size}`,
+          )}
+          icon={
+            <Ruler
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
         <InfoCard
-          title="Peso"
+          title={translate('pets.detail.weight')}
           value={
             pet.weightKg !== null
-              ? `${pet.weightKg} kg`
-              : 'No indicado'
+              ? translate('pets.detail.weightValue', {
+                  value: formatNumber(
+                    pet.weightKg,
+                    locale,
+                    {
+                      maximumFractionDigits: 2,
+                    },
+                  ),
+                })
+              : translate('pets.detail.notProvided')
           }
-          icon={<Weight className="size-5" aria-hidden="true" />}
+          icon={
+            <Weight
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
         <InfoCard
-          title="Nacimiento"
-          value={pet.birthDate || 'No indicado'}
-          icon={<CalendarDays className="size-5" aria-hidden="true" />}
+          title={translate('pets.detail.birth')}
+          value={
+            pet.birthDate
+              ? formatDate(pet.birthDate, locale, {
+                  dateStyle: 'medium',
+                })
+              : translate('pets.detail.notProvided')
+          }
+          icon={
+            <CalendarDays
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
         <InfoCard
-          title="Microchip"
-          value={pet.hasMicrochip ? 'Registrado' : 'No indicado'}
-          icon={<ShieldCheck className="size-5" aria-hidden="true" />}
+          title={translate('pets.detail.microchip')}
+          value={translate(
+            pet.hasMicrochip
+              ? 'pets.detail.microchipRegistered'
+              : 'pets.detail.notProvided',
+          )}
+          icon={
+            <ShieldCheck
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
         <InfoCard
-          title="Color"
-          value={pet.primaryColor || 'No indicado'}
-          icon={<PawPrint className="size-5" aria-hidden="true" />}
+          title={translate('pets.detail.color')}
+          value={
+            pet.primaryColor ||
+            translate('pets.detail.notProvided')
+          }
+          icon={
+            <PawPrint
+              className="size-5"
+              aria-hidden="true"
+            />
+          }
         />
       </div>
 
-      {pet.description || pet.distinctiveFeatures ? (
+      {pet.description ||
+      pet.distinctiveFeatures ? (
         <Card elevated>
           <CardHeader>
-            <CardTitle>Descripción</CardTitle>
+            <CardTitle>
+              {translate(
+                'pets.detail.descriptionTitle',
+              )}
+            </CardTitle>
             <CardDescription>
-              Información útil para identificar a {pet.name}.
+              {translate(
+                'pets.detail.descriptionSubtitle',
+                { name: pet.name },
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
             {pet.description ? (
               <div>
                 <h2 className="text-sm font-semibold">
-                  Descripción general
+                  {translate(
+                    'pets.detail.generalDescription',
+                  )}
                 </h2>
                 <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
                   {pet.description}
@@ -230,7 +302,9 @@ export default async function PetDetailPage({
             {pet.distinctiveFeatures ? (
               <div>
                 <h2 className="text-sm font-semibold">
-                  Rasgos distintivos
+                  {translate(
+                    'pets.detail.distinctiveFeatures',
+                  )}
                 </h2>
                 <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
                   {pet.distinctiveFeatures}
@@ -243,11 +317,17 @@ export default async function PetDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Gestión de la ficha</CardTitle>
+          <CardTitle>
+            {translate(
+              'pets.management.title',
+            )}
+          </CardTitle>
           <CardDescription>
-            {pet.status === 'ARCHIVED'
-              ? 'Restaura la ficha para volver a gestionarla como activa.'
-              : 'Archivar oculta la mascota de la gestión activa sin borrar su historial.'}
+            {translate(
+              pet.status === 'ARCHIVED'
+                ? 'pets.management.archivedDescription'
+                : 'pets.management.activeDescription',
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -283,7 +363,9 @@ function InfoCard({
         <span className="flex size-10 items-center justify-center rounded-lg bg-primary-soft text-primary">
           {icon}
         </span>
-        <CardTitle className="pt-2 text-base">{title}</CardTitle>
+        <CardTitle className="pt-2 text-base">
+          {title}
+        </CardTitle>
         <CardDescription>{value}</CardDescription>
       </CardHeader>
     </Card>

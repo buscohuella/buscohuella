@@ -5,10 +5,7 @@ import {
   type PetPhotoWithSignedUrl,
 } from '@buscohuella/pet-domain';
 import {
-  AlertTriangle,
-  CheckCircle2,
   ImagePlus,
-  LoaderCircle,
   Star,
   Trash2,
   Upload,
@@ -20,20 +17,21 @@ import {
   useState,
 } from 'react';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Field } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import { uploadPetPhotoAction } from '../actions/upload-pet-photo';
 import { PetPhotoControls } from './pet-photo-controls';
 import { PetPhotoLightbox } from './pet-photo-lightbox';
 
-type PendingStatus = 'ready' | 'uploading' | 'success' | 'error';
-type SelectionMessageTone = 'success' | 'error';
-
-interface SelectionMessage {
-  tone: SelectionMessageTone;
-  text: string;
-}
+type PendingStatus =
+  | 'ready'
+  | 'uploading'
+  | 'success'
+  | 'error';
 
 interface PendingPhoto {
   id: string;
@@ -44,6 +42,11 @@ interface PendingPhoto {
   altText: string;
   status: PendingStatus;
   message?: string;
+}
+
+interface SelectionMessage {
+  tone: 'success' | 'error';
+  text: string;
 }
 
 const ACCEPTED_TYPES = [
@@ -64,51 +67,77 @@ export function PetPhotoGallery({
   canManage: boolean;
 }) {
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const pendingRef = useRef<PendingPhoto[]>([]);
-
-  const [pending, setPending] = useState<PendingPhoto[]>([]);
-  const [selectionMessage, setSelectionMessage] =
-    useState<SelectionMessage | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(
-    null,
-  );
+  const { t } = useTranslations('pets');
+  const fileInputRef =
+    useRef<HTMLInputElement>(null);
+  const pendingRef =
+    useRef<PendingPhoto[]>([]);
+  const [pending, setPending] =
+    useState<PendingPhoto[]>([]);
+  const [
+    selectionMessage,
+    setSelectionMessage,
+  ] =
+    useState<SelectionMessage | null>(
+      null,
+    );
+  const [isUploading, setIsUploading] =
+    useState(false);
+  const [
+    lightboxIndex,
+    setLightboxIndex,
+  ] = useState<number | null>(null);
 
   const remainingSlots = Math.max(
     0,
-    PET_LIMITS.photosMaxCount - photos.length,
+    PET_LIMITS.photosMaxCount -
+      photos.length,
   );
 
   useEffect(() => {
     pendingRef.current = pending;
   }, [pending]);
 
-  useEffect(() => {
-    return () => {
-      pendingRef.current.forEach((photo) =>
-        URL.revokeObjectURL(photo.previewUrl),
+  useEffect(
+    () => () => {
+      pendingRef.current.forEach(
+        (photo) =>
+          URL.revokeObjectURL(
+            photo.previewUrl,
+          ),
       );
-    };
-  }, []);
+    },
+    [],
+  );
 
-  async function handleFiles(files: FileList | null) {
+  async function handleFiles(
+    files: FileList | null,
+  ) {
     if (!files?.length) return;
 
     setSelectionMessage(null);
-
-    const available = Math.max(0, remainingSlots - pending.length);
+    const available = Math.max(
+      0,
+      remainingSlots - pending.length,
+    );
 
     if (available === 0) {
       setSelectionMessage({
         tone: 'error',
-        text: 'No puedes añadir más fotografías. El máximo es 10.',
+        text: t('photos.limitReached', {
+          max: PET_LIMITS.photosMaxCount,
+        }),
       });
       return;
     }
 
-    const selected = Array.from(files).slice(0, available);
-    const rejectedCount = files.length - selected.length;
+    const selected =
+      Array.from(files).slice(
+        0,
+        available,
+      );
+    const rejectedCount =
+      files.length - selected.length;
     const prepared: PendingPhoto[] = [];
 
     for (const file of selected) {
@@ -119,26 +148,37 @@ export function PetPhotoGallery({
       ) {
         setSelectionMessage({
           tone: 'error',
-          text: `${file.name} no es JPEG, PNG o WebP.`,
+          text: t(
+            'photos.invalidClientType',
+            { file: file.name },
+          ),
         });
         continue;
       }
 
-      if (file.size > PET_LIMITS.photoMaxSizeBytes) {
+      if (
+        file.size >
+        PET_LIMITS.photoMaxSizeBytes
+      ) {
         setSelectionMessage({
           tone: 'error',
-          text: `${file.name} supera el límite de 8 MB.`,
+          text: t(
+            'photos.clientTooLarge',
+            { file: file.name },
+          ),
         });
         continue;
       }
 
       try {
-        const dimensions = await readImageDimensions(file);
+        const dimensions =
+          await readImageDimensions(file);
 
         prepared.push({
           id: crypto.randomUUID(),
           file,
-          previewUrl: URL.createObjectURL(file),
+          previewUrl:
+            URL.createObjectURL(file),
           width: dimensions.width,
           height: dimensions.height,
           altText: '',
@@ -147,7 +187,10 @@ export function PetPhotoGallery({
       } catch {
         setSelectionMessage({
           tone: 'error',
-          text: `No se ha podido leer la imagen ${file.name}.`,
+          text: t(
+            'photos.cannotRead',
+            { file: file.name },
+          ),
         });
       }
     }
@@ -155,11 +198,21 @@ export function PetPhotoGallery({
     if (rejectedCount > 0) {
       setSelectionMessage({
         tone: 'error',
-        text: `Solo se han preparado ${available} archivos porque el máximo es 10 fotografías.`,
+        text: t(
+          'photos.selectionTruncated',
+          {
+            count: available,
+            max:
+              PET_LIMITS.photosMaxCount,
+          },
+        ),
       });
     }
 
-    setPending((current) => [...current, ...prepared]);
+    setPending((current) => [
+      ...current,
+      ...prepared,
+    ]);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -168,81 +221,111 @@ export function PetPhotoGallery({
 
   function removePending(id: string) {
     setPending((current) => {
-      const target = current.find((photo) => photo.id === id);
-
+      const target = current.find(
+        (photo) => photo.id === id,
+      );
       if (target) {
-        URL.revokeObjectURL(target.previewUrl);
+        URL.revokeObjectURL(
+          target.previewUrl,
+        );
       }
-
-      return current.filter((photo) => photo.id !== id);
+      return current.filter(
+        (photo) => photo.id !== id,
+      );
     });
   }
 
-  function updateAltText(id: string, altText: string) {
+  function updateAltText(
+    id: string,
+    altText: string,
+  ) {
     setPending((current) =>
       current.map((photo) =>
-        photo.id === id ? { ...photo, altText } : photo,
+        photo.id === id
+          ? { ...photo, altText }
+          : photo,
       ),
     );
   }
 
   async function uploadPendingPhotos() {
-    if (!pending.length || isUploading) return;
+    if (
+      !pending.length ||
+      isUploading
+    ) {
+      return;
+    }
 
     setIsUploading(true);
     setSelectionMessage(null);
-
     let uploadedCount = 0;
 
     for (const photo of pending) {
-      if (photo.status === 'success') continue;
+      if (photo.status === 'success') {
+        continue;
+      }
 
       setPending((current) =>
         current.map((item) =>
           item.id === photo.id
-            ? { ...item, status: 'uploading', message: undefined }
+            ? {
+                ...item,
+                status: 'uploading',
+                message: undefined,
+              }
             : item,
         ),
       );
 
       const formData = new FormData();
       formData.set('petId', petId);
-      formData.set('photo', photo.file);
-      formData.set('width', String(photo.width));
-      formData.set('height', String(photo.height));
-      formData.set('altText', photo.altText);
+      formData.set(
+        'photo',
+        photo.file,
+      );
+      formData.set(
+        'width',
+        String(photo.width),
+      );
+      formData.set(
+        'height',
+        String(photo.height),
+      );
+      formData.set(
+        'altText',
+        photo.altText,
+      );
 
-      const result = await uploadPetPhotoAction(formData);
+      const result =
+        await uploadPetPhotoAction(
+          formData,
+        );
 
-      if (result.status === 'success') {
+      if (
+        result.status === 'success'
+      ) {
         uploadedCount += 1;
-
-        setPending((current) =>
-          current.map((item) =>
-            item.id === photo.id
-              ? {
-                  ...item,
-                  status: 'success',
-                  message: result.message,
-                }
-              : item,
-          ),
-        );
-      } else {
-        setPending((current) =>
-          current.map((item) =>
-            item.id === photo.id
-              ? {
-                  ...item,
-                  status: 'error',
-                  message:
-                    result.message ??
-                    'No se ha podido subir la fotografía.',
-                }
-              : item,
-          ),
-        );
       }
+
+      setPending((current) =>
+        current.map((item) =>
+          item.id === photo.id
+            ? {
+                ...item,
+                status:
+                  result.status ===
+                  'success'
+                    ? 'success'
+                    : 'error',
+                message:
+                  result.message ??
+                  t(
+                    'photos.uploadError',
+                  ),
+              }
+            : item,
+        ),
+      );
     }
 
     setIsUploading(false);
@@ -250,19 +333,31 @@ export function PetPhotoGallery({
     if (uploadedCount > 0) {
       setSelectionMessage({
         tone: 'success',
-        text: `${uploadedCount} ${
-          uploadedCount === 1 ? 'fotografía subida' : 'fotografías subidas'
-        } correctamente.`,
+        text: t(
+          uploadedCount === 1
+            ? 'photos.uploadedOne'
+            : 'photos.uploadedMany',
+          { count: uploadedCount },
+        ),
       });
 
       setPending((current) => {
         const failed = current.filter(
-          (photo) => photo.status !== 'success',
+          (photo) =>
+            photo.status !== 'success',
         );
 
         current
-          .filter((photo) => photo.status === 'success')
-          .forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+          .filter(
+            (photo) =>
+              photo.status ===
+              'success',
+          )
+          .forEach((photo) =>
+            URL.revokeObjectURL(
+              photo.previewUrl,
+            ),
+          );
 
         return failed;
       });
@@ -271,134 +366,180 @@ export function PetPhotoGallery({
     }
   }
 
+  const fallbackAlt = t(
+    'photos.photoAlt',
+    { name: petName },
+  );
+
   return (
-    <section aria-labelledby="pet-photos-title" className="space-y-5">
+    <section
+      aria-labelledby="pet-photos-title"
+      className="space-y-5"
+    >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2
             id="pet-photos-title"
-            className="text-xl font-semibold text-foreground"
+            className="text-xl font-semibold"
           >
-            Fotografías
+            {t('photos.title')}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {photos.length} de {PET_LIMITS.photosMaxCount} fotografías.
-            La fotografía marcada como portada aparece en el listado.
+            {t('photos.summary', {
+              count: photos.length,
+              max:
+                PET_LIMITS.photosMaxCount,
+            })}
           </p>
         </div>
 
-        {canManage && remainingSlots > 0 ? (
-          <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-sm font-semibold text-foreground hover:bg-surface focus-within:ring-4 focus-within:ring-primary/20">
-            <ImagePlus className="size-5" aria-hidden="true" />
-            Añadir fotografías
+        {canManage &&
+        remainingSlots > 0 ? (
+          <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-sm font-semibold hover:bg-surface-hover focus-within:ring-4 focus-within:ring-focus-soft">
+            <ImagePlus
+              className="size-5"
+              aria-hidden="true"
+            />
+            {t('photos.add')}
             <input
               ref={fileInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
               multiple
               className="sr-only"
-              onChange={(event) => void handleFiles(event.target.files)}
+              onChange={(event) =>
+                void handleFiles(
+                  event.target.files,
+                )
+              }
             />
           </label>
         ) : null}
       </div>
 
       {selectionMessage ? (
-        <div
-          role={selectionMessage.tone === 'error' ? 'alert' : 'status'}
-          aria-live={
-            selectionMessage.tone === 'error' ? 'assertive' : 'polite'
+        <Alert
+          variant={
+            selectionMessage.tone ===
+            'error'
+              ? 'danger'
+              : 'success'
           }
-          className={cn(
-            'flex items-start gap-3 rounded-lg border p-4 text-sm font-medium',
-            selectionMessage.tone === 'error'
-              ? 'border-danger/35 bg-danger/10 text-danger'
-              : 'border-success/30 bg-primary-soft text-success',
-          )}
         >
-          {selectionMessage.tone === 'error' ? (
-            <AlertTriangle
-              className="mt-0.5 size-5 shrink-0"
-              aria-hidden="true"
-            />
-          ) : (
-            <CheckCircle2
-              className="mt-0.5 size-5 shrink-0"
-              aria-hidden="true"
-            />
-          )}
-          <span>{selectionMessage.text}</span>
-        </div>
+          {selectionMessage.text}
+        </Alert>
       ) : null}
 
       {photos.length ? (
         <>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {photos.map((photo, index) => (
-              <li
-                key={photo.id}
-                className="overflow-hidden rounded-xl border border-border-soft bg-surface-elevated shadow-[var(--shadow-sm)]"
-              >
-                <button
-                  type="button"
-                  aria-label={`Abrir ${photo.altText || `fotografía de ${petName}`} en la galería`}
-                  onClick={() => setLightboxIndex(index)}
-                  className="group relative block aspect-[4/3] w-full overflow-hidden bg-black/5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+            {photos.map(
+              (photo, index) => (
+                <li
+                  key={photo.id}
+                  className="overflow-hidden rounded-xl border border-border-soft bg-surface-elevated shadow-[var(--shadow-sm)]"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photo.signedUrl}
-                    alt={photo.altText || `Fotografía de ${petName}`}
-                    className="size-full object-contain p-2 transition-transform duration-200 group-hover:scale-[1.02]"
-                    loading="lazy"
-                  />
-
-                  <span className="absolute inset-x-3 bottom-3 rounded-full bg-black/65 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                    Ver fotografía
-                  </span>
-
-                  {photo.isPrimary ? (
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-surface-elevated/95 px-3 py-1.5 text-xs font-semibold text-foreground shadow-[var(--shadow-sm)]">
-                      <Star
-                        className="size-4 text-primary"
-                        aria-hidden="true"
-                      />
-                      Portada
-                    </span>
-                  ) : null}
-                </button>
-
-                <div className="space-y-4 p-4">
-                  <div>
-                    <p className="truncate text-sm font-semibold">
-                      {photo.altText || `Fotografía de ${petName}`}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {photo.width && photo.height
-                        ? `${photo.width} × ${photo.height} px`
-                        : 'Dimensiones no disponibles'}
-                    </p>
-                  </div>
-
-                  {canManage ? (
-                    <PetPhotoControls
-                      petId={petId}
-                      petName={petName}
-                      photo={photo}
-                      photoCount={photos.length}
+                  <button
+                    type="button"
+                    aria-label={t(
+                      'photos.openGallery',
+                      {
+                        description:
+                          photo.altText ||
+                          fallbackAlt,
+                      },
+                    )}
+                    onClick={() =>
+                      setLightboxIndex(
+                        index,
+                      )
+                    }
+                    className="group relative block aspect-[4/3] w-full overflow-hidden bg-black/5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={
+                        photo.signedUrl
+                      }
+                      alt={
+                        photo.altText ||
+                        fallbackAlt
+                      }
+                      className="size-full object-contain p-2 transition-transform duration-200 group-hover:scale-[1.02]"
+                      loading="lazy"
                     />
-                  ) : null}
-                </div>
-              </li>
-            ))}
+
+                    <span className="absolute inset-x-3 bottom-3 rounded-full bg-black/65 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                      {t(
+                        'photos.viewPhoto',
+                      )}
+                    </span>
+
+                    {photo.isPrimary ? (
+                      <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-surface-elevated/95 px-3 py-1.5 text-xs font-semibold shadow-[var(--shadow-sm)]">
+                        <Star
+                          className="size-4 text-primary"
+                          aria-hidden="true"
+                        />
+                        {t(
+                          'photos.cover',
+                        )}
+                      </span>
+                    ) : null}
+                  </button>
+
+                  <div className="space-y-4 p-4">
+                    <div>
+                      <p className="truncate text-sm font-semibold">
+                        {photo.altText ||
+                          fallbackAlt}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {photo.width &&
+                        photo.height
+                          ? t(
+                              'photos.dimensions',
+                              {
+                                width:
+                                  photo.width,
+                                height:
+                                  photo.height,
+                              },
+                            )
+                          : t(
+                              'photos.noDimensions',
+                            )}
+                      </p>
+                    </div>
+
+                    {canManage ? (
+                      <PetPhotoControls
+                        petId={petId}
+                        petName={petName}
+                        photo={photo}
+                        photoCount={
+                          photos.length
+                        }
+                      />
+                    ) : null}
+                  </div>
+                </li>
+              ),
+            )}
           </ul>
 
           <PetPhotoLightbox
             photos={photos}
-            activeIndex={lightboxIndex}
+            activeIndex={
+              lightboxIndex
+            }
             petName={petName}
-            onClose={() => setLightboxIndex(null)}
-            onChange={setLightboxIndex}
+            onClose={() =>
+              setLightboxIndex(null)
+            }
+            onChange={
+              setLightboxIndex
+            }
           />
         </>
       ) : (
@@ -408,11 +549,13 @@ export function PetPhotoGallery({
             aria-hidden="true"
           />
           <p className="mt-4 font-semibold">
-            Aún no hay fotografías
+            {t('photos.emptyTitle')}
           </p>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            Añade imágenes claras desde diferentes ángulos. Serán útiles
-            para identificar a {petName} si alguna vez se pierde.
+            {t(
+              'photos.emptyDescription',
+              { name: petName },
+            )}
           </p>
         </div>
       )}
@@ -420,10 +563,15 @@ export function PetPhotoGallery({
       {pending.length ? (
         <div className="space-y-4 rounded-xl border border-border-soft bg-surface p-5">
           <div>
-            <h3 className="font-semibold">Preparadas para subir</h3>
+            <h3 className="font-semibold">
+              {t(
+                'photos.pendingTitle',
+              )}
+            </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Revisa las imágenes y añade una descripción breve cuando
-              aporte información útil.
+              {t(
+                'photos.pendingDescription',
+              )}
             </p>
           </div>
 
@@ -436,7 +584,9 @@ export function PetPhotoGallery({
                 <div className="flex gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={photo.previewUrl}
+                    src={
+                      photo.previewUrl
+                    }
                     alt=""
                     className="size-24 shrink-0 rounded-lg object-cover"
                   />
@@ -446,61 +596,100 @@ export function PetPhotoGallery({
                       {photo.file.name}
                     </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {formatBytes(photo.file.size)} · {photo.width} ×{' '}
+                      {formatBytes(
+                        photo.file.size,
+                      )}{' '}
+                      · {photo.width} ×{' '}
                       {photo.height} px
                     </p>
 
-                    <label
+                    <Field
                       htmlFor={`photo-alt-${photo.id}`}
-                      className="mt-3 block text-xs font-semibold"
+                      label={t(
+                        'photos.altText',
+                      )}
                     >
-                      Texto alternativo
-                    </label>
-                    <input
-                      id={`photo-alt-${photo.id}`}
-                      type="text"
-                      value={photo.altText}
-                      maxLength={PET_LIMITS.photoAltTextMaxLength}
-                      disabled={
-                        photo.status === 'uploading' ||
-                        photo.status === 'success'
-                      }
-                      placeholder={`Ej.: ${petName} de frente`}
-                      onChange={(event) =>
-                        updateAltText(photo.id, event.target.value)
-                      }
-                      className="mt-1 min-h-10 w-full rounded-lg border border-border bg-surface-elevated px-3 text-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15 disabled:opacity-60"
-                    />
+                      <Input
+                        id={`photo-alt-${photo.id}`}
+                        value={
+                          photo.altText
+                        }
+                        maxLength={
+                          PET_LIMITS.photoAltTextMaxLength
+                        }
+                        disabled={
+                          photo.status ===
+                            'uploading' ||
+                          photo.status ===
+                            'success'
+                        }
+                        placeholder={t(
+                          'photos.shortAltPlaceholder',
+                          {
+                            name: petName,
+                          },
+                        )}
+                        onChange={(
+                          event,
+                        ) =>
+                          updateAltText(
+                            photo.id,
+                            event.target
+                              .value,
+                          )
+                        }
+                      />
+                    </Field>
                   </div>
 
                   <button
                     type="button"
-                    aria-label={`Quitar ${photo.file.name}`}
+                    aria-label={t(
+                      'photos.removePending',
+                      {
+                        file:
+                          photo.file
+                            .name,
+                      },
+                    )}
                     disabled={
-                      photo.status === 'uploading' ||
-                      photo.status === 'success'
+                      photo.status ===
+                        'uploading' ||
+                      photo.status ===
+                        'success'
                     }
-                    onClick={() => removePending(photo.id)}
-                    className="flex size-10 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-danger/15 disabled:opacity-50"
+                    onClick={() =>
+                      removePending(
+                        photo.id,
+                      )
+                    }
+                    className="flex size-10 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-danger-soft disabled:opacity-50"
                   >
-                    <Trash2 className="size-5" aria-hidden="true" />
+                    <Trash2
+                      className="size-5"
+                      aria-hidden="true"
+                    />
                   </button>
                 </div>
 
-                {photo.status !== 'ready' ? (
-                  <p
-                    role={photo.status === 'error' ? 'alert' : 'status'}
-                    className={cn(
-                      'mt-3 text-sm',
-                      photo.status === 'error'
-                        ? 'font-medium text-danger'
-                        : 'text-muted-foreground',
-                    )}
+                {photo.status !==
+                'ready' ? (
+                  <Alert
+                    className="mt-3"
+                    variant={
+                      photo.status ===
+                      'error'
+                        ? 'danger'
+                        : 'info'
+                    }
                   >
-                    {photo.status === 'uploading'
-                      ? 'Subiendo...'
+                    {photo.status ===
+                    'uploading'
+                      ? t(
+                          'photos.uploadingOne',
+                        )
                       : photo.message}
-                  </p>
+                  </Alert>
                 ) : null}
               </li>
             ))}
@@ -509,24 +698,27 @@ export function PetPhotoGallery({
           <div className="flex justify-end">
             <Button
               type="button"
-              disabled={isUploading}
-              onClick={() => void uploadPendingPhotos()}
-            >
-              {isUploading ? (
-                <LoaderCircle
-                  className="size-5 animate-spin"
-                  aria-hidden="true"
-                />
-              ) : (
-                <Upload className="size-5" aria-hidden="true" />
+              isLoading={isUploading}
+              loadingText={t(
+                'photos.uploadingMany',
               )}
-              {isUploading
-                ? 'Subiendo fotografías...'
-                : `Subir ${pending.length} ${
-                    pending.length === 1
-                      ? 'fotografía'
-                      : 'fotografías'
-                  }`}
+              onClick={() =>
+                void uploadPendingPhotos()
+              }
+            >
+              <Upload
+                className="size-5"
+                aria-hidden="true"
+              />
+              {t(
+                pending.length === 1
+                  ? 'photos.uploadButtonOne'
+                  : 'photos.uploadButtonMany',
+                {
+                  count:
+                    pending.length,
+                },
+              )}
             </Button>
           </div>
         </div>
@@ -534,17 +726,21 @@ export function PetPhotoGallery({
 
       {!canManage ? (
         <p className="text-sm text-muted-foreground">
-          Restaura la ficha para volver a gestionar sus fotografías.
+          {t(
+            'photos.restoreToManage',
+          )}
         </p>
       ) : null}
     </section>
   );
 }
 
-async function readImageDimensions(file: File) {
+async function readImageDimensions(
+  file: File,
+) {
   if ('createImageBitmap' in window) {
-    const bitmap = await createImageBitmap(file);
-
+    const bitmap =
+      await createImageBitmap(file);
     try {
       return {
         width: bitmap.width,
@@ -555,22 +751,30 @@ async function readImageDimensions(file: File) {
     }
   }
 
-  const url = URL.createObjectURL(file);
+  const url =
+    URL.createObjectURL(file);
 
   try {
-    return await new Promise<{ width: number; height: number }>(
-      (resolve, reject) => {
-        const image = new Image();
-
-        image.onload = () =>
-          resolve({
-            width: image.naturalWidth,
-            height: image.naturalHeight,
-          });
-        image.onerror = () => reject(new Error('IMAGE_READ_FAILED'));
-        image.src = url;
-      },
-    );
+    return await new Promise<{
+      width: number;
+      height: number;
+    }>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () =>
+        resolve({
+          width:
+            image.naturalWidth,
+          height:
+            image.naturalHeight,
+        });
+      image.onerror = () =>
+        reject(
+          new Error(
+            'IMAGE_READ_FAILED',
+          ),
+        );
+      image.src = url;
+    });
   } finally {
     URL.revokeObjectURL(url);
   }
@@ -578,8 +782,14 @@ async function readImageDimensions(file: File) {
 
 function formatBytes(bytes: number) {
   if (bytes < 1024 * 1024) {
-    return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+    return `${Math.max(
+      1,
+      Math.round(bytes / 1024),
+    )} KB`;
   }
 
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(
+    bytes /
+    (1024 * 1024)
+  ).toFixed(1)} MB`;
 }

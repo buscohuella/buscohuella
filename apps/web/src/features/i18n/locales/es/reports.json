@@ -45,7 +45,7 @@
   "create": {
     "eyebrow": "Nuevo aviso",
     "title": "¿Qué quieres comunicar?",
-    "description": "Elige el tipo de aviso. Después te guiaremos paso a paso y podrás guardar un borrador antes de publicarlo.",
+    "description": "Elige el tipo de aviso. El flujo está diseñado para publicar con pocos pasos y completar detalles después.",
     "lostTitle": "He perdido una mascota",
     "lostDescription": "Selecciona una de tus mascotas registradas y comunica dónde y cuándo se perdió.",
     "foundTitle": "He encontrado un animal",
@@ -53,6 +53,38 @@
     "lostAction": "Comunicar una pérdida",
     "foundAction": "Comunicar un hallazgo",
     "comingNext": "El formulario de este tipo de aviso se habilitará en la siguiente entrega.",
-    "back": "Volver a mis avisos"
+    "back": "Volver a mis avisos",
+    "foundUnavailable": "El aviso de animal encontrado se implementará en FP-012.",
+    "comingSoon": "Próximamente",
+    "sightingTitle": "Avistamiento",
+    "sightingDescription": "Comunica que has visto un animal perdido en una ubicación concreta.",
+    "incidentTitle": "Incidencia o peligro",
+    "incidentDescription": "Avisa de veneno, maltrato, robos u otros riesgos para los animales.",
+    "sosTitle": "SOS",
+    "sosDescription": "Solicita ayuda urgente relacionada con un animal."
+  },
+  "lostPet": {
+    "title": "¿Qué mascota se ha perdido?",
+    "microchip": "Con microchip",
+    "nextUnavailable": "El paso de fecha y ubicación se habilitará en la siguiente entrega.",
+    "selectedDescription": "Usaremos los datos registrados de {name}.",
+    "selectAria": "Seleccionar a {name} como mascota perdida",
+    "selected": "Seleccionada",
+    "errorTitle": "No hemos podido cargar tus mascotas",
+    "description": "Selecciona una mascota activa. Reutilizaremos sus datos y fotografías para que puedas publicar más rápido.",
+    "breedUnknown": "Raza no indicada",
+    "errorDescription": "Inténtalo de nuevo dentro de unos instantes.",
+    "emptyDescription": "Registra primero la mascota para reutilizar sus datos y crear un aviso más completo en menos tiempo.",
+    "eyebrow": "Mascota perdida",
+    "continue": "Continuar",
+    "color": "Color: {color}",
+    "selectedTitle": "Mascota seleccionada",
+    "nextHint": "El siguiente paso pedirá cuándo y dónde ocurrió, sin repetir los datos de la mascota.",
+    "selectHint": "Selecciona una mascota para continuar.",
+    "groupLabel": "Seleccionar mascota perdida",
+    "back": "Volver al tipo de aviso",
+    "emptyTitle": "No tienes mascotas activas",
+    "registerPet": "Registrar mascota",
+    "select": "Seleccionar"
   }
 }

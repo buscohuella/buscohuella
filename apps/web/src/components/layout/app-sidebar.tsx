@@ -4,7 +4,6 @@ import { PawPrint, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
 import type { AuthUser } from '@/features/auth/types/auth-user';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 import { cn } from '@/lib/utils';
@@ -64,9 +63,7 @@ export function AppSidebar({
                 <Link
                   href={item.href}
                   aria-current={
-                    isActive
-                      ? 'page'
-                      : undefined
+                    isActive ? 'page' : undefined
                   }
                   className={cn(
                     'flex min-h-12 items-center gap-3 rounded-xl px-4 font-medium',
@@ -81,9 +78,7 @@ export function AppSidebar({
                     className="size-5"
                     aria-hidden="true"
                   />
-                  <span>
-                    {t(item.labelKey)}
-                  </span>
+                  <span>{t(item.labelKey)}</span>
                 </Link>
               </li>
             );
@@ -92,19 +87,19 @@ export function AppSidebar({
       </nav>
 
       <div className="space-y-3 border-t border-border-soft p-4">
-        <Button
-          fullWidth
-          size="lg"
+        <Link
+          href="/mis-reportes/nuevo"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           aria-label={t(
-            'navigation.private.report',
+            'navigation.private.createNotice',
           )}
         >
           <Plus
             className="size-5"
             aria-hidden="true"
           />
-          {t('navigation.private.report')}
-        </Button>
+          {t('navigation.private.createNotice')}
+        </Link>
 
         <UserMenu user={user} />
       </div>

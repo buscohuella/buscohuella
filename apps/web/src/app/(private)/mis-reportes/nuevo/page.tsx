@@ -1,7 +1,10 @@
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  Eye,
   Search,
+  Siren,
   TriangleAlert,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -53,8 +56,9 @@ export default async function NewReportPage() {
         </p>
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <ReportTypeCard
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <AvailableType
+          href="/mis-reportes/nuevo/perdida"
           icon={<TriangleAlert />}
           title={translate(
             'reports.create.lostTitle',
@@ -65,12 +69,9 @@ export default async function NewReportPage() {
           action={translate(
             'reports.create.lostAction',
           )}
-          comingNext={translate(
-            'reports.create.comingNext',
-          )}
         />
 
-        <ReportTypeCard
+        <UnavailableType
           icon={<Search />}
           title={translate(
             'reports.create.foundTitle',
@@ -78,11 +79,47 @@ export default async function NewReportPage() {
           description={translate(
             'reports.create.foundDescription',
           )}
-          action={translate(
-            'reports.create.foundAction',
+          status={translate(
+            'reports.create.comingSoon',
           )}
-          comingNext={translate(
-            'reports.create.comingNext',
+        />
+
+        <UnavailableType
+          icon={<Eye />}
+          title={translate(
+            'reports.create.sightingTitle',
+          )}
+          description={translate(
+            'reports.create.sightingDescription',
+          )}
+          status={translate(
+            'reports.create.comingSoon',
+          )}
+        />
+
+        <UnavailableType
+          icon={<AlertTriangle />}
+          title={translate(
+            'reports.create.incidentTitle',
+          )}
+          description={translate(
+            'reports.create.incidentDescription',
+          )}
+          status={translate(
+            'reports.create.comingSoon',
+          )}
+        />
+
+        <UnavailableType
+          icon={<Siren />}
+          title={translate(
+            'reports.create.sosTitle',
+          )}
+          description={translate(
+            'reports.create.sosDescription',
+          )}
+          status={translate(
+            'reports.create.comingSoon',
           )}
         />
       </div>
@@ -90,23 +127,26 @@ export default async function NewReportPage() {
   );
 }
 
-function ReportTypeCard({
+function AvailableType({
+  href,
   icon,
   title,
   description,
   action,
-  comingNext,
 }: {
+  href: string;
   icon: React.ReactNode;
   title: string;
   description: string;
   action: string;
-  comingNext: string;
 }) {
   return (
-    <Card elevated className="h-full">
+    <Card
+      elevated
+      className="h-full transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-md)]"
+    >
       <CardHeader>
-        <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary-soft text-primary [&>svg]:size-6">
+        <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-danger/10 text-danger [&>svg]:size-6">
           {icon}
         </span>
         <CardTitle>{title}</CardTitle>
@@ -114,27 +154,51 @@ function ReportTypeCard({
           {description}
         </CardDescription>
       </CardHeader>
-
       <CardContent>
-        <button
-          type="button"
-          disabled
-          aria-describedby={`${title.replaceAll(' ', '-')}-coming-next`}
-          className="inline-flex min-h-12 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full border border-border bg-surface px-5 font-semibold text-muted-foreground opacity-75"
+        <Link
+          href={href}
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           {action}
           <ArrowRight
             className="size-5"
             aria-hidden="true"
           />
-        </button>
-        <p
-          id={`${title.replaceAll(' ', '-')}-coming-next`}
-          className="mt-3 text-sm text-muted-foreground"
-        >
-          {comingNext}
-        </p>
+        </Link>
       </CardContent>
+    </Card>
+  );
+}
+
+function UnavailableType({
+  icon,
+  title,
+  description,
+  status,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  status: string;
+}) {
+  return (
+    <Card className="h-full opacity-80">
+      <CardHeader>
+        <div className="flex items-start justify-between gap-3">
+          <span className="flex size-12 items-center justify-center rounded-xl bg-surface text-muted-foreground [&>svg]:size-6">
+            {icon}
+          </span>
+          <span className="rounded-full bg-surface px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+            {status}
+          </span>
+        </div>
+        <CardTitle className="pt-2">
+          {title}
+        </CardTitle>
+        <CardDescription>
+          {description}
+        </CardDescription>
+      </CardHeader>
     </Card>
   );
 }

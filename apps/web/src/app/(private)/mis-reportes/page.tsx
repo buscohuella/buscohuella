@@ -126,7 +126,7 @@ export default async function MyReportsPage({
 
     return (
       <PageContainer className="space-y-6">
-        <PageHeading translate={translate} />
+        <PageHeading translate={translate} showAction={false} />
         <ErrorState
           title={translate(
             'reports.list.errorTitle',
@@ -150,7 +150,7 @@ export default async function MyReportsPage({
 
   return (
     <PageContainer className="space-y-6">
-      <PageHeading translate={translate} />
+      <PageHeading translate={translate} showAction={data.reports.length > 0} />
 
       <nav
         aria-label={translate(
@@ -258,6 +258,7 @@ export default async function MyReportsPage({
 
 function PageHeading({
   translate,
+  showAction,
 }: {
   translate: (
     key: string,
@@ -266,6 +267,7 @@ function PageHeading({
       string | number | boolean
     >,
   ) => string;
+  showAction: boolean;
 }) {
   return (
     <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -287,16 +289,18 @@ function PageHeading({
         </p>
       </div>
 
-      <Link
-        href="/mis-reportes/nuevo"
-        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-      >
-        <Plus
-          className="size-5"
-          aria-hidden="true"
-        />
-        {translate('reports.list.new')}
-      </Link>
+      {showAction ? (
+        <Link
+          href="/mis-reportes/nuevo"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+        >
+          <Plus
+            className="size-5"
+            aria-hidden="true"
+          />
+          {translate('reports.list.new')}
+        </Link>
+      ) : null}
     </header>
   );
 }
@@ -317,6 +321,7 @@ function ReportCard({
       string | number | boolean
     >,
   ) => string;
+
 }) {
   const title =
     report.title ||

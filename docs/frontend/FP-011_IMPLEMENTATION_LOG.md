@@ -1,0 +1,95 @@
+# FP-011 — Implementation Log
+
+## Objetivo
+
+Implementar el flujo MVP para comunicar la pérdida de una mascota reutilizando el dominio y la capa de datos creados en FP-010.
+
+## Principios transversales
+
+Cada entrega debe revisar conjuntamente:
+
+- i18n ES/CA;
+- accesibilidad y navegación por teclado;
+- UX móvil y reducción de carga cognitiva;
+- seguridad y privacidad;
+- validación en cliente y servidor;
+- logging sanitizado;
+- errores visibles y recuperables;
+- temas claro y oscuro;
+- responsive;
+- typecheck, lint, tests y build.
+
+## Decisión de UX: flujo de urgencia ligero
+
+El flujo prioriza velocidad y claridad para una persona que puede estar bajo estrés.
+
+Secuencia prevista:
+
+1. Elegir el tipo de aviso.
+2. Seleccionar una mascota activa.
+3. Indicar cuándo ocurrió mediante opciones rápidas.
+4. Indicar la ubicación del incidente:
+   - GPS actual;
+   - búsqueda manual;
+   - selección o ajuste en mapa.
+5. Añadir una descripción breve.
+6. Revisar, guardar borrador y publicar.
+
+Reglas:
+
+- no volver a pedir datos ya registrados de la mascota;
+- usar valores seguros por defecto;
+- mantener opciones avanzadas detrás de divulgación progresiva;
+- no crear un borrador vacío solo por entrar en el flujo;
+- separar ubicación exacta privada y ubicación pública aproximada;
+- permitir completar información adicional después de publicar.
+
+## Entrega 1 — Mis avisos y selector de tipo
+
+Estado: completada.
+
+Incluye:
+
+- listado real mediante `ReportRepository.listOwnReports()`;
+- filtros por estado;
+- estados vacío y error;
+- catálogo ES/CA;
+- ruta `/mis-reportes/nuevo`;
+- elección visual entre pérdida y hallazgo.
+
+## Entrega 2 — Selección de mascota perdida
+
+Estado: en implementación.
+
+Incluye:
+
+- activación del flujo `LOST_PET`;
+- ruta `/mis-reportes/nuevo/perdida`;
+- carga real de mascotas del usuario;
+- exclusión de fichas archivadas o fallecidas;
+- selección con un toque;
+- reutilización futura de nombre, raza, rasgos y fotografías;
+- estados vacío y error;
+- ES/CA;
+- semántica de radiogrupo y foco visible.
+
+No incluye todavía:
+
+- creación del borrador;
+- fecha y hora;
+- GPS, búsqueda o mapa;
+- descripción;
+- publicación.
+
+## Decisión de navegación y centro de creación
+
+- El módulo se denomina **Avisos**.
+- La acción global se denomina **Crear aviso**.
+- El botón central móvil representa **acciones rápidas**, no un enlace exclusivo a mascota perdida.
+- En web móvil abre un `Sheet` inferior accesible.
+- La app nativa podrá conservar un menú radial equivalente.
+- Categorías previstas: mascota perdida, animal encontrado, avistamiento, incidencia o peligro y SOS.
+- Durante FP-011 solo mascota perdida queda habilitada.
+- Cuando `Mis avisos` está vacío, se oculta el CTA superior y se mantiene el CTA principal del estado vacío.
+- Cuando existen avisos, vuelve a mostrarse el CTA superior.
+- La navegación `Inicio` conserva la ruta canónica `/inicio`.

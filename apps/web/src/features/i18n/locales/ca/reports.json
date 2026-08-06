@@ -45,7 +45,7 @@
   "create": {
     "eyebrow": "Avís nou",
     "title": "Què vols comunicar?",
-    "description": "Tria el tipus d'avís. Després et guiarem pas a pas i podràs desar un esborrany abans de publicar-lo.",
+    "description": "Tria el tipus d'avís. El flux està dissenyat per publicar amb pocs passos i completar els detalls després.",
     "lostTitle": "He perdut una mascota",
     "lostDescription": "Selecciona una de les teves mascotes registrades i comunica on i quan es va perdre.",
     "foundTitle": "He trobat un animal",
@@ -53,6 +53,38 @@
     "lostAction": "Comunica una pèrdua",
     "foundAction": "Comunica una troballa",
     "comingNext": "El formulari d'aquest tipus d'avís s'habilitarà en la propera entrega.",
-    "back": "Torna als meus avisos"
+    "back": "Torna als meus avisos",
+    "foundUnavailable": "L'avís d'animal trobat s'implementarà a FP-012.",
+    "comingSoon": "Properament",
+    "sightingTitle": "Avistament",
+    "sightingDescription": "Comunica que has vist un animal perdut en una ubicació concreta.",
+    "incidentTitle": "Incidència o perill",
+    "incidentDescription": "Avisa de verí, maltractament, robatoris o altres riscos per als animals.",
+    "sosTitle": "SOS",
+    "sosDescription": "Demana ajuda urgent relacionada amb un animal."
+  },
+  "lostPet": {
+    "title": "Quina mascota s'ha perdut?",
+    "microchip": "Amb microxip",
+    "nextUnavailable": "El pas de data i ubicació s'habilitarà en la propera entrega.",
+    "selectedDescription": "Utilitzarem les dades registrades de {name}.",
+    "selectAria": "Selecciona {name} com a mascota perduda",
+    "selected": "Seleccionada",
+    "errorTitle": "No hem pogut carregar les teves mascotes",
+    "description": "Selecciona una mascota activa. Reutilitzarem les seves dades i fotografies perquè puguis publicar més ràpid.",
+    "breedUnknown": "Raça no indicada",
+    "errorDescription": "Torna-ho a provar d'aquí a uns instants.",
+    "emptyDescription": "Registra primer la mascota per reutilitzar-ne les dades i crear un avís més complet en menys temps.",
+    "eyebrow": "Mascota perduda",
+    "continue": "Continua",
+    "color": "Color: {color}",
+    "selectedTitle": "Mascota seleccionada",
+    "nextHint": "El pas següent demanarà quan i on va passar, sense repetir les dades de la mascota.",
+    "selectHint": "Selecciona una mascota per continuar.",
+    "groupLabel": "Selecciona la mascota perduda",
+    "back": "Torna al tipus d'avís",
+    "emptyTitle": "No tens mascotes actives",
+    "registerPet": "Registra una mascota",
+    "select": "Selecciona"
   }
 }

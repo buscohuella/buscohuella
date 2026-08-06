@@ -1,7 +1,13 @@
-import { Bell, Map, PawPrint, Plus, ScrollText } from 'lucide-react';
+import {
+  Bell,
+  Map,
+  PawPrint,
+  Plus,
+  ScrollText,
+} from 'lucide-react';
+import Link from 'next/link';
 
 import { PageContainer } from '@/components/layout/page-container';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -21,17 +27,20 @@ interface PrivateHomePageProps {
 const shortcuts = [
   {
     title: 'Explorar el mapa',
-    description: 'Consulta los casos y avistamientos próximos.',
+    description:
+      'Consulta los casos y avistamientos próximos.',
     icon: Map,
   },
   {
-    title: 'Mis reportes',
-    description: 'Gestiona pérdidas, hallazgos y avistamientos.',
+    title: 'Mis avisos',
+    description:
+      'Gestiona pérdidas, hallazgos y avistamientos.',
     icon: ScrollText,
   },
   {
     title: 'Mis mascotas',
-    description: 'Prepara la información de tu familia animal.',
+    description:
+      'Prepara la información de tu familia animal.',
     icon: PawPrint,
   },
 ];
@@ -53,19 +62,29 @@ export default async function PrivateHomePage({
       <AuthNotice message={notice} />
 
       <section className="rounded-xl border border-border-soft bg-primary-soft p-6 sm:p-8">
-        <p className="text-sm font-semibold text-primary">Área personal</p>
+        <p className="text-sm font-semibold text-primary">
+          Área personal
+        </p>
+
         <h2 className="mt-2 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           Todo preparado para proteger a tu familia animal.
         </h2>
+
         <p className="mt-4 max-w-2xl text-muted-foreground">
-          Desde aquí gestionarás mascotas, reportes, alertas y datos personales.
+          Desde aquí gestionarás mascotas, avisos, alertas y datos personales.
         </p>
 
         <div className="mt-6">
-          <Button size="lg">
-            <Plus className="size-5" aria-hidden="true" />
-            Crear reporte
-          </Button>
+          <Link
+            href="/mis-reportes/nuevo"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          >
+            <Plus
+              className="size-5"
+              aria-hidden="true"
+            />
+            Crear aviso
+          </Link>
         </div>
       </section>
 
@@ -85,10 +104,17 @@ export default async function PrivateHomePage({
               <Card key={shortcut.title}>
                 <CardHeader>
                   <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                    <Icon className="size-6" aria-hidden="true" />
+                    <Icon
+                      className="size-6"
+                      aria-hidden="true"
+                    />
                   </span>
-                  <CardTitle>{shortcut.title}</CardTitle>
-                  <CardDescription>{shortcut.description}</CardDescription>
+                  <CardTitle>
+                    {shortcut.title}
+                  </CardTitle>
+                  <CardDescription>
+                    {shortcut.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             );
@@ -99,16 +125,24 @@ export default async function PrivateHomePage({
       <Card elevated>
         <CardHeader>
           <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-accent-soft text-accent-hover">
-            <Bell className="size-6" aria-hidden="true" />
+            <Bell
+              className="size-6"
+              aria-hidden="true"
+            />
           </span>
-          <CardTitle>Actividad reciente</CardTitle>
+          <CardTitle>
+            Actividad reciente
+          </CardTitle>
           <CardDescription>
             Aquí aparecerán alertas y actualizaciones de tus casos.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <div className="rounded-lg border border-border-soft bg-surface p-5 text-center">
-            <p className="font-semibold">Todavía no hay actividad</p>
+            <p className="font-semibold">
+              Todavía no hay actividad
+            </p>
           </div>
         </CardContent>
       </Card>

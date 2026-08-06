@@ -37,7 +37,8 @@
       "notifications": "Mostra les notificacions",
       "pets": "Mascotes",
       "brandHome": "BuscoHuella, ves a l'inici",
-      "mainLabel": "Navegació principal"
+      "mainLabel": "Navegació principal",
+      "createNotice": "Crea un avís"
     }
   },
   "actions": {
@@ -49,5 +50,33 @@
   },
   "status": {
     "loading": "Carregant…"
+  },
+  "quickActions": {
+    "open": "Obre les accions ràpides",
+    "add": "Afegeix",
+    "title": "Què vols comunicar?",
+    "description": "Tria una acció. Només mascota perduda està disponible en aquesta fase de l'MVP.",
+    "close": "Tanca les accions ràpides",
+    "comingSoon": "Properament",
+    "lost": {
+      "title": "Mascota perduda",
+      "description": "Comunica ràpidament que una de les teves mascotes s'ha perdut."
+    },
+    "found": {
+      "title": "Animal trobat",
+      "description": "Informa d'un animal que has trobat."
+    },
+    "sighting": {
+      "title": "Avistament",
+      "description": "Comunica que has vist un animal perdut."
+    },
+    "incident": {
+      "title": "Incidència o perill",
+      "description": "Verí, maltractament, robatoris o altres riscos."
+    },
+    "sos": {
+      "title": "SOS",
+      "description": "Demana ajuda urgent relacionada amb un animal."
+    }
   }
 }

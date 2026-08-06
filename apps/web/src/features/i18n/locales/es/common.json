@@ -29,15 +29,16 @@
       "home": "Inicio",
       "map": "Mapa",
       "profile": "Perfil",
-      "reports": "Reportes",
+      "reports": "Avisos",
       "logout": "Cerrar sesión",
       "openProfile": "Abrir el perfil de {name}",
       "mobileLabel": "Navegación principal móvil",
-      "report": "Reportar",
+      "report": "Crear aviso",
       "notifications": "Ver notificaciones",
       "pets": "Mascotas",
       "brandHome": "BuscoHuella, ir al inicio",
-      "mainLabel": "Navegación principal"
+      "mainLabel": "Navegación principal",
+      "createNotice": "Crear aviso"
     }
   },
   "actions": {
@@ -49,5 +50,33 @@
   },
   "status": {
     "loading": "Cargando…"
+  },
+  "quickActions": {
+    "open": "Abrir acciones rápidas",
+    "add": "Añadir",
+    "title": "¿Qué quieres comunicar?",
+    "description": "Elige una acción. Solo mascota perdida está disponible en esta fase del MVP.",
+    "close": "Cerrar acciones rápidas",
+    "comingSoon": "Próximamente",
+    "lost": {
+      "title": "Mascota perdida",
+      "description": "Comunica rápidamente que una de tus mascotas se ha perdido."
+    },
+    "found": {
+      "title": "Animal encontrado",
+      "description": "Informa de un animal que has encontrado."
+    },
+    "sighting": {
+      "title": "Avistamiento",
+      "description": "Comunica que has visto un animal perdido."
+    },
+    "incident": {
+      "title": "Incidencia o peligro",
+      "description": "Veneno, maltrato, robos u otros riesgos."
+    },
+    "sos": {
+      "title": "SOS",
+      "description": "Solicita ayuda urgente relacionada con un animal."
+    }
   }
 }

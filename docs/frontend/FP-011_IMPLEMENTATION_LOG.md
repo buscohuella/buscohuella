@@ -114,3 +114,26 @@ Decisión de datos:
 - no se inventa una hora exacta para una respuesta aproximada;
 - únicamente `CUSTOM` transporta un instante ISO exacto;
 - el borrador todavía no se crea hasta disponer también de ubicación.
+## Entrega 4 — Ubicación del incidente
+
+Estado: en implementación.
+
+Incluye:
+
+- solicitud de GPS únicamente tras una acción explícita;
+- manejo de permiso denegado, timeout, posición no disponible y navegador incompatible;
+- alternativa manual siempre disponible;
+- confirmación y cambio de ubicación;
+- aproximación pública de coordenadas GPS a tres decimales;
+- almacenamiento temporal de coordenadas exactas en `sessionStorage`;
+- exclusión de coordenadas exactas de URL, historial y logs;
+- ES/CA;
+- navegación con teclado y estados anunciados.
+
+Decisión de privacidad:
+
+- la coordenada GPS exacta es privada;
+- la posición pública se aproxima antes de mostrarse;
+- la ubicación no se persiste todavía en Supabase;
+- el borrador se creará cuando estén disponibles los datos mínimos y se ejecute validación de servidor;
+- la geocodificación y el ajuste mediante Mapbox se conectarán sobre esta capa sin cambiar el contrato del flujo.

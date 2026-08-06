@@ -2,7 +2,7 @@ import { PetRepository } from '@buscohuella/pet-data';
 import type { Pet } from '@buscohuella/pet-domain';
 import {
   ArrowLeft,
-  MapPin,
+  MessageSquareText,
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -16,7 +16,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
-import { IncidentLocationStep } from '@/features/reports/components/incident-location-step';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -44,7 +43,7 @@ async function loadSelectedPet(
       : null;
   } catch (error) {
     logServerError(
-      'report.location.pet_load_failed',
+      'report.description.pet_load_failed',
       error,
       { petId },
     );
@@ -52,7 +51,7 @@ async function loadSelectedPet(
   }
 }
 
-export default async function LocationPage({
+export default async function DescriptionPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -75,13 +74,6 @@ export default async function LocationPage({
     notFound();
   }
 
-  if (
-    query.momento === 'CUSTOM' &&
-    !query.fecha
-  ) {
-    notFound();
-  }
-
   const pet: Pet | null =
     await loadSelectedPet(query.mascota);
 
@@ -92,12 +84,20 @@ export default async function LocationPage({
   const backParams =
     new URLSearchParams({
       mascota: pet.id,
+      momento: query.momento,
     });
+
+  if (query.fecha) {
+    backParams.set(
+      'fecha',
+      query.fecha,
+    );
+  }
 
   return (
     <PageContainer className="space-y-6">
       <Link
-        href={`/mis-reportes/nuevo/perdida/cuando?${backParams.toString()}`}
+        href={`/mis-reportes/nuevo/perdida/ubicacion?${backParams.toString()}`}
         className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
       >
         <ArrowLeft
@@ -105,24 +105,24 @@ export default async function LocationPage({
           aria-hidden="true"
         />
         {translate(
-          'reports.location.back',
+          'reports.description.back',
         )}
       </Link>
 
       <header>
         <p className="text-sm font-semibold text-primary">
           {translate(
-            'reports.location.eyebrow',
+            'reports.description.eyebrow',
           )}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {translate(
-            'reports.location.title',
+            'reports.description.title',
           )}
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           {translate(
-            'reports.location.description',
+            'reports.description.description',
             { name: pet.name },
           )}
         </p>
@@ -131,29 +131,29 @@ export default async function LocationPage({
       <Card elevated>
         <CardHeader>
           <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
-            <MapPin
+            <MessageSquareText
               className="size-6"
               aria-hidden="true"
             />
           </span>
           <CardTitle>
             {translate(
-              'reports.location.question',
+              'reports.description.nextTitle',
             )}
           </CardTitle>
           <CardDescription>
             {translate(
-              'reports.location.questionHelp',
+              'reports.description.nextDescription',
             )}
           </CardDescription>
         </CardHeader>
 
         <CardContent>
-          <IncidentLocationStep
-            petId={pet.id}
-            moment={query.momento}
-            exactDate={query.fecha}
-          />
+          <p className="rounded-xl border border-dashed border-border bg-surface p-4 text-sm text-muted-foreground">
+            {translate(
+              'reports.description.locationSaved',
+            )}
+          </p>
         </CardContent>
       </Card>
     </PageContainer>

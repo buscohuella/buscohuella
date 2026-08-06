@@ -132,12 +132,47 @@
     "selectHint": "Selecciona una opció per continuar."
   },
   "location": {
-    "eyebrow": "Mascota perduda",
     "title": "On va passar?",
-    "savedSummary": "Hem conservat la selecció de {name}: {moment}.",
+    "confirmedTitle": "Ubicació confirmada",
+    "methodLabel": "Mètode per indicar la ubicació",
+    "change": "Canvia la ubicació",
+    "manualTitle": "Indica un altre lloc",
+    "gpsLocating": "Cercant la teva ubicació…",
+    "selectHint": "Selecciona una opció per continuar.",
+    "privacyManual": "Aquesta referència es conservarà per revisar l'avís abans de publicar-lo.",
+    "accuracy": "Precisió estimada del dispositiu: {meters} m",
+    "manualPlaceholder": "Escriu el lloc",
+    "manualHelp": "Per exemple: Parc Catalunya, entrada de l'avinguda Francesc Macià.",
     "description": "Indica on es va perdre {name}.",
+    "question": "Selecciona la ubicació de l'incident",
+    "confirmManual": "Confirma el lloc",
+    "eyebrow": "Mascota perduda",
+    "manualDescription": "Escriu una adreça, un parc o una referència.",
+    "continue": "Continua",
+    "gpsTitle": "Utilitza la meva ubicació actual",
+    "errorTitle": "No hem pogut obtenir la ubicació",
+    "privacyGps": "La coordenada exacta es conserva temporalment de manera privada. La vista pública utilitzarà una posició aproximada.",
+    "errors": {
+      "unsupported": "Aquest navegador no permet utilitzar la ubicació. Pots indicar el lloc manualment.",
+      "denied": "Has rebutjat el permís d'ubicació. Pots activar-lo al navegador o indicar un altre lloc.",
+      "unavailable": "El dispositiu no ha pogut determinar la ubicació. Torna-ho a provar o utilitza l'opció manual.",
+      "timeout": "La ubicació està trigant massa. Torna-ho a provar o indica un altre lloc.",
+      "generic": "S'ha produït un error en obtenir la ubicació.",
+      "manualShort": "Escriu almenys tres caràcters per identificar el lloc."
+    },
+    "manualLabel": "Adreça o referència",
     "back": "Torna al moment",
-    "nextTitle": "La ubicació és el pas següent",
-    "nextDescription": "Podràs utilitzar el GPS, cercar una adreça o marcar el lloc al mapa."
+    "gpsDescription": "Ideal si ets al lloc on va passar.",
+    "questionHelp": "Pots utilitzar el GPS si ets al lloc o indicar manualment un altre punt.",
+    "gpsConfirmed": "Zona pública aproximada: {latitude}, {longitude}"
+  },
+  "description": {
+    "locationSaved": "La ubicació exacta no s'ha inclòs a l'URL i es manté temporalment en aquesta sessió.",
+    "eyebrow": "Mascota perduda",
+    "title": "Afegeix informació útil",
+    "description": "Explica breument què va passar amb {name}.",
+    "back": "Torna a la ubicació",
+    "nextTitle": "La ubicació s'ha conservat",
+    "nextDescription": "A la propera entrega afegirem una descripció breu i les opcions essencials."
   }
 }

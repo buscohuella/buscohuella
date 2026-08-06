@@ -132,12 +132,47 @@
     "selectHint": "Selecciona una opción para continuar."
   },
   "location": {
-    "eyebrow": "Mascota perdida",
     "title": "¿Dónde ocurrió?",
-    "savedSummary": "Hemos conservado la selección de {name}: {moment}.",
+    "confirmedTitle": "Ubicación confirmada",
+    "methodLabel": "Método para indicar la ubicación",
+    "change": "Cambiar ubicación",
+    "manualTitle": "Indicar otro lugar",
+    "gpsLocating": "Buscando tu ubicación…",
+    "selectHint": "Selecciona una opción para continuar.",
+    "privacyManual": "Esta referencia se conservará para revisar el aviso antes de publicarlo.",
+    "accuracy": "Precisión estimada del dispositivo: {meters} m",
+    "manualPlaceholder": "Escribe el lugar",
+    "manualHelp": "Por ejemplo: Parc Catalunya, entrada de la avenida Francesc Macià.",
     "description": "Indica dónde se perdió {name}.",
+    "question": "Selecciona la ubicación del incidente",
+    "confirmManual": "Confirmar lugar",
+    "eyebrow": "Mascota perdida",
+    "manualDescription": "Escribe una dirección, parque o referencia.",
+    "continue": "Continuar",
+    "gpsTitle": "Usar mi ubicación actual",
+    "errorTitle": "No hemos podido obtener la ubicación",
+    "privacyGps": "La coordenada exacta se conserva temporalmente de forma privada. La vista pública usará una posición aproximada.",
+    "errors": {
+      "unsupported": "Este navegador no permite usar la ubicación. Puedes indicar el lugar manualmente.",
+      "denied": "Has rechazado el permiso de ubicación. Puedes habilitarlo en el navegador o indicar otro lugar.",
+      "unavailable": "El dispositivo no ha podido determinar la ubicación. Inténtalo de nuevo o usa la opción manual.",
+      "timeout": "La ubicación está tardando demasiado. Inténtalo de nuevo o indica otro lugar.",
+      "generic": "Se ha producido un error al obtener la ubicación.",
+      "manualShort": "Escribe al menos tres caracteres para identificar el lugar."
+    },
+    "manualLabel": "Dirección o referencia",
     "back": "Volver al momento",
-    "nextTitle": "La ubicación es el siguiente paso",
-    "nextDescription": "Podrás usar el GPS, buscar una dirección o marcar el lugar en el mapa."
+    "gpsDescription": "Ideal si estás en el lugar donde ocurrió.",
+    "questionHelp": "Puedes usar el GPS si estás allí o indicar manualmente otro lugar.",
+    "gpsConfirmed": "Zona pública aproximada: {latitude}, {longitude}"
+  },
+  "description": {
+    "locationSaved": "La ubicación exacta no se ha incluido en la URL y permanece temporalmente en esta sesión.",
+    "eyebrow": "Mascota perdida",
+    "title": "Añade información útil",
+    "description": "Cuenta brevemente qué ocurrió con {name}.",
+    "back": "Volver a la ubicación",
+    "nextTitle": "La ubicación se ha conservado",
+    "nextDescription": "En la siguiente entrega añadiremos una descripción breve y las opciones esenciales."
   }
 }

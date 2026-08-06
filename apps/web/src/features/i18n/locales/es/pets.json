@@ -1,0 +1,29 @@
+{
+  "list": {
+    "eyebrow": "Área privada",
+    "title": "Mis mascotas",
+    "description": "Gestiona sus datos, identificación, privacidad y fotografías.",
+    "new": "Nueva mascota",
+    "register": "Registrar mascota",
+    "tabsLabel": "Estados de mascotas",
+    "activeTab": "Activas",
+    "archivedTab": "Archivadas",
+    "countOne": "{count} mascota",
+    "countMany": "{count} mascotas",
+    "archivedSuccess": "La mascota se ha archivado correctamente.",
+    "restoredSuccess": "La mascota se ha restaurado correctamente.",
+    "errorTitle": "No hemos podido cargar tus mascotas",
+    "errorDescription": "Inténtalo de nuevo dentro de unos instantes.",
+    "emptyActiveTitle": "Todavía no has registrado mascotas activas",
+    "emptyActiveDescription": "Crea una ficha para guardar sus datos, identificación y fotografías.",
+    "emptyArchivedTitle": "No tienes mascotas archivadas",
+    "emptyArchivedDescription": "Cuando archives una ficha aparecerá aquí y podrás restaurarla.",
+    "statusActive": "Activa",
+    "statusArchived": "Archivada",
+    "breedUnknown": "Raza no especificada",
+    "microchipYes": "Con microchip",
+    "microchipNo": "Sin microchip indicado",
+    "primaryPhotoAlt": "Fotografía principal de {name}",
+    "noPhoto": "{name} todavía no tiene fotografía de portada"
+  }
+}

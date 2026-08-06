@@ -1,0 +1,29 @@
+{
+  "list": {
+    "eyebrow": "Àrea privada",
+    "title": "Les meves mascotes",
+    "description": "Gestiona'n les dades, la identificació, la privacitat i les fotografies.",
+    "new": "Nova mascota",
+    "register": "Registra una mascota",
+    "tabsLabel": "Estats de les mascotes",
+    "activeTab": "Actives",
+    "archivedTab": "Arxivades",
+    "countOne": "{count} mascota",
+    "countMany": "{count} mascotes",
+    "archivedSuccess": "La mascota s'ha arxivat correctament.",
+    "restoredSuccess": "La mascota s'ha restaurat correctament.",
+    "errorTitle": "No hem pogut carregar les teves mascotes",
+    "errorDescription": "Torna-ho a provar d'aquí a uns instants.",
+    "emptyActiveTitle": "Encara no has registrat mascotes actives",
+    "emptyActiveDescription": "Crea una fitxa per desar-ne les dades, la identificació i les fotografies.",
+    "emptyArchivedTitle": "No tens mascotes arxivades",
+    "emptyArchivedDescription": "Quan arxivis una fitxa apareixerà aquí i la podràs restaurar.",
+    "statusActive": "Activa",
+    "statusArchived": "Arxivada",
+    "breedUnknown": "Raça no especificada",
+    "microchipYes": "Amb microxip",
+    "microchipNo": "Sense microxip indicat",
+    "primaryPhotoAlt": "Fotografia principal de {name}",
+    "noPhoto": "{name} encara no té fotografia de portada"
+  }
+}

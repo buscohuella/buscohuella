@@ -40,7 +40,9 @@
       "RESOLVED": "Resuelto",
       "CLOSED": "Cerrado",
       "ARCHIVED": "Archivado"
-    }
+    },
+    "continueEditing": "Continuar edición",
+    "continueEditingAria": "Continuar editando {title}"
   },
   "create": {
     "eyebrow": "Nuevo aviso",
@@ -233,5 +235,45 @@
       "isFearful": "Puede estar asustada.",
       "isFriendly": "Es sociable."
     }
+  },
+  "photos": {
+    "setPrimary": "Hacer principal",
+    "uploadDescription": "Las imágenes se optimizan automáticamente y permanecen privadas mientras el aviso sea un borrador.",
+    "finish": "Volver al borrador",
+    "description": "Añade imágenes claras que ayuden a reconocer a la mascota.",
+    "title": "Fotografías del aviso",
+    "eyebrow": "Borrador privado",
+    "uploadSuccess": "Se ha añadido {file}.",
+    "moveRight": "Mover fotografía a la derecha",
+    "emptyDescription": "Puedes continuar sin ellas, aunque una imagen clara facilita mucho la identificación.",
+    "fallbackAlt": "Fotografía del aviso",
+    "remove": "Eliminar fotografía",
+    "primary": "Principal",
+    "moveLeft": "Mover fotografía a la izquierda",
+    "uploader": {
+      "title": "Arrastra una imagen o selecciónala",
+      "description": "JPG, PNG o WEBP. Se convertirá a WEBP y se optimizará.",
+      "altLabel": "Descripción accesible de la fotografía (opcional)",
+      "altPlaceholder": "Ejemplo: Pepa de cuerpo entero con collar rojo",
+      "count": "{count} de {max} fotografías",
+      "upload": "Subir fotografía",
+      "uploading": "Subiendo…"
+    },
+    "galleryTitle": "Fotografías añadidas",
+    "uploadTitle": "Añadir fotografía",
+    "emptyTitle": "Todavía no hay fotografías",
+    "errors": {
+      "reportMissing": "No se ha identificado el aviso.",
+      "select": "Selecciona una fotografía válida.",
+      "inputTooLarge": "El archivo original supera el límite permitido.",
+      "forbidden": "Solo puedes añadir fotos a tus propios borradores.",
+      "maxReached": "Has alcanzado el número máximo de fotografías.",
+      "invalid": "El archivo no es una imagen JPEG, PNG o WEBP válida.",
+      "unsupported": "Este formato de imagen no está permitido.",
+      "damaged": "La imagen está dañada o no se puede procesar.",
+      "processing": "No hemos podido optimizar la fotografía.",
+      "upload": "No hemos podido guardar la fotografía. Inténtalo de nuevo."
+    },
+    "back": "Volver a Mis avisos"
   }
 }

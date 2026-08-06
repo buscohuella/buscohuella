@@ -430,15 +430,34 @@ function ReportCard({
         </dl>
 
         <div className="flex justify-end border-t border-border-soft pt-4">
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground">
-            {translate(
-              `reports.list.status.${report.status}`,
-            )}
-            <ChevronRight
-              className="size-4"
-              aria-hidden="true"
-            />
-          </span>
+          {report.status === 'DRAFT' ? (
+            <Link
+              href={`/mis-reportes/${report.id}/fotos`}
+              aria-label={translate(
+                'reports.list.continueEditingAria',
+                { title },
+              )}
+              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            >
+              {translate(
+                'reports.list.continueEditing',
+              )}
+              <ChevronRight
+                className="size-4"
+                aria-hidden="true"
+              />
+            </Link>
+          ) : (
+            <span className="inline-flex min-h-11 items-center gap-1 px-3 text-sm font-semibold text-muted-foreground">
+              {translate(
+                `reports.list.status.${report.status}`,
+              )}
+              <ChevronRight
+                className="size-4"
+                aria-hidden="true"
+              />
+            </span>
+          )}
         </div>
       </CardContent>
     </Card>

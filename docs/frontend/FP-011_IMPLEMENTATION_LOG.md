@@ -182,3 +182,28 @@ Decisiones de integridad:
 - una referencia manual se guarda provisionalmente como nombre de zona sin inventar coordenadas;
 - el borrador permanece privado hasta una publicación explícita;
 - la preferencia de reutilizar fotos queda pendiente de copiar metadatos en la entrega de fotografías.
+## FP-012 — Fotografías del aviso
+
+Estado: infraestructura y gestión inicial.
+
+Incluye:
+
+- bucket privado `report-photos`;
+- rutas de almacenamiento `ownerId/reportId/photoId.webp`;
+- políticas de Storage ligadas al propietario y a borradores;
+- procesamiento seguro y conversión a WEBP;
+- URLs firmadas de corta duración;
+- subida individual y zona drag-and-drop;
+- fotografía principal atómica;
+- orden accesible mediante controles;
+- eliminación de archivo y metadatos;
+- máximo definido por `REPORT_LIMITS`;
+- ES/CA.
+
+Pendiente de una iteración posterior:
+
+- arrastre visual para reordenar;
+- copia opcional de fotografías de la ficha de mascota;
+- edición del texto alternativo;
+- publicación del aviso;
+- auditoría global de traducciones.

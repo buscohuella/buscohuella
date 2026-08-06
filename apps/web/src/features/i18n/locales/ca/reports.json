@@ -40,7 +40,9 @@
       "RESOLVED": "Resolt",
       "CLOSED": "Tancat",
       "ARCHIVED": "Arxivat"
-    }
+    },
+    "continueEditing": "Continua l'edició",
+    "continueEditingAria": "Continua editant {title}"
   },
   "create": {
     "eyebrow": "Avís nou",
@@ -233,5 +235,45 @@
       "isFearful": "Pot estar espantada.",
       "isFriendly": "És sociable."
     }
+  },
+  "photos": {
+    "setPrimary": "Fes-la principal",
+    "uploadDescription": "Les imatges s'optimitzen automàticament i es mantenen privades mentre l'avís sigui un esborrany.",
+    "finish": "Torna a l'esborrany",
+    "description": "Afegeix imatges clares que ajudin a reconèixer la mascota.",
+    "title": "Fotografies de l'avís",
+    "eyebrow": "Esborrany privat",
+    "uploadSuccess": "S'ha afegit {file}.",
+    "moveRight": "Mou la fotografia a la dreta",
+    "emptyDescription": "Pots continuar sense fotografies, tot i que una imatge clara facilita molt la identificació.",
+    "fallbackAlt": "Fotografia de l'avís",
+    "remove": "Elimina la fotografia",
+    "primary": "Principal",
+    "moveLeft": "Mou la fotografia a l'esquerra",
+    "uploader": {
+      "title": "Arrossega una imatge o selecciona-la",
+      "description": "JPG, PNG o WEBP. Es convertirà a WEBP i s'optimitzarà.",
+      "altLabel": "Descripció accessible de la fotografia (opcional)",
+      "altPlaceholder": "Exemple: Pepa de cos sencer amb collar vermell",
+      "count": "{count} de {max} fotografies",
+      "upload": "Puja la fotografia",
+      "uploading": "Pujant…"
+    },
+    "galleryTitle": "Fotografies afegides",
+    "uploadTitle": "Afegeix una fotografia",
+    "emptyTitle": "Encara no hi ha fotografies",
+    "errors": {
+      "reportMissing": "No s'ha identificat l'avís.",
+      "select": "Selecciona una fotografia vàlida.",
+      "inputTooLarge": "El fitxer original supera el límit permès.",
+      "forbidden": "Només pots afegir fotos als teus propis esborranys.",
+      "maxReached": "Has arribat al nombre màxim de fotografies.",
+      "invalid": "El fitxer no és una imatge JPEG, PNG o WEBP vàlida.",
+      "unsupported": "Aquest format d'imatge no està permès.",
+      "damaged": "La imatge està malmesa o no es pot processar.",
+      "processing": "No hem pogut optimitzar la fotografia.",
+      "upload": "No hem pogut desar la fotografia. Torna-ho a provar."
+    },
+    "back": "Torna a Els meus avisos"
   }
 }

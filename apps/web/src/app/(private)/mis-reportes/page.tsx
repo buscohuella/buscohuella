@@ -448,15 +448,22 @@ function ReportCard({
               />
             </Link>
           ) : (
-            <span className="inline-flex min-h-11 items-center gap-1 px-3 text-sm font-semibold text-muted-foreground">
+            <Link
+              href={`/mis-reportes/${report.id}`}
+              aria-label={translate(
+                'reports.list.openReportAria',
+                { title },
+              )}
+              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            >
               {translate(
-                `reports.list.status.${report.status}`,
+                'reports.list.openReport',
               )}
               <ChevronRight
                 className="size-4"
                 aria-hidden="true"
               />
-            </span>
+            </Link>
           )}
         </div>
       </CardContent>

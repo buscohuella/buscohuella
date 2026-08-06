@@ -264,7 +264,7 @@ export default async function ReportPhotosPage({
 
       <div className="flex justify-end">
         <Link
-          href="/mis-reportes"
+          href={`/mis-reportes/${id}/publicar`}
           className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           <CheckCircle2
@@ -272,7 +272,7 @@ export default async function ReportPhotosPage({
             aria-hidden="true"
           />
           {translate(
-            'reports.photos.finish',
+            'reports.photos.continueToPublish',
           )}
         </Link>
       </div>

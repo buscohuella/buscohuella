@@ -207,3 +207,28 @@ Pendiente de una iteración posterior:
 - edición del texto alternativo;
 - publicación del aviso;
 - auditoría global de traducciones.
+## FP-013 — Publicación del aviso
+
+Estado: implementación inicial.
+
+Incluye:
+
+- revisión final de requisitos;
+- fotografías opcionales;
+- confirmación explícita;
+- función SQL atómica `publish_report_draft`;
+- transición `DRAFT → ACTIVE`;
+- establecimiento de `published_at`;
+- evento `PUBLISHED`;
+- revalidación de listados privados y públicos;
+- conservación de la ubicación exacta como dato privado;
+- ES/CA.
+
+Requisitos mínimos:
+
+- título;
+- descripción de al menos 10 caracteres;
+- mascota asociada para `LOST_PET`;
+- ubicación pública aproximada o referencia manual.
+
+La publicación no exige fotografías para no bloquear avisos urgentes.

@@ -42,7 +42,9 @@
       "ARCHIVED": "Archivado"
     },
     "continueEditing": "Continuar edición",
-    "continueEditingAria": "Continuar editando {title}"
+    "continueEditingAria": "Continuar editando {title}",
+    "openReport": "Gestionar aviso",
+    "openReportAria": "Gestionar {title}"
   },
   "create": {
     "eyebrow": "Nuevo aviso",
@@ -274,6 +276,117 @@
       "processing": "No hemos podido optimizar la fotografía.",
       "upload": "No hemos podido guardar la fotografía. Inténtalo de nuevo."
     },
-    "back": "Volver a Mis avisos"
+    "back": "Volver a Mis avisos",
+    "continueToPublish": "Revisar y publicar"
+  },
+  "publish": {
+    "checks": {
+      "pet": "Mascota asociada",
+      "location": "Ubicación protegida",
+      "description": "Descripción suficiente",
+      "photos": "{count} fotografías añadidas"
+    },
+    "incompleteDescription": "Completa la mascota, la ubicación y una descripción de al menos 10 caracteres.",
+    "description": "Comprueba los datos esenciales antes de hacerlo visible para la comunidad.",
+    "title": "Publicar aviso",
+    "eyebrow": "Último paso",
+    "visibilityTitle": "Hacer visible el aviso",
+    "visibilityDescription": "Al publicarlo aparecerá entre los avisos activos y podrá mostrarse en el mapa público.",
+    "success": "El aviso se ha publicado correctamente.",
+    "confirmationTitle": "Confirmo que la información es correcta",
+    "incompleteTitle": "El borrador aún no se puede publicar",
+    "publishButton": "Publicar aviso",
+    "publishing": "Publicando…",
+    "optional": "Opcional",
+    "confirmationDescription": "Podrás pausar, resolver o cerrar el aviso posteriormente.",
+    "errors": {
+      "session": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+      "notFound": "No hemos encontrado este borrador.",
+      "notDraft": "Este aviso ya no es un borrador.",
+      "title": "El aviso necesita un título.",
+      "description": "La descripción debe tener al menos 10 caracteres.",
+      "pet": "Selecciona una mascota antes de publicar.",
+      "location": "Indica una ubicación antes de publicar.",
+      "conflict": "El borrador ha cambiado. Recarga la página e inténtalo de nuevo.",
+      "generic": "No hemos podido publicar el aviso. Inténtalo de nuevo.",
+      "confirmation": "Confirma que la información es correcta antes de publicar."
+    },
+    "back": "Volver a las fotografías",
+    "afterPublish": "La ubicación exacta seguirá siendo privada.",
+    "draft": "Borrador privado"
+  },
+  "detail": {
+    "approximateLocation": "Ubicación aproximada protegida",
+    "actions": {
+      "pauseTitle": "Pausar temporalmente",
+      "pauseDescription": "Dejará de mostrarse como aviso activo hasta que lo reactives.",
+      "pauseButton": "Pausar aviso",
+      "reactivateTitle": "Reactivar aviso",
+      "reactivateDescription": "Volverá a mostrarse entre los avisos activos.",
+      "reactivateButton": "Reactivar aviso",
+      "resolveTitle": "Marcar como resuelto",
+      "resolveDescription": "Úsalo cuando la mascota esté localizada o el caso haya terminado positivamente.",
+      "resolutionType": "Resultado",
+      "selectResolution": "Selecciona un resultado",
+      "notesOptional": "Notas opcionales",
+      "resolveButton": "Guardar como resuelto",
+      "closeTitle": "Cerrar sin resolver",
+      "closeDescription": "Para avisos incorrectos, duplicados, cancelados o que no deben continuar activos.",
+      "closureReason": "Motivo del cierre",
+      "closeButton": "Cerrar aviso",
+      "archiveTitle": "Archivar aviso",
+      "archiveDescription": "Lo conservarás en el historial, separado de los casos recientes.",
+      "archiveButton": "Archivar",
+      "archivedDescription": "Este aviso está archivado y se conserva como historial."
+    },
+    "draftDescription": "Continúa su preparación antes de publicarlo.",
+    "back": "Volver a Mis avisos",
+    "managementTitle": "Gestionar aviso",
+    "historyEmpty": "Todavía no hay eventos registrados.",
+    "location": "Ubicación",
+    "approximateMoment": "Momento aproximado",
+    "events": {
+      "CREATED": "Aviso creado",
+      "PUBLISHED": "Aviso publicado",
+      "PAUSED": "Aviso pausado",
+      "REACTIVATED": "Aviso reactivado",
+      "UPDATED": "Aviso actualizado",
+      "SIGHTING_CREATED": "Avistamiento registrado",
+      "RESOLVED": "Aviso resuelto",
+      "CLOSED": "Aviso cerrado",
+      "ARCHIVED": "Aviso archivado"
+    },
+    "success": {
+      "PAUSE": "El aviso se ha pausado.",
+      "REACTIVATE": "El aviso vuelve a estar activo.",
+      "RESOLVE": "El aviso se ha marcado como resuelto.",
+      "CLOSE": "El aviso se ha cerrado.",
+      "ARCHIVE": "El aviso se ha archivado."
+    },
+    "managementDescription": "Cambia su estado según la situación actual.",
+    "historyTitle": "Historial",
+    "historyDescription": "Cambios importantes registrados en este aviso.",
+    "publishedAt": "Publicado",
+    "informationTitle": "Información del aviso",
+    "notAvailable": "No disponible",
+    "errors": {
+      "session": "Tu sesión ha caducado.",
+      "resolutionRequired": "Selecciona el resultado del caso.",
+      "closureRequired": "Explica el motivo del cierre.",
+      "invalidAction": "Esta acción no está permitida para el estado actual.",
+      "notFound": "No hemos encontrado este aviso.",
+      "generic": "No hemos podido actualizar el aviso. Inténtalo de nuevo."
+    },
+    "incidentAt": "Momento del incidente",
+    "draftTitle": "Este aviso sigue siendo un borrador",
+    "pet": "Mascota asociada",
+    "resolutions": {
+      "REUNITED": "Reunida con su familia",
+      "OWNER_LOCATED": "Propietario localizado",
+      "SAFE_WITH_FINDER": "A salvo con quien la encontró",
+      "TRANSFERRED_TO_AUTHORITY": "Entregada a una autoridad",
+      "TRANSFERRED_TO_SHELTER": "Entregada a una protectora",
+      "OTHER": "Otro resultado"
+    }
   }
 }

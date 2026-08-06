@@ -42,7 +42,9 @@
       "ARCHIVED": "Arxivat"
     },
     "continueEditing": "Continua l'edició",
-    "continueEditingAria": "Continua editant {title}"
+    "continueEditingAria": "Continua editant {title}",
+    "openReport": "Gestiona l'avís",
+    "openReportAria": "Gestiona {title}"
   },
   "create": {
     "eyebrow": "Avís nou",
@@ -274,6 +276,117 @@
       "processing": "No hem pogut optimitzar la fotografia.",
       "upload": "No hem pogut desar la fotografia. Torna-ho a provar."
     },
-    "back": "Torna a Els meus avisos"
+    "back": "Torna a Els meus avisos",
+    "continueToPublish": "Revisa i publica"
+  },
+  "publish": {
+    "checks": {
+      "pet": "Mascota associada",
+      "location": "Ubicació protegida",
+      "description": "Descripció suficient",
+      "photos": "{count} fotografies afegides"
+    },
+    "incompleteDescription": "Completa la mascota, la ubicació i una descripció d'almenys 10 caràcters.",
+    "description": "Comprova les dades essencials abans de fer-lo visible per a la comunitat.",
+    "title": "Publica l'avís",
+    "eyebrow": "Últim pas",
+    "visibilityTitle": "Fes visible l'avís",
+    "visibilityDescription": "En publicar-lo apareixerà entre els avisos actius i es podrà mostrar al mapa públic.",
+    "success": "L'avís s'ha publicat correctament.",
+    "confirmationTitle": "Confirmo que la informació és correcta",
+    "incompleteTitle": "L'esborrany encara no es pot publicar",
+    "publishButton": "Publica l'avís",
+    "publishing": "Publicant…",
+    "optional": "Opcional",
+    "confirmationDescription": "Després podràs pausar, resoldre o tancar l'avís.",
+    "errors": {
+      "session": "La teva sessió ha caducat. Torna a iniciar-la.",
+      "notFound": "No hem trobat aquest esborrany.",
+      "notDraft": "Aquest avís ja no és un esborrany.",
+      "title": "L'avís necessita un títol.",
+      "description": "La descripció ha de tenir almenys 10 caràcters.",
+      "pet": "Selecciona una mascota abans de publicar.",
+      "location": "Indica una ubicació abans de publicar.",
+      "conflict": "L'esborrany ha canviat. Recarrega la pàgina i torna-ho a provar.",
+      "generic": "No hem pogut publicar l'avís. Torna-ho a provar.",
+      "confirmation": "Confirma que la informació és correcta abans de publicar."
+    },
+    "back": "Torna a les fotografies",
+    "afterPublish": "La ubicació exacta continuarà sent privada.",
+    "draft": "Esborrany privat"
+  },
+  "detail": {
+    "approximateLocation": "Ubicació aproximada protegida",
+    "actions": {
+      "pauseTitle": "Pausa temporalment",
+      "pauseDescription": "Deixarà de mostrar-se com a avís actiu fins que el reactivis.",
+      "pauseButton": "Pausa l'avís",
+      "reactivateTitle": "Reactiva l'avís",
+      "reactivateDescription": "Tornarà a mostrar-se entre els avisos actius.",
+      "reactivateButton": "Reactiva l'avís",
+      "resolveTitle": "Marca'l com a resolt",
+      "resolveDescription": "Utilitza-ho quan la mascota estigui localitzada o el cas hagi acabat positivament.",
+      "resolutionType": "Resultat",
+      "selectResolution": "Selecciona un resultat",
+      "notesOptional": "Notes opcionals",
+      "resolveButton": "Desa'l com a resolt",
+      "closeTitle": "Tanca sense resoldre",
+      "closeDescription": "Per a avisos incorrectes, duplicats, cancel·lats o que no han de continuar actius.",
+      "closureReason": "Motiu del tancament",
+      "closeButton": "Tanca l'avís",
+      "archiveTitle": "Arxiva l'avís",
+      "archiveDescription": "El conservaràs a l'historial, separat dels casos recents.",
+      "archiveButton": "Arxiva",
+      "archivedDescription": "Aquest avís està arxivat i es conserva com a historial."
+    },
+    "draftDescription": "Continua preparant-lo abans de publicar-lo.",
+    "back": "Torna a Els meus avisos",
+    "managementTitle": "Gestiona l'avís",
+    "historyEmpty": "Encara no hi ha esdeveniments registrats.",
+    "location": "Ubicació",
+    "approximateMoment": "Moment aproximat",
+    "events": {
+      "CREATED": "Avís creat",
+      "PUBLISHED": "Avís publicat",
+      "PAUSED": "Avís pausat",
+      "REACTIVATED": "Avís reactivat",
+      "UPDATED": "Avís actualitzat",
+      "SIGHTING_CREATED": "Avistament registrat",
+      "RESOLVED": "Avís resolt",
+      "CLOSED": "Avís tancat",
+      "ARCHIVED": "Avís arxivat"
+    },
+    "success": {
+      "PAUSE": "L'avís s'ha pausat.",
+      "REACTIVATE": "L'avís torna a estar actiu.",
+      "RESOLVE": "L'avís s'ha marcat com a resolt.",
+      "CLOSE": "L'avís s'ha tancat.",
+      "ARCHIVE": "L'avís s'ha arxivat."
+    },
+    "managementDescription": "Canvia l'estat segons la situació actual.",
+    "historyTitle": "Historial",
+    "historyDescription": "Canvis importants registrats en aquest avís.",
+    "publishedAt": "Publicat",
+    "informationTitle": "Informació de l'avís",
+    "notAvailable": "No disponible",
+    "errors": {
+      "session": "La teva sessió ha caducat.",
+      "resolutionRequired": "Selecciona el resultat del cas.",
+      "closureRequired": "Explica el motiu del tancament.",
+      "invalidAction": "Aquesta acció no està permesa per a l'estat actual.",
+      "notFound": "No hem trobat aquest avís.",
+      "generic": "No hem pogut actualitzar l'avís. Torna-ho a provar."
+    },
+    "incidentAt": "Moment de l'incident",
+    "draftTitle": "Aquest avís continua sent un esborrany",
+    "pet": "Mascota associada",
+    "resolutions": {
+      "REUNITED": "Reunida amb la família",
+      "OWNER_LOCATED": "Propietari localitzat",
+      "SAFE_WITH_FINDER": "A resguard amb qui la va trobar",
+      "TRANSFERRED_TO_AUTHORITY": "Lliurada a una autoritat",
+      "TRANSFERRED_TO_SHELTER": "Lliurada a una protectora",
+      "OTHER": "Un altre resultat"
+    }
   }
 }

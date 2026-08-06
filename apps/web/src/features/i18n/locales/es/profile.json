@@ -1,0 +1,55 @@
+{
+  "page": {
+    "title": "Mi perfil",
+    "description": "Gestiona tu identidad de cuenta y decide qué información deseas mostrar públicamente.",
+    "loadError": "No se ha podido cargar el perfil del usuario.",
+    "privacyTitle": "Privacidad por defecto",
+    "privacyDescription": "Tu perfil comienza siendo privado. Activarlo no publica correo, teléfono, dirección ni identificadores internos.",
+    "contactTitle": "Contacto seguro",
+    "contactDescription": "Los avisos relacionados con mascotas utilizarán canales contextuales y no dependerán de exponer tu perfil."
+  },
+  "form": {
+    "fullName": {
+      "label": "Nombre"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "hint": "El correo se gestiona desde la cuenta y no forma parte del perfil público."
+    },
+    "alias": {
+      "label": "Alias público",
+      "hint": "Entre 3 y 30 caracteres. Solo minúsculas, números, guion y guion bajo."
+    },
+    "municipality": {
+      "label": "Municipio",
+      "hint": "Usa una zona aproximada, nunca tu dirección."
+    },
+    "bio": {
+      "label": "Biografía",
+      "hint": "Máximo 500 caracteres. Evita datos personales o de contacto."
+    },
+    "public": {
+      "label": "Activar perfil público",
+      "description": "Mostrará únicamente alias, avatar, municipio, biografía y fecha de alta. El correo y tus datos privados nunca se publicarán.",
+      "view": "Ver mi perfil público"
+    },
+    "save": "Guardar cambios",
+    "saving": "Guardando…"
+  },
+  "validation": {
+    "review": "Revisa los campos indicados.",
+    "fullNameRequired": "Introduce tu nombre.",
+    "fullNameLength": "El nombre no puede superar 120 caracteres.",
+    "aliasFormat": "Usa entre 3 y 30 caracteres: letras minúsculas, números, guion o guion bajo.",
+    "municipalityLength": "El municipio no puede superar 120 caracteres.",
+    "bioLength": "La biografía no puede superar 500 caracteres.",
+    "aliasRequiredForPublic": "Necesitas un alias para activar el perfil público.",
+    "aliasUnavailable": "Ese alias ya está siendo utilizado.",
+    "chooseAnotherAlias": "Elige otro alias público."
+  },
+  "result": {
+    "sessionExpired": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+    "saveError": "No se ha podido guardar el perfil. Inténtalo de nuevo.",
+    "success": "Perfil actualizado correctamente."
+  }
+}

@@ -1,12 +1,23 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useActionState } from 'react';
+import {
+  ExternalLink,
+  Save,
+} from 'lucide-react';
 import Link from 'next/link';
-import { ExternalLink, Save } from 'lucide-react';
+import { useActionState } from 'react';
 
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Field } from '@/components/ui/field';
+import {
+  FormErrorSummary,
+  type FormErrorItem,
+} from '@/components/ui/form-error-summary';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 import { cn } from '@/lib/utils';
 
 import { updateProfileAction } from '../actions/update-profile';
@@ -20,33 +31,89 @@ export function ProfileForm({
   profile: UserProfile;
   email: string;
 }) {
-  const [state, formAction, isPending] = useActionState(
-    updateProfileAction,
-    initialProfileActionState,
-  );
+  const { t } = useTranslations('profile');
+  const [state, formAction, isPending] =
+    useActionState(
+      updateProfileAction,
+      initialProfileActionState,
+    );
 
-  const publicProfileError = state.fieldErrors?.isPublic;
+  const formErrors: FormErrorItem[] = [];
+
+  if (state.fieldErrors?.fullName) {
+    formErrors.push({
+      id: 'full-name',
+      fieldId: 'profile-full-name',
+      message: state.fieldErrors.fullName,
+    });
+  }
+
+  if (state.fieldErrors?.publicAlias) {
+    formErrors.push({
+      id: 'public-alias',
+      fieldId: 'profile-public-alias',
+      message:
+        state.fieldErrors.publicAlias,
+    });
+  }
+
+  if (state.fieldErrors?.municipality) {
+    formErrors.push({
+      id: 'municipality',
+      fieldId: 'profile-municipality',
+      message:
+        state.fieldErrors.municipality,
+    });
+  }
+
+  if (state.fieldErrors?.bio) {
+    formErrors.push({
+      id: 'bio',
+      fieldId: 'profile-bio',
+      message: state.fieldErrors.bio,
+    });
+  }
+
+  if (state.fieldErrors?.isPublic) {
+    formErrors.push({
+      id: 'is-public',
+      fieldId: 'profile-is-public',
+      message: state.fieldErrors.isPublic,
+    });
+  }
+
+  const hasFieldErrors =
+    formErrors.length > 0;
 
   return (
     <form action={formAction} className="space-y-7">
-      {state.message && (
-        <div
-          role={state.status === 'error' ? 'alert' : 'status'}
-          className={
+      {!hasFieldErrors && state.message ? (
+        <Alert
+          variant={
             state.status === 'error'
-              ? 'rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm font-medium text-danger'
-              : 'rounded-lg border border-success/30 bg-primary-soft p-4 text-sm font-medium text-success'
+              ? 'danger'
+              : 'success'
           }
         >
           {state.message}
-        </div>
-      )}
+        </Alert>
+      ) : null}
+
+      <FormErrorSummary
+        errors={formErrors}
+        title={
+          state.message ??
+          t('validation.review')
+        }
+      />
 
       <div className="grid gap-5 md:grid-cols-2">
         <Field
-          id="profile-full-name"
-          label="Nombre"
+          htmlFor="profile-full-name"
+          label={t('form.fullName.label')}
           error={state.fieldErrors?.fullName}
+          errorId="profile-full-name-error"
+          required
         >
           <Input
             id="profile-full-name"
@@ -54,29 +121,42 @@ export function ProfileForm({
             defaultValue={profile.fullName}
             maxLength={120}
             autoComplete="name"
-            hasError={Boolean(state.fieldErrors?.fullName)}
+            hasError={Boolean(
+              state.fieldErrors?.fullName,
+            )}
+            aria-describedby={
+              state.fieldErrors?.fullName
+                ? 'profile-full-name-error'
+                : undefined
+            }
             required
           />
         </Field>
 
         <Field
-          id="profile-email"
-          label="Correo electrónico"
-          hint="El correo se gestiona desde la cuenta y no forma parte del perfil público."
+          htmlFor="profile-email"
+          label={t('form.email.label')}
+          description={t('form.email.hint')}
+          descriptionId="profile-email-hint"
         >
           <Input
             id="profile-email"
             value={email}
             readOnly
             disabled
+            aria-describedby="profile-email-hint"
           />
         </Field>
 
         <Field
-          id="profile-public-alias"
-          label="Alias público"
-          hint="Entre 3 y 30 caracteres. Solo minúsculas, números, guion y guion bajo."
-          error={state.fieldErrors?.publicAlias}
+          htmlFor="profile-public-alias"
+          label={t('form.alias.label')}
+          description={t('form.alias.hint')}
+          descriptionId="profile-public-alias-hint"
+          error={
+            state.fieldErrors?.publicAlias
+          }
+          errorId="profile-public-alias-error"
         >
           <div className="flex rounded-lg">
             <span className="flex min-h-12 items-center rounded-l-lg border border-r-0 border-border bg-surface px-3 text-sm text-muted-foreground">
@@ -85,151 +165,162 @@ export function ProfileForm({
             <Input
               id="profile-public-alias"
               name="publicAlias"
-              defaultValue={profile.publicAlias}
+              defaultValue={
+                profile.publicAlias
+              }
               maxLength={30}
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
-              hasError={Boolean(state.fieldErrors?.publicAlias)}
+              hasError={Boolean(
+                state.fieldErrors?.publicAlias,
+              )}
+              aria-describedby={[
+                'profile-public-alias-hint',
+                state.fieldErrors?.publicAlias
+                  ? 'profile-public-alias-error'
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(' ')}
               className="rounded-l-none"
             />
           </div>
         </Field>
 
         <Field
-          id="profile-municipality"
-          label="Municipio"
-          hint="Usa una zona aproximada, nunca tu dirección."
-          error={state.fieldErrors?.municipality}
+          htmlFor="profile-municipality"
+          label={t(
+            'form.municipality.label',
+          )}
+          description={t(
+            'form.municipality.hint',
+          )}
+          descriptionId="profile-municipality-hint"
+          error={
+            state.fieldErrors?.municipality
+          }
+          errorId="profile-municipality-error"
         >
           <Input
             id="profile-municipality"
             name="municipality"
-            defaultValue={profile.municipality}
+            defaultValue={
+              profile.municipality
+            }
             maxLength={120}
             autoComplete="address-level2"
-            hasError={Boolean(state.fieldErrors?.municipality)}
+            hasError={Boolean(
+              state.fieldErrors?.municipality,
+            )}
+            aria-describedby={[
+              'profile-municipality-hint',
+              state.fieldErrors?.municipality
+                ? 'profile-municipality-error'
+                : null,
+            ]
+              .filter(Boolean)
+              .join(' ')}
           />
         </Field>
       </div>
 
       <Field
-        id="profile-bio"
-        label="Biografía"
-        hint="Máximo 500 caracteres. Evita datos personales o de contacto."
+        htmlFor="profile-bio"
+        label={t('form.bio.label')}
+        description={t('form.bio.hint')}
+        descriptionId="profile-bio-hint"
         error={state.fieldErrors?.bio}
+        errorId="profile-bio-error"
       >
-        <textarea
+        <Textarea
           id="profile-bio"
           name="bio"
           defaultValue={profile.bio}
           maxLength={500}
           rows={5}
-          aria-invalid={Boolean(state.fieldErrors?.bio) || undefined}
-          className="w-full resize-y rounded-lg border border-border bg-surface-elevated px-3 py-3 text-base text-foreground placeholder:text-subtle-foreground focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
+          hasError={Boolean(
+            state.fieldErrors?.bio,
+          )}
+          aria-describedby={[
+            'profile-bio-hint',
+            state.fieldErrors?.bio
+              ? 'profile-bio-error'
+              : null,
+          ]
+            .filter(Boolean)
+            .join(' ')}
         />
       </Field>
 
       <div
         className={cn(
           'rounded-xl border bg-surface p-5 transition-colors',
-          publicProfileError
+          state.fieldErrors?.isPublic
             ? 'border-danger bg-danger/5'
             : 'border-border-soft',
         )}
       >
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            name="isPublic"
-            defaultChecked={profile.isPublic}
-            className="mt-1 size-5 accent-[var(--primary)]"
-            aria-invalid={Boolean(publicProfileError) || undefined}
-            aria-describedby="profile-public-description profile-public-error"
-          />
-          <span>
-            <span
-              className={cn(
-                'block font-semibold',
-                publicProfileError && 'text-danger',
-              )}
-            >
-              Activar perfil público
-            </span>
-            <span
-              id="profile-public-description"
-              className="mt-1 block text-sm text-muted-foreground"
-            >
-              Mostrará únicamente alias, avatar, municipio, biografía y fecha
-              de alta. El correo y tus datos privados nunca se publicarán.
-            </span>
-          </span>
-        </label>
+        <Checkbox
+          id="profile-is-public"
+          name="isPublic"
+          defaultChecked={profile.isPublic}
+          label={t('form.public.label')}
+          description={t(
+            'form.public.description',
+          )}
+          aria-invalid={
+            Boolean(
+              state.fieldErrors?.isPublic,
+            ) || undefined
+          }
+          aria-describedby={
+            state.fieldErrors?.isPublic
+              ? 'profile-public-error'
+              : undefined
+          }
+        />
 
-        {publicProfileError && (
+        {state.fieldErrors?.isPublic ? (
           <p
             id="profile-public-error"
             className="mt-3 text-sm font-medium text-danger"
+            role="alert"
           >
-            {publicProfileError}
+            {state.fieldErrors.isPublic}
           </p>
-        )}
+        ) : null}
 
-        {profile.isPublic && profile.publicAlias && (
+        {profile.isPublic &&
+        profile.publicAlias ? (
           <Link
             href={`/u/${profile.publicAlias}`}
             target="_blank"
             rel="noreferrer"
-            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
-            Ver mi perfil público
-            <ExternalLink className="size-4" aria-hidden="true" />
+            {t('form.public.view')}
+            <ExternalLink
+              className="size-4"
+              aria-hidden="true"
+            />
           </Link>
-        )}
+        ) : null}
       </div>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isPending}>
-          <Save className="size-5" aria-hidden="true" />
-          {isPending ? 'Guardando...' : 'Guardar cambios'}
+        <Button
+          type="submit"
+          isLoading={isPending}
+          loadingText={t('form.saving')}
+        >
+          <Save
+            className="size-5"
+            aria-hidden="true"
+          />
+          {t('form.save')}
         </Button>
       </div>
     </form>
-  );
-}
-
-function Field({
-  id,
-  label,
-  hint,
-  error,
-  children,
-}: {
-  id: string;
-  label: string;
-  hint?: string;
-  error?: string;
-  children: ReactNode;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-semibold">
-        {label}
-      </label>
-
-      {children}
-
-      {hint && (
-        <p className="mt-2 text-sm text-muted-foreground">
-          {hint}
-        </p>
-      )}
-
-      {error && (
-        <p className="mt-2 text-sm font-medium text-danger">
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

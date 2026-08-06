@@ -1,0 +1,55 @@
+{
+  "page": {
+    "title": "El meu perfil",
+    "description": "Gestiona la identitat del teu compte i decideix quina informació vols mostrar públicament.",
+    "loadError": "No s'ha pogut carregar el perfil de l'usuari.",
+    "privacyTitle": "Privacitat per defecte",
+    "privacyDescription": "El teu perfil comença sent privat. Activar-lo no publica el correu, el telèfon, l'adreça ni identificadors interns.",
+    "contactTitle": "Contacte segur",
+    "contactDescription": "Els avisos relacionats amb animals utilitzaran canals contextuals i no dependran d'exposar el teu perfil."
+  },
+  "form": {
+    "fullName": {
+      "label": "Nom"
+    },
+    "email": {
+      "label": "Correu electrònic",
+      "hint": "El correu es gestiona des del compte i no forma part del perfil públic."
+    },
+    "alias": {
+      "label": "Àlies públic",
+      "hint": "Entre 3 i 30 caràcters. Només minúscules, números, guió i guió baix."
+    },
+    "municipality": {
+      "label": "Municipi",
+      "hint": "Utilitza una zona aproximada, mai la teva adreça."
+    },
+    "bio": {
+      "label": "Biografia",
+      "hint": "Màxim 500 caràcters. Evita dades personals o de contacte."
+    },
+    "public": {
+      "label": "Activa el perfil públic",
+      "description": "Només mostrarà l'àlies, l'avatar, el municipi, la biografia i la data d'alta. El correu i les teves dades privades no es publicaran mai.",
+      "view": "Mostra el meu perfil públic"
+    },
+    "save": "Desa els canvis",
+    "saving": "Desant…"
+  },
+  "validation": {
+    "review": "Revisa els camps indicats.",
+    "fullNameRequired": "Introdueix el teu nom.",
+    "fullNameLength": "El nom no pot superar els 120 caràcters.",
+    "aliasFormat": "Utilitza entre 3 i 30 caràcters: lletres minúscules, números, guió o guió baix.",
+    "municipalityLength": "El municipi no pot superar els 120 caràcters.",
+    "bioLength": "La biografia no pot superar els 500 caràcters.",
+    "aliasRequiredForPublic": "Necessites un àlies per activar el perfil públic.",
+    "aliasUnavailable": "Aquest àlies ja està en ús.",
+    "chooseAnotherAlias": "Tria un altre àlies públic."
+  },
+  "result": {
+    "sessionExpired": "La teva sessió ha caducat. Torna a iniciar la sessió.",
+    "saveError": "No s'ha pogut desar el perfil. Torna-ho a provar.",
+    "success": "El perfil s'ha actualitzat correctament."
+  }
+}

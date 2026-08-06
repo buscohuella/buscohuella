@@ -12,6 +12,8 @@
   "dependencies": {
     "@buscohuella/pet-data": "workspace:*",
     "@buscohuella/pet-domain": "workspace:*",
+    "@buscohuella/report-data": "workspace:*",
+    "@buscohuella/report-domain": "workspace:*",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.111.0",
     "clsx": "^2.1.1",
@@ -19,8 +21,8 @@
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tailwind-merge": "^3.6.0",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.3",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -6,11 +6,13 @@ import caCommon from './locales/ca/common.json';
 import caHome from './locales/ca/home.json';
 import caPets from './locales/ca/pets.json';
 import caProfile from './locales/ca/profile.json';
+import caReports from './locales/ca/reports.json';
 import esAuth from './locales/es/auth.json';
 import esCommon from './locales/es/common.json';
 import esHome from './locales/es/home.json';
 import esPets from './locales/es/pets.json';
 import esProfile from './locales/es/profile.json';
+import esReports from './locales/es/reports.json';
 
 const dictionaries = {
   es: {
@@ -19,6 +21,7 @@ const dictionaries = {
     home: esHome,
     pets: esPets,
     profile: esProfile,
+    reports: esReports,
   },
   ca: {
     common: caCommon,
@@ -26,6 +29,7 @@ const dictionaries = {
     home: caHome,
     pets: caPets,
     profile: caProfile,
+    reports: caReports,
   },
 } satisfies Record<AppLocale, TranslationDictionary>;
 

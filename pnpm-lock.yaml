@@ -16,6 +16,12 @@ importers:
       '@buscohuella/pet-domain':
         specifier: workspace:*
         version: link:../../packages/pet-domain
+      '@buscohuella/report-data':
+        specifier: workspace:*
+        version: link:../../packages/report-data
+      '@buscohuella/report-domain':
+        specifier: workspace:*
+        version: link:../../packages/report-domain
       '@supabase/ssr':
         specifier: ^0.12.4
         version: 0.12.4(@supabase/supabase-js@2.111.0)

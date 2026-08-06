@@ -1,0 +1,58 @@
+{
+  "list": {
+    "eyebrow": "Área privada",
+    "title": "Mis avisos",
+    "description": "Gestiona borradores, avisos publicados y casos que ya has cerrado.",
+    "new": "Crear aviso",
+    "tabsLabel": "Filtrar avisos por estado",
+    "filters": {
+      "all": "Todos",
+      "drafts": "Borradores",
+      "active": "Activos",
+      "paused": "Pausados",
+      "resolved": "Resueltos",
+      "closed": "Cerrados",
+      "archived": "Archivados"
+    },
+    "countOne": "{count} aviso",
+    "countMany": "{count} avisos",
+    "emptyTitle": "Todavía no has creado ningún aviso",
+    "emptyDescription": "Crea un aviso para comunicar que has perdido una mascota o que has encontrado un animal.",
+    "emptyFilteredTitle": "No hay avisos en este estado",
+    "emptyFilteredDescription": "Selecciona otro estado o crea un aviso nuevo.",
+    "errorTitle": "No hemos podido cargar tus avisos",
+    "errorDescription": "Inténtalo de nuevo dentro de unos instantes.",
+    "untitled": "Aviso sin título",
+    "petFallback": "Mascota vinculada",
+    "noPet": "Sin mascota vinculada",
+    "municipalityUnknown": "Municipio no indicado",
+    "incidentUnknown": "Fecha del incidente no indicada",
+    "updated": "Actualizado el {date}",
+    "incident": "Incidente: {date}",
+    "type": {
+      "LOST_PET": "Mascota perdida",
+      "FOUND_ANIMAL": "Animal encontrado"
+    },
+    "status": {
+      "DRAFT": "Borrador",
+      "ACTIVE": "Activo",
+      "PAUSED": "Pausado",
+      "RESOLVED": "Resuelto",
+      "CLOSED": "Cerrado",
+      "ARCHIVED": "Archivado"
+    }
+  },
+  "create": {
+    "eyebrow": "Nuevo aviso",
+    "title": "¿Qué quieres comunicar?",
+    "description": "Elige el tipo de aviso. Después te guiaremos paso a paso y podrás guardar un borrador antes de publicarlo.",
+    "lostTitle": "He perdido una mascota",
+    "lostDescription": "Selecciona una de tus mascotas registradas y comunica dónde y cuándo se perdió.",
+    "foundTitle": "He encontrado un animal",
+    "foundDescription": "Crea un aviso sin vincularlo a una mascota de tu perfil.",
+    "lostAction": "Comunicar una pérdida",
+    "foundAction": "Comunicar un hallazgo",
+    "comingNext": "El formulario de este tipo de aviso se habilitará en la siguiente entrega.",
+    "back": "Volver a mis avisos"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "list": {
+    "eyebrow": "Àrea privada",
+    "title": "Els meus avisos",
+    "description": "Gestiona esborranys, avisos publicats i casos que ja has tancat.",
+    "new": "Crea un avís",
+    "tabsLabel": "Filtra els avisos per estat",
+    "filters": {
+      "all": "Tots",
+      "drafts": "Esborranys",
+      "active": "Actius",
+      "paused": "Pausats",
+      "resolved": "Resolts",
+      "closed": "Tancats",
+      "archived": "Arxivats"
+    },
+    "countOne": "{count} avís",
+    "countMany": "{count} avisos",
+    "emptyTitle": "Encara no has creat cap avís",
+    "emptyDescription": "Crea un avís per comunicar que has perdut una mascota o que has trobat un animal.",
+    "emptyFilteredTitle": "No hi ha avisos en aquest estat",
+    "emptyFilteredDescription": "Selecciona un altre estat o crea un avís nou.",
+    "errorTitle": "No hem pogut carregar els teus avisos",
+    "errorDescription": "Torna-ho a provar d'aquí a uns instants.",
+    "untitled": "Avís sense títol",
+    "petFallback": "Mascota vinculada",
+    "noPet": "Sense mascota vinculada",
+    "municipalityUnknown": "Municipi no indicat",
+    "incidentUnknown": "Data de l'incident no indicada",
+    "updated": "Actualitzat el {date}",
+    "incident": "Incident: {date}",
+    "type": {
+      "LOST_PET": "Mascota perduda",
+      "FOUND_ANIMAL": "Animal trobat"
+    },
+    "status": {
+      "DRAFT": "Esborrany",
+      "ACTIVE": "Actiu",
+      "PAUSED": "Pausat",
+      "RESOLVED": "Resolt",
+      "CLOSED": "Tancat",
+      "ARCHIVED": "Arxivat"
+    }
+  },
+  "create": {
+    "eyebrow": "Avís nou",
+    "title": "Què vols comunicar?",
+    "description": "Tria el tipus d'avís. Després et guiarem pas a pas i podràs desar un esborrany abans de publicar-lo.",
+    "lostTitle": "He perdut una mascota",
+    "lostDescription": "Selecciona una de les teves mascotes registrades i comunica on i quan es va perdre.",
+    "foundTitle": "He trobat un animal",
+    "foundDescription": "Crea un avís sense vincular-lo a una mascota del teu perfil.",
+    "lostAction": "Comunica una pèrdua",
+    "foundAction": "Comunica una troballa",
+    "comingNext": "El formulari d'aquest tipus d'avís s'habilitarà en la propera entrega.",
+    "back": "Torna als meus avisos"
+  }
+}

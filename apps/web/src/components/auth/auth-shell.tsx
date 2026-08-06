@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { LanguageSelector } from '@/features/i18n/language-selector';
 
 export interface AuthShellProps {
   children: ReactNode;
@@ -20,7 +21,8 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <main className="relative min-h-screen bg-background lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
-      <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-2 sm:right-6 sm:top-6">
+        <LanguageSelector />
         <ThemeToggle />
       </div>
 
@@ -70,7 +72,7 @@ export function AuthShell({
         </p>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-4 py-16 sm:px-6 lg:px-10">
+      <section className="flex min-h-screen items-center justify-center px-4 py-20 sm:px-6 lg:px-10">
         <div className="w-full max-w-md">
           <Link
             href="/"

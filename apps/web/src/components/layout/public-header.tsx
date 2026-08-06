@@ -8,22 +8,29 @@ import Link from 'next/link';
 
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import type { AuthUser } from '@/features/auth/types/auth-user';
+import { LanguageSelector } from '@/features/i18n/language-selector';
+import { getServerTranslator } from '@/features/i18n/server';
 
-export function PublicHeader({
+export async function PublicHeader({
   user,
 }: {
   user: AuthUser | null;
 }) {
+  const { translate } =
+    await getServerTranslator();
+
   const linkClass =
     'flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-semibold text-muted-foreground hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft';
 
   return (
     <header className="sticky top-0 z-40 border-b border-border-soft bg-surface-elevated/95 backdrop-blur">
-      <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-2 px-3 sm:gap-3 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-          aria-label="BuscoHuella, inicio público"
+          className="flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          aria-label={translate(
+            'common.navigation.homeAria',
+          )}
         >
           <span className="flex size-10 items-center justify-center rounded-full bg-primary-soft text-primary">
             <PawPrint
@@ -38,30 +45,48 @@ export function PublicHeader({
 
         <nav
           className="hidden items-center md:flex"
-          aria-label="Navegación pública"
+          aria-label={translate(
+            'common.navigation.publicLabel',
+          )}
         >
           <Link href="/mapa" className={linkClass}>
-            <Map className="size-4" aria-hidden="true" />
-            Mapa
+            <Map
+              className="size-4"
+              aria-hidden="true"
+            />
+            {translate(
+              'common.navigation.map',
+            )}
           </Link>
-          <Link href="/reportes" className={linkClass}>
+          <Link
+            href="/reportes"
+            className={linkClass}
+          >
             <ScrollText
               className="size-4"
               aria-hidden="true"
             />
-            Reportes
+            {translate(
+              'common.navigation.reports',
+            )}
           </Link>
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+          <LanguageSelector />
           <ThemeToggle />
 
           {user ? (
             <Link
               href="/perfil"
-              className="flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface-elevated px-4 text-sm font-semibold hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-              aria-label={`Abrir el perfil de ${user.fullName}`}
-              title="Mi perfil"
+              className="flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface-elevated px-3 text-sm font-semibold hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:px-4"
+              aria-label={translate(
+                'common.navigation.openProfile',
+                { name: user.fullName },
+              )}
+              title={translate(
+                'common.navigation.profile',
+              )}
             >
               <CircleUserRound
                 className="size-4"
@@ -71,19 +96,35 @@ export function PublicHeader({
                 {user.fullName}
               </span>
               <span className="sm:hidden">
-                Mi perfil
+                {translate(
+                  'common.navigation.profile',
+                )}
               </span>
             </Link>
           ) : (
             <>
-              <Link href="/login" className={linkClass}>
-                Entrar
+              <Link
+                href="/login"
+                className="hidden min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-muted-foreground hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:flex"
+              >
+                {translate(
+                  'common.navigation.login',
+                )}
               </Link>
               <Link
                 href="/registro"
-                className="flex min-h-11 items-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                className="flex min-h-11 items-center rounded-full bg-primary px-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:px-4"
               >
-                Crear cuenta
+                <span className="sm:hidden">
+                  {translate(
+                    'common.navigation.registerShort',
+                  )}
+                </span>
+                <span className="hidden sm:inline">
+                  {translate(
+                    'common.navigation.register',
+                  )}
+                </span>
               </Link>
             </>
           )}
@@ -92,15 +133,23 @@ export function PublicHeader({
 
       <nav className="grid grid-cols-2 border-t border-border-soft px-3 md:hidden">
         <Link href="/mapa" className={linkClass}>
-          <Map className="size-4" aria-hidden="true" />
-          Mapa
+          <Map
+            className="size-4"
+            aria-hidden="true"
+          />
+          {translate('common.navigation.map')}
         </Link>
-        <Link href="/reportes" className={linkClass}>
+        <Link
+          href="/reportes"
+          className={linkClass}
+        >
           <ScrollText
             className="size-4"
             aria-hidden="true"
           />
-          Reportes
+          {translate(
+            'common.navigation.reports',
+          )}
         </Link>
       </nav>
     </header>

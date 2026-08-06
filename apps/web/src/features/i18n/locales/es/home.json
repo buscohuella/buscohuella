@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "title": "BuscoHuella | Encuentra mascotas perdidas",
+    "description": "Explora casos, avistamientos y reportes para ayudar a reunir mascotas perdidas con sus familias."
+  },
+  "hero": {
+    "title": "Ayuda a reunir mascotas perdidas con sus familias.",
+    "description": "Explora información pública sin cuenta. Para gestionar mascotas, alertas y reportes personales podrás registrarte gratuitamente.",
+    "explore": "Explorar sin cuenta",
+    "register": "Crear una cuenta"
+  },
+  "actions": {
+    "title": "Puedes ayudar sin registrarte",
+    "mapTitle": "Explorar el mapa",
+    "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
+    "reportsTitle": "Consultar reportes",
+    "reportsDescription": "Busca pérdidas, hallazgos y avisos públicos."
+  }
+}

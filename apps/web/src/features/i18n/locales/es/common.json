@@ -7,6 +7,25 @@
     "activateLight": "Activar tema claro",
     "activateDark": "Activar tema oscuro"
   },
+  "language": {
+    "label": "Seleccionar idioma",
+    "changing": "Cambiando idioma…",
+    "options": {
+      "es": "Español",
+      "ca": "Català"
+    }
+  },
+  "navigation": {
+    "publicLabel": "Navegación pública",
+    "homeAria": "BuscoHuella, inicio público",
+    "map": "Mapa",
+    "reports": "Reportes",
+    "login": "Entrar",
+    "register": "Crear cuenta",
+    "registerShort": "Registro",
+    "profile": "Mi perfil",
+    "openProfile": "Abrir el perfil de {name}"
+  },
   "actions": {
     "close": "Cerrar",
     "cancel": "Cancelar",

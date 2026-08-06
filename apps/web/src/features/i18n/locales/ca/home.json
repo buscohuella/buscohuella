@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "title": "BuscoHuella | Troba animals perduts",
+    "description": "Explora casos, albiraments i reportes per ajudar a reunir animals perduts amb les seves famílies."
+  },
+  "hero": {
+    "title": "Ajuda a reunir animals perduts amb les seves famílies.",
+    "description": "Explora informació pública sense compte. Per gestionar animals, alertes i reportes personals et podràs registrar gratuïtament.",
+    "explore": "Explora sense compte",
+    "register": "Crea un compte"
+  },
+  "actions": {
+    "title": "Pots ajudar sense registrar-te",
+    "mapTitle": "Explora el mapa",
+    "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
+    "reportsTitle": "Consulta reportes",
+    "reportsDescription": "Cerca pèrdues, troballes i avisos públics."
+  }
+}

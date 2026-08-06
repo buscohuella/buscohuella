@@ -7,6 +7,25 @@
     "activateLight": "Activa el tema clar",
     "activateDark": "Activa el tema fosc"
   },
+  "language": {
+    "label": "Selecciona l'idioma",
+    "changing": "Canviant l'idioma…",
+    "options": {
+      "es": "Español",
+      "ca": "Català"
+    }
+  },
+  "navigation": {
+    "publicLabel": "Navegació pública",
+    "homeAria": "BuscoHuella, inici públic",
+    "map": "Mapa",
+    "reports": "Reportes",
+    "login": "Entra",
+    "register": "Crea un compte",
+    "registerShort": "Registre",
+    "profile": "El meu perfil",
+    "openProfile": "Obre el perfil de {name}"
+  },
   "actions": {
     "close": "Tanca",
     "cancel": "Cancel·la",

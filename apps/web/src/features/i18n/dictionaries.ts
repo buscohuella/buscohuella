@@ -3,20 +3,24 @@ import type { TranslationDictionary } from './types';
 
 import caAuth from './locales/ca/auth.json';
 import caCommon from './locales/ca/common.json';
+import caHome from './locales/ca/home.json';
 import caProfile from './locales/ca/profile.json';
 import esAuth from './locales/es/auth.json';
 import esCommon from './locales/es/common.json';
+import esHome from './locales/es/home.json';
 import esProfile from './locales/es/profile.json';
 
 const dictionaries = {
   es: {
     common: esCommon,
     auth: esAuth,
+    home: esHome,
     profile: esProfile,
   },
   ca: {
     common: caCommon,
     auth: caAuth,
+    home: caHome,
     profile: caProfile,
   },
 } satisfies Record<AppLocale, TranslationDictionary>;

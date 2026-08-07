@@ -1,0 +1,54 @@
+{
+  "eyebrow": "Búsqueda activa",
+  "title": "Avistamientos recibidos",
+  "description": "Revisa la información que otras personas han enviado sobre tus avisos.",
+  "summary": {
+    "total": "Total",
+    "new": "Nuevos",
+    "reviewed": "Revisados"
+  },
+  "empty": {
+    "title": "Todavía no hay avistamientos",
+    "description": "Cuando alguien informe de que ha visto una de tus mascotas, aparecerá aquí."
+  },
+  "status": {
+    "PENDING": "Nuevo",
+    "ACCEPTED": "Revisado",
+    "REJECTED": "Descartado",
+    "FLAGGED": "Marcado"
+  },
+  "confidence": {
+    "UNSURE": "No está seguro",
+    "POSSIBLE": "Es posible",
+    "LIKELY": "Cree que era ella",
+    "CERTAIN": "La vio claramente"
+  },
+  "location": {
+    "gps": "Ubicación GPS",
+    "unknown": "Ubicación no disponible"
+  },
+  "photosCount": "{count} fotos",
+  "open": "Ver detalle",
+  "actions": {
+    "reviewed": "Marcar como revisado",
+    "dismissed": "Descartar",
+    "flagged": "Marcar"
+  },
+  "detail": {
+    "back": "Volver a avistamientos",
+    "title": "Detalle del avistamiento",
+    "information": "Información",
+    "when": "Cuándo fue visto",
+    "location": "Ubicación",
+    "confidence": "Nivel de confianza",
+    "photos": "Fotografías",
+    "comment": "Comentario",
+    "noComment": "No se añadió ningún comentario.",
+    "gallery": "Fotografías del avistamiento",
+    "photoAlt": "Fotografía del avistamiento {number}",
+    "report": "Aviso relacionado",
+    "manageReport": "Gestionar aviso",
+    "privacyTitle": "Información privada de búsqueda",
+    "privacyDescription": "La ubicación exacta y las fotografías del avistamiento solo son visibles para personas autorizadas. La identidad de quien informó no se muestra en esta fase del MVP."
+  }
+}

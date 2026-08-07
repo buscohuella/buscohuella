@@ -1,5 +1,6 @@
 import {
   CircleUserRound,
+  Eye,
   Home,
   Map,
   PawPrint,
@@ -27,9 +28,16 @@ export const navigationItems: NavigationItem[] = [
     icon: Map,
   },
   {
-    labelKey: 'navigation.private.publicReports',
+    labelKey:
+      'navigation.private.publicReports',
     href: '/reportes',
     icon: Search,
+  },
+  {
+    labelKey:
+      'navigation.private.sightings',
+    href: '/avistamientos',
+    icon: Eye,
   },
   {
     labelKey: 'navigation.private.reports',

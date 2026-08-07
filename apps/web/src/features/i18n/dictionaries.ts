@@ -4,22 +4,26 @@ import type { TranslationDictionary } from './types';
 import caAuth from './locales/ca/auth.json';
 import caCommon from './locales/ca/common.json';
 import caHome from './locales/ca/home.json';
+import caOwnerSightings from './locales/ca/owner-sightings.json';
 import caPets from './locales/ca/pets.json';
 import caProfile from './locales/ca/profile.json';
 import caPublicReport from './locales/ca/public-report.json';
 import caReportEdit from './locales/ca/report-edit.json';
 import caReports from './locales/ca/reports.json';
 import caSightingCreate from './locales/ca/sighting-create.json';
+import caSightingPhotos from './locales/ca/sighting-photos.json';
 import caReportVisual from './locales/ca/report-visual.json';
 import esAuth from './locales/es/auth.json';
 import esCommon from './locales/es/common.json';
 import esHome from './locales/es/home.json';
+import esOwnerSightings from './locales/es/owner-sightings.json';
 import esPets from './locales/es/pets.json';
 import esProfile from './locales/es/profile.json';
 import esPublicReport from './locales/es/public-report.json';
 import esReportEdit from './locales/es/report-edit.json';
 import esReports from './locales/es/reports.json';
 import esSightingCreate from './locales/es/sighting-create.json';
+import esSightingPhotos from './locales/es/sighting-photos.json';
 import esReportVisual from './locales/es/report-visual.json';
 
 const dictionaries = {
@@ -34,6 +38,8 @@ const dictionaries = {
     reportVisual: esReportVisual,
     publicReport: esPublicReport,
     sightingCreate: esSightingCreate,
+    sightingPhotos: esSightingPhotos,
+    ownerSightings: esOwnerSightings,
   },
   ca: {
     common: caCommon,
@@ -46,8 +52,13 @@ const dictionaries = {
     reportVisual: caReportVisual,
     publicReport: caPublicReport,
     sightingCreate: caSightingCreate,
+    sightingPhotos: caSightingPhotos,
+    ownerSightings: caOwnerSightings,
   },
-} satisfies Record<AppLocale, TranslationDictionary>;
+} satisfies Record<
+  AppLocale,
+  TranslationDictionary
+>;
 
 export type TranslationNamespace =
   keyof (typeof dictionaries)['es'];

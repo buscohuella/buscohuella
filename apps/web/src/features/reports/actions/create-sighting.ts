@@ -96,5 +96,5 @@ export async function createSightingAction(
 
   revalidatePath(`/reportes/${reportId}`);
   revalidatePath(`/mis-reportes/${reportId}`);
-  redirect(`/reportes/${reportId}?avistamiento=creado`);
+  redirect(`/reportes/${reportId}/avistamiento/${data.id}/fotos`);
 }

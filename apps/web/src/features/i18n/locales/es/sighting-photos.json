@@ -1,0 +1,33 @@
+{
+  "back": "Volver al aviso",
+  "eyebrow": "Avistamiento",
+  "title": "Añade fotografías",
+  "description": "Si hiciste alguna foto, puede ayudar mucho al propietario a comprobar el avistamiento. Este paso es opcional.",
+  "formTitle": "Fotografías del avistamiento",
+  "formDescription": "Has añadido {count} de {max} fotografías.",
+  "fileLabel": "Selecciona una fotografía",
+  "fileHelp": "JPG, PNG o WebP. Máximo 8 MB; la imagen se optimizará automáticamente.",
+  "altLabel": "Descripción de la imagen (opcional)",
+  "altPlaceholder": "Ej.: perro junto a la entrada del parque",
+  "upload": "Añadir fotografía",
+  "uploading": "Subiendo…",
+  "uploadSuccess": "Fotografía añadida correctamente.",
+  "galleryTitle": "Fotografías añadidas",
+  "photoAlt": "Fotografía del avistamiento {number}",
+  "delete": "Eliminar",
+  "finish": "Finalizar avistamiento",
+  "skip": "Omitir fotografías y finalizar",
+  "privacyTitle": "Fotografías privadas",
+  "privacyDescription": "Estas imágenes no se publican en la ficha pública. Solo podrán acceder la persona que envió el avistamiento y el propietario del aviso.",
+  "errors": {
+    "missing": "No se ha podido identificar el avistamiento.",
+    "select": "Selecciona una fotografía.",
+    "tooLarge": "La fotografía supera el límite de 8 MB.",
+    "forbidden": "No puedes añadir fotografías a este avistamiento.",
+    "maxReached": "Ya has añadido el máximo de 5 fotografías.",
+    "unsupported": "Formato de imagen no compatible.",
+    "damaged": "No hemos podido procesar esta imagen. Puede estar dañada.",
+    "processing": "No hemos podido preparar la fotografía.",
+    "upload": "No hemos podido guardar la fotografía. Inténtalo de nuevo."
+  }
+}

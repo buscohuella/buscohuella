@@ -1,0 +1,33 @@
+{
+  "back": "Torna a l'avís",
+  "eyebrow": "Avistament",
+  "title": "Afegeix fotografies",
+  "description": "Si vas fer alguna foto, pot ajudar molt la persona responsable a comprovar l’avistament. Aquest pas és opcional.",
+  "formTitle": "Fotografies de l’avistament",
+  "formDescription": "Has afegit {count} de {max} fotografies.",
+  "fileLabel": "Selecciona una fotografia",
+  "fileHelp": "JPG, PNG o WebP. Màxim 8 MB; la imatge s’optimitzarà automàticament.",
+  "altLabel": "Descripció de la imatge (opcional)",
+  "altPlaceholder": "Ex.: gos al costat de l’entrada del parc",
+  "upload": "Afegeix fotografia",
+  "uploading": "Pujant…",
+  "uploadSuccess": "Fotografia afegida correctament.",
+  "galleryTitle": "Fotografies afegides",
+  "photoAlt": "Fotografia de l’avistament {number}",
+  "delete": "Elimina",
+  "finish": "Finalitza l’avistament",
+  "skip": "Omet les fotografies i finalitza",
+  "privacyTitle": "Fotografies privades",
+  "privacyDescription": "Aquestes imatges no es publiquen a la fitxa pública. Només hi podran accedir la persona que ha enviat l’avistament i la persona responsable de l’avís.",
+  "errors": {
+    "missing": "No s’ha pogut identificar l’avistament.",
+    "select": "Selecciona una fotografia.",
+    "tooLarge": "La fotografia supera el límit de 8 MB.",
+    "forbidden": "No pots afegir fotografies a aquest avistament.",
+    "maxReached": "Ja has afegit el màxim de 5 fotografies.",
+    "unsupported": "Format d’imatge no compatible.",
+    "damaged": "No hem pogut processar aquesta imatge. Pot estar malmesa.",
+    "processing": "No hem pogut preparar la fotografia.",
+    "upload": "No hem pogut desar la fotografia. Torna-ho a provar."
+  }
+}

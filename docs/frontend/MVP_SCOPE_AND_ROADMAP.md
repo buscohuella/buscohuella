@@ -32,23 +32,72 @@ completo y fiable:
 
 ### Avistamientos
 
+El MVP incluye los dos lados de la colaboración.
+
+#### Persona que informa
+
 - creación autenticada desde el aviso público;
 - momento del avistamiento;
 - GPS o referencia manual;
 - nivel de confianza;
 - comentario;
-- fotografía opcional;
-- bandeja del propietario;
-- revisión y descarte;
-- trazabilidad mediante eventos.
+- hasta cinco fotografías opcionales;
+- confirmación de envío;
+- sección `Mis avistamientos`;
+- consulta posterior de su aportación;
+- estado de revisión por parte del propietario;
+- estado actual del aviso relacionado;
+- acceso a sus propias fotografías.
+
+#### Propietario del aviso
+
+- bandeja global de avistamientos recibidos;
+- contador de nuevos;
+- detalle del avistamiento;
+- ubicación exacta cuando esté autorizado;
+- fotografías privadas;
+- comentario y nivel de confianza;
+- estados de revisión;
+- filtros y paginación;
+- archivado sin destrucción de evidencia.
+
+### Estados de avistamiento
+
+Los estados persistidos actualmente son:
+
+- `PENDING` → Nuevo;
+- `ACCEPTED` → Revisado / útil;
+- `REJECTED` → Descartado;
+- `FLAGGED` → Marcado para atención.
+
+La interfaz puede presentar nombres más amigables, pero no debe mezclar
+“descartar”, “archivar” y “eliminar”.
+
+### Conservación y archivado
+
+Un avistamiento revisado o descartado no se elimina automáticamente.
+
+Motivos:
+
+- trazabilidad de la búsqueda;
+- fotografías y ubicación asociadas;
+- reconstrucción posterior de movimientos;
+- moderación;
+- cumplimiento y auditoría.
+
+El MVP debe permitir ocultar de la vista principal los avistamientos ya
+gestionados mediante filtros y archivado. La eliminación definitiva se reserva
+para procesos específicos de usuario, moderación, cumplimiento legal o
+políticas de conservación.
 
 ### Notificaciones MVP
 
 El MVP debe incluir al menos notificación interna para eventos críticos:
 
 - nuevo avistamiento recibido;
-- cambios importantes en el estado del aviso;
-- futuras incidencias relacionadas con seguridad de la cuenta.
+- avistamiento revisado por el propietario;
+- aviso relacionado resuelto/cerrado;
+- cambios importantes en el estado del aviso.
 
 Las notificaciones push se incorporarán después de estabilizar la bandeja
 interna, pero la arquitectura debe permitirlas.
@@ -60,7 +109,8 @@ interna, pero la arquitectura debe permitirlas.
 - selección de ubicación;
 - autocompletado de direcciones;
 - ubicación aproximada pública;
-- coordenada exacta privada.
+- coordenada exacta privada;
+- avistamientos relevantes sobre el mapa privado de búsqueda.
 
 ## Post-MVP cercano
 
@@ -75,7 +125,8 @@ Principios:
 - conversación vinculada al aviso y al avistamiento;
 - bloqueo y reporte de usuarios;
 - conservación limitada y política de moderación;
-- posibilidad de cerrar el chat cuando el aviso termine.
+- posibilidad de cerrar el chat cuando el aviso termine;
+- posibilidad de solicitar información o fotografías adicionales.
 
 ### Alertas por proximidad
 
@@ -100,8 +151,10 @@ Casos prioritarios:
 
 - mascota perdida cerca;
 - nuevo avistamiento de tu mascota;
+- tu avistamiento ha sido revisado;
 - respuesta a una conversación;
 - cambio relevante en un aviso seguido;
+- mascota encontrada;
 - alerta urgente validada.
 
 ## Fase comunidad
@@ -132,7 +185,7 @@ la ubicación exacta de la mascota.
 
 ## Fase profesional e institucional
 
-### Protectora y veterinarios
+### Protectoras y veterinarios
 
 Entidades verificadas podrán:
 
@@ -140,7 +193,9 @@ Entidades verificadas podrán:
 - marcar animales recibidos o identificados;
 - colaborar en búsquedas;
 - aportar avistamientos verificados;
-- gestionar una bandeja profesional.
+- gestionar una bandeja profesional;
+- participar en grupos de búsqueda;
+- indicar que un caso está siendo seguido por una entidad.
 
 ### Policía local y ayuntamientos
 
@@ -149,7 +204,9 @@ Las autoridades integradas podrán disponer de permisos específicos para:
 - recibir alertas territoriales;
 - consultar incidencias relevantes;
 - coordinar casos de seguridad o bienestar animal;
-- responder mediante cuentas institucionales verificadas.
+- responder mediante cuentas institucionales verificadas;
+- mostrar al ciudadano un estado general como “en seguimiento por entidad
+  verificada” cuando corresponda.
 
 No tendrán acceso automático a todos los datos personales. Cada dato deberá
 estar justificado por función, ámbito territorial y base legal.
@@ -177,6 +234,7 @@ métricas:
 - alcance útil del aviso;
 - número/calidad de avistamientos;
 - tiempo hasta reencuentro;
-- seguridad y confianza de usuarios.
+- seguridad y confianza de usuarios;
+- capacidad del colaborador para saber si su ayuda fue útil.
 
 Lo demás permanece en roadmap hasta que el flujo principal sea estable.

@@ -1,0 +1,54 @@
+{
+  "eyebrow": "Cerca activa",
+  "title": "Avistaments rebuts",
+  "description": "Revisa la informació que altres persones han enviat sobre els teus avisos.",
+  "summary": {
+    "total": "Total",
+    "new": "Nous",
+    "reviewed": "Revisats"
+  },
+  "empty": {
+    "title": "Encara no hi ha avistaments",
+    "description": "Quan algú informi que ha vist una de les teves mascotes, apareixerà aquí."
+  },
+  "status": {
+    "PENDING": "Nou",
+    "ACCEPTED": "Revisat",
+    "REJECTED": "Descartat",
+    "FLAGGED": "Marcat"
+  },
+  "confidence": {
+    "UNSURE": "No n'està segur",
+    "POSSIBLE": "És possible",
+    "LIKELY": "Creu que era ella",
+    "CERTAIN": "La va veure clarament"
+  },
+  "location": {
+    "gps": "Ubicació GPS",
+    "unknown": "Ubicació no disponible"
+  },
+  "photosCount": "{count} fotos",
+  "open": "Veure detall",
+  "actions": {
+    "reviewed": "Marca com a revisat",
+    "dismissed": "Descarta",
+    "flagged": "Marca"
+  },
+  "detail": {
+    "back": "Torna als avistaments",
+    "title": "Detall de l'avistament",
+    "information": "Informació",
+    "when": "Quan es va veure",
+    "location": "Ubicació",
+    "confidence": "Nivell de confiança",
+    "photos": "Fotografies",
+    "comment": "Comentari",
+    "noComment": "No s'hi ha afegit cap comentari.",
+    "gallery": "Fotografies de l'avistament",
+    "photoAlt": "Fotografia de l'avistament {number}",
+    "report": "Avís relacionat",
+    "manageReport": "Gestiona l'avís",
+    "privacyTitle": "Informació privada de cerca",
+    "privacyDescription": "La ubicació exacta i les fotografies de l'avistament només són visibles per a persones autoritzades. La identitat de qui ha informat no es mostra en aquesta fase de l'MVP."
+  }
+}

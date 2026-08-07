@@ -1,5 +1,9 @@
 # FP-019 — Centro de notificaciones internas
 
+## Estado
+
+`DONE` — validado funcionalmente el 7 de agosto de 2026.
+
 ## Objetivo
 
 Convertir eventos relevantes del dominio en avisos dirigidos a usuarios sin
@@ -64,7 +68,7 @@ Incluye:
 - Todas;
 - No leídas;
 - Leídas;
-- paginación de 20;
+- paginación de 10 para mantener una lectura cómoda;
 - contador de no leídas;
 - marcar todas como leídas;
 - abrir una notificación marca esa entrega como leída;

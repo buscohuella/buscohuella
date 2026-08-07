@@ -9,11 +9,21 @@ import { validatePassword } from '../lib/password-policy';
 import type { AuthActionState } from '../types/auth-action-state';
 import { getRequestOrigin, getString } from './helpers';
 
+function safeNext(value: string) {
+  return value.startsWith('/') &&
+    !value.startsWith('//')
+    ? value
+    : '';
+}
+
 export async function registerAction(
   _previousState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
   const fullName = getString(formData, 'fullName');
+  const next = safeNext(
+    getString(formData, 'next'),
+  );
   const emailValidation = validateEmail(
     getString(formData, 'email'),
   );
@@ -107,5 +117,13 @@ export async function registerAction(
     };
   }
 
-  redirect('/login?registered=1');
+  const query = new URLSearchParams({
+    registered: '1',
+  });
+
+  if (next) {
+    query.set('next', next);
+  }
+
+  redirect(`/login?${query.toString()}`);
 }

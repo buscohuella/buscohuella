@@ -16,6 +16,7 @@ interface LoginPageProps {
     password_updated?: string;
     logged_out?: string;
     auth_error?: string;
+    next?: string;
   }>;
 }
 
@@ -40,7 +41,7 @@ export default async function LoginPage({
     >
       <AuthCard>
         <AuthNotice message={notice} />
-        <LoginForm />
+        <LoginForm next={params.next} />
       </AuthCard>
     </AuthShell>
   );

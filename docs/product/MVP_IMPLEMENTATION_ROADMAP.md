@@ -380,99 +380,83 @@ Regla:
 > seguridad y privacidad, validaciones, gestión visible de errores, temas,
 > responsive y documentación.
 
-### FP-011 — Reportar mascota perdida
+### Secuencia activa de dominios del MVP
 
-**Estado:** `Planned`
+Los Feature Packs de interfaz y entregas funcionales se mantienen en
+`docs/frontend/FUNCTIONAL_DELIVERY_ROADMAP.md`. Este documento conserva la
+secuencia de dominios del MVP y no asigna nuevos números FP para evitar
+colisiones entre el roadmap histórico y las entregas funcionales actuales.
+
+#### Avisos y reportes
+
+**Estado:** `Completed` en el alcance actual.
 
 Incluye:
 
-- seleccionar mascota;
+- selección de mascota;
 - fecha y ubicación;
 - zona pública segura;
-- descripción del incidente;
+- descripción;
 - fotografías;
 - contacto protegido;
 - publicación;
 - detalle;
-- edición y cierre.
+- edición y ciclo de vida.
 
-### FP-012 — Reportar animal encontrado
+El reporte de animal encontrado sigue pendiente de una entrega específica.
 
-**Estado:** `Planned`
+#### Avistamientos
 
-Incluye:
-
-- registro sin mascota previa;
-- especie y descripción;
-- ubicación aproximada;
-- evidencias;
-- estado de custodia;
-- contacto;
-- posible conversión o vinculación futura.
-
-### FP-013 — Avistamientos
-
-**Estado:** `Planned`
+**Estado:** `Completed` en el alcance actual.
 
 Incluye:
 
-- añadir avistamiento a un reporte;
+- creación;
 - fecha;
 - ubicación aproximada;
 - notas;
-- fotografía opcional;
+- fotografías;
 - historial;
-- notificación a la persona responsable.
+- revisión por el propietario;
+- notificaciones internas.
 
-### FP-014 — Mapa y alternativa geográfica accesible
+#### Notificaciones internas
 
-**Estado:** `Planned`
+**Estado:** `Completed` y validado funcionalmente.
 
 Incluye:
 
-- reportes públicos;
+- nuevo avistamiento;
+- revisión del avistamiento;
+- cambios de estado del aviso;
+- centro de notificaciones;
 - filtros;
+- paginación;
+- marcado de lectura;
+- protección por usuario.
+
+Web Push y alertas por proximidad quedan fuera de este bloque.
+
+#### Mapa y alternativa geográfica accesible
+
+**Estado:** `Next`.
+
+Primera entrega prevista:
+
+- reportes públicos activos;
+- ubicación pública aproximada;
+- filtros básicos;
 - marcadores;
-- geolocalización;
-- radio;
-- agrupación;
-- detalle;
 - listado alternativo accesible;
+- detalle del aviso;
 - protección de ubicaciones sensibles.
 
-### FP-015 — Notificaciones críticas
+Las consultas por radio, geocodificación y avisos cercanos se incorporarán
+solo con contratos de ubicación y límites de privacidad definidos.
 
-**Estado:** `Planned`
+#### Preparación transversal del piloto
 
-Incluye:
-
-- eventos esenciales;
-- correo;
-- preferencias;
-- límites;
-- avisos de avistamiento;
-- cambios de estado;
-- prevención de abuso.
-
-Web push se incorporará solo si no retrasa el piloto.
-
-### FP-016 — Resolución y reencuentros
-
-**Estado:** `Planned`
-
-Incluye:
-
-- cerrar reporte;
-- marcar reencuentro;
-- evidencia opcional;
-- historia opcional;
-- métricas;
-- North Star Metric;
-- prevención de cierres falsos.
-
-### FP-017 — Preparación transversal del piloto
-
-**Estado:** `Planned`
+**Estado:** `Planned`.
 
 Incluye:
 
@@ -480,15 +464,15 @@ Incluye:
 - revisión accesible de flujos críticos;
 - responsive;
 - observabilidad;
-- manejo de errores;
+- manejo visible de errores;
 - privacidad;
 - seguridad;
 - pruebas end-to-end esenciales;
 - analítica responsable.
 
-### FP-018 — Piloto Sabadell
+#### Piloto Sabadell
 
-**Estado:** `Planned`
+**Estado:** `Planned`.
 
 Incluye:
 
@@ -508,18 +492,13 @@ Incluye:
 La ruta mínima para comenzar el piloto es:
 
 ```text
-FP-007 CRUD mascotas
-→ FP-008 razas
-→ FP-009 fotografías
-→ FP-010 dominio de reportes
-→ FP-011 perdidos
-→ FP-012 encontrados
-→ FP-013 avistamientos
-→ FP-014 mapa/listado
-→ FP-015 notificaciones esenciales
-→ FP-016 reencuentros
-→ FP-017 preparación transversal
-→ FP-018 piloto
+mascotas y fotografías
+→ avisos y reportes
+→ avistamientos
+→ notificaciones internas
+→ mapa y alternativa geográfica accesible
+→ preparación transversal
+→ piloto Sabadell
 ```
 
 ## 6. Funcionalidades no bloqueantes

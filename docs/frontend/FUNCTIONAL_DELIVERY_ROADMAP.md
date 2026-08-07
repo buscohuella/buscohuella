@@ -32,10 +32,10 @@ Este documento se actualizará al cerrar cada entrega.
 
 ## Notificaciones
 
-- `IN_PROGRESS` FP-019 — centro de notificaciones interno.
-- `PLANNED` FP-019.1 — nuevo avistamiento para propietario.
-- `PLANNED` FP-019.2 — revisión del avistamiento para colaborador.
-- `PLANNED` FP-019.3 — aviso resuelto / mascota localizada.
+- `DONE` FP-019 — centro de notificaciones interno; validado funcionalmente.
+- `DONE` FP-019.1 — nuevo avistamiento para propietario; validado funcionalmente.
+- `DONE` FP-019.2 — revisión del avistamiento para colaborador; validado funcionalmente.
+- `DONE` FP-019.3 — aviso resuelto / mascota localizada; validado funcionalmente.
 - `PLANNED` FP-020 — push web.
 - `PLANNED` FP-020.1 — alertas por proximidad.
 
@@ -104,11 +104,10 @@ Debe completarse una auditoría específica de:
 
 ## Próximo orden operativo
 
-1. cerrar FP-018;
-2. FP-018.1 timeline completo;
-3. FP-019 notificaciones internas;
-4. avisos cercanos + mapa/autocompletado;
-5. auditoría MVP;
-6. beta controlada.
+1. validar y cerrar FP-019 y sus subflujos;
+2. avisos cercanos + mapa/autocompletado;
+3. auditoría MVP;
+4. beta controlada;
+5. FP-020 push web y alertas por proximidad, según evidencia del piloto.
 
 

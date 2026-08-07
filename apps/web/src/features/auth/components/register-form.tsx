@@ -22,7 +22,11 @@ import { FormField } from './form-field';
 import { PasswordRequirements } from './password-requirements';
 import { SubmitButton } from './submit-button';
 
-export function RegisterForm() {
+export function RegisterForm({
+  next,
+}: {
+  next?: string;
+}) {
   const [state, formAction] = useActionState(
     registerAction,
     initialAuthActionState,
@@ -78,6 +82,11 @@ export function RegisterForm() {
 
   return (
     <form action={formAction} className="space-y-5">
+      <input
+        type="hidden"
+        name="next"
+        value={next ?? ''}
+      />
       {!hasFieldErrors ? (
         <ActionMessage state={state} />
       ) : null}
@@ -218,7 +227,11 @@ export function RegisterForm() {
       <p className="text-center text-sm text-muted-foreground">
         ¿Ya tienes cuenta?{' '}
         <Link
-          href="/login"
+          href={
+            next
+              ? `/login?next=${encodeURIComponent(next)}`
+              : '/login'
+          }
           className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           Iniciar sesión

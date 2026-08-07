@@ -15,7 +15,11 @@ import { ActionMessage } from './action-message';
 import { FormField } from './form-field';
 import { SubmitButton } from './submit-button';
 
-export function LoginForm() {
+export function LoginForm({
+  next,
+}: {
+  next?: string;
+}) {
   const [state, formAction] = useActionState(
     loginAction,
     initialAuthActionState,
@@ -41,6 +45,11 @@ if (state.fieldErrors?.password) {
 
   return (
     <form action={formAction} className="space-y-5">
+      <input
+        type="hidden"
+        name="next"
+        value={next ?? ''}
+      />
       <ActionMessage state={state} />
       <FormErrorSummary errors={formErrors} />
 
@@ -84,7 +93,11 @@ if (state.fieldErrors?.password) {
       <p className="text-center text-sm text-muted-foreground">
         ¿Todavía no tienes cuenta?{' '}
         <Link
-          href="/registro"
+          href={
+            next
+              ? `/registro?next=${encodeURIComponent(next)}`
+              : '/registro'
+          }
           className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           Crear cuenta

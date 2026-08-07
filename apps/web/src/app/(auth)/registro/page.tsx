@@ -9,14 +9,22 @@ export const metadata: Metadata = {
   description: 'Crea una cuenta en BuscoHuella.',
 };
 
-export default function RegisterPage() {
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    next?: string;
+  }>;
+}) {
+  const params = await searchParams;
+
   return (
     <AuthShell
       title="Crea tu cuenta"
       description="Registra tus mascotas y participa en búsquedas de forma segura."
     >
       <AuthCard>
-        <RegisterForm />
+        <RegisterForm next={params.next} />
       </AuthCard>
     </AuthShell>
   );

@@ -34,7 +34,7 @@ import {
   type InternalNotification,
 } from '@/features/notifications/lib/notifications';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 const FILTERS = [
   'ALL',

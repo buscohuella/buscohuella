@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
+import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 import { PublicReportGallery } from '@/features/reports/components/public-report-gallery';
 import { PublicReportShareButton } from '@/features/reports/components/public-report-share-button';
 import { getPublicReport } from '@/features/reports/lib/public-report';
@@ -133,10 +134,12 @@ export default async function PublicReportPage({
     { id },
     query,
     { locale, translate },
+    user,
   ] = await Promise.all([
     params,
     searchParams,
     getServerTranslator(),
+    getCurrentUser(),
   ]);
   const report =
     await getPublicReport(id);
@@ -364,7 +367,13 @@ export default async function PublicReportPage({
             </CardHeader>
             <CardContent className="space-y-3">
               <Link
-                href={`/reportes/${id}/avistamiento`}
+                href={
+                  user
+                    ? `/reportes/${id}/avistamiento`
+                    : `/login?next=${encodeURIComponent(
+                        `/reportes/${id}/avistamiento`,
+                      )}`
+                }
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-danger px-5 font-semibold text-white hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
               >
                 <MessageCircleMore

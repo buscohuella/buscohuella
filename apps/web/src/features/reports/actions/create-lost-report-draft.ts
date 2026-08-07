@@ -5,6 +5,10 @@ import {
   type Database as ReportDatabase,
 } from '@buscohuella/report-data';
 import {
+  PetPhotoRepository,
+  type Database as PetDatabase,
+} from '@buscohuella/pet-data';
+import {
   createReportSchema,
   type GeoPoint,
 } from '@buscohuella/report-domain';
@@ -17,6 +21,121 @@ import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
 import type { CreateLostReportDraftState } from '../types/create-lost-report-draft-state';
+
+const PET_PHOTOS_BUCKET = 'pet-photos';
+const REPORT_PHOTOS_BUCKET = 'report-photos';
+
+function photoExtension(
+  mimeType: string | null,
+) {
+  if (mimeType === 'image/jpeg') return 'jpg';
+  if (mimeType === 'image/png') return 'png';
+  return 'webp';
+}
+
+async function copyPetPhotosToReport({
+  supabase,
+  reportClient,
+  userId,
+  petId,
+  reportId,
+}: {
+  supabase: Awaited<ReturnType<typeof createClient>>;
+  reportClient: SupabaseClient<ReportDatabase>;
+  userId: string;
+  petId: string;
+  reportId: string;
+}) {
+  const petClient =
+    supabase as unknown as SupabaseClient<PetDatabase>;
+  const photoRepository =
+    new PetPhotoRepository(petClient);
+  const petPhotos =
+    await photoRepository.listPetPhotos(petId);
+
+  if (petPhotos.length === 0) {
+    return;
+  }
+
+  const uploadedPaths: string[] = [];
+  const insertedPhotoIds: string[] = [];
+
+  try {
+    for (const [index, petPhoto] of petPhotos.entries()) {
+      const {
+        data: file,
+        error: downloadError,
+      } = await supabase.storage
+        .from(PET_PHOTOS_BUCKET)
+        .download(petPhoto.storagePath);
+
+      if (downloadError || !file) {
+        throw downloadError ?? new Error(
+          'Pet photo download returned no file',
+        );
+      }
+
+      const photoId = crypto.randomUUID();
+      const mimeType =
+        petPhoto.mimeType ?? 'image/webp';
+      const storagePath =
+        `${userId}/${reportId}/${photoId}.${photoExtension(mimeType)}`;
+
+      const { error: uploadError } =
+        await supabase.storage
+          .from(REPORT_PHOTOS_BUCKET)
+          .upload(storagePath, file, {
+            contentType: mimeType,
+            cacheControl: '3600',
+            upsert: false,
+          });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      uploadedPaths.push(storagePath);
+      insertedPhotoIds.push(photoId);
+
+      const { error: metadataError } =
+        await reportClient
+          .from('report_photos')
+          .insert({
+            id: photoId,
+            report_id: reportId,
+            storage_path: storagePath,
+            position: index,
+            is_primary:
+              petPhoto.isPrimary || index === 0,
+            alt_text: petPhoto.altText,
+            mime_type: mimeType,
+            file_size_bytes:
+              petPhoto.fileSizeBytes ?? file.size,
+            width: petPhoto.width,
+            height: petPhoto.height,
+          });
+
+      if (metadataError) {
+        throw metadataError;
+      }
+    }
+  } catch (error) {
+    if (uploadedPaths.length > 0) {
+      await supabase.storage
+        .from(REPORT_PHOTOS_BUCKET)
+        .remove(uploadedPaths);
+    }
+
+    if (insertedPhotoIds.length > 0) {
+      await reportClient
+        .from('report_photos')
+        .delete()
+        .in('id', insertedPhotoIds);
+    }
+
+    throw error;
+  }
+}
 
 function getString(
   formData: FormData,
@@ -158,6 +277,10 @@ export async function createLostReportDraftAction(
   const description = getString(
     formData,
     'description',
+  );
+  const usePetPhotos = getBoolean(
+    formData,
+    'usePetPhotos',
   );
 
   const locationSource = getString(
@@ -360,9 +483,12 @@ export async function createLostReportDraftAction(
   }
 
   try {
+    const reportClient =
+      supabase as unknown as
+        SupabaseClient<ReportDatabase>;
     const reportRepository =
       new ReportRepository(
-        supabase as unknown as SupabaseClient<ReportDatabase>,
+        reportClient,
       );
 
     const report =
@@ -370,6 +496,16 @@ export async function createLostReportDraftAction(
         user.id,
         parsed.data,
       );
+
+    if (usePetPhotos) {
+      await copyPetPhotosToReport({
+        supabase,
+        reportClient,
+        userId: user.id,
+        petId: pet.id,
+        reportId: report.id,
+      });
+    }
 
     revalidatePath('/mis-reportes');
 

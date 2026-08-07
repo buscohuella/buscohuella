@@ -257,14 +257,12 @@ Filtros:
 
 # 5.7 Comunicación
 
-## Incluido
+## Fuera del MVP inicial
 
-Sistema inicial de contacto.
-
-Permite:
-
-- Contactar con usuario creador del reporte.
-- Enviar mensajes relacionados con un caso.
+El chat interno y el envío de mensajes entre usuarios no forman parte del
+MVP inicial. Cualquier mecanismo de contacto futuro deberá definirse en una
+fase posterior, con sus requisitos de privacidad, moderación y protección de
+datos.
 
 ---
 

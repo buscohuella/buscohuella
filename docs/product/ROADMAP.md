@@ -163,11 +163,16 @@ No todo lo pendiente debe bloquear el cierre del MVP inicial de perfiles.
 ### Notificaciones
 
 - eventos críticos;
+- centro de notificaciones internas FP-019 como bloque actual de validación;
 - correo;
 - web push cuando proceda;
 - preferencias;
 - límites;
 - privacidad.
+
+El siguiente bloque funcional prioritario, una vez validado FP-019, es mapa y
+ubicación. El push web y las alertas por proximidad quedan después de validar
+la necesidad y el comportamiento del MVP.
 
 ### Reencuentros
 

@@ -1,0 +1,31 @@
+{
+  "eyebrow": "Centre de cerca",
+  "title": "Avisos",
+  "description": "Tot el que està relacionat amb cerques i avistaments, organitzat segons el que necessites fer.",
+  "sections": {
+    "explore": {
+      "title": "Explora avisos",
+      "description": "Consulta animals perduts o trobats a prop teu. Més endavant podràs canviar el radi o buscar una altra zona.",
+      "action": "Explora avisos"
+    },
+    "mine": {
+      "title": "Els meus avisos",
+      "description": "Gestiona els casos que has publicat sobre les teves pròpies mascotes.",
+      "action": "Gestiona els meus avisos"
+    },
+    "received": {
+      "title": "Avistaments rebuts",
+      "description": "Revisa el que altres persones han vist i enviat sobre les teves mascotes.",
+      "action": "Veure el que he rebut"
+    },
+    "reported": {
+      "title": "Els meus avistaments",
+      "description": "Consulta les aportacions que tu has enviat sobre mascotes d'altres persones.",
+      "action": "Veure el que jo he vist"
+    }
+  },
+  "nearby": {
+    "title": "Properament: avisos realment propers",
+    "description": "Explorar avisos utilitzarà la teva ubicació o una zona escollida i un radi configurable. El llistat i el mapa compartiran els mateixos filtres geogràfics."
+  }
+}

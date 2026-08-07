@@ -1,0 +1,74 @@
+{
+  "eyebrow": "Tu colaboración",
+  "title": "Mis avistamientos",
+  "description": "Consulta la información que has enviado y comprueba cómo evoluciona cada aviso.",
+  "filters": {
+    "ALL": "Todos",
+    "PENDING": "Pendientes",
+    "ACCEPTED": "Revisados",
+    "REJECTED": "Descartados",
+    "FLAGGED": "Marcados"
+  },
+  "status": {
+    "PENDING": "Pendiente de revisión",
+    "ACCEPTED": "Revisado por el propietario",
+    "REJECTED": "Descartado",
+    "FLAGGED": "Marcado para revisión"
+  },
+  "results": "{count} avistamientos",
+  "empty": {
+    "title": "Todavía no has enviado avistamientos",
+    "description": "Cuando informes de que has visto una mascota perdida, podrás seguir aquí tu aportación."
+  },
+  "open": "Ver detalle",
+  "photos": "{count} fotos",
+  "gpsLocation": "Ubicación GPS",
+  "locationUnknown": "Ubicación no disponible",
+  "reportResolved": "Caso cerrado",
+  "resolved": {
+    "title": "La búsqueda ha finalizado",
+    "description": "Este aviso ya no está activo. Gracias por haber colaborado con información durante la búsqueda."
+  },
+  "pagination": {
+    "label": "Paginación de mis avistamientos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page} de {total}"
+  },
+  "timeline": {
+    "sent": "Avistamiento enviado",
+    "reviewed": "Revisado por el propietario",
+    "resolved": "El aviso se cerró",
+    "review": {
+      "FLAGGED": "El propietario marcó tu avistamiento para atención",
+      "REJECTED": "El propietario descartó tu avistamiento",
+      "ACCEPTED": "El propietario revisó tu avistamiento"
+    },
+    "event": {
+      "REACTIVATED": "La búsqueda volvió a estar activa",
+      "SIGHTING_CREATED": "Avistamiento enviado",
+      "PAUSED": "El propietario pausó la búsqueda",
+      "CLOSED": "El aviso se cerró",
+      "RESOLVED": "La mascota fue localizada",
+      "ARCHIVED": "El aviso se archivó"
+    },
+    "empty": "Todavía no hay actividad registrada."
+  },
+  "detail": {
+    "back": "Volver a mis avistamientos",
+    "title": "Mi avistamiento",
+    "information": "Información enviada",
+    "when": "Cuándo lo viste",
+    "location": "Ubicación",
+    "review": "Estado",
+    "photos": "Fotografías",
+    "myComment": "Mi comentario",
+    "noComment": "No añadiste ningún comentario.",
+    "gallery": "Mis fotografías",
+    "photoAlt": "Fotografía de mi avistamiento {number}",
+    "followUp": "Seguimiento",
+    "followUpDescription": "Aquí puedes comprobar los hitos principales de tu aportación.",
+    "openReport": "Ver aviso público",
+    "managePhotos": "Añadir o gestionar fotos"
+  }
+}

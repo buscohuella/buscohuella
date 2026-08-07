@@ -1,0 +1,67 @@
+{
+  "eyebrow": "Actividad",
+  "title": "Notificaciones",
+  "description": "Aquí encontrarás cambios importantes relacionados con tus avisos y tus colaboraciones.",
+  "unread": "Sin leer",
+  "filtered": "En esta vista",
+  "markAllRead": "Marcar todas como leídas",
+  "filtersLabel": "Filtrar notificaciones",
+  "filters": {
+    "ALL": "Todas",
+    "UNREAD": "No leídas",
+    "READ": "Leídas"
+  },
+  "new": "Nueva",
+  "someone": "Alguien",
+  "genericReport": "este aviso",
+  "empty": {
+    "title": "No hay notificaciones",
+    "description": "Cuando haya actividad importante relacionada contigo aparecerá aquí."
+  },
+  "pagination": {
+    "label": "Paginación de notificaciones",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page} de {total}"
+  },
+  "items": {
+    "NEW_SIGHTING": {
+      "title": "Nuevo avistamiento recibido",
+      "description": "{actor} ha enviado información sobre {subject}."
+    },
+    "SIGHTING_REVIEWED": {
+      "ACCEPTED": {
+        "title": "Tu avistamiento ha sido revisado",
+        "description": "El responsable ha revisado tu información sobre {subject}."
+      },
+      "REJECTED": {
+        "title": "Tu avistamiento ha sido descartado",
+        "description": "El responsable considera que tu información sobre {subject} no corresponde con la búsqueda."
+      },
+      "FLAGGED": {
+        "title": "Tu avistamiento requiere atención",
+        "description": "El responsable ha marcado tu información sobre {subject} para revisarla con más atención."
+      }
+    },
+    "REPORT_PAUSED": {
+      "title": "La búsqueda se ha pausado",
+      "description": "El aviso de {subject} está pausado temporalmente."
+    },
+    "REPORT_REACTIVATED": {
+      "title": "La búsqueda vuelve a estar activa",
+      "description": "El aviso de {subject} se ha reactivado."
+    },
+    "REPORT_RESOLVED": {
+      "title": "La mascota ha sido localizada",
+      "description": "El caso de {subject} se ha resuelto. Gracias por colaborar."
+    },
+    "REPORT_CLOSED": {
+      "title": "El aviso se ha cerrado",
+      "description": "El caso de {subject} ya está cerrado."
+    },
+    "REPORT_ARCHIVED": {
+      "title": "El aviso se ha archivado",
+      "description": "El caso de {subject} ha pasado al historial."
+    }
+  }
+}

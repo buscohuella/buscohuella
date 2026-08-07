@@ -4,12 +4,19 @@
   "description": "Revisa la informació que altres persones han enviat sobre els teus avisos.",
   "summary": {
     "total": "Total",
+    "active": "A la safata",
     "new": "Nous",
-    "reviewed": "Revisats"
+    "reviewed": "Revisats",
+    "flagged": "Marcats",
+    "archived": "Arxivats"
   },
   "empty": {
     "title": "Encara no hi ha avistaments",
     "description": "Quan algú informi que ha vist una de les teves mascotes, apareixerà aquí."
+  },
+  "emptyFiltered": {
+    "title": "No hi ha resultats amb aquests filtres",
+    "description": "Prova un altre estat, vista o ordre per trobar els avistaments que busques."
   },
   "status": {
     "PENDING": "Nou",
@@ -29,10 +36,48 @@
   },
   "photosCount": "{count} fotos",
   "open": "Veure detall",
+  "results": "{count} resultats",
+  "archived": "Arxivat",
+  "archivedView": "Mostrant arxivats",
   "actions": {
     "reviewed": "Marca com a revisat",
     "dismissed": "Descarta",
-    "flagged": "Marca"
+    "flagged": "Marca",
+    "archive": "Arxiva",
+    "restore": "Restaura",
+    "archiveUnavailable": "Revisa'l o descarta'l abans d'arxivar-lo."
+  },
+  "filters": {
+    "title": "Organitza els avistaments",
+    "description": "Filtra i ordena la safata sense eliminar informació.",
+    "status": "Estat",
+    "view": "Vista",
+    "sort": "Ordre",
+    "withPhotos": "Només amb fotos",
+    "statusOptions": {
+      "ALL": "Tots",
+      "PENDING": "Nous",
+      "ACCEPTED": "Revisats",
+      "REJECTED": "Descartats",
+      "FLAGGED": "Marcats"
+    },
+    "viewOptions": {
+      "ACTIVE": "A la safata",
+      "ARCHIVED": "Arxivats",
+      "ALL": "Tots"
+    },
+    "sortOptions": {
+      "RECENT": "Més recents",
+      "OLDEST": "Més antics",
+      "CONFIDENCE": "Més confiança",
+      "PHOTOS": "Amb més fotos"
+    }
+  },
+  "pagination": {
+    "label": "Paginació d'avistaments",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page": "Pàgina {page} de {total}"
   },
   "detail": {
     "back": "Torna als avistaments",
@@ -50,5 +95,12 @@
     "manageReport": "Gestiona l'avís",
     "privacyTitle": "Informació privada de cerca",
     "privacyDescription": "La ubicació exacta i les fotografies de l'avistament només són visibles per a persones autoritzades. La identitat de qui ha informat no es mostra en aquesta fase de l'MVP."
+  },
+  "archiveFeedback": {
+    "archived": "Avistament arxivat correctament.",
+    "restoreError": "No s'ha pogut restaurar l'avistament. Torna-ho a provar.",
+    "archiveError": "No s'ha pogut arxivar l'avistament. Torna-ho a provar.",
+    "processing": "Desant…",
+    "restored": "Avistament restaurat correctament."
   }
 }

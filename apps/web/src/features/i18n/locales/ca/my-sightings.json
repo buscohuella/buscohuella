@@ -1,0 +1,74 @@
+{
+  "eyebrow": "La teva col·laboració",
+  "title": "Els meus avistaments",
+  "description": "Consulta la informació que has enviat i comprova com evoluciona cada avís.",
+  "filters": {
+    "ALL": "Tots",
+    "PENDING": "Pendents",
+    "ACCEPTED": "Revisats",
+    "REJECTED": "Descartats",
+    "FLAGGED": "Marcats"
+  },
+  "status": {
+    "PENDING": "Pendent de revisió",
+    "ACCEPTED": "Revisat pel responsable",
+    "REJECTED": "Descartat",
+    "FLAGGED": "Marcat per revisar"
+  },
+  "results": "{count} avistaments",
+  "empty": {
+    "title": "Encara no has enviat avistaments",
+    "description": "Quan informis que has vist una mascota perduda, podràs seguir aquí la teva aportació."
+  },
+  "open": "Veure detall",
+  "photos": "{count} fotos",
+  "gpsLocation": "Ubicació GPS",
+  "locationUnknown": "Ubicació no disponible",
+  "reportResolved": "Cas tancat",
+  "resolved": {
+    "title": "La cerca ha finalitzat",
+    "description": "Aquest avís ja no està actiu. Gràcies per haver col·laborat amb informació durant la cerca."
+  },
+  "pagination": {
+    "label": "Paginació dels meus avistaments",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page": "Pàgina {page} de {total}"
+  },
+  "timeline": {
+    "sent": "Avistament enviat",
+    "reviewed": "Revisat pel responsable",
+    "resolved": "L'avís es va tancar",
+    "review": {
+      "FLAGGED": "El responsable va marcar el teu avistament per atenció",
+      "REJECTED": "El responsable va descartar el teu avistament",
+      "ACCEPTED": "El responsable va revisar el teu avistament"
+    },
+    "event": {
+      "REACTIVATED": "La cerca va tornar a estar activa",
+      "SIGHTING_CREATED": "Avistament enviat",
+      "PAUSED": "El responsable va pausar la cerca",
+      "CLOSED": "L'avís es va tancar",
+      "RESOLVED": "La mascota va ser localitzada",
+      "ARCHIVED": "L'avís es va arxivar"
+    },
+    "empty": "Encara no hi ha activitat registrada."
+  },
+  "detail": {
+    "back": "Torna als meus avistaments",
+    "title": "El meu avistament",
+    "information": "Informació enviada",
+    "when": "Quan el vas veure",
+    "location": "Ubicació",
+    "review": "Estat",
+    "photos": "Fotografies",
+    "myComment": "El meu comentari",
+    "noComment": "No hi vas afegir cap comentari.",
+    "gallery": "Les meves fotografies",
+    "photoAlt": "Fotografia del meu avistament {number}",
+    "followUp": "Seguiment",
+    "followUpDescription": "Aquí pots comprovar les fites principals de la teva aportació.",
+    "openReport": "Veure avís públic",
+    "managePhotos": "Afegir o gestionar fotos"
+  }
+}

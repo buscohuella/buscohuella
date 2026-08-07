@@ -16,10 +16,15 @@ export function MobileNavigation() {
   const pathname = usePathname();
   const { t } = useTranslations('common');
 
+  const visibleItems = navigationItems.filter(
+    (item) =>
+      item.href !== '/perfil',
+  );
+
   const leftItems =
-    navigationItems.slice(0, 2);
+    visibleItems.slice(0, 2);
   const rightItems =
-    navigationItems.slice(3);
+    visibleItems.slice(2, 4);
 
   return (
     <nav
@@ -60,7 +65,19 @@ function MobileNavigationLink({
 }) {
   const { t } = useTranslations('common');
   const Icon = item.icon;
+
+  const noticesActive =
+    item.href === '/avisos' &&
+    (
+      pathname === '/avisos' ||
+      pathname.startsWith('/reportes') ||
+      pathname.startsWith('/mis-reportes') ||
+      pathname.startsWith('/avistamientos') ||
+      pathname.startsWith('/mis-avistamientos')
+    );
+
   const isActive =
+    noticesActive ||
     pathname === item.href ||
     pathname.startsWith(
       `${item.href}/`,

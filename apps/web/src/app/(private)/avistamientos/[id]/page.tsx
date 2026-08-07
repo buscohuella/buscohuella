@@ -21,9 +21,11 @@ import {
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
 import { OwnerSightingActions } from '@/features/reports/components/owner-sighting-actions';
+import { OwnerSightingArchiveAction } from '@/features/reports/components/owner-sighting-archive-action';
 import { OwnerSightingStatus } from '@/features/reports/components/owner-sighting-status';
 import {
   getOwnedSighting,
+  getOwnedSightingArchiveState,
   getOwnedSightingPhotos,
 } from '@/features/reports/lib/owner-sightings';
 import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
@@ -50,10 +52,15 @@ export default async function OwnerSightingDetailPage({
     notFound();
   }
 
-  const photos =
-    await getOwnedSightingPhotos(
-      sighting.id,
-    );
+  const [photos, archived] =
+    await Promise.all([
+      getOwnedSightingPhotos(
+        sighting.id,
+      ),
+      getOwnedSightingArchiveState(
+        sighting.id,
+      ),
+    ]);
 
   const dateFormatter =
     new Intl.DateTimeFormat(
@@ -121,6 +128,13 @@ export default async function OwnerSightingDetailPage({
               `ownerSightings.confidence.${sighting.confidence}`,
             )}
           </span>
+          {archived ? (
+            <span className="rounded-full bg-surface-elevated px-3 py-1 text-xs font-semibold">
+              {translate(
+                'ownerSightings.archived',
+              )}
+            </span>
+          ) : null}
         </div>
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight">
@@ -133,24 +147,46 @@ export default async function OwnerSightingDetailPage({
         </p>
       </header>
 
-      <OwnerSightingActions
-        sightingId={sighting.id}
-        reportId={sighting.reportId}
-        currentStatus={
-          sighting.reviewStatus
-        }
-        labels={{
-          reviewed: translate(
-            'ownerSightings.actions.reviewed',
-          ),
-          dismissed: translate(
-            'ownerSightings.actions.dismissed',
-          ),
-          flagged: translate(
-            'ownerSightings.actions.flagged',
-          ),
-        }}
-      />
+      <div className="flex flex-wrap items-center gap-3">
+        <OwnerSightingActions
+          sightingId={sighting.id}
+          reportId={sighting.reportId}
+          currentStatus={
+            sighting.reviewStatus
+          }
+          labels={{
+            reviewed: translate(
+              'ownerSightings.actions.reviewed',
+            ),
+            dismissed: translate(
+              'ownerSightings.actions.dismissed',
+            ),
+            flagged: translate(
+              'ownerSightings.actions.flagged',
+            ),
+          }}
+        />
+
+        <OwnerSightingArchiveAction
+          sightingId={sighting.id}
+          reportId={sighting.reportId}
+          archived={archived}
+          reviewStatus={
+            sighting.reviewStatus
+          }
+          labels={{
+            archive: translate(
+              'ownerSightings.actions.archive',
+            ),
+            restore: translate(
+              'ownerSightings.actions.restore',
+            ),
+            unavailable: translate(
+              'ownerSightings.actions.archiveUnavailable',
+            ),
+          }}
+        />
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="space-y-6">

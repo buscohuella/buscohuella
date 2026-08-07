@@ -25,14 +25,14 @@ Este documento se actualizará al cerrar cada entrega.
 
 - `DONE` FP-017A — creación del avistamiento.
 - `DONE` FP-017B — fotografías privadas del avistamiento.
-- `IN_PROGRESS` FP-017C — bandeja y gestión para el propietario.
-- `NEXT` FP-017C.1 — filtros, paginación, contador y archivado.
-- `NEXT` FP-018 — `Mis avistamientos` para el colaborador.
-- `PLANNED` FP-018.1 — timeline de actividad del avistamiento.
+- `DONE` FP-017C — bandeja y gestión para el propietario.
+- `DONE` FP-017C.1 — filtros, paginación, contador, archivado y feedback.
+- `DONE` FP-018 — `Mis avistamientos` para el colaborador.
+- `DONE` FP-018.1 — timeline completo de actividad del avistamiento.
 
 ## Notificaciones
 
-- `PLANNED` FP-019 — centro de notificaciones interno.
+- `IN_PROGRESS` FP-019 — centro de notificaciones interno.
 - `PLANNED` FP-019.1 — nuevo avistamiento para propietario.
 - `PLANNED` FP-019.2 — revisión del avistamiento para colaborador.
 - `PLANNED` FP-019.3 — aviso resuelto / mascota localizada.
@@ -41,6 +41,7 @@ Este documento se actualizará al cerrar cada entrega.
 
 ## Mapa y ubicación
 
+- `PLANNED` — avisos cercanos por ubicación y radio.
 - `PLANNED` — mapa público de avisos.
 - `PLANNED` — autocompletado de direcciones.
 - `PLANNED` — marcar ubicación en mapa.
@@ -103,11 +104,11 @@ Debe completarse una auditoría específica de:
 
 ## Próximo orden operativo
 
-1. cerrar FP-017C;
-2. FP-017C.1 organización de bandeja;
-3. FP-018 Mis avistamientos;
-4. FP-018.1 timeline;
-5. FP-019 notificaciones internas;
-6. mapa/autocompletado;
-7. auditoría MVP;
-8. beta controlada.
+1. cerrar FP-018;
+2. FP-018.1 timeline completo;
+3. FP-019 notificaciones internas;
+4. avisos cercanos + mapa/autocompletado;
+5. auditoría MVP;
+6. beta controlada.
+
+

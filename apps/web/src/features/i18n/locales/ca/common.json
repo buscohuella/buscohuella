@@ -31,7 +31,6 @@
       "profile": "Perfil",
       "reports": "Els meus avisos",
       "publicReports": "Avisos públics",
-      "sightings": "Avistaments",
       "logout": "Tanca la sessió",
       "openProfile": "Obre el perfil de {name}",
       "mobileLabel": "Navegació principal mòbil",
@@ -40,7 +39,10 @@
       "pets": "Mascotes",
       "brandHome": "BuscoHuella, ves a l'inici",
       "mainLabel": "Navegació principal",
-      "createNotice": "Crea un avís"
+      "createNotice": "Crea un avís",
+      "sightings": "Avistaments rebuts",
+      "mySightings": "Els meus avistaments",
+      "notices": "Avisos"
     }
   },
   "actions": {

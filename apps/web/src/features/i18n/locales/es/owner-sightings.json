@@ -4,12 +4,19 @@
   "description": "Revisa la información que otras personas han enviado sobre tus avisos.",
   "summary": {
     "total": "Total",
+    "active": "En bandeja",
     "new": "Nuevos",
-    "reviewed": "Revisados"
+    "reviewed": "Revisados",
+    "flagged": "Marcados",
+    "archived": "Archivados"
   },
   "empty": {
     "title": "Todavía no hay avistamientos",
     "description": "Cuando alguien informe de que ha visto una de tus mascotas, aparecerá aquí."
+  },
+  "emptyFiltered": {
+    "title": "No hay resultados con estos filtros",
+    "description": "Prueba otro estado, vista u orden para encontrar los avistamientos que buscas."
   },
   "status": {
     "PENDING": "Nuevo",
@@ -29,10 +36,48 @@
   },
   "photosCount": "{count} fotos",
   "open": "Ver detalle",
+  "results": "{count} resultados",
+  "archived": "Archivado",
+  "archivedView": "Mostrando archivados",
   "actions": {
     "reviewed": "Marcar como revisado",
     "dismissed": "Descartar",
-    "flagged": "Marcar"
+    "flagged": "Marcar",
+    "archive": "Archivar",
+    "restore": "Restaurar",
+    "archiveUnavailable": "Revísalo o descártalo antes de archivarlo."
+  },
+  "filters": {
+    "title": "Organizar avistamientos",
+    "description": "Filtra y ordena la bandeja sin eliminar información.",
+    "status": "Estado",
+    "view": "Vista",
+    "sort": "Orden",
+    "withPhotos": "Solo con fotos",
+    "statusOptions": {
+      "ALL": "Todos",
+      "PENDING": "Nuevos",
+      "ACCEPTED": "Revisados",
+      "REJECTED": "Descartados",
+      "FLAGGED": "Marcados"
+    },
+    "viewOptions": {
+      "ACTIVE": "En bandeja",
+      "ARCHIVED": "Archivados",
+      "ALL": "Todos"
+    },
+    "sortOptions": {
+      "RECENT": "Más recientes",
+      "OLDEST": "Más antiguos",
+      "CONFIDENCE": "Mayor confianza",
+      "PHOTOS": "Con más fotos"
+    }
+  },
+  "pagination": {
+    "label": "Paginación de avistamientos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page} de {total}"
   },
   "detail": {
     "back": "Volver a avistamientos",
@@ -50,5 +95,12 @@
     "manageReport": "Gestionar aviso",
     "privacyTitle": "Información privada de búsqueda",
     "privacyDescription": "La ubicación exacta y las fotografías del avistamiento solo son visibles para personas autorizadas. La identidad de quien informó no se muestra en esta fase del MVP."
+  },
+  "archiveFeedback": {
+    "archived": "Avistamiento archivado correctamente.",
+    "restoreError": "No se ha podido restaurar el avistamiento. Inténtalo de nuevo.",
+    "archiveError": "No se ha podido archivar el avistamiento. Inténtalo de nuevo.",
+    "processing": "Guardando…",
+    "restored": "Avistamiento restaurado correctamente."
   }
 }

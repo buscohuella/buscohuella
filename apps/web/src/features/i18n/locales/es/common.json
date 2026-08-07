@@ -31,7 +31,6 @@
       "profile": "Perfil",
       "reports": "Mis avisos",
       "publicReports": "Avisos públicos",
-      "sightings": "Avistamientos",
       "logout": "Cerrar sesión",
       "openProfile": "Abrir el perfil de {name}",
       "mobileLabel": "Navegación principal móvil",
@@ -40,7 +39,10 @@
       "pets": "Mascotas",
       "brandHome": "BuscoHuella, ir al inicio",
       "mainLabel": "Navegación principal",
-      "createNotice": "Crear aviso"
+      "createNotice": "Crear aviso",
+      "sightings": "Avistamientos recibidos",
+      "mySightings": "Mis avistamientos",
+      "notices": "Avisos"
     }
   },
   "actions": {

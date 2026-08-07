@@ -1,11 +1,9 @@
 import {
   CircleUserRound,
-  Eye,
   Home,
   Map,
   PawPrint,
   Plus,
-  Search,
   ScrollText,
   type LucideIcon,
 } from 'lucide-react';
@@ -28,20 +26,8 @@ export const navigationItems: NavigationItem[] = [
     icon: Map,
   },
   {
-    labelKey:
-      'navigation.private.publicReports',
-    href: '/reportes',
-    icon: Search,
-  },
-  {
-    labelKey:
-      'navigation.private.sightings',
-    href: '/avistamientos',
-    icon: Eye,
-  },
-  {
-    labelKey: 'navigation.private.reports',
-    href: '/mis-reportes',
+    labelKey: 'navigation.private.notices',
+    href: '/avisos',
     icon: ScrollText,
   },
   {

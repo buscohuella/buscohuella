@@ -1,0 +1,67 @@
+{
+  "eyebrow": "Activitat",
+  "title": "Notificacions",
+  "description": "Aquí trobaràs canvis importants relacionats amb els teus avisos i les teves col·laboracions.",
+  "unread": "Sense llegir",
+  "filtered": "En aquesta vista",
+  "markAllRead": "Marca-les totes com a llegides",
+  "filtersLabel": "Filtra notificacions",
+  "filters": {
+    "ALL": "Totes",
+    "UNREAD": "No llegides",
+    "READ": "Llegides"
+  },
+  "new": "Nova",
+  "someone": "Algú",
+  "genericReport": "aquest avís",
+  "empty": {
+    "title": "No hi ha notificacions",
+    "description": "Quan hi hagi activitat important relacionada amb tu apareixerà aquí."
+  },
+  "pagination": {
+    "label": "Paginació de notificacions",
+    "previous": "Anterior",
+    "next": "Següent",
+    "page": "Pàgina {page} de {total}"
+  },
+  "items": {
+    "NEW_SIGHTING": {
+      "title": "Nou avistament rebut",
+      "description": "{actor} ha enviat informació sobre {subject}."
+    },
+    "SIGHTING_REVIEWED": {
+      "ACCEPTED": {
+        "title": "El teu avistament ha estat revisat",
+        "description": "El responsable ha revisat la teva informació sobre {subject}."
+      },
+      "REJECTED": {
+        "title": "El teu avistament ha estat descartat",
+        "description": "El responsable considera que la teva informació sobre {subject} no correspon amb la cerca."
+      },
+      "FLAGGED": {
+        "title": "El teu avistament requereix atenció",
+        "description": "El responsable ha marcat la teva informació sobre {subject} per revisar-la amb més atenció."
+      }
+    },
+    "REPORT_PAUSED": {
+      "title": "La cerca s'ha pausat",
+      "description": "L'avís de {subject} està pausat temporalment."
+    },
+    "REPORT_REACTIVATED": {
+      "title": "La cerca torna a estar activa",
+      "description": "L'avís de {subject} s'ha reactivat."
+    },
+    "REPORT_RESOLVED": {
+      "title": "La mascota ha estat localitzada",
+      "description": "El cas de {subject} s'ha resolt. Gràcies per col·laborar."
+    },
+    "REPORT_CLOSED": {
+      "title": "L'avís s'ha tancat",
+      "description": "El cas de {subject} ja està tancat."
+    },
+    "REPORT_ARCHIVED": {
+      "title": "L'avís s'ha arxivat",
+      "description": "El cas de {subject} ha passat a l'historial."
+    }
+  }
+}

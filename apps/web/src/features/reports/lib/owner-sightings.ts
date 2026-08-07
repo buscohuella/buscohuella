@@ -40,6 +40,7 @@ export type OwnerSighting = {
   createdAt: string;
   updatedAt: string;
   photoCount: number;
+  archivedAt?: string | null;
 };
 
 export type OwnerSightingPhoto = {
@@ -47,6 +48,38 @@ export type OwnerSightingPhoto = {
   altText: string | null;
   position: number;
   signedUrl: string;
+};
+
+export type OwnerSightingFilters = {
+  status?:
+    | 'ALL'
+    | 'PENDING'
+    | 'ACCEPTED'
+    | 'REJECTED'
+    | 'FLAGGED';
+  archive?:
+    | 'ACTIVE'
+    | 'ARCHIVED'
+    | 'ALL';
+  hasPhotos?: boolean | null;
+  sort?:
+    | 'RECENT'
+    | 'OLDEST'
+    | 'CONFIDENCE'
+    | 'PHOTOS';
+  page?: number;
+  pageSize?: number;
+};
+
+export type OwnerSightingsSummary = {
+  total: number;
+  active: number;
+  archived: number;
+  pending: number;
+  accepted: number;
+  rejected: number;
+  flagged: number;
+  withPhotos: number;
 };
 
 type OwnerSightingRpcRow = {
@@ -68,26 +101,50 @@ type OwnerSightingRpcRow = {
   created_at: string;
   updated_at: string;
   photo_count: number | string;
+  archived_at?: string | null;
+  total_count?: number | string;
+};
+
+type RpcError = {
+  code?: string;
+  message?: string;
+  details?: string;
+  hint?: string;
 };
 
 type OwnerSightingsRpcResult = {
   data: OwnerSightingRpcRow[] | null;
-  error: {
-    code?: string;
-    message?: string;
-    details?: string;
-    hint?: string;
-  } | null;
+  error: RpcError | null;
 };
 
-function getOwnedSightingsRpc(
-  client: SupabaseClient<ReportDatabase>,
+type SummaryRpcRow = {
+  total: number | string;
+  active: number | string;
+  archived: number | string;
+  pending: number | string;
+  accepted: number | string;
+  rejected: number | string;
+  flagged: number | string;
+  with_photos: number | string;
+};
+
+type SummaryRpcResult = {
+  data: SummaryRpcRow[] | null;
+  error: RpcError | null;
+};
+
+type ArchiveStateRpcResult = {
+  data: boolean | null;
+  error: RpcError | null;
+};
+
+function getClient(
+  supabase: Awaited<
+    ReturnType<typeof createClient>
+  >,
 ) {
-  return client.rpc.bind(
-    client,
-  ) as unknown as (
-    name: 'get_owned_sightings',
-  ) => Promise<OwnerSightingsRpcResult>;
+  return supabase as unknown as
+    SupabaseClient<ReportDatabase>;
 }
 
 function mapRow(
@@ -116,6 +173,8 @@ function mapRow(
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     photoCount: Number(row.photo_count),
+    archivedAt:
+      row.archived_at ?? null,
   };
 }
 
@@ -129,11 +188,13 @@ export async function listOwnedSightings() {
     return [];
   }
 
-  const client =
-    supabase as unknown as
-      SupabaseClient<ReportDatabase>;
+  const client = getClient(supabase);
   const rpc =
-    getOwnedSightingsRpc(client);
+    client.rpc.bind(
+      client,
+    ) as unknown as (
+      name: 'get_owned_sightings',
+    ) => Promise<OwnerSightingsRpcResult>;
 
   const { data, error } =
     await rpc('get_owned_sightings');
@@ -143,6 +204,151 @@ export async function listOwnedSightings() {
   }
 
   return (data ?? []).map(mapRow);
+}
+
+export async function listOwnedSightingsPage(
+  filters: OwnerSightingFilters,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      sightings: [] as OwnerSighting[],
+      total: 0,
+      page: 1,
+      pageSize: 20,
+    };
+  }
+
+  const page = Math.max(
+    filters.page ?? 1,
+    1,
+  );
+  const pageSize = Math.min(
+    Math.max(filters.pageSize ?? 20, 1),
+    50,
+  );
+
+  const client = getClient(supabase);
+  const rpc =
+    client.rpc.bind(
+      client,
+    ) as unknown as (
+      name:
+        'get_owned_sightings_page',
+      args: {
+        target_status: string;
+        target_archive: string;
+        target_has_photos:
+          | boolean
+          | null;
+        target_sort: string;
+        target_page: number;
+        target_page_size: number;
+      },
+    ) => Promise<OwnerSightingsRpcResult>;
+
+  const { data, error } = await rpc(
+    'get_owned_sightings_page',
+    {
+      target_status:
+        filters.status ?? 'ALL',
+      target_archive:
+        filters.archive ?? 'ACTIVE',
+      target_has_photos:
+        filters.hasPhotos ?? null,
+      target_sort:
+        filters.sort ?? 'RECENT',
+      target_page: page,
+      target_page_size: pageSize,
+    },
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  const rows = data ?? [];
+
+  return {
+    sightings: rows.map(mapRow),
+    total:
+      rows.length > 0
+        ? Number(
+            rows[0].total_count ?? 0,
+          )
+        : 0,
+    page,
+    pageSize,
+  };
+}
+
+export async function getOwnedSightingsSummary(): Promise<OwnerSightingsSummary> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      total: 0,
+      active: 0,
+      archived: 0,
+      pending: 0,
+      accepted: 0,
+      rejected: 0,
+      flagged: 0,
+      withPhotos: 0,
+    };
+  }
+
+  const client = getClient(supabase);
+  const rpc =
+    client.rpc.bind(
+      client,
+    ) as unknown as (
+      name:
+        'get_owned_sightings_summary',
+    ) => Promise<SummaryRpcResult>;
+
+  const { data, error } = await rpc(
+    'get_owned_sightings_summary',
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  const row = data?.[0];
+
+  if (!row) {
+    return {
+      total: 0,
+      active: 0,
+      archived: 0,
+      pending: 0,
+      accepted: 0,
+      rejected: 0,
+      flagged: 0,
+      withPhotos: 0,
+    };
+  }
+
+  return {
+    total: Number(row.total),
+    active: Number(row.active),
+    archived: Number(row.archived),
+    pending: Number(row.pending),
+    accepted: Number(row.accepted),
+    rejected: Number(row.rejected),
+    flagged: Number(row.flagged),
+    withPhotos: Number(
+      row.with_photos,
+    ),
+  };
 }
 
 export async function getOwnedSighting(
@@ -157,6 +363,45 @@ export async function getOwnedSighting(
         sighting.id === sightingId,
     ) ?? null
   );
+}
+
+export async function getOwnedSightingArchiveState(
+  sightingId: string,
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return false;
+  }
+
+  const client = getClient(supabase);
+  const rpc =
+    client.rpc.bind(
+      client,
+    ) as unknown as (
+      name:
+        'get_owned_sighting_archive_state',
+      args: {
+        target_sighting_id: string;
+      },
+    ) => Promise<ArchiveStateRpcResult>;
+
+  const { data, error } = await rpc(
+    'get_owned_sighting_archive_state',
+    {
+      target_sighting_id:
+        sightingId,
+    },
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data === true;
 }
 
 export async function getOwnedSightingPhotos(

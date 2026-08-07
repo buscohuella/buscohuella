@@ -354,7 +354,8 @@
       "SIGHTING_CREATED": "Avistament registrat",
       "RESOLVED": "Avís resolt",
       "CLOSED": "Avís tancat",
-      "ARCHIVED": "Avís arxivat"
+      "ARCHIVED": "Avís arxivat",
+      "SIGHTING_REVIEWED": "Avistament revisat"
     },
     "success": {
       "PAUSE": "L'avís s'ha pausat.",
@@ -387,6 +388,11 @@
       "TRANSFERRED_TO_AUTHORITY": "Lliurada a una autoritat",
       "TRANSFERRED_TO_SHELTER": "Lliurada a una protectora",
       "OTHER": "Un altre resultat"
+    },
+    "sightingReview": {
+      "FLAGGED": "Avistament marcat per atenció",
+      "REJECTED": "Avistament descartat",
+      "ACCEPTED": "Avistament revisat"
     }
   }
 }

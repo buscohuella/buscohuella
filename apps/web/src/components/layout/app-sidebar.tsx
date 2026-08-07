@@ -15,6 +15,16 @@ export interface AppSidebarProps {
   user: AuthUser;
 }
 
+function isNoticesPath(pathname: string) {
+  return (
+    pathname === '/avisos' ||
+    pathname.startsWith('/reportes') ||
+    pathname.startsWith('/mis-reportes') ||
+    pathname.startsWith('/avistamientos') ||
+    pathname.startsWith('/mis-avistamientos')
+  );
+}
+
 export function AppSidebar({
   user,
 }: AppSidebarProps) {
@@ -52,11 +62,14 @@ export function AppSidebar({
         <ul className="space-y-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
+
             const isActive =
-              pathname === item.href ||
-              pathname.startsWith(
-                `${item.href}/`,
-              );
+              item.href === '/avisos'
+                ? isNoticesPath(pathname)
+                : pathname === item.href ||
+                  pathname.startsWith(
+                    `${item.href}/`,
+                  );
 
             return (
               <li key={item.href}>
@@ -78,7 +91,9 @@ export function AppSidebar({
                     className="size-5"
                     aria-hidden="true"
                   />
-                  <span>{t(item.labelKey)}</span>
+                  <span>
+                    {t(item.labelKey)}
+                  </span>
                 </Link>
               </li>
             );
@@ -98,7 +113,9 @@ export function AppSidebar({
             className="size-5"
             aria-hidden="true"
           />
-          {t('navigation.private.createNotice')}
+          {t(
+            'navigation.private.createNotice',
+          )}
         </Link>
 
         <UserMenu user={user} />

@@ -354,7 +354,8 @@
       "SIGHTING_CREATED": "Avistamiento registrado",
       "RESOLVED": "Aviso resuelto",
       "CLOSED": "Aviso cerrado",
-      "ARCHIVED": "Aviso archivado"
+      "ARCHIVED": "Aviso archivado",
+      "SIGHTING_REVIEWED": "Avistamiento revisado"
     },
     "success": {
       "PAUSE": "El aviso se ha pausado.",
@@ -387,6 +388,11 @@
       "TRANSFERRED_TO_AUTHORITY": "Entregada a una autoridad",
       "TRANSFERRED_TO_SHELTER": "Entregada a una protectora",
       "OTHER": "Otro resultado"
+    },
+    "sightingReview": {
+      "FLAGGED": "Avistamiento marcado para atención",
+      "REJECTED": "Avistamiento descartado",
+      "ACCEPTED": "Avistamiento revisado"
     }
   }
 }

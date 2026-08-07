@@ -190,11 +190,15 @@ export default async function ReportDetailPage({
 
       <header>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-danger/10 px-3 py-1 text-xs font-semibold text-danger">
-            {translate(
-              `reports.list.type.${data.report.reportType}`,
-            )}
-          </span>
+          {!['RESOLVED', 'CLOSED', 'ARCHIVED'].includes(
+            data.report.status,
+          ) ? (
+            <span className="rounded-full bg-danger/10 px-3 py-1 text-xs font-semibold text-danger">
+              {translate(
+                `reports.list.type.${data.report.reportType}`,
+              )}
+            </span>
+          ) : null}
           <span className="rounded-full bg-surface-elevated px-3 py-1 text-xs font-semibold">
             {translate(
               `reports.list.status.${data.report.status}`,
@@ -395,3 +399,4 @@ function DetailItem({
     </div>
   );
 }
+

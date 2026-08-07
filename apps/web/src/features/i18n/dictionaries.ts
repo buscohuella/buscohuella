@@ -4,6 +4,9 @@ import type { TranslationDictionary } from './types';
 import caAuth from './locales/ca/auth.json';
 import caCommon from './locales/ca/common.json';
 import caHome from './locales/ca/home.json';
+import caMySightings from './locales/ca/my-sightings.json';
+import caNotifications from './locales/ca/notifications.json';
+import caNoticesHub from './locales/ca/notices-hub.json';
 import caOwnerSightings from './locales/ca/owner-sightings.json';
 import caPets from './locales/ca/pets.json';
 import caProfile from './locales/ca/profile.json';
@@ -16,6 +19,9 @@ import caReportVisual from './locales/ca/report-visual.json';
 import esAuth from './locales/es/auth.json';
 import esCommon from './locales/es/common.json';
 import esHome from './locales/es/home.json';
+import esMySightings from './locales/es/my-sightings.json';
+import esNotifications from './locales/es/notifications.json';
+import esNoticesHub from './locales/es/notices-hub.json';
 import esOwnerSightings from './locales/es/owner-sightings.json';
 import esPets from './locales/es/pets.json';
 import esProfile from './locales/es/profile.json';
@@ -40,6 +46,9 @@ const dictionaries = {
     sightingCreate: esSightingCreate,
     sightingPhotos: esSightingPhotos,
     ownerSightings: esOwnerSightings,
+    mySightings: esMySightings,
+    notifications: esNotifications,
+    noticesHub: esNoticesHub,
   },
   ca: {
     common: caCommon,
@@ -54,6 +63,9 @@ const dictionaries = {
     sightingCreate: caSightingCreate,
     sightingPhotos: caSightingPhotos,
     ownerSightings: caOwnerSightings,
+    mySightings: caMySightings,
+    notifications: caNotifications,
+    noticesHub: caNoticesHub,
   },
 } satisfies Record<
   AppLocale,
@@ -75,3 +87,5 @@ export function getNamespaceDictionary(
 ): TranslationDictionary {
   return dictionaries[locale][namespace];
 }
+
+

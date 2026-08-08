@@ -18,6 +18,7 @@ import {
 } from 'react';
 
 import { useTranslations } from '@/features/i18n/i18n-provider';
+import { LocationPicker } from '@/features/maps/components/location-picker';
 import {
   approximateCoordinate,
   lostReportLocationStorageKey,
@@ -45,6 +46,10 @@ export function IncidentLocationStep({
     useState<LostReportLocation | null>(null);
   const [manualPlace, setManualPlace] =
     useState('');
+  const [manualCoordinates, setManualCoordinates] =
+    useState<{ latitude: number; longitude: number } | null>(null);
+  const [manualMunicipality, setManualMunicipality] =
+    useState<string | undefined>(undefined);
   const [isLocating, setIsLocating] =
     useState(false);
   const [errorKey, setErrorKey] =
@@ -65,6 +70,16 @@ export function IncidentLocationStep({
 
         if (stored.source === 'MANUAL') {
           setManualPlace(stored.placeLabel);
+          if (
+            stored.exactLatitude !== undefined &&
+            stored.exactLongitude !== undefined
+          ) {
+            setManualCoordinates({
+              latitude: stored.exactLatitude,
+              longitude: stored.exactLongitude,
+            });
+          }
+          setManualMunicipality(stored.municipalityName);
         }
       },
     );
@@ -189,11 +204,30 @@ export function IncidentLocationStep({
       );
       return;
     }
+    if (!manualCoordinates) {
+      setErrorKey(
+        'location.errors.manualCoordinates',
+      );
+      return;
+    }
 
     const nextLocation: LostReportLocation =
       {
         source: 'MANUAL',
         placeLabel: normalized,
+        municipalityName: manualMunicipality,
+        ...(manualCoordinates
+          ? {
+              exactLatitude: manualCoordinates.latitude,
+              exactLongitude: manualCoordinates.longitude,
+              publicLatitude: approximateCoordinate(
+                manualCoordinates.latitude,
+              ),
+              publicLongitude: approximateCoordinate(
+                manualCoordinates.longitude,
+              ),
+            }
+          : {}),
         capturedAt:
           new Date().toISOString(),
       };
@@ -209,6 +243,8 @@ export function IncidentLocationStep({
     );
     setLocation(null);
     setManualPlace('');
+    setManualCoordinates(null);
+    setManualMunicipality(undefined);
     setMode(null);
     setErrorKey(null);
   }
@@ -337,7 +373,16 @@ export function IncidentLocationStep({
             )}
           </p>
 
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+           <div className="mt-4">
+             <LocationPicker
+               value={manualCoordinates}
+               onChange={setManualCoordinates}
+               label={manualPlace}
+               onLabelChange={setManualPlace}
+               onMunicipalityChange={setManualMunicipality}
+             />
+           </div>
+           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
             <input
               id="manual-place"
               type="text"

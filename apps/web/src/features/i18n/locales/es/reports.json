@@ -68,6 +68,8 @@
     "sosDescription": "Solicita ayuda urgente relacionada con un animal."
   },
   "lostPet": {
+    "openReportTitle": "Ya tiene un aviso activo",
+    "openReportDescription": "Esta mascota ya tiene un borrador o aviso abierto. Revísalo desde Mis avisos antes de crear otro.",
     "title": "¿Qué mascota se ha perdido?",
     "microchip": "Con microchip",
     "selectedDescription": "Usaremos los datos registrados de {name}.",
@@ -162,7 +164,8 @@
       "unavailable": "El dispositivo no ha podido determinar la ubicación. Inténtalo de nuevo o usa la opción manual.",
       "timeout": "La ubicación está tardando demasiado. Inténtalo de nuevo o indica otro lugar.",
       "generic": "Se ha producido un error al obtener la ubicación.",
-      "manualShort": "Escribe al menos tres caracteres para identificar el lugar."
+      "manualShort": "Escribe al menos tres caracteres para identificar el lugar.",
+      "manualCoordinates": "Selecciona una sugerencia o coloca el pin en el mapa antes de continuar."
     },
     "manualLabel": "Dirección o referencia",
     "back": "Volver al momento",
@@ -215,7 +218,8 @@
       "session": "Tu sesión ha caducado. Inicia sesión de nuevo.",
       "pet": "No hemos podido verificar la mascota seleccionada.",
       "validation": "Revisa la información antes de guardar el borrador.",
-      "create": "No hemos podido guardar el borrador. Inténtalo de nuevo."
+      "create": "No hemos podido guardar el borrador. Inténtalo de nuevo.",
+      "duplicateOpen": "Ya tienes un aviso abierto para esta mascota. Revisa el borrador o aviso existente antes de crear otro."
     },
     "generatedTitle": "{name} se ha perdido",
     "formDescription": "Todavía no será público. Podrás editarlo y publicarlo después.",

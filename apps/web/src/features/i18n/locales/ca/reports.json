@@ -68,6 +68,8 @@
     "sosDescription": "Demana ajuda urgent relacionada amb un animal."
   },
   "lostPet": {
+    "openReportTitle": "Ja té un avís actiu",
+    "openReportDescription": "Aquesta mascota ja té un esborrany o avís obert. Revisa'l des d'Els meus avisos abans de crear-ne un altre.",
     "title": "Quina mascota s'ha perdut?",
     "microchip": "Amb microxip",
     "selectedDescription": "Utilitzarem les dades registrades de {name}.",
@@ -162,7 +164,8 @@
       "unavailable": "El dispositiu no ha pogut determinar la ubicació. Torna-ho a provar o utilitza l'opció manual.",
       "timeout": "La ubicació està trigant massa. Torna-ho a provar o indica un altre lloc.",
       "generic": "S'ha produït un error en obtenir la ubicació.",
-      "manualShort": "Escriu almenys tres caràcters per identificar el lloc."
+      "manualShort": "Escriu almenys tres caràcters per identificar el lloc.",
+      "manualCoordinates": "Selecciona un suggeriment o col·loca el marcador al mapa abans de continuar."
     },
     "manualLabel": "Adreça o referència",
     "back": "Torna al moment",

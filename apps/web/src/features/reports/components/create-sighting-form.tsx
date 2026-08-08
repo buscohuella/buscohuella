@@ -5,8 +5,10 @@ import { useActionState, useMemo, useState } from 'react';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 import { createSightingAction } from '@/features/reports/actions/create-sighting';
 import { initialCreateSightingState } from '@/features/reports/types/create-sighting-state';
+import { LocationPicker } from '@/features/maps/components/location-picker';
 
 type Mode = 'GPS' | 'MANUAL';
+type Coordinates = { latitude: number; longitude: number };
 const localNow = () => {
   const now = new Date();
   return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
@@ -16,6 +18,8 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
   const { t } = useTranslations('sightingCreate');
   const [mode, setMode] = useState<Mode>('GPS');
   const [coords, setCoords] = useState({ latitude: '', longitude: '' });
+  const [manualCoordinates, setManualCoordinates] = useState<Coordinates | null>(null);
+  const [locationLabel, setLocationLabel] = useState('');
   const [gps, setGps] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const [state, action, pending] = useActionState(createSightingAction, initialCreateSightingState);
  const maxDate = useMemo(
@@ -40,6 +44,7 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
     <input type="hidden" name="reportId" value={reportId} />
     <input type="hidden" name="latitude" value={coords.latitude} />
     <input type="hidden" name="longitude" value={coords.longitude} />
+    <input type="hidden" name="locationLabel" value={locationLabel} />
 
     <Field label={t('fields.when')} help={t('fields.whenHelp')} htmlFor="observedAt">
       <input id="observedAt" name="observedAt" type="datetime-local" required max={maxDate} defaultValue={maxDate} className="min-h-12 w-full rounded-lg border border-border bg-background px-3" />
@@ -64,9 +69,15 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
       </button>
       {gps === 'ready' ? <p className="mt-3 text-sm text-primary">{t('location.gpsSuccess')}</p> : null}
       {gps === 'error' ? <p className="mt-3 text-sm text-danger">{t('location.gpsError')}</p> : null}
-    </div> : <Field label={t('fields.locationLabel')} help={t('fields.locationLabelHelp')} htmlFor="locationLabel">
-      <input id="locationLabel" name="locationLabel" type="text" required minLength={3} maxLength={200} placeholder={t('fields.locationPlaceholder')} className="min-h-12 w-full rounded-lg border border-border bg-background px-3" />
-    </Field>}
+    </div> : <LocationPicker
+      value={manualCoordinates}
+      onChange={(value) => {
+        setManualCoordinates(value);
+        setCoords({ latitude: String(value.latitude), longitude: String(value.longitude) });
+      }}
+      label={locationLabel}
+      onLabelChange={setLocationLabel}
+    />}
 
     <fieldset className="space-y-3">
       <legend className="font-semibold">{t('confidence.title')}</legend>
@@ -81,7 +92,7 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
     </Field>
 
     {state.status === 'error' ? <div role="alert" className="rounded-xl border border-danger/30 bg-danger/10 p-4 text-sm text-danger">{state.message}</div> : null}
-    <button type="submit" disabled={pending || (mode === 'GPS' && gps !== 'ready')} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-danger px-5 font-semibold text-white disabled:opacity-60 sm:w-auto">
+    <button type="submit" disabled={pending || (mode === 'GPS' && gps !== 'ready') || (mode === 'MANUAL' && !manualCoordinates)} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-danger px-5 font-semibold text-white disabled:opacity-60 sm:w-auto">
       {pending ? <LoaderCircle className="size-5 animate-spin" /> : <Send className="size-5" />}{t(pending ? 'submitting' : 'submit')}
     </button>
   </form>;

@@ -12,6 +12,20 @@ depends_on:
   - FEATURE_PACK_DEFINITION_OF_DONE
 ---
 
+## Actualización validada — mapa, ubicación y avistamientos — 8 de agosto de 2026
+
+La primera entrega geográfica está implementada y validada:
+
+- mapa público Mapbox;
+- listado equivalente accesible;
+- autocompletado de direcciones;
+- selección por clic y pin desplazable;
+- selector reutilizado en avisos y avistamientos;
+- coordenadas privadas separadas de la proyección pública.
+
+Siguiente ajuste: representar las ubicaciones aproximadas mediante zonas
+circulares para no sugerir una precisión inexistente.
+
 # BuscoHuella — Roadmap de implementación del MVP
 
 ## 1. Propósito
@@ -556,3 +570,4 @@ antes de comenzar un nuevo dominio
 antes del piloto
 trimestralmente
 ```
+ 

@@ -12,6 +12,18 @@ Estados:
 
 Este documento se actualizará al cerrar cada entrega.
 
+## Actualización validada — ubicación y avistamientos — 8 de agosto de 2026
+
+- `DONE` — mapa público Mapbox con listado alternativo accesible.
+- `DONE` — autocompletado de direcciones mediante Mapbox Geocoding.
+- `DONE` — selección por clic y pin desplazable.
+- `DONE` — selector reutilizado en avisos y avistamientos.
+- `DONE` — coordenadas privadas separadas de la proyección pública aproximada.
+- `NEXT` — representar ubicaciones aproximadas como zonas circulares para no sugerir una precisión inexistente.
+
+La validación manual confirmó el flujo GPS, búsqueda, selección de sugerencia,
+movimiento del pin y creación del avistamiento.
+
 ## Avisos
 
 - `DONE` FP-011 — creación de aviso de mascota perdida.
@@ -41,6 +53,7 @@ Este documento se actualizará al cerrar cada entrega.
 
 ## Mapa y ubicación
 
+- `IN_PROGRESS` — primera entrega: mapa público + lista accesible de reportes activos.
 - `PLANNED` — avisos cercanos por ubicación y radio.
 - `PLANNED` — mapa público de avisos.
 - `PLANNED` — autocompletado de direcciones.
@@ -48,6 +61,59 @@ Este documento se actualizará al cerrar cada entrega.
 - `PLANNED` — geocodificación/reverse geocoding.
 - `PLANNED` — mapa privado de búsqueda y avistamientos.
 - `PLANNED` — filtros por radio y especie.
+
+### Primera entrega: mapa público y alternativa accesible
+
+Esta entrega cubre únicamente la consulta pública de reportes activos que ya
+disponen de una ubicación pública aproximada.
+
+Incluye:
+
+- marcadores no exactos para reportes públicos activos;
+- identificación visual y textual del tipo de reporte;
+- selección de un marcador y acceso al detalle público;
+- filtros básicos compartidos entre mapa y lista;
+- lista paginada equivalente para teclado, lectores de pantalla y dispositivos
+  donde el mapa no esté disponible;
+- estados de carga, vacío, error y ubicación no disponible;
+- respeto de la precisión pública y exclusión de coordenadas privadas.
+
+No incluye en esta primera entrega:
+
+- geocodificación o autocompletado;
+- consultas por radio o avisos cercanos;
+- ubicación actual del usuario;
+- edición de ubicaciones;
+- Web Push, chat, QR, NFC o GPS.
+
+#### Criterios de aceptación
+
+1. Una persona no autenticada puede consultar los reportes activos públicos.
+2. El mapa y la lista muestran el mismo conjunto de resultados.
+3. Ningún marcador expone la ubicación exacta privada del reporte.
+4. Cada resultado ofrece una alternativa textual y un enlace al detalle.
+5. La interfaz funciona sin depender exclusivamente del color o del mapa.
+6. Los estados de carga, vacío y error ofrecen una acción o explicación útil.
+7. La entrega pasa lint, typecheck, build y tests disponibles antes de la
+   validación manual.
+
+### Siguiente bloque: selector de ubicación
+
+Después de validar el mapa público, el formulario de aviso y el formulario de
+avistamiento deberán compartir un selector de ubicación con tres caminos:
+
+- ubicación actual, con permiso explícito del navegador;
+- búsqueda de dirección o lugar con autocompletado;
+- selección manual mediante un pin desplazable en el mapa.
+
+El texto escrito libremente no se considerará una ubicación geográfica válida
+para el mapa. La selección confirmada generará una coordenada privada y una
+proyección pública degradada según la precisión elegida. La dirección exacta no
+se mostrará públicamente.
+
+Este bloque deberá conservar la alternativa textual, permitir corregir la
+descripción del lugar y mantener estados de permiso denegado, resultado no
+encontrado, ubicación aproximada y error del proveedor.
 
 ## Comunicación
 

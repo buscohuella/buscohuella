@@ -34,6 +34,22 @@ export const fromGeographyPoint = (
 
   const trimmed = value.trim();
 
+  if (/^[0-9a-f]+$/i.test(trimmed) && trimmed.length >= 50) {
+    const bytes = new Uint8Array(
+      trimmed.match(/.{1,2}/g)?.map((pair) => Number.parseInt(pair, 16)) ?? [],
+    );
+
+    if (bytes.length >= 25 && bytes[0] === 1) {
+      const view = new DataView(bytes.buffer);
+      const longitude = view.getFloat64(9, true);
+      const latitude = view.getFloat64(17, true);
+
+      if (Number.isFinite(longitude) && Number.isFinite(latitude)) {
+        return { longitude, latitude };
+      }
+    }
+  }
+
   try {
     const parsed: unknown = JSON.parse(trimmed);
 

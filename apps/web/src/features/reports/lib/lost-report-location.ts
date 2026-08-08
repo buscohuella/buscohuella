@@ -14,6 +14,11 @@ export type GpsReportLocation = {
 export type ManualReportLocation = {
   source: 'MANUAL';
   placeLabel: string;
+  municipalityName?: string;
+  exactLatitude?: number;
+  exactLongitude?: number;
+  publicLatitude?: number;
+  publicLongitude?: number;
   capturedAt: string;
 };
 

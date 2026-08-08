@@ -117,6 +117,15 @@ export async function markAllNotificationsReadAction() {
   );
 
   revalidatePath(
+    '/',
+    'layout',
+  );
+
+  revalidatePath(
     '/notificaciones',
+  );
+  revalidatePath(
+    '/',
+    'layout',
   );
 }

@@ -200,35 +200,38 @@ export function LostReportReview({
         value={location.source}
       />
 
-      {location.source === 'GPS' ? (
+      {location.source === 'GPS' ||
+      (location.exactLatitude !== undefined &&
+        location.exactLongitude !== undefined &&
+        location.publicLatitude !== undefined &&
+        location.publicLongitude !== undefined) ? (
         <>
           <input
             type="hidden"
             name="exactLatitude"
-            value={location.exactLatitude}
+            value={location.exactLatitude ?? ''}
           />
           <input
             type="hidden"
             name="exactLongitude"
-            value={location.exactLongitude}
+            value={location.exactLongitude ?? ''}
           />
           <input
             type="hidden"
             name="publicLatitude"
-            value={location.publicLatitude}
+            value={location.publicLatitude ?? ''}
           />
           <input
             type="hidden"
             name="publicLongitude"
-            value={location.publicLongitude}
+            value={location.publicLongitude ?? ''}
           />
         </>
       ) : (
-        <input
-          type="hidden"
-          name="placeLabel"
-          value={location.placeLabel}
-        />
+        <>
+          <input type="hidden" name="placeLabel" value={location.placeLabel} />
+          <input type="hidden" name="municipalityName" value={location.municipalityName ?? ''} />
+        </>
       )}
 
       <div className="grid gap-4 md:grid-cols-2">

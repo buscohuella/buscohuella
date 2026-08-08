@@ -109,3 +109,10 @@ Tras validar FP-019:
 
 - feedback/UX de notificaciones si es necesario;
 - FP-020 o bloque geográfico según prioridad de producto.
+
+## Corrección validada — 8 de agosto de 2026
+
+- El marcado global como leído invalida también el layout de la aplicación.
+- El contador de la campanita desaparece inmediatamente sin cambiar de pantalla
+  ni recargar manualmente.
+- La actualización conserva la protección por usuario y la lectura mediante RPC.

@@ -22,10 +22,8 @@ CardHeader,
 CardTitle,
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
-import {
-  markAllNotificationsReadAction,
-  openNotificationAction,
-} from '@/features/notifications/actions/notification-actions';
+import { MarkAllReadButton } from '@/features/notifications/components/mark-all-read-button';
+import { openNotificationAction } from '@/features/notifications/actions/notification-actions';
 import {
   getUnreadNotificationCount,
   listMyNotificationsPage,
@@ -174,24 +172,11 @@ export default async function NotificationsPage({
         </div>
 
         {unreadCount > 0 ? (
-          <form
-            action={
-              markAllNotificationsReadAction
-            }
-          >
-            <button
-              type="submit"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-border px-4 text-sm font-semibold hover:bg-surface-elevated"
-            >
-              <CheckCheck
-                className="size-4"
-                aria-hidden="true"
-              />
-              {translate(
-                'notifications.markAllRead',
-              )}
-            </button>
-          </form>
+          <MarkAllReadButton
+            label={translate(
+              'notifications.markAllRead',
+            )}
+          />
         ) : null}
       </header>
 

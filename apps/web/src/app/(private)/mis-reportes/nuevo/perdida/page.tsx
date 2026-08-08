@@ -1,4 +1,5 @@
 import { PetRepository } from '@buscohuella/pet-data';
+import { ReportRepository } from '@buscohuella/report-data';
 import type { Pet } from '@buscohuella/pet-domain';
 import {
   ArrowLeft,
@@ -36,6 +37,26 @@ async function loadActivePets() {
   );
 }
 
+async function loadOpenLostPetIds() {
+  const supabase = await createClient();
+  // The web client is generated from the pet-data schema, while this repository
+  // consumes the equivalent report-data schema. Keep the conversion at this
+  // package boundary instead of leaking either generated type into the page.
+  const repository = new ReportRepository(
+    supabase as unknown as ConstructorParameters<typeof ReportRepository>[0],
+  );
+  const reports = await repository.listOwnReports();
+  return new Set(
+    reports
+      .filter((report) =>
+        report.reportType === 'LOST_PET' &&
+        ['DRAFT', 'ACTIVE', 'PAUSED'].includes(report.status) &&
+        report.petId,
+      )
+      .map((report) => report.petId as string),
+  );
+}
+
 export default async function SelectLostPetPage({
   searchParams,
 }: {
@@ -43,10 +64,11 @@ export default async function SelectLostPetPage({
     mascota?: string;
   }>;
 }) {
-  const [query, { translate }] =
+  const [query, { translate }, openLostPetIds] =
     await Promise.all([
       searchParams,
       getServerTranslator(),
+      loadOpenLostPetIds(),
     ]);
 
   let pets: Pet[];
@@ -162,6 +184,19 @@ export default async function SelectLostPetPage({
                 </div>
               </CardHeader>
 
+              {openLostPetIds.has(selectedPet.id) ? (
+                <CardContent className="pt-0">
+                  <div role="alert" className="rounded-xl border border-warning/30 bg-warning/10 p-4 text-sm">
+                    <p className="font-semibold text-warning">
+                      {translate('reports.lostPet.openReportTitle')}
+                    </p>
+                    <p className="mt-1 text-muted-foreground">
+                      {translate('reports.lostPet.openReportDescription')}
+                    </p>
+                  </div>
+                </CardContent>
+              ) : null}
+
               <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground">
                   {translate(
@@ -169,20 +204,15 @@ export default async function SelectLostPetPage({
                   )}
                 </p>
 
-                <Link
-                  href={`/mis-reportes/nuevo/perdida/cuando?mascota=${encodeURIComponent(
-                    selectedPet.id,
-                  )}`}
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-                >
-                  {translate(
-                    'reports.lostPet.continue',
-                  )}
-                  <ArrowRight
-                    className="size-5"
-                    aria-hidden="true"
-                  />
-                </Link>
+                {openLostPetIds.has(selectedPet.id) ? null : (
+                  <Link
+                    href={`/mis-reportes/nuevo/perdida/cuando?mascota=${encodeURIComponent(selectedPet.id)}`}
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                  >
+                    {translate('reports.lostPet.continue')}
+                    <ArrowRight className="size-5" aria-hidden="true" />
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ) : (

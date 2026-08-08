@@ -311,6 +311,10 @@ export async function createLostReportDraftAction(
     formData,
     'placeLabel',
   );
+  const municipalityName = getString(
+    formData,
+    'municipalityName',
+  );
 
   if (
     !petId ||
@@ -332,7 +336,13 @@ export async function createLostReportDraftAction(
   let publicLocation: GeoPoint | null =
     null;
 
-  if (locationSource === 'GPS') {
+  const hasManualCoordinates =
+    locationSource === 'MANUAL' &&
+    (exactLatitude !== null ||
+      exactLongitude !== null ||
+      publicLatitude !== null ||
+      publicLongitude !== null);
+  if (locationSource === 'GPS' || hasManualCoordinates) {
     if (
       exactLatitude === null ||
       exactLongitude === null ||
@@ -382,6 +392,22 @@ export async function createLostReportDraftAction(
         petId,
       );
   } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : '';
+    if (
+      errorMessage.includes(
+        'reports_one_open_lost_pet_idx',
+      )
+    ) {
+      return {
+        status: 'error',
+        message: translate(
+          'reports.review.errors.duplicateOpen',
+        ),
+      };
+    }
     logServerError(
       'report.draft.pet_load_failed',
       error,
@@ -448,12 +474,14 @@ export async function createLostReportDraftAction(
       exactLocation,
       publicLocation,
       publicLocationPrecision:
-        locationSource === 'GPS'
+        exactLocation && publicLocation
           ? 'APPROXIMATE_500M'
           : 'MUNICIPALITY_ONLY',
       municipalityName:
         locationSource === 'MANUAL'
-          ? placeLabel || null
+          ? hasManualCoordinates
+            ? municipalityName || null
+            : placeLabel || null
           : null,
       locationIsSensitive: true,
       contactMode: 'PLATFORM_ONLY',

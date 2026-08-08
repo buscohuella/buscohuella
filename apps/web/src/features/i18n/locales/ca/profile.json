@@ -34,7 +34,20 @@
       "view": "Mostra el meu perfil públic"
     },
     "save": "Desa els canvis",
-    "saving": "Desant…"
+    "saving": "Desant…",
+    "avatar": {
+      "label": "Fotografia de perfil",
+      "hint": "JPEG, PNG o WebP. Màxim 5 MiB. Només es desa una fotografia.",
+      "choose": "Selecciona una fotografia",
+      "chooseFile": "Tria un fitxer",
+      "noFileSelected": "No s'ha seleccionat cap fitxer",
+      "upload": "Puja la foto",
+      "replace": "Reemplaça la foto",
+      "uploading": "Pujant…",
+      "delete": "Elimina la fotografia",
+      "deleting": "Eliminant…",
+      "current": "Fotografia actual"
+    }
   },
   "validation": {
     "review": "Revisa els camps indicats.",
@@ -51,5 +64,11 @@
     "sessionExpired": "La teva sessió ha caducat. Torna a iniciar la sessió.",
     "saveError": "No s'ha pogut desar el perfil. Torna-ho a provar.",
     "success": "El perfil s'ha actualitzat correctament."
+  },
+  "avatar": {
+    "sessionExpired": "La teva sessió ha caducat. Torna a iniciar la sessió.",
+    "deleteError": "No hem pogut eliminar la fotografia.",
+    "deleteSuccess": "Fotografia eliminada.",
+    "profileError": "No hem pogut actualitzar el perfil."
   }
 }

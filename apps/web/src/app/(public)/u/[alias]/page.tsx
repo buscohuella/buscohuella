@@ -57,12 +57,21 @@ export default async function PublicProfilePage({
     <PageContainer className="py-10 sm:py-14">
       <Card elevated className="mx-auto max-w-3xl">
         <CardHeader className="items-center text-center">
-          <span
-            className="flex size-20 items-center justify-center rounded-full bg-primary-soft text-primary"
-            aria-hidden="true"
-          >
-            <PawPrint className="size-10" />
-          </span>
+          {profile.avatarUrl ? (
+            <div
+              role="img"
+              aria-label={`Avatar de @${profile.publicAlias}`}
+              className="size-20 rounded-full border border-border bg-cover bg-center"
+              style={{ backgroundImage: `url(${profile.avatarUrl})` }}
+            />
+          ) : (
+            <span
+              className="flex size-20 items-center justify-center rounded-full bg-primary-soft text-primary"
+              aria-hidden="true"
+            >
+              <PawPrint className="size-10" />
+            </span>
+          )}
 
           <CardTitle className="mt-4 text-3xl">
             @{profile.publicAlias}

@@ -36,11 +36,18 @@ export async function getProfile(): Promise<UserProfile | null> {
     return null;
   }
 
+  const { data: signedAvatar } = data.avatar_path
+    ? await supabase.storage
+        .from('profile-avatars')
+        .createSignedUrl(data.avatar_path, 3600)
+    : { data: null };
+
   return {
     id: data.id,
     fullName: data.full_name,
     publicAlias: data.public_alias ?? '',
     avatarPath: data.avatar_path ?? '',
+    avatarUrl: signedAvatar?.signedUrl ?? '',
     municipality: data.municipality ?? '',
     bio: data.bio ?? '',
     isPublic: data.is_public,

@@ -34,7 +34,20 @@
       "view": "Ver mi perfil público"
     },
     "save": "Guardar cambios",
-    "saving": "Guardando…"
+    "saving": "Guardando…",
+    "avatar": {
+      "label": "Fotografía de perfil",
+      "hint": "JPEG, PNG o WebP. Máximo 5 MiB. Solo se guarda una fotografía.",
+      "choose": "Seleccionar fotografía",
+      "chooseFile": "Elegir archivo",
+      "noFileSelected": "Ningún archivo seleccionado",
+      "upload": "Subir foto",
+      "replace": "Reemplazar foto",
+      "uploading": "Subiendo…",
+      "delete": "Eliminar fotografía",
+      "deleting": "Eliminando…",
+      "current": "Fotografía actual"
+    }
   },
   "validation": {
     "review": "Revisa los campos indicados.",
@@ -51,5 +64,11 @@
     "sessionExpired": "Tu sesión ha caducado. Inicia sesión de nuevo.",
     "saveError": "No se ha podido guardar el perfil. Inténtalo de nuevo.",
     "success": "Perfil actualizado correctamente."
+  },
+  "avatar": {
+    "sessionExpired": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+    "deleteError": "No hemos podido eliminar la fotografía.",
+    "deleteSuccess": "Fotografía eliminada.",
+    "profileError": "No hemos podido actualizar el perfil."
   }
 }

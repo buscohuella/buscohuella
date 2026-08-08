@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { AppShell } from '@/components/layout/app-shell';
 import { getCurrentUser } from '@/features/auth/queries/get-current-user';
+import { getProfile } from '@/features/profile/queries/get-profile';
 
 export default async function ApplicationLayout({
   children,
@@ -15,5 +16,7 @@ export default async function ApplicationLayout({
     redirect('/login');
   }
 
-  return <AppShell user={user}>{children}</AppShell>;
+  const profile = await getProfile();
+
+  return <AppShell user={user} avatarUrl={profile?.avatarUrl ?? null}>{children}</AppShell>;
 }

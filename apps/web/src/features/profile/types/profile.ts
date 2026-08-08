@@ -3,6 +3,7 @@ export interface UserProfile {
   fullName: string;
   publicAlias: string;
   avatarPath: string;
+  avatarUrl: string;
   municipality: string;
   bio: string;
   isPublic: boolean;

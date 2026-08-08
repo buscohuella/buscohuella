@@ -9,11 +9,13 @@ import { useTranslations } from '@/features/i18n/i18n-provider';
 
 export interface UserMenuProps {
   user: AuthUser;
+  avatarUrl?: string | null;
   compact?: boolean;
 }
 
 export function UserMenu({
   user,
+  avatarUrl = null,
   compact = false,
 }: UserMenuProps) {
   const { t } = useTranslations('common');
@@ -41,10 +43,12 @@ export function UserMenu({
           )}
         >
           <span
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary"
-            aria-hidden="true"
+            className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-soft bg-cover bg-center font-bold text-primary"
+            style={avatarUrl ? { backgroundImage: `url(${avatarUrl})` } : undefined}
+            role={avatarUrl ? 'img' : undefined}
+            aria-label={avatarUrl ? profileLabel : undefined}
           >
-            {initial}
+            {!avatarUrl ? initial : null}
           </span>
 
           <div className="hidden min-w-0 sm:block">
@@ -82,10 +86,12 @@ export function UserMenu({
         aria-label={profileLabel}
       >
         <span
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft font-bold text-primary"
-          aria-hidden="true"
+          className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-soft bg-cover bg-center font-bold text-primary"
+          style={avatarUrl ? { backgroundImage: `url(${avatarUrl})` } : undefined}
+          role={avatarUrl ? 'img' : undefined}
+          aria-label={avatarUrl ? profileLabel : undefined}
         >
-          {initial}
+          {!avatarUrl ? initial : null}
         </span>
 
         <div className="min-w-0 flex-1">

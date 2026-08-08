@@ -21,6 +21,7 @@ import { useTranslations } from '@/features/i18n/i18n-provider';
 import { cn } from '@/lib/utils';
 
 import { updateProfileAction } from '../actions/update-profile';
+import { AvatarForm } from './avatar-form';
 import { initialProfileActionState } from '../types/profile-action-state';
 import type { UserProfile } from '../types/profile';
 
@@ -86,7 +87,9 @@ export function ProfileForm({
     formErrors.length > 0;
 
   return (
-    <form action={formAction} className="space-y-7">
+    <div className="space-y-7">
+      <AvatarForm avatarUrl={profile.avatarUrl} />
+      <form action={formAction} className="space-y-7">
       {!hasFieldErrors && state.message ? (
         <Alert
           variant={
@@ -321,6 +324,7 @@ export function ProfileForm({
           {t('form.save')}
         </Button>
       </div>
-    </form>
+      </form>
+    </div>
   );
 }

@@ -11,11 +11,13 @@ import { UserMenu } from './user-menu';
 
 export interface AppTopbarProps {
   user: AuthUser;
+  avatarUrl: string | null;
   title?: string;
 }
 
 export function AppTopbar({
   user,
+  avatarUrl,
   title = 'BuscoHuella',
 }: AppTopbarProps) {
   return (
@@ -47,6 +49,7 @@ export function AppTopbar({
 
           <UserMenu
             user={user}
+            avatarUrl={avatarUrl}
             compact
           />
         </div>
@@ -54,4 +57,3 @@ export function AppTopbar({
     </header>
   );
 }
-

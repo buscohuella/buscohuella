@@ -13,6 +13,7 @@ import { UserMenu } from './user-menu';
 
 export interface AppSidebarProps {
   user: AuthUser;
+  avatarUrl: string | null;
 }
 
 function isNoticesPath(pathname: string) {
@@ -27,6 +28,7 @@ function isNoticesPath(pathname: string) {
 
 export function AppSidebar({
   user,
+  avatarUrl,
 }: AppSidebarProps) {
   const pathname = usePathname();
   const { t } = useTranslations('common');
@@ -118,7 +120,7 @@ export function AppSidebar({
           )}
         </Link>
 
-        <UserMenu user={user} />
+        <UserMenu user={user} avatarUrl={avatarUrl} />
       </div>
     </aside>
   );

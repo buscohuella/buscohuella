@@ -35,6 +35,35 @@ type PublicMapProps = {
 
 const DEFAULT_CENTER: [number, number] = [2.108, 41.548];
 
+function publicRadiusMeters(precision: string) {
+  const match = precision.match(/(\d+)/);
+  const value = match?.[1] ? Number(match[1]) : 500;
+  return Number.isFinite(value) && value > 0 ? value : 500;
+}
+
+function createApproximationCircle(
+  longitude: number,
+  latitude: number,
+  radiusMeters: number,
+) {
+  const earthRadius = 6_378_137;
+  const latitudeDelta = (radiusMeters / earthRadius) * (180 / Math.PI);
+  const longitudeDelta =
+    (radiusMeters / (earthRadius * Math.cos((latitude * Math.PI) / 180))) *
+    (180 / Math.PI);
+  const coordinates: [number, number][] = [];
+
+  for (let index = 0; index <= 64; index += 1) {
+    const angle = (index / 64) * Math.PI * 2;
+    coordinates.push([
+      longitude + Math.cos(angle) * longitudeDelta,
+      latitude + Math.sin(angle) * latitudeDelta,
+    ]);
+  }
+
+  return coordinates;
+}
+
 export function PublicMap({ labels, reports }: PublicMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
@@ -83,10 +112,71 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         }
 
         const bounds = new mapboxgl.LngLatBounds();
+        const approximateReports = locatedReports.filter(
+          (report) => report.publicLocationPrecision !== 'EXACT',
+        );
+
+        map.addSource('public-report-areas', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: approximateReports.map((report) => ({
+              type: 'Feature' as const,
+              properties: { reportId: report.id },
+              geometry: {
+                type: 'Polygon' as const,
+                coordinates: [
+                  createApproximationCircle(
+                    report.longitude as number,
+                    report.latitude as number,
+                    publicRadiusMeters(report.publicLocationPrecision),
+                  ),
+                ],
+              },
+            })),
+          },
+        });
+        map.addLayer({
+          id: 'public-report-areas-fill',
+          type: 'fill',
+          source: 'public-report-areas',
+          paint: {
+            'fill-color': '#b91c1c',
+            'fill-opacity': 0.16,
+          },
+        });
+        map.addLayer({
+          id: 'public-report-areas-line',
+          type: 'line',
+          source: 'public-report-areas',
+          paint: {
+            'line-color': '#b91c1c',
+            'line-width': 2,
+            'line-opacity': 0.55,
+          },
+        });
+        map.on('click', 'public-report-areas-fill', (event) => {
+          const feature = event.features?.[0] as
+            | { properties?: { reportId?: unknown } }
+            | undefined;
+          const reportId = feature?.properties?.reportId;
+          if (typeof reportId === 'string') setSelectedId(reportId);
+        });
+        map.on('mouseenter', 'public-report-areas-fill', () => {
+          map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'public-report-areas-fill', () => {
+          map.getCanvas().style.cursor = '';
+        });
+
         locatedReports.forEach((report) => {
           const longitude = report.longitude as number;
           const latitude = report.latitude as number;
-        const marker = new mapboxgl.Marker({
+          if (report.publicLocationPrecision !== 'EXACT') {
+            bounds.extend([longitude, latitude]);
+            return;
+          }
+          const marker = new mapboxgl.Marker({
             color: report.reportType === 'LOST_PET' ? '#b91c1c' : '#047857',
           })
             .setLngLat([longitude, latitude])

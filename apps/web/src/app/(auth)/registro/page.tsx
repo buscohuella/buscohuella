@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { AuthCard } from '@/components/auth/auth-card';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { RegisterForm } from '@/features/auth/components/register-form';
+import { getServerTranslator } from '@/features/i18n/server';
 
 export const metadata: Metadata = {
   title: 'Crear cuenta | BuscoHuella',
@@ -17,11 +18,12 @@ export default async function RegisterPage({
   }>;
 }) {
   const params = await searchParams;
+  const { translate } = await getServerTranslator();
 
   return (
     <AuthShell
-      title="Crea tu cuenta"
-      description="Registra tus mascotas y participa en búsquedas de forma segura."
+      title={translate('auth.register.title')}
+      description={translate('auth.register.description')}
     >
       <AuthCard>
         <RegisterForm next={params.next} />

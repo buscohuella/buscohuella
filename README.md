@@ -50,12 +50,19 @@ BuscoHuella se encuentra actualmente en fase **Pre-MVP** y en desarrollo activo.
 | Lista de espera | ✅ 170+ personas registradas |
 | Documentación funcional | 🚧 En revisión y consolidación |
 | Arquitectura técnica | 🚧 Definida |
-| Aplicación web MVP | 📋 Pendiente de implementación |
-| Backend y base de datos | 📋 Pendiente de implementación |
+| Aplicación web MVP | 🚧 Implementada y en auditoría de cierre |
+| Backend y base de datos | ✅ Operativos para los flujos MVP implementados |
 | Aplicación móvil | 📋 Posterior al MVP web |
 | Piloto en Sabadell | 📋 Próxima fase |
 
 ---
+
+> **Estado técnico actualizado (10 de agosto de 2026):** autenticación, perfiles,
+> mascotas, avisos, fotografías, avistamientos, notificaciones internas, mapa
+> público, ubicación geográfica y resolución de casos están implementados en la
+> aplicación web. El siguiente bloque es la auditoría de calidad, seguridad,
+> accesibilidad, responsive, i18n y preparación del piloto. La app móvil Expo
+> permanece posterior al MVP web según el Documento Maestro.
 
 ## 🧭 Objetivos del MVP
 

@@ -58,7 +58,8 @@
     "description": "Mascotes perdudes i animals trobats que necessiten ajuda a prop teu.",
     "emptyTitle": "No hi ha avisos actius",
     "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",
-    "noPhoto": "Sense fotografia"
+    "noPhoto": "Sense fotografia",
+    "mapUnavailable": "No s'ha pogut carregar el mapa. Pots consultar els avisos a la llista."
   },
   "generatedTitle": {
     "LOST_PET": "{name} s'ha perdut"

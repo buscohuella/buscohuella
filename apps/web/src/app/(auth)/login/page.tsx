@@ -4,6 +4,7 @@ import { AuthCard } from '@/components/auth/auth-card';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { AuthNotice } from '@/features/auth/components/auth-notice';
 import { LoginForm } from '@/features/auth/components/login-form';
+import { getServerTranslator } from '@/features/i18n/server';
 
 export const metadata: Metadata = {
   title: 'Iniciar sesión | BuscoHuella',
@@ -24,20 +25,21 @@ export default async function LoginPage({
   searchParams,
 }: LoginPageProps) {
   const params = await searchParams;
+  const { translate } = await getServerTranslator();
 
   const notice =
     params.registered === '1'
-      ? 'Cuenta creada. Revisa tu correo electrónico y confirma la cuenta antes de iniciar sesión.'
+      ? translate('auth.login.registered')
       : params.password_updated === '1'
-        ? 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.'
+        ? translate('auth.login.passwordUpdated')
         : params.logged_out === '1'
-          ? 'La sesión se ha cerrado correctamente.'
+          ? translate('auth.login.loggedOut')
           : undefined;
 
   return (
     <AuthShell
-      title="Inicia sesión"
-      description="Accede a tus mascotas, reportes y alertas."
+      title={translate('auth.login.title')}
+      description={translate('auth.login.description')}
     >
       <AuthCard>
         <AuthNotice message={notice} />

@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/services/supabase/server';
+import { getServerTranslator } from '@/features/i18n/server';
 import type { AuthActionState } from '../types/auth-action-state';
 import { getString } from './helpers';
 
@@ -18,19 +19,20 @@ export async function loginAction(
   formData: FormData,
 ): Promise<AuthActionState> {
   const email = getString(formData, 'email').toLowerCase();
+  const { translate } = await getServerTranslator();
   const password = getString(formData, 'password');
   const next = safeNext(
     getString(formData, 'next'),
   );
   const fieldErrors: AuthActionState['fieldErrors'] = {};
 
-  if (!email) fieldErrors.email = 'Introduce tu correo electrónico.';
-  if (!password) fieldErrors.password = 'Introduce tu contraseña.';
+  if (!email) fieldErrors.email = translate('auth.validation.emailRequired');
+  if (!password) fieldErrors.password = translate('auth.validation.passwordRequired');
 
   if (Object.keys(fieldErrors).length > 0) {
     return {
       status: 'error',
-      message: 'Revisa los campos indicados.',
+      message: translate('auth.validation.review'),
       fieldErrors,
     };
   }
@@ -46,8 +48,8 @@ export async function loginAction(
       status: 'error',
       message:
         error.code === 'email_not_confirmed'
-          ? 'Confirma tu correo electrónico antes de iniciar sesión.'
-          : 'El correo o la contraseña no son correctos.',
+          ? translate('auth.validation.emailNotConfirmed')
+          : translate('auth.validation.credentialsInvalid'),
     };
   }
 

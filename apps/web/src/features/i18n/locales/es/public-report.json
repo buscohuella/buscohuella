@@ -58,7 +58,8 @@
     "description": "Mascotas perdidas y animales encontrados que necesitan ayuda cerca de ti.",
     "emptyTitle": "No hay avisos activos",
     "emptyDescription": "Cuando se publique un aviso activo aparecerá aquí.",
-    "noPhoto": "Sin fotografía"
+    "noPhoto": "Sin fotografía",
+    "mapUnavailable": "El mapa no se ha podido cargar. Puedes consultar los avisos en la lista."
   },
   "generatedTitle": {
     "LOST_PET": "{name} se ha perdido"

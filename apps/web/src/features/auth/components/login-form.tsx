@@ -8,6 +8,7 @@ import {
   FormErrorSummary,
   type FormErrorItem,
 } from '@/components/ui/form-error-summary';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import { loginAction } from '../actions/login';
 import { initialAuthActionState } from '../types/auth-action-state';
@@ -20,6 +21,7 @@ export function LoginForm({
 }: {
   next?: string;
 }) {
+  const { t } = useTranslations('auth');
   const [state, formAction] = useActionState(
     loginAction,
     initialAuthActionState,
@@ -44,7 +46,7 @@ if (state.fieldErrors?.password) {
 }
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} noValidate className="space-y-5">
       <input
         type="hidden"
         name="next"
@@ -57,8 +59,8 @@ if (state.fieldErrors?.password) {
         id="email"
         name="email"
         type="email"
-        label="Correo electrónico"
-        placeholder="tu@correo.com"
+        label={t('login.email')}
+        placeholder={t('login.emailPlaceholder')}
         autoComplete="email"
         inputMode="email"
         error={state.fieldErrors?.email}
@@ -69,8 +71,8 @@ if (state.fieldErrors?.password) {
         id="password"
         name="password"
         type="password"
-        label="Contraseña"
-        placeholder="Introduce tu contraseña"
+        label={t('login.password')}
+        placeholder={t('login.passwordPlaceholder')}
         autoComplete="current-password"
         error={state.fieldErrors?.password}
         required
@@ -81,17 +83,17 @@ if (state.fieldErrors?.password) {
           href="/recuperar-contrasena"
           className="rounded text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          ¿Has olvidado tu contraseña?
+          {t('login.forgotPassword')}
         </Link>
       </div>
 
-      <SubmitButton pendingText="Iniciando sesión...">
+      <SubmitButton pendingText={t('login.pending')}>
         <LogIn className="size-5" aria-hidden="true" />
-        Iniciar sesión
+        {t('login.submit')}
       </SubmitButton>
 
       <p className="text-center text-sm text-muted-foreground">
-        ¿Todavía no tienes cuenta?{' '}
+        {t('login.noAccount')}{' '}
         <Link
           href={
             next
@@ -100,7 +102,7 @@ if (state.fieldErrors?.password) {
           }
           className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          Crear cuenta
+          {t('login.createAccount')}
         </Link>
       </p>
     </form>

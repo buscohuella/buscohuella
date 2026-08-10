@@ -24,6 +24,7 @@ type PublicMapLabels = {
   emptyTitle: string;
   found: string;
   lost: string;
+  mapUnavailable: string;
   title: string;
   unknownLocation: string;
 };
@@ -69,6 +70,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const mapRef = useRef<MapboxMap | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [mapError, setMapError] = useState(false);
 
   const locatedReports = useMemo(
     () =>
@@ -83,6 +85,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   useEffect(() => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     if (!token || !mapContainerRef.current) {
+      queueMicrotask(() => setMapError(true));
       return;
     }
 
@@ -91,6 +94,11 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
 
     void import('mapbox-gl').then(({ default: mapboxgl }) => {
       if (cancelled || !mapContainerRef.current) {
+        return;
+      }
+
+      if (!mapboxgl.supported()) {
+        setMapError(true);
         return;
       }
 
@@ -105,6 +113,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
 
       map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
       mapRef.current = map;
+      map.on('error', () => setMapError(true));
 
       map.once('load', () => {
         if (cancelled) {
@@ -195,6 +204,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           map.fitBounds(bounds, { padding: 64, maxZoom: 13, duration: 0 });
         }
         setMapReady(true);
+        setMapError(false);
       });
     });
 
@@ -246,6 +256,11 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               aria-label={labels.description}
               role="region"
             />
+            {mapError ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-surface-elevated/90 px-6 text-center text-sm text-muted-foreground" role="alert">
+                {labels.mapUnavailable}
+              </div>
+            ) : null}
             {!mapReady && locatedReports.length === 0 ? (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-muted-foreground">
                 {labels.description}

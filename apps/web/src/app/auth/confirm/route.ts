@@ -2,6 +2,11 @@ import type { EmailOtpType } from '@supabase/supabase-js';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import {
+  localeCookieMaxAge,
+  localeCookieName,
+  normalizeLocale,
+} from '@/features/i18n/config';
+import {
   recoveryFlowCookie,
   recoveryFlowCookieMaxAge,
 } from '@/features/auth/lib/recovery-flow';
@@ -25,6 +30,9 @@ export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get(
     'type',
   ) as EmailOtpType | null;
+  const requestedLocale = normalizeLocale(
+    request.nextUrl.searchParams.get('locale'),
+  );
   const next = getSafeNextPath(
     request.nextUrl.searchParams.get('next'),
     type,
@@ -41,6 +49,16 @@ export async function GET(request: NextRequest) {
       const response = NextResponse.redirect(
         new URL(next, request.url),
       );
+
+      if (requestedLocale) {
+        response.cookies.set(localeCookieName, requestedLocale, {
+          httpOnly: false,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+          maxAge: localeCookieMaxAge,
+        });
+      }
 
       if (type === 'recovery') {
         response.cookies.set(recoveryFlowCookie, '1', {

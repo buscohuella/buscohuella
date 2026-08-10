@@ -298,3 +298,33 @@ svg {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mantiene las acciones de autenticación legibles en pantallas estrechas. */
+@media (max-width: 639px) {
+  [data-mobile-auth-entry='true'] > span {
+    display: inline;
+  }
+
+  a[href='/registro'] > span:first-child {
+    display: inline;
+  }
+
+  a[href='/registro'] > span:last-child {
+    display: none;
+  }
+
+  a[href='/login'],
+  a[href='/registro'] {
+    margin-left: 0.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  a[href='/registro'] > span:first-child {
+    display: none;
+  }
+
+  a[href='/registro'] > span:last-child {
+    display: inline;
+  }
+}

@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/services/supabase/server';
+import { getRequestLocale } from '@/features/i18n/server';
+import { getServerTranslator } from '@/features/i18n/server';
 
 import { validateEmail } from '../lib/email-policy';
 import { validatePassword } from '../lib/password-policy';
@@ -20,6 +22,7 @@ export async function registerAction(
   _previousState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
+  const { translate } = await getServerTranslator();
   const fullName = getString(formData, 'fullName');
   const next = safeNext(
     getString(formData, 'next'),
@@ -41,8 +44,7 @@ export async function registerAction(
     {};
 
   if (!fullName) {
-    fieldErrors.fullName =
-      'Introduce tu nombre completo.';
+    fieldErrors.fullName = translate('auth.validation.fullNameRequired');
   }
 
   if (!emailValidation.isValid) {
@@ -55,24 +57,23 @@ export async function registerAction(
   }
 
   if (password !== confirmPassword) {
-    fieldErrors.confirmPassword =
-      'Las contraseñas no coinciden.';
+    fieldErrors.confirmPassword = translate('auth.validation.passwordMismatch');
   }
 
   if (!acceptTerms) {
-    fieldErrors.acceptTerms =
-      'Debes aceptar los términos y la política de privacidad.';
+    fieldErrors.acceptTerms = translate('auth.validation.acceptTerms');
   }
 
   if (Object.keys(fieldErrors).length > 0) {
     return {
       status: 'error',
-      message: 'Revisa los campos indicados.',
+      message: translate('auth.validation.review'),
       fieldErrors,
     };
   }
 
   const origin = await getRequestOrigin();
+  const locale = await getRequestLocale();
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signUp({
@@ -81,8 +82,9 @@ export async function registerAction(
     options: {
       data: {
         full_name: fullName,
+        locale,
       },
-      emailRedirectTo: `${origin}/auth/confirm`,
+      emailRedirectTo: `${origin}/auth/confirm?locale=${locale}`,
     },
   });
 
@@ -94,7 +96,7 @@ export async function registerAction(
       return {
         status: 'error',
         message:
-          'No se ha podido completar el registro con ese correo.',
+          translate('auth.validation.registerFailed'),
       };
     }
 
@@ -102,10 +104,10 @@ export async function registerAction(
       return {
         status: 'error',
         message:
-          'La contraseña no cumple los requisitos de seguridad.',
+          translate('auth.validation.weakPassword'),
         fieldErrors: {
           password:
-            'Usa una contraseña con mayúscula, minúscula y número.',
+            translate('auth.validation.weakPasswordHint'),
         },
       };
     }
@@ -113,7 +115,7 @@ export async function registerAction(
     return {
       status: 'error',
       message:
-        'No se ha podido crear la cuenta. Inténtalo de nuevo.',
+        translate('auth.validation.genericRegisterFailed'),
     };
   }
 

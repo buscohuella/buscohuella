@@ -15,5 +15,26 @@
     "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
     "reportsTitle": "Consulta reportes",
     "reportsDescription": "Cerca pèrdues, troballes i avisos públics."
+  },
+  "private": {
+    "areaLabel": "Àrea personal",
+    "title": "Tot a punt per protegir la teva família animal.",
+    "description": "Des d’aquí gestionaràs animals, avisos, alertes i dades personals.",
+    "createReport": "Crea un avís",
+    "shortcutsTitle": "Accessos principals",
+    "shortcuts": {
+      "map": { "title": "Explora el mapa", "description": "Consulta els casos i albiraments propers." },
+      "reports": { "title": "Els meus avisos", "description": "Gestiona pèrdues, troballes i albiraments." },
+      "pets": { "title": "Els meus animals", "description": "Prepara la informació de la teva família animal." }
+    },
+    "activity": {
+      "title": "Activitat recent",
+      "description": "Aquí apareixeran alertes i actualitzacions dels teus casos.",
+      "empty": "Encara no hi ha activitat"
+    },
+    "notices": {
+      "accountConfirmed": "Compte confirmat correctament. Benvingut a BuscoHuella.",
+      "loginSuccess": "Sessió iniciada correctament."
+    }
   }
 }

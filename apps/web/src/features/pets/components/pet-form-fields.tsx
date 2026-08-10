@@ -3,7 +3,7 @@
 import type { Pet, PetBreed, PetSpecies } from '@buscohuella/pet-domain';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -33,6 +33,7 @@ export function PetFormFields({
   const initialSpeciesId = pet?.speciesId ?? null;
   const [speciesId, setSpeciesId] = useState<number | null>(initialSpeciesId);
   const [birthDate, setBirthDate] = useState(pet?.birthDate ?? '');
+  const errorSummaryRef = useRef<HTMLDivElement>(null);
   const isOriginalSpecies = speciesId === initialSpeciesId;
   const cancelHref = pet ? `/mis-mascotas/${pet.id}` : '/mis-mascotas';
 
@@ -44,8 +45,23 @@ export function PetFormFields({
     }),
   );
 
+  useEffect(() => {
+    if (errors.length === 0) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      errorSummaryRef.current?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+        block: 'start',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [errors.length, state.message]);
+
   return (
-    <form action={action} className="space-y-8">
+    <form action={action} noValidate className="space-y-8">
       {pet ? <input type="hidden" name="petId" value={pet.id} /> : null}
 
       {!errors.length && state.message ? (
@@ -53,10 +69,12 @@ export function PetFormFields({
           {state.message}
         </Alert>
       ) : null}
-      <FormErrorSummary
-        errors={errors}
-        title={state.message ?? t('validation.review')}
-      />
+      <div ref={errorSummaryRef} tabIndex={-1}>
+        <FormErrorSummary
+          errors={errors}
+          title={state.message ?? t('validation.review')}
+        />
+      </div>
 
       <section className="space-y-5">
         <div>

@@ -4,6 +4,8 @@ import {
   XCircle,
 } from 'lucide-react';
 
+import { useTranslations } from '@/features/i18n/i18n-provider';
+
 import { passwordRequirements } from '../lib/password-policy';
 
 export interface PasswordRequirementsProps {
@@ -22,32 +24,33 @@ export function PasswordRequirements({
   password,
   confirmation,
 }: PasswordRequirementsProps) {
+  const { t } = useTranslations('auth');
   const requirements: Requirement[] = [
     {
       id: 'length',
-      label: `Al menos ${passwordRequirements.minimumLength} caracteres`,
+      label: t('passwordRequirements.length', { count: passwordRequirements.minimumLength }),
       met:
         password.length >=
         passwordRequirements.minimumLength,
     },
     {
       id: 'lowercase',
-      label: 'Una letra minúscula',
+      label: t('passwordRequirements.lowercase'),
       met: /[a-z]/.test(password),
     },
     {
       id: 'uppercase',
-      label: 'Una letra mayúscula',
+      label: t('passwordRequirements.uppercase'),
       met: /[A-Z]/.test(password),
     },
     {
       id: 'number',
-      label: 'Un número',
+      label: t('passwordRequirements.number'),
       met: /[0-9]/.test(password),
     },
     {
       id: 'match',
-      label: 'Las contraseñas coinciden',
+      label: t('passwordRequirements.match'),
       met:
         confirmation.length > 0 &&
         password === confirmation,
@@ -66,7 +69,7 @@ export function PasswordRequirements({
         id="password-requirements-title"
         className="text-sm font-semibold text-foreground"
       >
-        Requisitos de la contraseña
+        {t('passwordRequirements.title')}
       </p>
 
       <ul className="mt-3 grid gap-2 text-sm">
@@ -104,10 +107,10 @@ export function PasswordRequirements({
               >
                 <span className="sr-only">
                   {requirement.met
-                    ? 'Cumplido: '
+                    ? t('passwordRequirements.met')
                     : requirement.failed
-                      ? 'No cumplido: '
-                      : 'Pendiente: '}
+                      ? t('passwordRequirements.failed')
+                      : t('passwordRequirements.pending')}
                 </span>
                 {requirement.label}
               </span>

@@ -1,5 +1,6 @@
 import {
   CircleUserRound,
+  LogIn,
   Map,
   PawPrint,
   ScrollText,
@@ -105,22 +106,23 @@ export async function PublicHeader({
             <>
               <Link
                 href="/login"
-                className="hidden min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-muted-foreground hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:flex"
+                data-mobile-auth-entry="true"
+                className="flex min-h-11 items-center gap-2 rounded-lg px-2 text-sm font-semibold text-muted-foreground hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:px-3"
+                aria-label={translate('common.navigation.login')}
               >
-                {translate(
-                  'common.navigation.login',
-                )}
+                <LogIn className="size-4 sm:hidden" aria-hidden="true" />
+                <span className="hidden sm:inline">{translate('common.navigation.login')}</span>
               </Link>
               <Link
                 href="/registro"
-                className="flex min-h-11 items-center rounded-full bg-primary px-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:px-4"
+                className="flex min-h-11 items-center gap-1 rounded-full bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:gap-2 sm:px-4 sm:text-sm [&>span:last-child]:hidden [&>span:last-child]:sm:inline"
               >
                 <span className="sm:hidden">
                   {translate(
                     'common.navigation.registerShort',
                   )}
                 </span>
-                <span className="hidden sm:inline">
+                <span>
                   {translate(
                     'common.navigation.register',
                   )}

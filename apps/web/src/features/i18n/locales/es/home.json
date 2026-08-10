@@ -15,5 +15,26 @@
     "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
     "reportsTitle": "Consultar reportes",
     "reportsDescription": "Busca pérdidas, hallazgos y avisos públicos."
+  },
+  "private": {
+    "areaLabel": "Área personal",
+    "title": "Todo preparado para proteger a tu familia animal.",
+    "description": "Desde aquí gestionarás mascotas, avisos, alertas y datos personales.",
+    "createReport": "Crear aviso",
+    "shortcutsTitle": "Accesos principales",
+    "shortcuts": {
+      "map": { "title": "Explorar el mapa", "description": "Consulta los casos y avistamientos próximos." },
+      "reports": { "title": "Mis avisos", "description": "Gestiona pérdidas, hallazgos y avistamientos." },
+      "pets": { "title": "Mis mascotas", "description": "Prepara la información de tu familia animal." }
+    },
+    "activity": {
+      "title": "Actividad reciente",
+      "description": "Aquí aparecerán alertas y actualizaciones de tus casos.",
+      "empty": "Todavía no hay actividad"
+    },
+    "notices": {
+      "accountConfirmed": "Cuenta confirmada correctamente. Bienvenido a BuscoHuella.",
+      "loginSuccess": "Sesión iniciada correctamente."
+    }
   }
 }

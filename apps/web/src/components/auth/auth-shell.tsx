@@ -1,3 +1,5 @@
+'use client';
+
 import {
   PawPrint,
   ShieldCheck,
@@ -7,6 +9,7 @@ import type { ReactNode } from 'react';
 
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LanguageSelector } from '@/features/i18n/language-selector';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
 export interface AuthShellProps {
   children: ReactNode;
@@ -19,6 +22,8 @@ export function AuthShell({
   title,
   description,
 }: AuthShellProps) {
+  const { t } = useTranslations('auth');
+
   return (
     <main className="relative min-h-screen bg-background lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
       <div className="absolute right-4 top-4 z-10 flex items-center gap-2 sm:right-6 sm:top-6">
@@ -30,7 +35,7 @@ export function AuthShell({
         <Link
           href="/"
           className="inline-flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-          aria-label="BuscoHuella, volver al inicio"
+          aria-label={t('shell.homeAria')}
         >
           <span
             className="flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground"
@@ -52,23 +57,20 @@ export function AuthShell({
           </span>
 
           <p className="text-sm font-semibold text-primary">
-            Encuentra. Protege. Conecta.
+            {t('shell.tagline')}
           </p>
 
           <h2 className="mt-3 text-4xl font-bold tracking-tight">
-            Una cuenta para cuidar mejor de tu familia
-            animal.
+            {t('shell.headline')}
           </h2>
 
           <p className="mt-5 max-w-lg text-lg text-muted-foreground">
-            Gestiona tus mascotas, crea reportes y
-            participa en búsquedas desde una experiencia
-            segura y accesible.
+            {t('shell.description')}
           </p>
         </div>
 
         <p className="text-sm text-muted-foreground">
-          Proyecto piloto en Sabadell · MVP en desarrollo
+          {t('shell.pilot')}
         </p>
       </section>
 
@@ -77,7 +79,7 @@ export function AuthShell({
           <Link
             href="/"
             className="mb-10 inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
-            aria-label="BuscoHuella, volver al inicio"
+            aria-label={t('shell.homeAria')}
           >
             <span
               className="flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary"
@@ -92,7 +94,7 @@ export function AuthShell({
 
           <div>
             <p className="text-sm font-semibold text-primary">
-              Acceso seguro
+              {t('shell.secureAccess')}
             </p>
             <h1 className="mt-2 text-3xl font-bold tracking-tight">
               {title}

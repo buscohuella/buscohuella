@@ -434,6 +434,12 @@ Incluye:
 - revisión por el propietario;
 - notificaciones internas.
 
+#### Perfil, avatar e i18n
+
+**Estado:** `Completed` y validado funcionalmente.
+
+Incluye perfil privado y público, avatar seguro en Supabase Storage, reemplazo y eliminación, navegación con avatar, selector de archivos accesible y diccionarios español/catalán.
+
 #### Notificaciones internas
 
 **Estado:** `Completed` y validado funcionalmente.
@@ -453,9 +459,9 @@ Web Push y alertas por proximidad quedan fuera de este bloque.
 
 #### Mapa y alternativa geográfica accesible
 
-**Estado:** `Next`.
+**Estado:** `Completed` en la entrega web actual; pendiente la auditoría transversal..
 
-Primera entrega prevista:
+Entrega web validada:
 
 - reportes públicos activos;
 - ubicación pública aproximada;
@@ -571,3 +577,19 @@ antes del piloto
 trimestralmente
 ```
  
+
+
+## Actualización validada — Perfil, avatar e i18n — 8 de agosto de 2026
+
+- Avatar privado en Supabase Storage con políticas RLS por propietario.
+- Validación server-side de tamaño, formato y procesamiento de imagen.
+- Reemplazo y eliminación de la imagen con una única fotografía por usuario.
+- Avatar visible en navegación privada y perfil público condicionado a la visibilidad del perfil.
+- Selector de archivos propio y accesible, sin depender de textos nativos del navegador.
+- Español y catalán cubiertos mediante claves i18n; los futuros idiomas reutilizarán las mismas claves.
+- Validaciones ejecutadas: lint, typecheck, build y tests.
+
+## Siguiente bloque operativo
+
+Auditoría incremental del MVP: perfil, navegación, accesibilidad, i18n, seguridad/RLS, privacidad, responsive, errores, SEO/Open Graph y pruebas manuales por flujo. Las nuevas funcionalidades se retomarán después de resolver los hallazgos bloqueantes.
+

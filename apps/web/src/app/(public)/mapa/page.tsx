@@ -92,6 +92,7 @@ export default async function PublicMapPage() {
           emptyTitle: translate('publicReport.list.emptyTitle'),
           found: translate('publicReport.type.FOUND_ANIMAL'),
           lost: translate('publicReport.type.LOST_PET'),
+          mapUnavailable: translate('publicReport.list.mapUnavailable'),
           title: translate('publicReport.list.title'),
           unknownLocation: translate('publicReport.details.unknown'),
         }}

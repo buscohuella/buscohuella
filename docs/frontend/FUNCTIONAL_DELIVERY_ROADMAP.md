@@ -42,6 +42,18 @@ movimiento del pin y creación del avistamiento.
 - `DONE` FP-018 — `Mis avistamientos` para el colaborador.
 - `DONE` FP-018.1 — timeline completo de actividad del avistamiento.
 
+## Perfil, avatar e internacionalización
+
+- `DONE` — perfil privado y público con visibilidad configurable.
+- `DONE` — avatar de usuario en formato JPEG, PNG o WebP, con límite de 5 MiB.
+- `DONE` — procesamiento seguro en servidor: rotación, redimensionado y conversión a WebP.
+- `DONE` — reemplazo y eliminación de la fotografía, manteniendo una única imagen por usuario.
+- `DONE` — avatar visible en perfil público cuando el perfil está habilitado y en la navegación privada como fallback de identidad.
+- `DONE` — textos de perfil y avatar preparados con i18n para español y catalán.
+- `DONE` — selector de archivos accesible, con etiquetas propias traducibles y navegación por teclado.
+- Seguridad: bucket privado, RLS por propietario y URLs firmadas; la exposición pública depende de `profiles.is_public`.
+- Pendiente no bloqueante: añadir nuevos idiomas mediante diccionarios, sin modificar los componentes.
+
 ## Notificaciones
 
 - `DONE` FP-019 — centro de notificaciones interno; validado funcionalmente.
@@ -53,12 +65,12 @@ movimiento del pin y creación del avistamiento.
 
 ## Mapa y ubicación
 
-- `IN_PROGRESS` — primera entrega: mapa público + lista accesible de reportes activos.
+- `DONE` — mapa público + lista accesible de reportes activos.
 - `PLANNED` — avisos cercanos por ubicación y radio.
-- `PLANNED` — mapa público de avisos.
-- `PLANNED` — autocompletado de direcciones.
-- `PLANNED` — marcar ubicación en mapa.
-- `PLANNED` — geocodificación/reverse geocoding.
+- `DONE` — mapa público de avisos con zonas circulares para ubicaciones aproximadas.
+- `DONE` — autocompletado de direcciones.
+- `DONE` — marcar ubicación en mapa y pin desplazable.
+- `PLANNED` — geocodificación/reverse geocoding avanzada.
 - `PLANNED` — mapa privado de búsqueda y avistamientos.
 - `PLANNED` — filtros por radio y especie.
 
@@ -114,6 +126,10 @@ se mostrará públicamente.
 Este bloque deberá conservar la alternativa textual, permitir corregir la
 descripción del lugar y mantener estados de permiso denegado, resultado no
 encontrado, ubicación aproximada y error del proveedor.
+
+## Auditoría transversal inmediata
+
+Tras cerrar perfil, avatar, i18n y ubicación, el siguiente bloque es una auditoría por flujos del MVP: permisos/RLS, privacidad de ubicaciones y fotografías, accesibilidad WCAG 2.2 AA, responsive, errores visibles, SEO/Open Graph y validación manual en español y catalán.
 
 ## Comunicación
 
@@ -175,5 +191,3 @@ Debe completarse una auditoría específica de:
 3. auditoría MVP;
 4. beta controlada;
 5. FP-020 push web y alertas por proximidad, según evidencia del piloto.
-
-

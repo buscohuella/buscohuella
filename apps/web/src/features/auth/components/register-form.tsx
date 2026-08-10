@@ -12,10 +12,10 @@ import {
   FormErrorSummary,
   type FormErrorItem,
 } from '@/components/ui/form-error-summary';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import { registerAction } from '../actions/register';
 import { emailInputPattern } from '../lib/email-policy';
-import { passwordHint } from '../lib/password-policy';
 import { initialAuthActionState } from '../types/auth-action-state';
 import { ActionMessage } from './action-message';
 import { FormField } from './form-field';
@@ -27,6 +27,7 @@ export function RegisterForm({
 }: {
   next?: string;
 }) {
+  const { t } = useTranslations('auth');
   const [state, formAction] = useActionState(
     registerAction,
     initialAuthActionState,
@@ -81,7 +82,7 @@ export function RegisterForm({
   const hasFieldErrors = formErrors.length > 0;
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form action={formAction} noValidate className="space-y-5">
       <input
         type="hidden"
         name="next"
@@ -95,7 +96,7 @@ export function RegisterForm({
         errors={formErrors}
         title={
           state.message ??
-          'Revisa los campos indicados.'
+          t('validation.review')
         }
       />
 
@@ -103,8 +104,8 @@ export function RegisterForm({
         id="full-name"
         name="fullName"
         type="text"
-        label="Nombre completo"
-        placeholder="Tu nombre"
+        label={t('register.fullName')}
+        placeholder={t('register.fullNamePlaceholder')}
         autoComplete="name"
         maxLength={120}
         error={state.fieldErrors?.fullName}
@@ -115,14 +116,14 @@ export function RegisterForm({
         id="register-email"
         name="email"
         type="email"
-        label="Correo electrónico"
-        placeholder="nombre@dominio.com"
+        label={t('register.email')}
+        placeholder={t('register.emailPlaceholder')}
         autoComplete="email"
         inputMode="email"
         maxLength={254}
         pattern={emailInputPattern}
-        title="Introduce un correo con usuario, dominio y extensión, por ejemplo nombre@empresa.es."
-        hint="Puede ser Gmail, Hotmail, un correo profesional o cualquier dominio válido."
+        title={t('register.emailHint')}
+        hint={t('register.emailHint')}
         error={state.fieldErrors?.email}
         required
       />
@@ -131,10 +132,10 @@ export function RegisterForm({
         id="register-password"
         name="password"
         type="password"
-        label="Contraseña"
-        placeholder="Crea una contraseña segura"
+        label={t('register.password')}
+        placeholder={t('register.passwordPlaceholder')}
         autoComplete="new-password"
-        hint={passwordHint}
+        hint={t('register.passwordHint')}
         minLength={8}
         value={password}
         onChange={(event) =>
@@ -148,8 +149,8 @@ export function RegisterForm({
         id="confirm-password"
         name="confirmPassword"
         type="password"
-        label="Repite la contraseña"
-        placeholder="Vuelve a escribir la contraseña"
+        label={t('register.confirmPassword')}
+        placeholder={t('register.confirmPasswordPlaceholder')}
         autoComplete="new-password"
         minLength={8}
         value={confirmation}
@@ -186,19 +187,19 @@ export function RegisterForm({
           }
           label={
             <>
-              Acepto los{' '}
+              {t('register.termsPrefix')}{' '}
               <Link
                 href="https://buscohuella.es/terminos"
                 className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
               >
-                términos de uso
+                {t('register.terms')}
               </Link>{' '}
-              y la{' '}
+              {' '}{t('register.and')}{' '}
               <Link
                 href="https://buscohuella.es/privacidad"
                 className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
               >
-                política de privacidad
+                {t('register.privacy')}
               </Link>
               .
             </>
@@ -216,16 +217,16 @@ export function RegisterForm({
         ) : null}
       </div>
 
-      <SubmitButton pendingText="Creando cuenta...">
+      <SubmitButton pendingText={t('register.pending')}>
         <UserPlus
           className="size-5"
           aria-hidden="true"
         />
-        Crear cuenta
+        {t('register.submit')}
       </SubmitButton>
 
       <p className="text-center text-sm text-muted-foreground">
-        ¿Ya tienes cuenta?{' '}
+        {t('register.hasAccount')}{' '}
         <Link
           href={
             next
@@ -234,7 +235,7 @@ export function RegisterForm({
           }
           className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          Iniciar sesión
+          {t('register.login')}
         </Link>
       </p>
     </form>

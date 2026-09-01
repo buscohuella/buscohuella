@@ -219,7 +219,8 @@
       "session": "La teva sessió ha caducat. Inicia la sessió de nou.",
       "pet": "No hem pogut verificar la mascota seleccionada.",
       "validation": "Revisa la informació abans de desar l'esborrany.",
-      "create": "No hem pogut desar l'esborrany. Torna-ho a provar."
+      "create": "No hem pogut desar l'esborrany. Torna-ho a provar.",
+      "duplicateOpen": "Ja tens un avís obert per a aquesta mascota. Revisa l'esborrany o l'avís existent abans de crear-ne un altre."
     },
     "generatedTitle": "{name} s'ha perdut",
     "formDescription": "Encara no serà públic. Podràs editar-lo i publicar-lo després.",
@@ -281,7 +282,9 @@
       "upload": "No hem pogut desar la fotografia. Torna-ho a provar."
     },
     "back": "Torna a Els meus avisos",
-    "continueToPublish": "Revisa i publica"
+    "continueToPublish": "Revisa i publica",
+    "editInformation": "Edita la informació de l'avís",
+    "editInformationDescription": "Pots canviar la descripció, la ubicació i les dades de contacte abans de publicar-lo."
   },
   "publish": {
     "checks": {

@@ -2,6 +2,7 @@
 
 import {
   ReportRepository,
+  ReportDataError,
   type Database as ReportDatabase,
 } from '@buscohuella/report-data';
 import {
@@ -543,6 +544,18 @@ export async function createLostReportDraftAction(
       reportId: report.id,
     };
   } catch (error) {
+    if (
+      error instanceof ReportDataError &&
+      error.code === 'REPORT_OPEN_LOST_DUPLICATE'
+    ) {
+      return {
+        status: 'error',
+        message: translate(
+          'reports.review.errors.duplicateOpen',
+        ),
+      };
+    }
+
     logServerError(
       'report.draft.create_failed',
       error,

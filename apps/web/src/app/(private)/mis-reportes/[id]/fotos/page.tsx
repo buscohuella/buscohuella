@@ -199,6 +199,27 @@ export default async function ReportPhotosPage({
         </p>
       </header>
 
+      <div className="rounded-xl border border-primary/20 bg-primary-soft p-4">
+        <p className="font-semibold text-foreground">
+          {translate(
+            'reports.photos.editInformation',
+          )}
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {translate(
+            'reports.photos.editInformationDescription',
+          )}
+        </p>
+        <Link
+          href={`/mis-reportes/${id}/editar`}
+          className="mt-3 inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-background px-4 font-semibold text-foreground hover:bg-surface-elevated focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+        >
+          {translate(
+            'reports.photos.editInformation',
+          )}
+        </Link>
+      </div>
+
       <Card elevated>
         <CardHeader>
           <span className="mb-2 flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">

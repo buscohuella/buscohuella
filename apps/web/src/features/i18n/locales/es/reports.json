@@ -282,7 +282,9 @@
       "upload": "No hemos podido guardar la fotografía. Inténtalo de nuevo."
     },
     "back": "Volver a Mis avisos",
-    "continueToPublish": "Revisar y publicar"
+    "continueToPublish": "Revisar y publicar",
+    "editInformation": "Editar información del aviso",
+    "editInformationDescription": "Puedes cambiar la descripción, la ubicación y los datos de contacto antes de publicarlo."
   },
   "publish": {
     "checks": {

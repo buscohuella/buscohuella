@@ -230,7 +230,7 @@ https://buscohuella.es/auth/callback
 El secreto OAuth solo se configura en Supabase y nunca se guarda en Git.
 La aplicación permanece en modo de prueba de Google mientras se valida con betatesters.
 
-Pendiente funcional: completar el onboarding del primer acceso cuando falten datos de perfil y mostrar confirmación accesible tras iniciar sesión.
+El primer acceso con Google sin nombre en los metadatos redirige a `/perfil?setup=1` con un aviso accesible. La fotografía de perfil sigue siendo opcional. Los accesos completados redirigen a `/inicio?login=success` para mostrar confirmación.
 
 ## 9. Cierre de sesión
 

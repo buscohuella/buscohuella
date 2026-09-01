@@ -3,6 +3,7 @@
     "title": "El meu perfil",
     "description": "Gestiona la identitat del teu compte i decideix quina informació vols mostrar públicament.",
     "loadError": "No s'ha pogut carregar el perfil de l'usuari.",
+    "completeProfile": "Per completar el teu compte, afegeix el teu nom. La fotografia de perfil és opcional.",
     "privacyTitle": "Privacitat per defecte",
     "privacyDescription": "El teu perfil comença sent privat. Activar-lo no publica el correu, el telèfon, l'adreça ni identificadors interns.",
     "contactTitle": "Contacte segur",

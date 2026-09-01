@@ -3,6 +3,7 @@
     "title": "Mi perfil",
     "description": "Gestiona tu identidad de cuenta y decide qué información deseas mostrar públicamente.",
     "loadError": "No se ha podido cargar el perfil del usuario.",
+    "completeProfile": "Para completar tu cuenta, añade tu nombre. La fotografía de perfil es opcional.",
     "privacyTitle": "Privacidad por defecto",
     "privacyDescription": "Tu perfil comienza siendo privado. Activarlo no publica correo, teléfono, dirección ni identificadores internos.",
     "contactTitle": "Contacto seguro",

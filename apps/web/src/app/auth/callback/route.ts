@@ -16,7 +16,26 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(new URL(next, url.origin));
+    if (!error) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const metadata = user?.user_metadata ?? {};
+      const hasName = [metadata.full_name, metadata.name].some(
+        (value) => typeof value === 'string' && value.trim().length > 0,
+      );
+
+      if (!hasName) {
+        return NextResponse.redirect(
+          new URL('/perfil?setup=1', url.origin),
+        );
+      }
+
+      const destination = next === '/inicio'
+        ? '/inicio?login=success'
+        : next;
+      return NextResponse.redirect(new URL(destination, url.origin));
+    }
   }
 
   return NextResponse.redirect(new URL('/login?auth_error=oauth', url.origin));

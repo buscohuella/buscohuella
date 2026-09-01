@@ -6,6 +6,7 @@ import {
 import { redirect } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
+import { AuthNotice } from '@/features/auth/components/auth-notice';
 import {
   Card,
   CardContent,
@@ -18,9 +19,14 @@ import { getServerTranslator } from '@/features/i18n/server';
 import { ProfileForm } from '@/features/profile/components/profile-form';
 import { getProfile } from '@/features/profile/queries/get-profile';
 
-export default async function ProfilePage() {
-  const [user, profile, { translate }] =
+export default async function ProfilePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ setup?: string }>;
+}) {
+  const [{ setup }, user, profile, { translate }] =
     await Promise.all([
+      searchParams,
       getCurrentUser(),
       getProfile(),
       getServerTranslator(),
@@ -38,6 +44,14 @@ export default async function ProfilePage() {
 
   return (
     <PageContainer className="space-y-6">
+      <AuthNotice
+        message={
+          setup === '1'
+            ? translate('profile.page.completeProfile')
+            : undefined
+        }
+        tone="info"
+      />
       <Card elevated>
         <CardHeader>
           <span className="mb-4 flex size-14 items-center justify-center rounded-xl bg-primary-soft text-primary">

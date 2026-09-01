@@ -1,5 +1,5 @@
 import type { Database } from '@buscohuella/pet-data';
-import { createServerClient } from '@Supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 import { env } from '@/lib/env';

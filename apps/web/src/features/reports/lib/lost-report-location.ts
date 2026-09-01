@@ -3,6 +3,8 @@ export const lostReportLocationStorageKey =
 
 export type GpsReportLocation = {
   source: 'GPS';
+  placeLabel?: string;
+  municipalityName?: string;
   exactLatitude: number;
   exactLongitude: number;
   publicLatitude: number;

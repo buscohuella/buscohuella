@@ -2,7 +2,6 @@
 
 import {
   ArrowRight,
-  Check,
   Crosshair,
   LoaderCircle,
   MapPin,
@@ -18,7 +17,7 @@ import {
 } from 'react';
 
 import { useTranslations } from '@/features/i18n/i18n-provider';
-import { LocationPicker } from '@/features/maps/components/location-picker';
+import { LocationPicker, reverseGeocodeCoordinates, type ResolvedLocation } from '@/features/maps/components/location-picker';
 import {
   approximateCoordinate,
   lostReportLocationStorageKey,
@@ -48,8 +47,7 @@ export function IncidentLocationStep({
     useState('');
   const [manualCoordinates, setManualCoordinates] =
     useState<{ latitude: number; longitude: number } | null>(null);
-  const [manualMunicipality, setManualMunicipality] =
-    useState<string | undefined>(undefined);
+  const [gpsPlace, setGpsPlace] = useState<string | null>(null);
   const [isLocating, setIsLocating] =
     useState(false);
   const [errorKey, setErrorKey] =
@@ -68,6 +66,10 @@ export function IncidentLocationStep({
         setLocation(stored);
         setMode(stored.source);
 
+        if (stored.source === 'GPS') {
+          setGpsPlace(stored.placeLabel ?? null);
+        }
+
         if (stored.source === 'MANUAL') {
           setManualPlace(stored.placeLabel);
           if (
@@ -79,7 +81,6 @@ export function IncidentLocationStep({
               longitude: stored.exactLongitude,
             });
           }
-          setManualMunicipality(stored.municipalityName);
         }
       },
     );
@@ -139,6 +140,21 @@ export function IncidentLocationStep({
         );
         setLocation(nextLocation);
         setIsLocating(false);
+
+        void reverseGeocodeCoordinates({
+          latitude: exactLatitude,
+          longitude: exactLongitude,
+        }).then((resolved) => {
+          if (!resolved) return;
+          const resolvedLocation: LostReportLocation = {
+            ...nextLocation,
+            placeLabel: resolved.label,
+            municipalityName: resolved.municipalityName,
+          };
+          saveLostReportLocation(resolvedLocation);
+          setGpsPlace(resolved.label);
+          setLocation(resolvedLocation);
+        }).catch(() => undefined);
       },
       (error) => {
         setIsLocating(false);
@@ -194,44 +210,20 @@ export function IncidentLocationStep({
     }
   }
 
-  function confirmManualPlace() {
-    const normalized =
-      manualPlace.trim();
+  function handleManualLocationResolved(resolved: ResolvedLocation) {
+    const nextLocation: LostReportLocation = {
+      source: 'MANUAL',
+      placeLabel: resolved.label,
+      municipalityName: resolved.municipalityName,
+      exactLatitude: resolved.coordinates.latitude,
+      exactLongitude: resolved.coordinates.longitude,
+      publicLatitude: approximateCoordinate(resolved.coordinates.latitude),
+      publicLongitude: approximateCoordinate(resolved.coordinates.longitude),
+      capturedAt: new Date().toISOString(),
+    };
 
-    if (normalized.length < 3) {
-      setErrorKey(
-        'location.errors.manualShort',
-      );
-      return;
-    }
-    if (!manualCoordinates) {
-      setErrorKey(
-        'location.errors.manualCoordinates',
-      );
-      return;
-    }
-
-    const nextLocation: LostReportLocation =
-      {
-        source: 'MANUAL',
-        placeLabel: normalized,
-        municipalityName: manualMunicipality,
-        ...(manualCoordinates
-          ? {
-              exactLatitude: manualCoordinates.latitude,
-              exactLongitude: manualCoordinates.longitude,
-              publicLatitude: approximateCoordinate(
-                manualCoordinates.latitude,
-              ),
-              publicLongitude: approximateCoordinate(
-                manualCoordinates.longitude,
-              ),
-            }
-          : {}),
-        capturedAt:
-          new Date().toISOString(),
-      };
-
+    setManualPlace(resolved.label);
+    setManualCoordinates(resolved.coordinates);
     saveLostReportLocation(nextLocation);
     setLocation(nextLocation);
     setErrorKey(null);
@@ -244,7 +236,7 @@ export function IncidentLocationStep({
     setLocation(null);
     setManualPlace('');
     setManualCoordinates(null);
-    setManualMunicipality(undefined);
+    setGpsPlace(null);
     setMode(null);
     setErrorKey(null);
   }
@@ -379,47 +371,15 @@ export function IncidentLocationStep({
                onChange={setManualCoordinates}
                label={manualPlace}
                onLabelChange={setManualPlace}
-               onMunicipalityChange={setManualMunicipality}
+               onQueryChange={() => {
+                 setManualCoordinates(null);
+                 if (location?.source === 'MANUAL') {
+                   setLocation(null);
+                 }
+               }}
+               onResolved={handleManualLocationResolved}
              />
            </div>
-           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-            <input
-              id="manual-place"
-              type="text"
-              value={manualPlace}
-              maxLength={180}
-              placeholder={t(
-                'location.manualPlaceholder',
-              )}
-              onChange={(event) => {
-                setManualPlace(
-                  event.target.value,
-                );
-
-                if (
-                  location?.source ===
-                  'MANUAL'
-                ) {
-                  setLocation(null);
-                }
-              }}
-              className="min-h-12 flex-1 rounded-lg border border-border bg-background px-3 text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-            />
-
-            <button
-              type="button"
-              onClick={confirmManualPlace}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-primary px-5 font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-            >
-              <Check
-                className="size-5"
-                aria-hidden="true"
-              />
-              {t(
-                'location.confirmManual',
-              )}
-            </button>
-          </div>
         </div>
       ) : null}
 
@@ -467,6 +427,7 @@ export function IncidentLocationStep({
 
               {location.source === 'GPS' ? (
                 <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                  {gpsPlace ? <p>{gpsPlace}</p> : null}
                   <p>
                     {t(
                       'location.gpsConfirmed',

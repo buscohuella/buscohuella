@@ -8,6 +8,13 @@ type Coordinates = { latitude: number; longitude: number };
 type Suggestion = { id: string; label: string; municipalityName?: string; coordinates: [number, number] };
 export type ResolvedLocation = { label: string; municipalityName?: string; coordinates: Coordinates };
 
+function getMunicipalityName(
+  context: Array<{ id: string; text?: string }> | undefined,
+) {
+  return context?.find((item) => item.id.startsWith('place.'))?.text
+    ?? context?.find((item) => item.id.startsWith('municipality.'))?.text;
+}
+
 export async function reverseGeocodeCoordinates(coordinates: Coordinates): Promise<ResolvedLocation | null> {
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
   if (!token) return null;
@@ -23,7 +30,7 @@ export async function reverseGeocodeCoordinates(coordinates: Coordinates): Promi
 
   return {
     label: feature.place_name ?? feature.text ?? `${coordinates.latitude.toFixed(5)}, ${coordinates.longitude.toFixed(5)}`,
-    municipalityName: feature.context?.find((item) => item.id.startsWith('place.') || item.id.startsWith('locality.'))?.text,
+    municipalityName: getMunicipalityName(feature.context),
     coordinates,
   };
 }
@@ -123,7 +130,7 @@ export function LocationPicker({ value, onChange, label, onLabelChange, onMunici
       setIsSearching(true);
       fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(normalized)}.json?autocomplete=true&limit=5&language=es&country=es&access_token=${token}`)
         .then(async (response) => { if (!response.ok) throw new Error('geocoding-failed'); return response.json() as Promise<{ features?: Array<{ id: string; place_name?: string; text?: string; center?: [number, number]; context?: Array<{ id: string; text?: string }> }> }>; })
-        .then((data) => setSuggestions((data.features ?? []).flatMap((feature) => { const municipality = feature.context?.find((item) => item.id.startsWith('place.') || item.id.startsWith('locality.'))?.text; return feature.center ? [{ id: feature.id, label: feature.place_name ?? feature.text ?? normalized, municipalityName: municipality, coordinates: feature.center }] : []; })))
+        .then((data) => setSuggestions((data.features ?? []).flatMap((feature) => { const municipality = getMunicipalityName(feature.context); return feature.center ? [{ id: feature.id, label: feature.place_name ?? feature.text ?? normalized, municipalityName: municipality, coordinates: feature.center }] : []; })))
         .catch(() => setError('No hemos podido buscar ese lugar. Puedes marcarlo directamente en el mapa.'))
         .finally(() => setIsSearching(false));
     }, 300);

@@ -1462,7 +1462,7 @@ El modelo de datos se ha diseñado siguiendo principios de simplicidad, escalabi
   - Permiten almacenar información adicional sin modificar el esquema relacional.
 
 - **Soft Deletes**.
-  - Los registros no se eliminan físicamente.
+  - Los registros publicados se conservan para mantener la trazabilidad. El propietario puede eliminar definitivamente un aviso archivado sin avistamientos asociados, siempre con confirmación explícita; los avisos con historial de avistamientos no se eliminan físicamente.
   - Se marcan como eliminados para facilitar auditorías y recuperación.
 
 - **Timestamps obligatorios**.

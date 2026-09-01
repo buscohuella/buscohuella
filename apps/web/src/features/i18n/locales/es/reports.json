@@ -344,6 +344,11 @@
       "archiveTitle": "Archivar aviso",
       "archiveDescription": "Lo conservarás en el historial, separado de los casos recientes.",
       "archiveButton": "Archivar",
+      "delete": "Eliminar definitivamente",
+      "deleting": "Eliminando…",
+      "deleteTitle": "¿Eliminar “{title}”?",
+      "deleteDescription": "Esta acción eliminará el aviso archivado y sus fotografías. No se puede deshacer.",
+      "deleteConfirm": "Sí, eliminar aviso",
       "archivedDescription": "Este aviso está archivado y se conserva como historial."
     },
     "draftDescription": "Continúa su preparación antes de publicarlo.",
@@ -369,7 +374,8 @@
       "REACTIVATE": "El aviso vuelve a estar activo.",
       "RESOLVE": "El aviso se ha marcado como resuelto.",
       "CLOSE": "El aviso se ha cerrado.",
-      "ARCHIVE": "El aviso se ha archivado."
+      "ARCHIVE": "El aviso se ha archivado.",
+      "DELETE": "El aviso se ha eliminado."
     },
     "managementDescription": "Cambia su estado según la situación actual.",
     "historyTitle": "Historial",
@@ -383,6 +389,9 @@
       "closureRequired": "Explica el motivo del cierre.",
       "invalidAction": "Esta acción no está permitida para el estado actual.",
       "notFound": "No hemos encontrado este aviso.",
+      "deleteOnlyArchived": "Solo se pueden eliminar avisos archivados.",
+      "deleteHasSightings": "Este aviso tiene avistamientos asociados y se conserva para no perder su historial.",
+      "deleteGeneric": "No hemos podido eliminar el aviso. Puede tener datos relacionados que deban conservarse.",
       "generic": "No hemos podido actualizar el aviso. Inténtalo de nuevo."
     },
     "incidentAt": "Momento del incidente",

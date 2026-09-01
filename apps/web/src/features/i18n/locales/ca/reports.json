@@ -344,6 +344,11 @@
       "archiveTitle": "Arxiva l'avís",
       "archiveDescription": "El conservaràs a l'historial, separat dels casos recents.",
       "archiveButton": "Arxiva",
+      "delete": "Elimina definitivament",
+      "deleting": "Eliminant…",
+      "deleteTitle": "Eliminar “{title}”?",
+      "deleteDescription": "Aquesta acció eliminarà l'avís arxivat i les seves fotografies. No es pot desfer.",
+      "deleteConfirm": "Sí, elimina l'avís",
       "archivedDescription": "Aquest avís està arxivat i es conserva com a historial."
     },
     "draftDescription": "Continua preparant-lo abans de publicar-lo.",
@@ -369,7 +374,8 @@
       "REACTIVATE": "L'avís torna a estar actiu.",
       "RESOLVE": "L'avís s'ha marcat com a resolt.",
       "CLOSE": "L'avís s'ha tancat.",
-      "ARCHIVE": "L'avís s'ha arxivat."
+      "ARCHIVE": "L'avís s'ha arxivat.",
+      "DELETE": "L'avís s'ha eliminat."
     },
     "managementDescription": "Canvia l'estat segons la situació actual.",
     "historyTitle": "Historial",
@@ -383,6 +389,9 @@
       "closureRequired": "Explica el motiu del tancament.",
       "invalidAction": "Aquesta acció no està permesa per a l'estat actual.",
       "notFound": "No hem trobat aquest avís.",
+      "deleteOnlyArchived": "Només es poden eliminar avisos arxivats.",
+      "deleteHasSightings": "Aquest avís té avistaments associats i es conserva per no perdre'n l'historial.",
+      "deleteGeneric": "No hem pogut eliminar l'avís. Pot tenir dades relacionades que s'han de conservar.",
       "generic": "No hem pogut actualitzar l'avís. Torna-ho a provar."
     },
     "incidentAt": "Moment de l'incident",

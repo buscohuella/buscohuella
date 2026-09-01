@@ -199,6 +199,20 @@ export function LostReportReview({
         name="locationSource"
         value={location.source}
       />
+      {location.source === 'MANUAL' ? (
+        <>
+          <input
+            type="hidden"
+            name="placeLabel"
+            value={location.placeLabel}
+          />
+          <input
+            type="hidden"
+            name="municipalityName"
+            value={location.municipalityName ?? ''}
+          />
+        </>
+      ) : null}
 
       {location.source === 'GPS' ||
       (location.exactLatitude !== undefined &&
@@ -227,12 +241,7 @@ export function LostReportReview({
             value={location.publicLongitude ?? ''}
           />
         </>
-      ) : (
-        <>
-          <input type="hidden" name="placeLabel" value={location.placeLabel} />
-          <input type="hidden" name="municipalityName" value={location.municipalityName ?? ''} />
-        </>
-      )}
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-2">
         <SummaryCard

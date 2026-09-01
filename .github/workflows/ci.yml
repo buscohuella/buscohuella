@@ -34,6 +34,13 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Build workspace packages
+        run: |
+          pnpm --filter @buscohuella/pet-domain build
+          pnpm --filter @buscohuella/report-domain build
+          pnpm --filter @buscohuella/pet-data build
+          pnpm --filter @buscohuella/report-data build
+
       - name: Typecheck
         run: pnpm typecheck
 

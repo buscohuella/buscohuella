@@ -29,6 +29,8 @@ FP-002 incluye:
 - enfriamiento visual para reenvío de recuperación;
 - protección de acceso directo a `/nueva-contrasena`;
 - prevención de enumeración de cuentas.
+- inicio de sesión y registro mediante Google OAuth;
+- callback OAuth seguro con validación de redirecciones internas.
 
 ## 3. Dependencias
 
@@ -189,6 +191,46 @@ El correo o la contraseña no son correctos.
 ```
 
 No se revela qué campo es incorrecto.
+
+## 8.1. Google OAuth
+
+El acceso con Google utiliza Supabase Auth como intermediario OAuth.
+
+Componentes:
+
+```text
+apps/web/src/features/auth/components/google-auth-button.tsx
+apps/web/src/app/auth/callback/route.ts
+```
+
+Flujo:
+
+```text
+BuscoHuella
+→ Google
+→ callback de Supabase
+→ /auth/callback
+→ intercambio de código por sesión
+→ redirección interna segura
+```
+
+La consola de Google Cloud debe usar como callback del proveedor:
+
+```text
+https://tqdmykvnocpffzkcaysp.supabase.co/auth/v1/callback
+```
+
+Supabase debe tener permitidas las redirecciones de la aplicación:
+
+```text
+http://localhost:3000/auth/callback
+https://buscohuella.es/auth/callback
+```
+
+El secreto OAuth solo se configura en Supabase y nunca se guarda en Git.
+La aplicación permanece en modo de prueba de Google mientras se valida con betatesters.
+
+Pendiente funcional: completar el onboarding del primer acceso cuando falten datos de perfil y mostrar confirmación accesible tras iniciar sesión.
 
 ## 9. Cierre de sesión
 
@@ -460,3 +502,29 @@ FP-003 deberá implementar:
 - visibilidad pública;
 - edición de perfil;
 - base para roles y reputación futura.
+
+## 21. Endurecimiento Supabase — 2026-08-10
+
+Se aplicaron las migraciones:
+
+```text
+supabase/migrations/20260810130000_harden_rpc_privileges_and_private_rls.sql
+supabase/migrations/20260810130100_remove_inherited_public_rpc_grants.sql
+```
+
+Medidas aplicadas:
+
+- las funciones privadas de reportes, avistamientos, fotografías y notificaciones solo son ejecutables por `authenticated`;
+- las funciones de trigger no son ejecutables mediante la API;
+- las lecturas públicas de reportes mantienen acceso explícito para `anon` y `authenticated`;
+- `notifications` solo permite lectura al destinatario autenticado;
+- `sighting_owner_states` solo permite lectura al propietario autenticado;
+- se añadieron índices para las claves externas usadas por notificaciones y eventos.
+
+La comprobación posterior confirmó que no quedan funciones privadas `SECURITY DEFINER` ejecutables por `anon`.
+
+Pendiente de configurar manualmente en Supabase Auth:
+
+- activar la protección contra contraseñas filtradas en Auth → Password Security;
+- revisar CAPTCHA y límites de autenticación antes del piloto;
+- validar las plantillas de correo en español y catalán después de cualquier cambio.

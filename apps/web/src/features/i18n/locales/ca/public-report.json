@@ -3,6 +3,7 @@
     "notFound": "Avís no disponible | BuscoHuella"
   },
   "back": "Torna als avisos públics",
+  "backToMap": "Torna al mapa",
   "active": "Actiu",
   "animalFallback": "Animal",
   "galleryAlt": "Fotografies de {name}",
@@ -59,7 +60,29 @@
     "emptyTitle": "No hi ha avisos actius",
     "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",
     "noPhoto": "Sense fotografia",
-    "mapUnavailable": "No s'ha pogut carregar el mapa. Pots consultar els avisos a la llista."
+    "mapUnavailable": "No s'ha pogut carregar el mapa. Pots consultar els avisos a la llista.",
+    "mapListTitle": "Avisos en aquesta zona",
+    "locationTitle": "Distància",
+    "markOnMap": "Marca al mapa",
+    "markingOnMap": "Fes clic al mapa…",
+    "addressPlaceholder": "Escriu una adreça o municipi",
+    "chooseOnMap": "També pots fer clic al mapa per triar un punt.",
+    "clearLocation": "Esborra la ubicació",
+    "useLocation": "Utilitza la meva ubicació",
+    "usingLocation": "Cercant la ubicació…",
+    "locationError": "No hem pogut obtenir la teva ubicació. Pots continuar sense filtre de distància.",
+    "searching": "Cercant…",
+    "radiusUnit": "km",
+    "radiusAll": "Totes les distàncies",
+    "filterTitle": "Filtrar",
+    "filterAll": "Tots",
+    "filterLost": "Perdudes",
+    "filterFound": "Trobats",
+    "sortTitle": "Ordenar",
+    "recent": "Més recents",
+    "viewNotice": "Veure avís",
+    "resultOne": "avís",
+    "resultMany": "avisos"
   },
   "generatedTitle": {
     "LOST_PET": "{name} s'ha perdut"

@@ -462,10 +462,8 @@ export async function createLostReportDraftAction(
       petId: pet.id,
       speciesId: pet.speciesId,
       status: 'DRAFT',
-      title: translate(
-        'reports.review.generatedTitle',
-        { name: pet.name },
-      ),
+      title: pet.name,
+      titleSource: 'SYSTEM',
       description: finalDescription,
       incidentAt: resolveIncidentAt(
         moment,

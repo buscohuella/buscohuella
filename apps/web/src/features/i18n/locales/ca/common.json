@@ -55,6 +55,12 @@
   "status": {
     "loading": "Carregant…"
   },
+  "notFound": {
+    "title": "Pàgina no trobada",
+    "description": "La pàgina no existeix o no està disponible públicament.",
+    "backHome": "Torna a l'inici",
+    "goMap": "Explora els avisos"
+  },
   "quickActions": {
     "open": "Obre les accions ràpides",
     "add": "Afegeix",

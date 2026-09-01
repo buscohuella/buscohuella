@@ -3,6 +3,7 @@ import { CalendarDays, MapPin, PawPrint, ShieldCheck } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
+import { getServerTranslator } from '@/features/i18n/server';
 import {
   Card,
   CardContent,
@@ -41,6 +42,7 @@ export async function generateMetadata({
 export default async function PublicProfilePage({
   params,
 }: PublicProfilePageProps) {
+  const { locale, translate } = await getServerTranslator();
   const { alias } = await params;
   const profile = await getPublicProfile(alias);
 
@@ -48,7 +50,7 @@ export default async function PublicProfilePage({
     notFound();
   }
 
-  const memberSince = new Intl.DateTimeFormat('es-ES', {
+  const memberSince = new Intl.DateTimeFormat(locale === 'ca' ? 'ca-ES' : 'es-ES', {
     month: 'long',
     year: 'numeric',
   }).format(new Date(profile.createdAt));
@@ -60,7 +62,7 @@ export default async function PublicProfilePage({
           {profile.avatarUrl ? (
             <div
               role="img"
-              aria-label={`Avatar de @${profile.publicAlias}`}
+              aria-label={translate('profile.public.avatarAlt', { alias: profile.publicAlias })}
               className="size-20 rounded-full border border-border bg-cover bg-center"
               style={{ backgroundImage: `url(${profile.avatarUrl})` }}
             />
@@ -78,7 +80,7 @@ export default async function PublicProfilePage({
           </CardTitle>
 
           <CardDescription>
-            Perfil público de la comunidad BuscoHuella
+            {translate('profile.public.community')}
           </CardDescription>
         </CardHeader>
 
@@ -89,7 +91,7 @@ export default async function PublicProfilePage({
             </p>
           ) : (
             <p className="text-center text-muted-foreground">
-              Este usuario todavía no ha añadido una biografía pública.
+              {translate('profile.public.noBio')}
             </p>
           )}
 
@@ -98,9 +100,9 @@ export default async function PublicProfilePage({
               <div className="flex items-center gap-3">
                 <MapPin className="size-5 text-primary" aria-hidden="true" />
                 <div>
-                  <p className="text-sm font-semibold">Zona</p>
+                  <p className="text-sm font-semibold">{translate('profile.public.zone')}</p>
                   <p className="text-sm text-muted-foreground">
-                    {profile.municipality || 'No indicada'}
+                    {profile.municipality || translate('profile.public.unknownZone')}
                   </p>
                 </div>
               </div>
@@ -113,7 +115,7 @@ export default async function PublicProfilePage({
                   aria-hidden="true"
                 />
                 <div>
-                  <p className="text-sm font-semibold">Miembro desde</p>
+                  <p className="text-sm font-semibold">{translate('profile.public.memberSince')}</p>
                   <p className="text-sm text-muted-foreground">
                     {memberSince}
                   </p>
@@ -129,9 +131,7 @@ export default async function PublicProfilePage({
                 aria-hidden="true"
               />
               <p className="text-sm text-muted-foreground">
-                Este perfil solo muestra información que su propietario ha
-                decidido hacer pública. Los datos de contacto y la información
-                privada no se comparten aquí.
+                {translate('profile.public.privacy')}
               </p>
             </div>
           </div>

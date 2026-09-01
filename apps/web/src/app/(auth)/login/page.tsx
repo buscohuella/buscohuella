@@ -32,8 +32,10 @@ export default async function LoginPage({
       ? translate('auth.login.registered')
       : params.password_updated === '1'
         ? translate('auth.login.passwordUpdated')
-        : params.logged_out === '1'
-          ? translate('auth.login.loggedOut')
+      : params.logged_out === '1'
+        ? translate('auth.login.loggedOut')
+        : params.auth_error === 'oauth'
+          ? translate('auth.login.oauthError')
           : undefined;
 
   return (

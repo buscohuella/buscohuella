@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/services/supabase/server';
+import { getServerTranslator } from '@/features/i18n/server';
 
 import { validateEmail } from '../lib/email-policy';
 import { recoveryEmailCooldownSeconds } from '../lib/recovery-flow';
@@ -11,6 +12,7 @@ export async function recoverPasswordAction(
   _previousState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
+  const { translate } = await getServerTranslator();
   const emailValidation = validateEmail(
     getString(formData, 'email'),
   );
@@ -18,7 +20,7 @@ export async function recoverPasswordAction(
   if (!emailValidation.isValid) {
     return {
       status: 'error',
-      message: 'Revisa los campos indicados.',
+      message: translate('auth.validation.review'),
       fieldErrors: {
         email: emailValidation.error,
       },
@@ -42,22 +44,22 @@ export async function recoverPasswordAction(
   ) {
     return {
       status: 'error',
-      message: `Has solicitado otro enlace demasiado pronto. Espera ${recoveryEmailCooldownSeconds} segundos antes de volver a intentarlo.`,
+      message: translate('auth.recover.cooldown', {
+        seconds: recoveryEmailCooldownSeconds,
+      }),
     };
   }
 
   if (error) {
     return {
       status: 'error',
-      message:
-        'No se ha podido enviar el enlace en este momento. Inténtalo de nuevo más tarde.',
+      message: translate('auth.recover.sendError'),
     };
   }
 
   // Respuesta deliberadamente genérica para no revelar si una cuenta existe.
   return {
     status: 'success',
-    message:
-      'Si existe una cuenta asociada, recibirás un enlace para cambiar la contraseña.',
+    message: translate('auth.recover.successDescription'),
   };
 }

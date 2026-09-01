@@ -27,7 +27,7 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     labelKey: 'navigation.private.notices',
-    href: '/avisos',
+    href: '/mis-avisos',
     icon: ScrollText,
   },
   {

@@ -3,6 +3,7 @@
 import {
   PawPrint,
   ShieldCheck,
+  Users,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -31,7 +32,8 @@ export function AuthShell({
         <ThemeToggle />
       </div>
 
-      <section className="hidden bg-primary-soft p-10 lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-primary-soft p-10 lg:flex lg:flex-col lg:justify-between">
+        <div className="pointer-events-none absolute -right-28 top-24 size-96 rounded-full border-[3rem] border-primary/5" aria-hidden="true" />
         <Link
           href="/"
           className="inline-flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
@@ -48,7 +50,7 @@ export function AuthShell({
           </span>
         </Link>
 
-        <div className="max-w-xl">
+        <div className="relative max-w-xl">
           <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-surface-elevated text-primary shadow-[var(--shadow-sm)]">
             <ShieldCheck
               className="size-7"
@@ -67,6 +69,17 @@ export function AuthShell({
           <p className="mt-5 max-w-lg text-lg text-muted-foreground">
             {t('shell.description')}
           </p>
+
+          <ul className="mt-8 grid gap-3 text-sm font-semibold" aria-label={t('shell.benefitsLabel')}>
+            {(['privacy', 'community', 'control'] as const).map((benefit, index) => (
+              <li key={benefit} className="flex items-center gap-3">
+                <span className="flex size-8 items-center justify-center rounded-full bg-surface-elevated text-primary shadow-[var(--shadow-sm)]" aria-hidden="true">
+                  {index === 1 ? <Users className="size-4" /> : <ShieldCheck className="size-4" />}
+                </span>
+                {t(`shell.benefits.${benefit}`)}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <p className="text-sm text-muted-foreground">

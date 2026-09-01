@@ -13,6 +13,7 @@ import {
 } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 import {
   FormErrorSummary,
   type FormErrorItem,
@@ -35,6 +36,7 @@ function RecoverySuccessState({
 }: {
   message?: string;
 }) {
+  const { t } = useTranslations('auth');
   const [remainingSeconds, setRemainingSeconds] =
     useState(recoveryEmailCooldownSeconds);
 
@@ -72,7 +74,7 @@ function RecoverySuccessState({
 
       <div>
         <h2 className="text-xl font-bold tracking-tight">
-          Revisa tu correo
+          {t('recover.successTitle')}
         </h2>
 
         <p
@@ -85,18 +87,14 @@ function RecoverySuccessState({
 
       <div className="rounded-lg border border-border-soft bg-surface p-4 text-left text-sm text-muted-foreground">
         <p>
-          Abre el mensaje de BuscoHuella y pulsa el
+          {t('recover.inboxHint')}
           enlace para crear una contraseña nueva.
         </p>
         <p className="mt-2">
-          El enlace puede abrirse en otra pestaña.
-          Cuando lo hayas abierto, puedes cerrar esta
-          página.
+          {t('recover.tabHint')}
         </p>
         <p className="mt-2">
-          Si no aparece en unos minutos, revisa las
-          carpetas de spam, correo no deseado o
-          promociones.
+          {t('recover.spamHint')}
         </p>
       </div>
 
@@ -113,10 +111,8 @@ function RecoverySuccessState({
             aria-hidden="true"
           />
           {isCoolingDown
-            ? `Enviar otro enlace en ${formatCountdown(
-                remainingSeconds,
-              )}`
-            : 'Enviar otro enlace'}
+            ? t('recover.resendIn', { seconds: formatCountdown(remainingSeconds) })
+            : t('recover.resend')}
         </Button>
 
         <p
@@ -124,15 +120,15 @@ function RecoverySuccessState({
           aria-live="polite"
         >
           {isCoolingDown
-            ? 'El botón se activará automáticamente al finalizar la espera.'
-            : 'Ya puedes solicitar otro enlace.'}
+            ? t('recover.resendCooldown')
+            : t('recover.resendReady')}
         </p>
 
         <Link
           href="/login"
           className="inline-flex min-h-11 items-center justify-center rounded px-3 text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          Volver al inicio de sesión
+          {t('recover.backToLogin')}
         </Link>
       </div>
     </div>
@@ -140,6 +136,7 @@ function RecoverySuccessState({
 }
 
 export function PasswordRecoveryForm() {
+  const { t } = useTranslations('auth');
   const [state, formAction] = useActionState(
     recoverPasswordAction,
     initialAuthActionState,
@@ -173,7 +170,7 @@ export function PasswordRecoveryForm() {
         errors={formErrors}
         title={
           state.message ??
-          'Revisa los campos indicados.'
+          t('validation.review')
         }
       />
 
@@ -181,24 +178,24 @@ export function PasswordRecoveryForm() {
         id="recovery-email"
         name="email"
         type="email"
-        label="Correo electrónico"
-        placeholder="nombre@dominio.com"
+        label={t('recover.email')}
+        placeholder={t('recover.emailPlaceholder')}
         autoComplete="email"
         inputMode="email"
         maxLength={254}
         pattern={emailInputPattern}
-        title="Introduce un correo con usuario, dominio y extensión, por ejemplo nombre@empresa.es."
-        hint="Te enviaremos un enlace seguro para crear una nueva contraseña."
+        title={t('recover.emailHint')}
+        hint={t('recover.emailHint')}
         error={state.fieldErrors?.email}
         required
       />
 
-      <SubmitButton pendingText="Enviando enlace...">
+      <SubmitButton pendingText={t('recover.pending')}>
         <Mail
           className="size-5"
           aria-hidden="true"
         />
-        Enviar enlace
+        {t('recover.submit')}
       </SubmitButton>
 
       <p className="text-center text-sm text-muted-foreground">
@@ -206,7 +203,7 @@ export function PasswordRecoveryForm() {
           href="/login"
           className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
-          Volver al inicio de sesión
+          {t('recover.backToLogin')}
         </Link>
       </p>
     </form>

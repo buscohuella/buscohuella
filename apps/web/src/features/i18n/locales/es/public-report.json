@@ -3,6 +3,7 @@
     "notFound": "Aviso no disponible | BuscoHuella"
   },
   "back": "Volver a avisos públicos",
+  "backToMap": "Volver al mapa",
   "active": "Activo",
   "animalFallback": "Animal",
   "galleryAlt": "Fotografías de {name}",
@@ -59,7 +60,29 @@
     "emptyTitle": "No hay avisos activos",
     "emptyDescription": "Cuando se publique un aviso activo aparecerá aquí.",
     "noPhoto": "Sin fotografía",
-    "mapUnavailable": "El mapa no se ha podido cargar. Puedes consultar los avisos en la lista."
+    "mapUnavailable": "El mapa no se ha podido cargar. Puedes consultar los avisos en la lista.",
+    "mapListTitle": "Avisos en esta zona",
+    "locationTitle": "Distancia",
+    "markOnMap": "Marcar en el mapa",
+    "markingOnMap": "Haz clic en el mapa…",
+    "addressPlaceholder": "Escribe una dirección o municipio",
+    "chooseOnMap": "También puedes hacer clic en el mapa para elegir un punto.",
+    "clearLocation": "Borrar ubicación",
+    "useLocation": "Usar mi ubicación",
+    "usingLocation": "Buscando ubicación…",
+    "locationError": "No hemos podido obtener tu ubicación. Puedes continuar sin filtro de distancia.",
+    "searching": "Buscando…",
+    "radiusUnit": "km",
+    "radiusAll": "Todas las distancias",
+    "filterTitle": "Filtrar",
+    "filterAll": "Todos",
+    "filterLost": "Perdidas",
+    "filterFound": "Encontrados",
+    "sortTitle": "Ordenar",
+    "recent": "Más recientes",
+    "viewNotice": "Ver aviso",
+    "resultOne": "aviso",
+    "resultMany": "avisos"
   },
   "generatedTitle": {
     "LOST_PET": "{name} se ha perdido"

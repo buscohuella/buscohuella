@@ -58,6 +58,7 @@ const reportInputShape = {
   speciesId: z.number().int().positive(),
   status: reportStatusSchema.default(DEFAULT_REPORT_VALUES.status),
   title: nullableTrimmedString(REPORT_LIMITS.titleMaxLength),
+  titleSource: z.enum(['SYSTEM', 'CUSTOM']).default('CUSTOM'),
   description: nullableTrimmedString(
     REPORT_LIMITS.descriptionMaxLength,
   ),

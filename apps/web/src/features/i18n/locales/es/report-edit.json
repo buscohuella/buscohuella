@@ -10,6 +10,7 @@
   "fields": {
     "title": "Título",
     "titleHelp": "Entre 3 y 120 caracteres.",
+    "generatedTitle": "Título generado automáticamente. Si lo modificas, pasará a ser un título personalizado.",
     "description": "Descripción",
     "descriptionHelp": "Entre 10 y 2.000 caracteres.",
     "location": "Zona o referencia pública",

@@ -28,7 +28,6 @@ import {
   getOwnedSightingArchiveState,
   getOwnedSightingPhotos,
 } from '@/features/reports/lib/owner-sightings';
-import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 
 export default async function OwnerSightingDetailPage({
   params,
@@ -73,14 +72,7 @@ export default async function OwnerSightingDetailPage({
       },
     );
 
-  const reportTitle =
-    getLocalizedPublicReportTitle({
-      rawTitle:
-        sighting.reportTitle,
-      reportType: 'LOST_PET',
-      petName: sighting.petName,
-      translate,
-    });
+  const reportTitle = sighting.reportTitle;
 
   const locationValue =
     sighting.locationSource ===

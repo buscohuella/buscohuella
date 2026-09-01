@@ -14,6 +14,7 @@ import { loginAction } from '../actions/login';
 import { initialAuthActionState } from '../types/auth-action-state';
 import { ActionMessage } from './action-message';
 import { FormField } from './form-field';
+import { GoogleAuthButton } from './google-auth-button';
 import { SubmitButton } from './submit-button';
 
 export function LoginForm({
@@ -91,6 +92,16 @@ if (state.fieldErrors?.password) {
         <LogIn className="size-5" aria-hidden="true" />
         {t('login.submit')}
       </SubmitButton>
+
+      <div className="relative py-1 text-center text-xs text-muted-foreground before:absolute before:left-0 before:right-0 before:top-1/2 before:border-t before:border-border-soft">
+        <span className="relative bg-surface-elevated px-3">o</span>
+      </div>
+      <GoogleAuthButton
+        label={t('login.google')}
+        pendingLabel={t('login.googlePending')}
+        errorLabel={t('login.googleError')}
+        next={next}
+      />
 
       <p className="text-center text-sm text-muted-foreground">
         {t('login.noAccount')}{' '}

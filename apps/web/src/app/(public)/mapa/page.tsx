@@ -65,10 +65,8 @@ async function loadPublicMapReports(): Promise<PublicMapReport[]> {
 }
 
 export default async function PublicMapPage() {
-  const [{ translate }, reports] = await Promise.all([
-    getServerTranslator(),
-    loadPublicMapReports(),
-  ]);
+  const { translate } = await getServerTranslator();
+  const reports = await loadPublicMapReports();
 
   return (
     <PageContainer className="space-y-7 py-6 sm:py-10">
@@ -84,7 +82,7 @@ export default async function PublicMapPage() {
         </p>
       </header>
       <PublicMap
-        reports={reports}
+        reports={reports.filter((report) => report.reportType === 'LOST_PET')}
         labels={{
           active: translate('publicReport.active'),
           description: translate('publicReport.list.description'),
@@ -92,9 +90,26 @@ export default async function PublicMapPage() {
           emptyTitle: translate('publicReport.list.emptyTitle'),
           found: translate('publicReport.type.FOUND_ANIMAL'),
           lost: translate('publicReport.type.LOST_PET'),
+          locationError: translate('publicReport.list.locationError'),
+          locationTitle: translate('publicReport.list.locationTitle'),
+          markOnMap: translate('publicReport.list.markOnMap'),
+          markingOnMap: translate('publicReport.list.markingOnMap'),
+    addressPlaceholder: translate('publicReport.list.addressPlaceholder'),
+    chooseOnMap: translate('publicReport.list.chooseOnMap'),
+    clearLocation: translate('publicReport.list.clearLocation'),
           mapUnavailable: translate('publicReport.list.mapUnavailable'),
+          listTitle: translate('publicReport.list.mapListTitle'),
+          petLabel: translate('publicReport.details.name'),
+          recent: translate('publicReport.list.recent'),
+          radiusAll: translate('publicReport.list.radiusAll'),
+          radiusUnit: translate('publicReport.list.radiusUnit'),
+          sortTitle: translate('publicReport.list.sortTitle'),
           title: translate('publicReport.list.title'),
+          useLocation: translate('publicReport.list.useLocation'),
+          usingLocation: translate('publicReport.list.usingLocation'),
+          searching: translate('publicReport.list.searching'),
           unknownLocation: translate('publicReport.details.unknown'),
+          viewNotice: translate('publicReport.list.viewNotice'),
         }}
       />
     </PageContainer>

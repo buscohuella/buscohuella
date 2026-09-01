@@ -208,6 +208,11 @@ export default async function ReportDetailPage({
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight">
           {data.report.title}
+          {data.report.titleSource === 'SYSTEM' ? (
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              ({translate('reports.list.generatedTitle')})
+            </span>
+          ) : null}
         </h1>
         <p className="mt-2 max-w-3xl whitespace-pre-wrap text-muted-foreground">
           {data.report.description}

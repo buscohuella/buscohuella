@@ -19,7 +19,7 @@
     "publicLabel": "Navegación pública",
     "homeAria": "BuscoHuella, inicio público",
     "map": "Mapa",
-    "reports": "Reportes",
+    "reports": "Avisos",
     "login": "Entrar",
     "register": "Crear cuenta",
     "registerShort": "Registro",
@@ -54,6 +54,12 @@
   },
   "status": {
     "loading": "Cargando…"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página no existe o no está disponible públicamente.",
+    "backHome": "Volver al inicio",
+    "goMap": "Explorar avisos"
   },
   "quickActions": {
     "open": "Abrir acciones rápidas",

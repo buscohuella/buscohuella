@@ -7,14 +7,32 @@
     "title": "Ayuda a reunir mascotas perdidas con sus familias.",
     "description": "Explora información pública sin cuenta. Para gestionar mascotas, alertas y reportes personales podrás registrarte gratuitamente.",
     "explore": "Explorar sin cuenta",
-    "register": "Crear una cuenta"
+    "register": "Crear una cuenta",
+    "visualTitle": "Una comunidad que se mueve",
+    "visualDescription": "Cada aviso puede acercar una mascota a su familia.",
+    "stepOne": "Busca avisos cerca de ti",
+    "stepTwo": "Comparte información útil",
+    "stepThree": "Ayuda a que vuelva a casa"
   },
   "actions": {
     "title": "Puedes ayudar sin registrarte",
     "mapTitle": "Explorar el mapa",
     "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
-    "reportsTitle": "Consultar reportes",
-    "reportsDescription": "Busca pérdidas, hallazgos y avisos públicos."
+    "reportsTitle": "Consultar avisos",
+    "reportsDescription": "Busca pérdidas, hallazgos y avisos públicos.",
+    "reportTitle": "Publica un aviso",
+    "reportDescription": "Crea una alerta para que tu comunidad pueda ayudarte.",
+    "reportAction": "Empieza ahora"
+  },
+  "trust": {
+    "title": "Información clara cuando más importa",
+    "description": "BuscoHuella está diseñada para colaborar sin exponer datos privados.",
+    "privacyTitle": "Privacidad por defecto",
+    "privacyDescription": "Mostramos zonas aproximadas y protegemos los datos de contacto.",
+    "communityTitle": "Ayuda de la comunidad",
+    "communityDescription": "Cualquier persona puede consultar avisos y aportar información.",
+    "accessibleTitle": "Sencilla y accesible",
+    "accessibleDescription": "Puedes empezar sin cuenta y usarla desde cualquier dispositivo."
   },
   "private": {
     "areaLabel": "Área personal",

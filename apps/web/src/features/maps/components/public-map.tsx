@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, List, Map as MapIcon, MapPin } from 'lucide-react';
+import { CalendarClock, List, Map as MapIcon, MapPin, Search, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -24,14 +24,37 @@ type PublicMapLabels = {
   emptyTitle: string;
   found: string;
   lost: string;
+  locationError: string;
+  locationTitle: string;
+  markOnMap: string;
+  markingOnMap: string;
+  addressPlaceholder: string;
+  chooseOnMap: string;
+  clearLocation: string;
   mapUnavailable: string;
+  listTitle: string;
+  petLabel: string;
+  recent: string;
+  radiusAll: string;
+  radiusUnit: string;
+  sortTitle: string;
   title: string;
+  useLocation: string;
+  usingLocation: string;
+  searching: string;
   unknownLocation: string;
+  viewNotice: string;
 };
 
 type PublicMapProps = {
   labels: PublicMapLabels;
   reports: PublicMapReport[];
+};
+
+type AddressSuggestion = {
+  id: string;
+  label: string;
+  center: [number, number];
 };
 
 const DEFAULT_CENTER: [number, number] = [2.108, 41.548];
@@ -65,22 +88,107 @@ function createApproximationCircle(
   return coordinates;
 }
 
+function distanceInKm(
+  first: [number, number],
+  second: [number, number],
+) {
+  const earthRadiusKm = 6371;
+  const latitudeDelta = ((second[1] - first[1]) * Math.PI) / 180;
+  const longitudeDelta = ((second[0] - first[0]) * Math.PI) / 180;
+  const latitudeOne = (first[1] * Math.PI) / 180;
+  const latitudeTwo = (second[1] * Math.PI) / 180;
+  const a =
+    Math.sin(latitudeDelta / 2) ** 2 +
+    Math.sin(longitudeDelta / 2) ** 2 *
+      Math.cos(latitudeOne) *
+      Math.cos(latitudeTwo);
+  return 2 * earthRadiusKm * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function createOriginMarkerElement() {
+  const originElement = document.createElement('div');
+  originElement.setAttribute('aria-hidden', 'true');
+  originElement.className = 'flex size-9 items-center justify-center';
+  const originDot = document.createElement('span');
+  originDot.className = 'block size-7 rotate-45 rounded-full rounded-bl-none border-4 border-white bg-primary shadow-xl';
+  originElement.append(originDot);
+  return originElement;
+}
+
 export function PublicMap({ labels, reports }: PublicMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
+  const originMarkerRef = useRef<Marker | null>(null);
+  const selectingLocationRef = useRef(false);
+  const mapScrollPositionRef = useRef<number | null>(null);
+  const skipAddressSearchRef = useRef(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const [sortRecent, setSortRecent] = useState(true);
+  const [radiusKm, setRadiusKm] = useState<number | null>(null);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locationError, setLocationError] = useState(false);
+  const [addressQuery, setAddressQuery] = useState('');
+  const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
+  const [searchingAddress, setSearchingAddress] = useState(false);
+  const [selectingLocation, setSelectingLocation] = useState(false);
+
+  const visibleReports = useMemo(() => {
+    const filtered = userLocation && radiusKm
+      ? reports.filter((report) => {
+          if (typeof report.latitude !== 'number' || typeof report.longitude !== 'number') {
+            return false;
+          }
+          return distanceInKm(userLocation, [report.longitude, report.latitude]) <= radiusKm;
+        })
+      : reports;
+
+    return sortRecent
+      ? [...filtered].sort((first, second) => {
+          const firstTime = first.incidentAt ? Date.parse(first.incidentAt) : 0;
+          const secondTime = second.incidentAt ? Date.parse(second.incidentAt) : 0;
+          return secondTime - firstTime;
+        })
+      : filtered;
+  }, [radiusKm, reports, sortRecent, userLocation]);
 
   const locatedReports = useMemo(
     () =>
-      reports.filter(
+      visibleReports.filter(
         (report) =>
           typeof report.latitude === 'number' &&
           typeof report.longitude === 'number',
       ),
-    [reports],
+    [visibleReports],
   );
+
+  async function reverseGeocode(coordinates: [number, number]) {
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    if (!token) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates[0]},${coordinates[1]}.json?limit=1&language=es&country=es&access_token=${token}`,
+      );
+      if (!response.ok) {
+        return;
+      }
+      const data = (await response.json()) as {
+        features?: Array<{ place_name?: string }>;
+      };
+      const placeName = data.features?.[0]?.place_name;
+      if (placeName) {
+        skipAddressSearchRef.current = true;
+        setAddressQuery(placeName);
+      }
+    } catch {
+      // Las coordenadas mostradas en el campo siguen siendo un origen válido.
+    }
+  }
 
   useEffect(() => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -91,6 +199,9 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
 
     let cancelled = false;
     const markers = new Map<string, Marker>();
+    const scrollPosition = mapScrollPositionRef.current;
+    mapScrollPositionRef.current = null;
+    setMapReady(false);
 
     void import('mapbox-gl').then(({ default: mapboxgl }) => {
       if (cancelled || !mapContainerRef.current) {
@@ -177,6 +288,21 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         map.on('mouseleave', 'public-report-areas-fill', () => {
           map.getCanvas().style.cursor = '';
         });
+        map.on('click', (event) => {
+          if (!selectingLocationRef.current) {
+            return;
+          }
+          const nextLocation: [number, number] = [event.lngLat.lng, event.lngLat.lat];
+          setUserLocation(nextLocation);
+          setRadiusKm(null);
+          setLocationError(false);
+          selectingLocationRef.current = false;
+          setSelectingLocation(false);
+          map.getCanvas().style.cursor = '';
+          map.flyTo({ center: nextLocation, zoom: Math.max(map.getZoom(), 12), essential: true });
+          setAddressQuery(`${nextLocation[1].toFixed(5)}, ${nextLocation[0].toFixed(5)}`);
+          void reverseGeocode(nextLocation);
+        });
 
         locatedReports.forEach((report) => {
           const longitude = report.longitude as number;
@@ -205,17 +331,54 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         }
         setMapReady(true);
         setMapError(false);
+        if (scrollPosition !== null) {
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollPosition);
+          });
+        }
       });
     });
 
     return () => {
       cancelled = true;
+      mapScrollPositionRef.current = window.scrollY;
       markers.forEach((marker) => marker.remove());
       markers.clear();
+      originMarkerRef.current?.remove();
+      originMarkerRef.current = null;
       mapRef.current?.remove();
       mapRef.current = null;
     };
   }, [locatedReports]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!mapReady || !userLocation || !mapRef.current) {
+      originMarkerRef.current?.remove();
+      originMarkerRef.current = null;
+      return;
+    }
+
+    const map = mapRef.current;
+    void import('mapbox-gl').then(({ default: mapboxgl }) => {
+      if (cancelled || !mapRef.current) {
+        return;
+      }
+
+      originMarkerRef.current?.remove();
+      originMarkerRef.current = new mapboxgl.Marker({
+        element: createOriginMarkerElement(),
+        anchor: 'bottom',
+      })
+        .setLngLat(userLocation)
+        .addTo(map);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mapReady, userLocation]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -234,9 +397,228 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
     });
   }, [locatedReports, selectedId]);
 
+  useEffect(() => {
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    const query = addressQuery.trim();
+    if (skipAddressSearchRef.current) {
+      skipAddressSearchRef.current = false;
+      return;
+    }
+    if (!token || query.length < 3) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => {
+      setSearchingAddress(true);
+      void fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&limit=5&language=es&country=es&access_token=${token}`,
+        { signal: controller.signal },
+      )
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error('Geocoding request failed');
+          }
+          return (await response.json()) as {
+            features?: Array<{ id: string; place_name: string; center: [number, number] }>;
+          };
+        })
+        .then((data) => {
+          setAddressSuggestions(
+            (data.features ?? []).map((feature) => ({
+              id: feature.id,
+              label: feature.place_name,
+              center: feature.center,
+            })),
+          );
+        })
+        .catch((error: unknown) => {
+          if (!(error instanceof DOMException && error.name === 'AbortError')) {
+            setAddressSuggestions([]);
+          }
+        })
+        .finally(() => setSearchingAddress(false));
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [addressQuery]);
+
+  function requestUserLocation() {
+    if (!navigator.geolocation) {
+      setLocationError(true);
+      return;
+    }
+
+    setLocating(true);
+    setLocationError(false);
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const nextLocation: [number, number] = [coords.longitude, coords.latitude];
+        setUserLocation(nextLocation);
+        setAddressQuery('');
+        setAddressSuggestions([]);
+        setLocating(false);
+        originMarkerRef.current?.remove();
+        mapRef.current?.flyTo({ center: nextLocation, zoom: 12, essential: true });
+      },
+      () => {
+        setLocating(false);
+        setLocationError(true);
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+    );
+  }
+
+  function enableMapSelection() {
+    selectingLocationRef.current = true;
+    setSelectingLocation(true);
+    setLocationError(false);
+    if (mapRef.current) {
+      mapRef.current.getCanvas().style.cursor = 'crosshair';
+    }
+  }
+
+  function selectAddress(suggestion: AddressSuggestion) {
+    setUserLocation(suggestion.center);
+    skipAddressSearchRef.current = true;
+    setAddressQuery(suggestion.label);
+    setAddressSuggestions([]);
+    setLocationError(false);
+    mapRef.current?.flyTo({ center: suggestion.center, zoom: 12, essential: true });
+  }
+
   return (
     <section aria-labelledby="public-map-heading" className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
+        <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-3 lg:col-span-2">
+          <span className="mr-1 text-sm font-semibold">{labels.sortTitle}</span>
+          <button
+            type="button"
+            aria-pressed={sortRecent}
+            onClick={() => setSortRecent((current) => !current)}
+            className={`min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+              sortRecent
+                ? 'border-primary bg-primary-soft text-primary'
+                : 'border-border text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {labels.recent}
+          </button>
+          <span className="ml-2 text-sm font-semibold">{labels.locationTitle}</span>
+          <button
+            type="button"
+            onClick={requestUserLocation}
+            disabled={locating}
+            className="min-h-10 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          >
+            {locating ? labels.usingLocation : labels.useLocation}
+          </button>
+          <button
+            type="button"
+            onClick={enableMapSelection}
+            aria-pressed={selectingLocation}
+            className={`min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+              selectingLocation
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-border text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {selectingLocation ? labels.markingOnMap : labels.markOnMap}
+          </button>
+          <div className="relative min-w-60 flex-1 basis-full sm:basis-72">
+            <label htmlFor="map-location-search" className="sr-only">
+              {labels.locationTitle}
+            </label>
+            <div className="flex min-h-10 items-center gap-2 rounded-full border border-border px-3">
+              <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <input
+                id="map-location-search"
+                value={addressQuery}
+                onChange={(event) => {
+                  const nextQuery = event.target.value;
+                  skipAddressSearchRef.current = false;
+                  setAddressQuery(nextQuery);
+                  if (nextQuery.trim().length < 3) {
+                    setAddressSuggestions([]);
+                    setSearchingAddress(false);
+                  }
+                }}
+                placeholder={labels.addressPlaceholder}
+                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              />
+              {addressQuery ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddressQuery('');
+                    setAddressSuggestions([]);
+                    setUserLocation(null);
+                    setRadiusKm(null);
+                    setLocationError(false);
+                    originMarkerRef.current?.remove();
+                    originMarkerRef.current = null;
+                  }}
+                  className="rounded-full p-1 text-muted-foreground hover:bg-surface-sunken hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                  aria-label={labels.clearLocation}
+                  title={labels.clearLocation}
+                >
+                  <X className="size-4" aria-hidden="true" />
+                </button>
+              ) : null}
+            </div>
+            {addressSuggestions.length > 0 ? (
+              <ul className="absolute z-20 mt-1 w-full overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-lg" aria-label={labels.locationTitle}>
+                {addressSuggestions.map((suggestion) => (
+                  <li key={suggestion.id}>
+                    <button
+                      type="button"
+                      onClick={() => selectAddress(suggestion)}
+                      className="w-full px-3 py-2 text-left text-sm hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                    >
+                      {suggestion.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : searchingAddress ? (
+              <p className="absolute z-20 mt-1 w-full rounded-xl border border-border bg-surface-elevated p-3 text-sm text-muted-foreground shadow-lg">
+                {labels.searching}
+              </p>
+            ) : null}
+          </div>
+          <span className="w-full text-xs text-muted-foreground">{labels.chooseOnMap}</span>
+          {[1, 5, 10, 20].map((value) => (
+            <button
+              key={value}
+              type="button"
+              disabled={!userLocation}
+              aria-pressed={radiusKm === value}
+              onClick={() => setRadiusKm(value)}
+              className={`min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft disabled:cursor-not-allowed disabled:opacity-40 ${
+                radiusKm === value
+                  ? 'border-primary bg-primary-soft text-primary'
+                  : 'border-border text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {value} {labels.radiusUnit}
+            </button>
+          ))}
+          <button
+            type="button"
+            disabled={!userLocation}
+            aria-pressed={radiusKm === null}
+            onClick={() => setRadiusKm(null)}
+            className="min-h-10 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          >
+            {labels.radiusAll}
+          </button>
+          {locationError ? (
+            <span role="alert" className="w-full text-sm text-danger">{labels.locationError}</span>
+          ) : null}
+        </div>
         <div className="overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-sm">
           <div className="flex items-center justify-between gap-3 border-b border-border-soft px-4 py-3">
             <div className="flex items-center gap-2">
@@ -246,7 +628,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               </h2>
             </div>
             <span className="text-sm text-muted-foreground">
-              {reports.length} {labels.active.toLowerCase()}
+              {visibleReports.length} {labels.active.toLowerCase()}
             </span>
           </div>
           <div className="relative min-h-[28rem] bg-surface-sunken">
@@ -272,10 +654,10 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         <div className="rounded-2xl border border-border bg-surface-elevated shadow-sm">
           <div className="flex items-center gap-2 border-b border-border-soft px-4 py-3">
             <List className="size-5 text-primary" aria-hidden="true" />
-            <h2 className="font-semibold">{labels.title}</h2>
+            <h2 className="font-semibold">{labels.listTitle}</h2>
           </div>
           <div className="max-h-[28rem] space-y-3 overflow-y-auto p-3">
-            {reports.length === 0 ? (
+            {visibleReports.length === 0 ? (
               <div className="px-3 py-8 text-center">
                 <p className="font-semibold">{labels.emptyTitle}</p>
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -283,7 +665,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                 </p>
               </div>
             ) : (
-              reports.map((report) => {
+              visibleReports.map((report) => {
                 const isSelected = report.id === selectedId;
                 const reportType =
                   report.reportType === 'LOST_PET'
@@ -313,7 +695,10 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                           {labels.active}
                         </span>
                       </div>
-                      <h3 className="mt-3 font-semibold">{report.title}</h3>
+                      <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {labels.petLabel}
+                      </p>
+                      <h3 className="mt-1 font-semibold">{report.title}</h3>
                       <div className="mt-2 space-y-1 text-sm text-muted-foreground">
                         <p className="flex items-start gap-2">
                           <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
@@ -334,10 +719,10 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                       </div>
                     </button>
                     <Link
-                      href={`/reportes/${report.id}`}
-                      className="mt-3 inline-flex rounded-md text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none"
+                      href={`/avisos/${report.id}?origen=mapa`}
+                      className="mt-3 inline-flex min-h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
                     >
-                      {report.title}
+                      {labels.viewNotice}
                     </Link>
                   </article>
                 );

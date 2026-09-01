@@ -1,0 +1,71 @@
+-- Do not rely on PostgreSQL's default PUBLIC EXECUTE privilege.
+
+revoke execute on function public.audit_report_change() from public, anon, authenticated;
+revoke execute on function public.audit_sighting_created() from public, anon, authenticated;
+revoke execute on function public.create_notifications_from_report_event() from public, anon, authenticated;
+
+-- Private application functions: authenticated users only.
+revoke execute on function public.can_manage_sighting_photo_storage(uuid) from public, anon, authenticated;
+grant execute on function public.can_manage_sighting_photo_storage(uuid) to authenticated;
+revoke execute on function public.can_read_sighting_photo_storage(uuid) from public, anon, authenticated;
+grant execute on function public.can_read_sighting_photo_storage(uuid) to authenticated;
+revoke execute on function public.create_report_sighting(uuid, timestamptz, text, text, text, double precision, double precision, text) from public, anon, authenticated;
+grant execute on function public.create_report_sighting(uuid, timestamptz, text, text, text, double precision, double precision, text) to authenticated;
+revoke execute on function public.get_my_notifications_page(text, integer, integer) from public, anon, authenticated;
+grant execute on function public.get_my_notifications_page(text, integer, integer) to authenticated;
+revoke execute on function public.get_my_sighting(uuid) from public, anon, authenticated;
+grant execute on function public.get_my_sighting(uuid) to authenticated;
+revoke execute on function public.get_my_sighting_timeline(uuid) from public, anon, authenticated;
+grant execute on function public.get_my_sighting_timeline(uuid) to authenticated;
+revoke execute on function public.get_my_sightings() from public, anon, authenticated;
+grant execute on function public.get_my_sightings() to authenticated;
+revoke execute on function public.get_my_sightings_page(text, integer, integer) from public, anon, authenticated;
+grant execute on function public.get_my_sightings_page(text, integer, integer) to authenticated;
+revoke execute on function public.get_owned_report_sightings(uuid) from public, anon, authenticated;
+grant execute on function public.get_owned_report_sightings(uuid) to authenticated;
+revoke execute on function public.get_owned_sighting_archive_state(uuid) from public, anon, authenticated;
+grant execute on function public.get_owned_sighting_archive_state(uuid) to authenticated;
+revoke execute on function public.get_owned_sightings() from public, anon, authenticated;
+grant execute on function public.get_owned_sightings() to authenticated;
+revoke execute on function public.get_owned_sightings_page(text, text, boolean, text, integer, integer) from public, anon, authenticated;
+grant execute on function public.get_owned_sightings_page(text, text, boolean, text, integer, integer) to authenticated;
+revoke execute on function public.get_owned_sightings_summary() from public, anon, authenticated;
+grant execute on function public.get_owned_sightings_summary() to authenticated;
+revoke execute on function public.get_unread_notification_count() from public, anon, authenticated;
+grant execute on function public.get_unread_notification_count() to authenticated;
+revoke execute on function public.manage_report_lifecycle(uuid, text, text, text) from public, anon, authenticated;
+grant execute on function public.manage_report_lifecycle(uuid, text, text, text) to authenticated;
+revoke execute on function public.mark_all_notifications_read() from public, anon, authenticated;
+grant execute on function public.mark_all_notifications_read() to authenticated;
+revoke execute on function public.mark_notification_read(uuid) from public, anon, authenticated;
+grant execute on function public.mark_notification_read(uuid) to authenticated;
+revoke execute on function public.owns_report(uuid) from public, anon, authenticated;
+grant execute on function public.owns_report(uuid) to authenticated;
+revoke execute on function public.publish_report_draft(uuid) from public, anon, authenticated;
+grant execute on function public.publish_report_draft(uuid) to authenticated;
+revoke execute on function public.record_report_photo_update(uuid, text) from public, anon, authenticated;
+grant execute on function public.record_report_photo_update(uuid, text) to authenticated;
+revoke execute on function public.reorder_report_photos(uuid, uuid[]) from public, anon, authenticated;
+grant execute on function public.reorder_report_photos(uuid, uuid[]) to authenticated;
+revoke execute on function public.review_owned_report_sighting(uuid, text) from public, anon, authenticated;
+grant execute on function public.review_owned_report_sighting(uuid, text) to authenticated;
+revoke execute on function public.set_owned_sighting_archived(uuid, boolean) from public, anon, authenticated;
+grant execute on function public.set_owned_sighting_archived(uuid, boolean) to authenticated;
+revoke execute on function public.set_report_primary_photo(uuid) from public, anon, authenticated;
+grant execute on function public.set_report_primary_photo(uuid) to authenticated;
+revoke execute on function public.update_owned_report_content(uuid, text, text, text, text, text, text) from public, anon, authenticated;
+grant execute on function public.update_owned_report_content(uuid, text, text, text, text, text, text) to authenticated;
+revoke execute on function public.user_owns_active_pet_for_storage(uuid) from public, anon, authenticated;
+grant execute on function public.user_owns_active_pet_for_storage(uuid) to authenticated;
+revoke execute on function public.user_owns_pet_for_storage(uuid) from public, anon, authenticated;
+grant execute on function public.user_owns_pet_for_storage(uuid) to authenticated;
+
+-- Public reads are explicit and intentionally available to both API roles.
+revoke execute on function public.get_public_report(uuid) from public, anon, authenticated;
+grant execute on function public.get_public_report(uuid) to anon, authenticated;
+revoke execute on function public.get_public_reports(smallint, text, integer) from public, anon, authenticated;
+grant execute on function public.get_public_reports(smallint, text, integer) to anon, authenticated;
+revoke execute on function public.is_public_active_report(uuid) from public, anon, authenticated;
+grant execute on function public.is_public_active_report(uuid) to anon, authenticated;
+revoke execute on function public.report_accepts_sightings(uuid) from public, anon, authenticated;
+grant execute on function public.report_accepts_sightings(uuid) to anon, authenticated;

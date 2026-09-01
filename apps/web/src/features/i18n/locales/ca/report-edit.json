@@ -10,6 +10,7 @@
   "fields": {
     "title": "Títol",
     "titleHelp": "Entre 3 i 120 caràcters.",
+    "generatedTitle": "Títol generat automàticament. Si el modifiques, passarà a ser un títol personalitzat.",
     "description": "Descripció",
     "descriptionHelp": "Entre 10 i 2.000 caràcters.",
     "location": "Zona o referència pública",

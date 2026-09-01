@@ -1,4 +1,15 @@
 {
+  "back": "Volver a Mis avisos",
+    "breadcrumbs": {
+      "label": "Ruta de navegación",
+      "home": "Inicio",
+    "public": "Avisos",
+    "private": "Mis avisos",
+    "own": "Mis avisos propios",
+    "received": "Avistamientos recibidos",
+    "sent": "Mis avistamientos"
+  },
+  "back": "Volver a Mis avisos",
   "eyebrow": "Centro de búsqueda",
   "title": "Avisos",
   "description": "Todo lo relacionado con búsquedas y avistamientos, organizado según lo que necesitas hacer.",

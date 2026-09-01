@@ -18,7 +18,8 @@ export interface AppSidebarProps {
 
 function isNoticesPath(pathname: string) {
   return (
-    pathname === '/avisos' ||
+    pathname === '/mis-avisos' ||
+    pathname.startsWith('/mis-avisos/') ||
     pathname.startsWith('/reportes') ||
     pathname.startsWith('/mis-reportes') ||
     pathname.startsWith('/avistamientos') ||
@@ -66,7 +67,7 @@ export function AppSidebar({
             const Icon = item.icon;
 
             const isActive =
-              item.href === '/avisos'
+  item.href === '/mis-avisos'
                 ? isNoticesPath(pathname)
                 : pathname === item.href ||
                   pathname.startsWith(

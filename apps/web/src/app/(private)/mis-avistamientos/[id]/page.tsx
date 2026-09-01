@@ -32,7 +32,6 @@ import {
   getMySightingTimeline,
   type MySightingTimelineEvent,
 } from '@/features/reports/lib/my-sightings';
-import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 
 export default async function MySightingDetailPage({
   params,
@@ -77,15 +76,7 @@ export default async function MySightingDetailPage({
       },
     );
 
-  const title =
-    getLocalizedPublicReportTitle({
-      rawTitle:
-        sighting.reportTitle,
-      reportType: 'LOST_PET',
-      petName:
-        sighting.petName,
-      translate,
-    });
+  const title = sighting.reportTitle;
 
   const resolved =
     sighting.reportStatus ===

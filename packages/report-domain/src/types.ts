@@ -40,6 +40,7 @@ export interface Report {
   speciesId: number;
   status: ReportStatus;
   title: string | null;
+  titleSource: 'SYSTEM' | 'CUSTOM';
   description: string | null;
   incidentAt: string | null;
   exactLocation: GeoPoint | null;

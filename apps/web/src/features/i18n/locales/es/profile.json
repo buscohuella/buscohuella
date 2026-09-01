@@ -8,6 +8,15 @@
     "contactTitle": "Contacto seguro",
     "contactDescription": "Los avisos relacionados con mascotas utilizarán canales contextuales y no dependerán de exponer tu perfil."
   },
+  "public": {
+    "community": "Perfil público de la comunidad BuscoHuella",
+    "noBio": "Este usuario todavía no ha añadido una biografía pública.",
+    "zone": "Zona",
+    "unknownZone": "No indicada",
+    "memberSince": "Miembro desde",
+    "privacy": "Este perfil solo muestra información que su propietario ha decidido hacer pública. Los datos de contacto y la información privada no se comparten aquí.",
+    "avatarAlt": "Avatar de @{alias}"
+  },
   "form": {
     "fullName": {
       "label": "Nombre"

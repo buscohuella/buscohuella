@@ -78,6 +78,7 @@ export default async function EditReportPage({
     notFound();
   }
 
+
   return (
     <PageContainer className="space-y-6">
       <Link
@@ -135,8 +136,8 @@ export default async function EditReportPage({
           <EditReportForm
             report={{
               id: report.id,
-              title:
-                report.title ?? '',
+              title: report.title ?? '',
+              titleSource: report.titleSource,
               description:
                 report.description ??
                 '',

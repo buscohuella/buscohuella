@@ -67,9 +67,10 @@ function MobileNavigationLink({
   const Icon = item.icon;
 
   const noticesActive =
-    item.href === '/avisos' &&
+    item.href === '/mis-avisos' &&
     (
-      pathname === '/avisos' ||
+      pathname === '/mis-avisos' ||
+      pathname.startsWith('/mis-avisos/') ||
       pathname.startsWith('/reportes') ||
       pathname.startsWith('/mis-reportes') ||
       pathname.startsWith('/avistamientos') ||

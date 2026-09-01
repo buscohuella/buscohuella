@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 
 import { PageContainer } from '@/components/layout/page-container';
+import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import {
   Card,
   CardContent,
@@ -25,7 +26,6 @@ import {
   listOwnedSightingsPage,
   type OwnerSightingFilters,
 } from '@/features/reports/lib/owner-sightings';
-import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 
 const PAGE_SIZE = 20;
 
@@ -209,6 +209,14 @@ export default async function OwnerSightingsPage({
 
   return (
     <PageContainer className="space-y-6">
+      <Breadcrumbs
+        label={translate('noticesHub.breadcrumbs.label')}
+        items={[
+          { href: '/', label: translate('noticesHub.breadcrumbs.home') },
+          { href: '/mis-avisos', label: translate('noticesHub.breadcrumbs.private') },
+          { label: translate('noticesHub.breadcrumbs.received') },
+        ]}
+      />
       <header>
         <p className="text-sm font-semibold text-primary">
           {translate(
@@ -425,16 +433,7 @@ export default async function OwnerSightingsPage({
         <div className="space-y-4">
           {result.sightings.map(
             (sighting) => {
-              const reportTitle =
-                getLocalizedPublicReportTitle({
-                  rawTitle:
-                    sighting.reportTitle,
-                  reportType:
-                    'LOST_PET',
-                  petName:
-                    sighting.petName,
-                  translate,
-                });
+              const reportTitle = sighting.reportTitle;
 
               const location =
                 sighting.locationSource ===

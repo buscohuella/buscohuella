@@ -45,7 +45,7 @@ Accesibles con o sin sesión:
 ```text
 /
 /mapa
-/reportes
+/avisos
 ```
 
 El layout público puede leer una sesión opcional.
@@ -62,7 +62,7 @@ Con sesión muestra:
 ### Futuras rutas públicas
 
 ```text
-/reportes/[slug]
+/avisos/[slug]
 /qr/[codigo]
 /avistamientos/[reporte]
 /u/[alias]
@@ -94,7 +94,7 @@ Requieren usuario autenticado:
 ```text
 /inicio
 /mis-mascotas
-/mis-reportes
+/mis-avisos
 /perfil
 /configuracion
 ```
@@ -167,7 +167,7 @@ Los recursos concretos sí requieren un identificador.
 Propuesta:
 
 ```text
-/reportes/luna-perdida-sabadell-8f31
+/avisos/luna-perdida-sabadell-8f31
 ```
 
 Puede combinar:
@@ -255,7 +255,7 @@ Un visitante sin cuenta podrá:
 
 - abrir `/`;
 - explorar `/mapa`;
-- consultar `/reportes`;
+- consultar `/avisos`;
 - abrir una ficha pública;
 - escanear un QR;
 - comunicar información básica futura.
@@ -274,14 +274,14 @@ Se usarán rutas orientadas a intención:
 
 ```text
 /mis-mascotas
-/mis-reportes
+/mis-avisos
 ```
 
 en lugar de:
 
 ```text
 /mascotas
-/reportes
+/avisos
 ```
 
 cuando se trate de gestión privada.
@@ -289,7 +289,7 @@ cuando se trate de gestión privada.
 La ruta pública conserva:
 
 ```text
-/reportes
+/avisos
 ```
 
 ## 13. Mapa
@@ -357,14 +357,14 @@ Implementado:
 ```text
 /
 /mapa
-/reportes
+/avisos
 /login
 /registro
 /recuperar-contrasena
 /nueva-contrasena
 /inicio
 /mis-mascotas
-/mis-reportes
+/mis-avisos
 /perfil
 ```
 
@@ -372,7 +372,7 @@ Pendiente:
 
 ```text
 /configuracion
-/reportes/[slug]
+/avisos/[slug]
 /qr/[codigo]
 /avistamientos/[reporte]
 /u/[alias]

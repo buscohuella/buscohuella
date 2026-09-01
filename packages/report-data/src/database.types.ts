@@ -48,6 +48,7 @@ type ReportRow = {
   species_id: number;
   status: string;
   title: string | null;
+  title_source: 'SYSTEM' | 'CUSTOM';
   updated_at: string;
 };
 
@@ -77,6 +78,7 @@ type ReportInsert = {
   species_id: number;
   status?: string;
   title?: string | null;
+  title_source?: 'SYSTEM' | 'CUSTOM';
   updated_at?: string;
 };
 

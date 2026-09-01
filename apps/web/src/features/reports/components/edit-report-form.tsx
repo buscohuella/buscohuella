@@ -26,6 +26,7 @@ export function EditReportForm({
   report: {
     id: string;
     title: string;
+    titleSource: 'SYSTEM' | 'CUSTOM';
     description: string;
     municipalityName: string;
     contactMode: ContactMode;
@@ -61,6 +62,11 @@ export function EditReportForm({
         htmlFor="report-title"
         help={t('fields.titleHelp')}
       >
+        {report.titleSource === 'SYSTEM' ? (
+          <p className="mb-2 text-sm text-muted-foreground" role="note">
+            {t('fields.generatedTitle')}
+          </p>
+        ) : null}
         <input
           id="report-title"
           name="title"

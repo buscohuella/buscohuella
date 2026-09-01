@@ -7,14 +7,32 @@
     "title": "Ajuda a reunir animals perduts amb les seves famílies.",
     "description": "Explora informació pública sense compte. Per gestionar animals, alertes i reportes personals et podràs registrar gratuïtament.",
     "explore": "Explora sense compte",
-    "register": "Crea un compte"
+    "register": "Crea un compte",
+    "visualTitle": "Una comunitat que es mou",
+    "visualDescription": "Cada avís pot acostar un animal a la seva família.",
+    "stepOne": "Busca avisos a prop teu",
+    "stepTwo": "Comparteix informació útil",
+    "stepThree": "Ajuda’l a tornar a casa"
   },
   "actions": {
     "title": "Pots ajudar sense registrar-te",
     "mapTitle": "Explora el mapa",
     "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
-    "reportsTitle": "Consulta reportes",
-    "reportsDescription": "Cerca pèrdues, troballes i avisos públics."
+    "reportsTitle": "Consulta avisos",
+    "reportsDescription": "Cerca pèrdues, troballes i avisos públics.",
+    "reportTitle": "Publica un avís",
+    "reportDescription": "Crea una alerta perquè la teva comunitat pugui ajudar-te.",
+    "reportAction": "Comença ara"
+  },
+  "trust": {
+    "title": "Informació clara quan més importa",
+    "description": "BuscoHuella està dissenyada per col·laborar sense exposar dades privades.",
+    "privacyTitle": "Privacitat per defecte",
+    "privacyDescription": "Mostrem zones aproximades i protegim les dades de contacte.",
+    "communityTitle": "Ajuda de la comunitat",
+    "communityDescription": "Qualsevol persona pot consultar avisos i aportar informació.",
+    "accessibleTitle": "Senzilla i accessible",
+    "accessibleDescription": "Pots començar sense compte i utilitzar-la des de qualsevol dispositiu."
   },
   "private": {
     "areaLabel": "Àrea personal",

@@ -21,7 +21,10 @@ La navegación privada principal queda reducida a:
 
 Lo que ocurre alrededor del usuario o en una zona elegida.
 
-Ruta actual: `/reportes`.
+Ruta canónica: `/avisos`.
+
+La ruta histórica `/reportes` se conservará temporalmente como redirección
+para no romper enlaces compartidos.
 
 Evolución prevista:
 
@@ -34,7 +37,9 @@ Evolución prevista:
 
 Casos publicados por el usuario sobre sus mascotas.
 
-Ruta: `/mis-reportes`.
+Ruta canónica: `/mis-avisos`.
+
+La ruta histórica `/mis-reportes` se conservará temporalmente como redirección.
 
 ### Avistamientos recibidos
 

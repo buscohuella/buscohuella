@@ -19,6 +19,7 @@ import { emailInputPattern } from '../lib/email-policy';
 import { initialAuthActionState } from '../types/auth-action-state';
 import { ActionMessage } from './action-message';
 import { FormField } from './form-field';
+import { GoogleAuthButton } from './google-auth-button';
 import { PasswordRequirements } from './password-requirements';
 import { SubmitButton } from './submit-button';
 
@@ -224,6 +225,16 @@ export function RegisterForm({
         />
         {t('register.submit')}
       </SubmitButton>
+
+      <div className="relative py-1 text-center text-xs text-muted-foreground before:absolute before:left-0 before:right-0 before:top-1/2 before:border-t before:border-border-soft">
+        <span className="relative bg-surface-elevated px-3">o</span>
+      </div>
+      <GoogleAuthButton
+        label={t('register.google')}
+        pendingLabel={t('register.googlePending')}
+        errorLabel={t('register.googleError')}
+        next={next}
+      />
 
       <p className="text-center text-sm text-muted-foreground">
         {t('register.hasAccount')}{' '}

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
 import {
@@ -28,7 +29,6 @@ import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 import { PublicReportGallery } from '@/features/reports/components/public-report-gallery';
 import { PublicReportShareButton } from '@/features/reports/components/public-report-share-button';
 import { getPublicReport } from '@/features/reports/lib/public-report';
-import { getLocalizedPublicReportTitle } from '@/features/reports/lib/public-report-title';
 
 const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL ??
@@ -38,6 +38,7 @@ type PageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{
     avistamiento?: string;
+    origen?: string;
   }>;
 };
 
@@ -126,7 +127,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function PublicReportPage({
+export async function PublicReportPage({
   params,
   searchParams,
 }: PageProps) {
@@ -165,23 +166,19 @@ export default async function PublicReportPage({
       'publicReport.animalFallback',
     );
 
-  const displayTitle =
-    getLocalizedPublicReportTitle({
-      rawTitle: report.title,
-      reportType: report.reportType,
-      petName: report.petName,
-      translate,
-    });
+  const displayTitle = report.title;
+  const backHref = query.origen === 'mapa' ? '/mapa' : '/avisos';
+  const backLabel = query.origen === 'mapa'
+    ? translate('publicReport.backToMap')
+    : translate('publicReport.back');
 
   return (
     <PageContainer className="space-y-6 py-6 sm:py-10">
       <Link
-        href="/reportes"
+        href={backHref}
         className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft"
       >
-        {translate(
-          'publicReport.back',
-        )}
+        {backLabel}
       </Link>
 
       {query.avistamiento === 'creado' ? (
@@ -400,6 +397,10 @@ export default async function PublicReportPage({
       </div>
     </PageContainer>
   );
+}
+
+export default function LegacyPublicReportPage({ params }: { params: Promise<{ id: string }> }) {
+  return params.then(({ id }) => redirect(`/avisos/${id}`));
 }
 
 function Detail({

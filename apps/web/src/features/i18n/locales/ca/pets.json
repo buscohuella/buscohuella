@@ -206,7 +206,16 @@
     "title": "Gestió de la fitxa",
     "archiveConfirm": "Arxiva la mascota",
     "archiving": "Arxivant…",
-    "archive": "Arxiva la mascota"
+    "archive": "Arxiva la mascota",
+    "delete": "Elimina la mascota",
+    "deleting": "Eliminant…",
+    "deleteDialogTitle": "Eliminar {name}?",
+    "deleteDialogDescription": "Aquesta acció eliminarà definitivament la fitxa i les seves fotografies. No es pot desfer.",
+    "deleteConfirm": "Sí, elimina la mascota",
+    "deleteOnlyArchived": "Només es poden eliminar mascotes arxivades.",
+    "deleteHasReports": "Primer elimina o arxiva els avisos associats a aquesta mascota.",
+    "deleteSuccess": "La mascota s'ha eliminat definitivament.",
+    "deleteError": "No s'ha pogut eliminar la mascota. Torna-ho a provar."
   },
   "photos": {
     "cancelEditing": "Cancel·la l'edició",

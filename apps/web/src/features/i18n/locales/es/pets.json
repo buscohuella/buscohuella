@@ -207,6 +207,15 @@
     "archiveConfirm": "Archivar mascota",
     "archiving": "Archivando…",
     "archive": "Archivar mascota"
+    ,"delete": "Eliminar mascota"
+    ,"deleting": "Eliminando…"
+    ,"deleteDialogTitle": "¿Eliminar a {name}?"
+    ,"deleteDialogDescription": "Esta acción eliminará definitivamente la ficha y sus fotografías. No se puede deshacer.",
+    "deleteConfirm": "Sí, eliminar mascota"
+    ,"deleteOnlyArchived": "Solo se pueden eliminar mascotas archivadas."
+    ,"deleteHasReports": "Primero elimina o archiva los avisos asociados a esta mascota."
+    ,"deleteSuccess": "La mascota se ha eliminado definitivamente."
+    ,"deleteError": "No se ha podido eliminar la mascota. Inténtalo de nuevo."
   },
   "photos": {
     "cancelEditing": "Cancelar edición",

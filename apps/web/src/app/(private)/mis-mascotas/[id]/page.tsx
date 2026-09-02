@@ -31,6 +31,7 @@ import {
 import { formatDate, formatNumber } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { ArchivePetButton } from '@/features/pets/components/archive-pet-button';
+import { DeleteArchivedPetButton } from '@/features/pets/components/delete-archived-pet-button';
 import { PetPhotoGallery } from '@/features/pets/components/pet-photo-gallery';
 import { RestorePetButton } from '@/features/pets/components/restore-pet-button';
 import { logServerError } from '@/lib/server-logger';
@@ -332,10 +333,7 @@ export default async function PetDetailPage({
         </CardHeader>
         <CardContent>
           {pet.status === 'ARCHIVED' ? (
-            <RestorePetButton
-              petId={pet.id}
-              petName={pet.name}
-            />
+            <div className="space-y-4"><RestorePetButton petId={pet.id} petName={pet.name} /><div className="border-t border-border-soft pt-4"><DeleteArchivedPetButton petId={pet.id} petName={pet.name} /></div></div>
           ) : (
             <ArchivePetButton
               petId={pet.id}

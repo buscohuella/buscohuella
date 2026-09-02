@@ -11,7 +11,7 @@ export function BrandLogo({
 }: BrandLogoProps) {
   return (
     <Image
-      src="/brand/logobusco.png"
+      src="/brand/logobusco-cropped.png"
       alt=""
       width={1280}
       height={1280}

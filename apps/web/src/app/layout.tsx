@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   description:
     'Plataforma colaborativa para ayudar a encontrar mascotas perdidas y comunicar avistamientos.',
   icons: {
-    icon: '/brand/logo.png',
-    apple: '/brand/logo.png',
+    icon: '/brand/mark.png',
+    apple: '/brand/mark.png',
   },
 };
 

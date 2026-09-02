@@ -71,6 +71,7 @@ export async function uploadAvatarAction(
 
   revalidatePath('/', 'layout');
   revalidatePath('/perfil');
+  revalidatePath('/perfil/datos');
 
   return { status: 'success', message: translate('profile.avatar.success') };
 }

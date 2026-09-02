@@ -8,12 +8,33 @@
     "publicDescription": "Estos datos forman la identidad que otras personas podrán conocer cuando decidas activar tu perfil público.",
     "protectionTitle": "Privacidad y contacto",
     "protectionDescription": "Consulta cómo protegemos tus datos y cómo se gestionan las comunicaciones de tus avisos.",
+    "breadcrumbLabel": "Navegación de perfil",
+    "home": "Inicio",
     "loadError": "No se ha podido cargar el perfil del usuario.",
     "completeProfile": "Para completar tu cuenta, añade tu nombre. La fotografía de perfil es opcional.",
     "privacyTitle": "Privacidad por defecto",
     "privacyDescription": "Tu perfil comienza siendo privado. Activarlo no publica correo, teléfono, dirección ni identificadores internos.",
     "contactTitle": "Contacto seguro",
     "contactDescription": "Los avisos relacionados con mascotas utilizarán canales contextuales y no dependerán de exponer tu perfil."
+  },
+  "hub": {
+    "sections": {
+      "data": {
+        "title": "Datos del perfil",
+        "description": "Actualiza tu foto, nombre, alias, municipio y biografía. Tú decides qué parte se muestra públicamente.",
+        "action": "Gestionar datos"
+      },
+      "privacy": {
+        "title": "Privacidad",
+        "description": "Conoce qué información permanece protegida y cómo funciona la visibilidad de tu perfil.",
+        "action": "Revisar privacidad"
+      },
+      "contact": {
+        "title": "Contacto y comunicaciones",
+        "description": "Consulta cómo se gestionan las comunicaciones relacionadas con tus avisos y mascotas.",
+        "action": "Ver información"
+      }
+    }
   },
   "public": {
     "community": "Perfil público de la comunidad BuscoHuella",

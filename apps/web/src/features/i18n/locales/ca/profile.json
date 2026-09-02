@@ -8,12 +8,33 @@
     "publicDescription": "Aquestes dades formen la identitat que altres persones podran conèixer quan decideixis activar el teu perfil públic.",
     "protectionTitle": "Privacitat i contacte",
     "protectionDescription": "Consulta com protegim les teves dades i com es gestionen les comunicacions dels teus avisos.",
+    "breadcrumbLabel": "Navegació del perfil",
+    "home": "Inici",
     "loadError": "No s'ha pogut carregar el perfil de l'usuari.",
     "completeProfile": "Per completar el teu compte, afegeix el teu nom. La fotografia de perfil és opcional.",
     "privacyTitle": "Privacitat per defecte",
     "privacyDescription": "El teu perfil comença sent privat. Activar-lo no publica el correu, el telèfon, l'adreça ni identificadors interns.",
     "contactTitle": "Contacte segur",
     "contactDescription": "Els avisos relacionats amb animals utilitzaran canals contextuals i no dependran d'exposar el teu perfil."
+  },
+  "hub": {
+    "sections": {
+      "data": {
+        "title": "Dades del perfil",
+        "description": "Actualitza la foto, el nom, l'àlies, el municipi i la biografia. Tu decideixes quina part es mostra públicament.",
+        "action": "Gestiona les dades"
+      },
+      "privacy": {
+        "title": "Privacitat",
+        "description": "Coneix quina informació es manté protegida i com funciona la visibilitat del teu perfil.",
+        "action": "Revisa la privacitat"
+      },
+      "contact": {
+        "title": "Contacte i comunicacions",
+        "description": "Consulta com es gestionen les comunicacions relacionades amb els teus avisos i animals.",
+        "action": "Veure informació"
+      }
+    }
   },
   "public": {
     "community": "Perfil públic de la comunitat BuscoHuella",

@@ -28,5 +28,6 @@ export async function deleteAvatarAction(_previousState: DeleteAvatarState, _for
 
   revalidatePath('/', 'layout');
   revalidatePath('/perfil');
+  revalidatePath('/perfil/datos');
   return { status: 'success', message: translate('profile.avatar.deleteSuccess') };
 }

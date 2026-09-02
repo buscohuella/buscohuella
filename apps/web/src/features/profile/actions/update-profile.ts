@@ -143,6 +143,7 @@ export async function updateProfileAction(
 
   revalidatePath('/', 'layout');
   revalidatePath('/perfil');
+  revalidatePath('/perfil/datos');
   revalidatePath(
     `/u/${publicAlias || 'perfil-no-publico'}`,
   );

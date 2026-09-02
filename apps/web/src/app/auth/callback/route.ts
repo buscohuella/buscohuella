@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 
       if (!hasName) {
         return NextResponse.redirect(
-          new URL('/perfil?setup=1', url.origin),
+          new URL('/perfil/datos?setup=1', url.origin),
         );
       }
 

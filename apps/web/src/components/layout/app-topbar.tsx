@@ -1,6 +1,6 @@
 'use client';
 
-import { PawPrint } from 'lucide-react';
+import Image from 'next/image';
 
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import type { AuthUser } from '@/features/auth/types/auth-user';
@@ -56,7 +56,13 @@ export function AppTopbar({
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary lg:hidden"
             aria-hidden="true"
           >
-            <PawPrint className="size-5" />
+            <Image
+              src="/brand/mark.png"
+              alt=""
+              width={40}
+              height={40}
+              className="size-8 object-contain"
+            />
           </span>
 
           <p className="truncate text-lg font-bold tracking-tight sm:text-xl lg:hidden">

@@ -1,5 +1,4 @@
 import { ShieldCheck } from 'lucide-react';
-import Link from 'next/link';
 
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { PageContainer } from '@/components/layout/page-container';
@@ -13,10 +12,6 @@ export default async function ProfilePrivacyPage() {
     <>
       <PageContainer className="pb-0"><Breadcrumbs label={translate('profile.page.breadcrumbLabel')} items={[{ href: '/inicio', label: translate('profile.page.home') }, { href: '/perfil', label: translate('profile.page.title') }, { label: title }]} /></PageContainer>
       <PageContainer className="space-y-6 pt-2">
-        <Link href="/perfil" className="inline-flex min-h-10 items-center rounded-sm font-semibold text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
-          <span aria-hidden="true">←</span>
-          <span className="ml-2">{translate('profile.page.back')}</span>
-        </Link>
         <header className="max-w-3xl space-y-2">
           <p className="text-sm font-semibold text-primary">{translate('profile.page.eyebrow')}</p>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>

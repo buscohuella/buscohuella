@@ -2,6 +2,7 @@ import type { AppLocale } from './config';
 import type { TranslationDictionary } from './types';
 
 import caAuth from './locales/ca/auth.json';
+import caAccessibility from './locales/ca/accessibility.json';
 import caCommon from './locales/ca/common.json';
 import caHome from './locales/ca/home.json';
 import caMySightings from './locales/ca/my-sightings.json';
@@ -17,6 +18,7 @@ import caSightingCreate from './locales/ca/sighting-create.json';
 import caSightingPhotos from './locales/ca/sighting-photos.json';
 import caReportVisual from './locales/ca/report-visual.json';
 import esAuth from './locales/es/auth.json';
+import esAccessibility from './locales/es/accessibility.json';
 import esCommon from './locales/es/common.json';
 import esHome from './locales/es/home.json';
 import esMySightings from './locales/es/my-sightings.json';
@@ -36,6 +38,7 @@ const dictionaries = {
   es: {
     common: esCommon,
     auth: esAuth,
+    accessibility: esAccessibility,
     home: esHome,
     pets: esPets,
     profile: esProfile,
@@ -53,6 +56,7 @@ const dictionaries = {
   ca: {
     common: caCommon,
     auth: caAuth,
+    accessibility: caAccessibility,
     home: caHome,
     pets: caPets,
     profile: caProfile,

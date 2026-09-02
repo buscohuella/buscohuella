@@ -62,6 +62,18 @@
       }
     }
   },
+  "privacy": {
+    "visibility": {
+      "title": "Visibilidad del perfil",
+      "description": "Controla si otras personas pueden consultar tu identidad pública en BuscoHuella.",
+      "label": "Activar perfil público",
+      "help": "Solo se mostrarán tu alias, avatar, municipio aproximado, biografía y fecha de alta. Tu correo y tus datos privados nunca se publicarán.",
+      "view": "Ver mi perfil público",
+      "saved": "Preferencia de privacidad guardada.",
+      "aliasRequired": "Añade un alias público en Datos del perfil antes de activar tu perfil.",
+      "error": "No se ha podido actualizar la visibilidad del perfil. Inténtalo de nuevo."
+    }
+  },
   "public": {
     "community": "Perfil público de la comunidad BuscoHuella",
     "noBio": "Este usuario todavía no ha añadido una biografía pública.",

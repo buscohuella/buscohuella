@@ -4,9 +4,15 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { PageContainer } from '@/components/layout/page-container';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
+import { PublicVisibilityForm } from '@/features/profile/components/public-visibility-form';
+import { getProfile } from '@/features/profile/queries/get-profile';
 
 export default async function ProfilePrivacyPage() {
-  const { translate } = await getServerTranslator();
+  const [{ translate }, profile] = await Promise.all([
+    getServerTranslator(),
+    getProfile(),
+  ]);
+  if (!profile) throw new Error(translate('profile.page.loadError'));
   const title = translate('profile.hub.sections.privacy.title');
   return (
     <>
@@ -23,6 +29,12 @@ export default async function ProfilePrivacyPage() {
             <CardTitle>{translate('profile.page.privacyTitle')}</CardTitle>
             <CardDescription>{translate('profile.page.privacyDescription')}</CardDescription>
           </CardHeader>
+          <div className="border-t border-border px-6 py-6">
+            <PublicVisibilityForm
+              isPublic={profile.isPublic}
+              publicAlias={profile.publicAlias}
+            />
+          </div>
           <div className="grid gap-6 border-t border-border px-6 py-6 md:grid-cols-2">
             <div>
               <h2 className="font-semibold">{translate('profile.page.privacyPublicTitle')}</h2>

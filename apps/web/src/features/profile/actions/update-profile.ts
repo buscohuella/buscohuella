@@ -38,9 +38,6 @@ export async function updateProfileAction(
     'municipality',
   );
   const bio = getString(formData, 'bio');
-  const isPublic =
-    formData.get('isPublic') === 'on';
-
   const fieldErrors: ProfileActionState['fieldErrors'] =
     {};
 
@@ -77,12 +74,6 @@ export async function updateProfileAction(
     );
   }
 
-  if (isPublic && !publicAlias) {
-    fieldErrors.isPublic = translate(
-      'profile.validation.aliasRequiredForPublic',
-    );
-  }
-
   if (Object.keys(fieldErrors).length > 0) {
     return {
       status: 'error',
@@ -114,7 +105,6 @@ export async function updateProfileAction(
       public_alias: publicAlias || null,
       municipality: municipality || null,
       bio: bio || null,
-      is_public: isPublic,
     })
     .eq('id', user.id);
 

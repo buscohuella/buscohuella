@@ -1,15 +1,10 @@
 'use client';
 
-import {
-  ExternalLink,
-  Save,
-} from 'lucide-react';
-import Link from 'next/link';
+import { Save } from 'lucide-react';
 import { useActionState } from 'react';
 
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
 import {
   FormErrorSummary,
@@ -18,7 +13,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from '@/features/i18n/i18n-provider';
-import { cn } from '@/lib/utils';
 
 import { updateProfileAction } from '../actions/update-profile';
 import { AvatarForm } from './avatar-form';
@@ -72,14 +66,6 @@ export function ProfileForm({
       id: 'bio',
       fieldId: 'profile-bio',
       message: state.fieldErrors.bio,
-    });
-  }
-
-  if (state.fieldErrors?.isPublic) {
-    formErrors.push({
-      id: 'is-public',
-      fieldId: 'profile-is-public',
-      message: state.fieldErrors.isPublic,
     });
   }
 
@@ -255,61 +241,6 @@ export function ProfileForm({
             .join(' ')}
         />
       </Field>
-
-      <div
-        className={cn(
-          'rounded-xl border bg-surface p-5 transition-colors',
-          state.fieldErrors?.isPublic
-            ? 'border-danger bg-danger/5'
-            : 'border-border-soft',
-        )}
-      >
-        <Checkbox
-          id="profile-is-public"
-          name="isPublic"
-          defaultChecked={profile.isPublic}
-          label={t('form.public.label')}
-          description={t(
-            'form.public.description',
-          )}
-          aria-invalid={
-            Boolean(
-              state.fieldErrors?.isPublic,
-            ) || undefined
-          }
-          aria-describedby={
-            state.fieldErrors?.isPublic
-              ? 'profile-public-error'
-              : undefined
-          }
-        />
-
-        {state.fieldErrors?.isPublic ? (
-          <p
-            id="profile-public-error"
-            className="mt-3 text-sm font-medium text-danger"
-            role="alert"
-          >
-            {state.fieldErrors.isPublic}
-          </p>
-        ) : null}
-
-        {profile.isPublic &&
-        profile.publicAlias ? (
-          <Link
-            href={`/u/${profile.publicAlias}`}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-          >
-            {t('form.public.view')}
-            <ExternalLink
-              className="size-4"
-              aria-hidden="true"
-            />
-          </Link>
-        ) : null}
-      </div>
 
       <div className="flex justify-end">
         <Button

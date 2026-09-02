@@ -62,6 +62,18 @@
       }
     }
   },
+  "privacy": {
+    "visibility": {
+      "title": "Visibilitat del perfil",
+      "description": "Controla si altres persones poden consultar la teva identitat pública a BuscoHuella.",
+      "label": "Activar perfil públic",
+      "help": "Només es mostraran el teu àlies, avatar, municipi aproximat, biografia i data d'alta. El teu correu i les teves dades privades no es publicaran mai.",
+      "view": "Veure el meu perfil públic",
+      "saved": "Preferència de privacitat desada.",
+      "aliasRequired": "Afegeix un àlies públic a Dades del perfil abans d'activar el perfil.",
+      "error": "No s'ha pogut actualitzar la visibilitat del perfil. Torna-ho a provar."
+    }
+  },
   "public": {
     "community": "Perfil públic de la comunitat BuscoHuella",
     "noBio": "Aquest usuari encara no ha afegit una biografia pública.",

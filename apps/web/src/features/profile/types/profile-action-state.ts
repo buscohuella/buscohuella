@@ -6,7 +6,6 @@ export interface ProfileActionState {
     publicAlias?: string;
     municipality?: string;
     bio?: string;
-    isPublic?: string;
   };
 }
 

@@ -11,7 +11,7 @@ export default async function OwnNoticesPage({ searchParams }: { searchParams: P
           label={translate('noticesHub.breadcrumbs.label')}
           items={[
             { href: '/', label: translate('noticesHub.breadcrumbs.home') },
-            { href: '/mis-avisos', label: translate('noticesHub.breadcrumbs.private') },
+            { href: '/mis-avisos', label: translate('noticesHub.breadcrumbs.section') },
             { label: translate('noticesHub.breadcrumbs.own') },
           ]}
         />

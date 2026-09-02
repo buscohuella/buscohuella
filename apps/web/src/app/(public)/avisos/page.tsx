@@ -12,7 +12,8 @@ export default async function PublicNoticesPage() {
           label={translate('noticesHub.breadcrumbs.label')}
           items={[
             { href: '/', label: translate('noticesHub.breadcrumbs.home') },
-            { label: translate('noticesHub.breadcrumbs.public') },
+            { href: '/mis-avisos', label: translate('noticesHub.breadcrumbs.section') },
+            { label: translate('noticesHub.breadcrumbs.explore') },
           ]}
         />
       </div>

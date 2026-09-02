@@ -3,7 +3,9 @@
     "breadcrumbs": {
       "label": "Ruta de navegació",
       "home": "Inici",
-    "public": "Avisos",
+      "section": "Avisos",
+      "public": "Avisos",
+      "explore": "Explora avisos",
     "private": "Els meus avisos",
     "own": "Els meus avisos propis",
     "received": "Avistaments rebuts",

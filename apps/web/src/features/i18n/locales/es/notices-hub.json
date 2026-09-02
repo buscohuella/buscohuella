@@ -3,7 +3,9 @@
     "breadcrumbs": {
       "label": "Ruta de navegación",
       "home": "Inicio",
-    "public": "Avisos",
+      "section": "Avisos",
+      "public": "Avisos",
+      "explore": "Explorar avisos",
     "private": "Mis avisos",
     "own": "Mis avisos propios",
     "received": "Avistamientos recibidos",

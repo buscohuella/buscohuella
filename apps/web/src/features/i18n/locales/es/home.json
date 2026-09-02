@@ -4,18 +4,20 @@
     "description": "Explora casos, avistamientos y reportes para ayudar a reunir mascotas perdidas con sus familias."
   },
   "hero": {
-    "title": "Ayuda a reunir mascotas perdidas con sus familias.",
-    "description": "Explora información pública sin cuenta. Para gestionar mascotas, alertas y reportes personales podrás registrarte gratuitamente.",
-    "explore": "Explorar sin cuenta",
+    "title": "Cuando una mascota se pierde, cada minuto cuenta.",
+    "description": "Consulta avisos y avistamientos de tu zona, comparte información útil y ayuda a que vuelva a casa. Puedes empezar sin registrarte.",
+    "explore": "Explorar avisos",
     "register": "Crear una cuenta",
-    "visualTitle": "Una comunidad que se mueve",
-    "visualDescription": "Cada aviso puede acercar una mascota a su familia.",
+    "visualTitle": "Así ayuda BuscoHuella",
+    "visualBadge": "Comunidad",
+    "visualDescription": "Una forma sencilla de coordinar la búsqueda con las personas que están cerca.",
     "stepOne": "Busca avisos cerca de ti",
     "stepTwo": "Comparte información útil",
     "stepThree": "Ayuda a que vuelva a casa"
   },
   "actions": {
-    "title": "Puedes ayudar sin registrarte",
+    "title": "Empieza por lo que necesitas",
+    "description": "Consulta la información pública sin cuenta. Regístrate solo cuando quieras publicar o guardar tus propios casos.",
     "mapTitle": "Explorar el mapa",
     "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
     "reportsTitle": "Consultar avisos",

@@ -45,6 +45,17 @@ export default async function PublicHomePage() {
 
   const actions = [
     {
+      id: 'reports',
+      title: translate(
+        'home.actions.reportsTitle',
+      ),
+      description: translate(
+        'home.actions.reportsDescription',
+      ),
+      href: '/explorar-avisos',
+      icon: Search,
+    },
+    {
       id: 'map',
       title: translate(
         'home.actions.mapTitle',
@@ -54,17 +65,6 @@ export default async function PublicHomePage() {
       ),
       href: '/mapa',
       icon: Map,
-    },
-    {
-      id: 'reports',
-      title: translate(
-        'home.actions.reportsTitle',
-      ),
-      description: translate(
-        'home.actions.reportsDescription',
-      ),
-    href: '/explorar-avisos',
-      icon: Search,
     },
     {
       id: 'create',
@@ -89,7 +89,7 @@ export default async function PublicHomePage() {
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
-            href="/mapa"
+            href="/explorar-avisos"
             className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-primary px-6 text-lg font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
             {translate('home.hero.explore')}
@@ -107,8 +107,13 @@ export default async function PublicHomePage() {
           </Link>
             </div>
           </div>
-          <div className="relative rounded-3xl border border-primary/15 bg-surface-elevated/90 p-6 shadow-[var(--shadow-md)]">
-            <p className="text-sm font-semibold text-primary">{translate('home.hero.visualTitle')}</p>
+          <div className="relative rounded-3xl border border-primary/15 bg-surface-elevated/90 p-6 shadow-[var(--shadow-md)] sm:p-7">
+            <div className="flex items-center justify-between gap-4">
+              <p className="text-sm font-semibold text-primary">{translate('home.hero.visualTitle')}</p>
+              <span className="rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
+                {translate('home.hero.visualBadge')}
+              </span>
+            </div>
             <p className="mt-2 text-sm text-muted-foreground">{translate('home.hero.visualDescription')}</p>
             <ol className="mt-6 space-y-4">
               {[translate('home.hero.stepOne'), translate('home.hero.stepTwo'), translate('home.hero.stepThree')].map((step, index) => (
@@ -125,12 +130,15 @@ export default async function PublicHomePage() {
       <section
         aria-labelledby="public-actions-title"
       >
-        <h2
-          id="public-actions-title"
-          className="text-2xl font-bold tracking-tight"
-        >
-          {translate('home.actions.title')}
-        </h2>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <h2
+            id="public-actions-title"
+            className="text-2xl font-bold tracking-tight"
+          >
+            {translate('home.actions.title')}
+          </h2>
+          <p className="max-w-md text-sm text-muted-foreground">{translate('home.actions.description')}</p>
+        </div>
 
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {actions.map((action) => {

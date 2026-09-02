@@ -4,18 +4,20 @@
     "description": "Explora casos, albiraments i reportes per ajudar a reunir animals perduts amb les seves famílies."
   },
   "hero": {
-    "title": "Ajuda a reunir animals perduts amb les seves famílies.",
-    "description": "Explora informació pública sense compte. Per gestionar animals, alertes i reportes personals et podràs registrar gratuïtament.",
-    "explore": "Explora sense compte",
+    "title": "Quan una mascota es perd, cada minut compta.",
+    "description": "Consulta avisos i albiraments de la teva zona, comparteix informació útil i ajuda-la a tornar a casa. Pots començar sense registrar-te.",
+    "explore": "Explora avisos",
     "register": "Crea un compte",
-    "visualTitle": "Una comunitat que es mou",
-    "visualDescription": "Cada avís pot acostar un animal a la seva família.",
+    "visualTitle": "Així ajuda BuscoHuella",
+    "visualBadge": "Comunitat",
+    "visualDescription": "Una manera senzilla de coordinar la cerca amb les persones que són a prop.",
     "stepOne": "Busca avisos a prop teu",
     "stepTwo": "Comparteix informació útil",
     "stepThree": "Ajuda’l a tornar a casa"
   },
   "actions": {
-    "title": "Pots ajudar sense registrar-te",
+    "title": "Comença pel que necessites",
+    "description": "Consulta la informació pública sense compte. Registra't només quan vulguis publicar o desar els teus casos.",
     "mapTitle": "Explora el mapa",
     "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
     "reportsTitle": "Consulta avisos",

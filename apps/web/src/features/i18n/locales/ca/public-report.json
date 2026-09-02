@@ -56,6 +56,8 @@
   "list": {
     "eyebrow": "Comunitat",
     "title": "Avisos públics",
+    "mapTitle": "Mapa d'avisos",
+    "mapPanelTitle": "Avisos al mapa",
     "description": "Mascotes perdudes i animals trobats que necessiten ajuda a prop teu.",
     "emptyTitle": "No hi ha avisos actius",
     "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",

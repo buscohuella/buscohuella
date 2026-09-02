@@ -75,7 +75,7 @@ export default async function PublicMapPage() {
           {translate('publicReport.list.eyebrow')}
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
-          {translate('publicReport.list.title')}
+          {translate('publicReport.list.mapTitle')}
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           {translate('publicReport.list.description')}
@@ -104,7 +104,7 @@ export default async function PublicMapPage() {
           radiusAll: translate('publicReport.list.radiusAll'),
           radiusUnit: translate('publicReport.list.radiusUnit'),
           sortTitle: translate('publicReport.list.sortTitle'),
-          title: translate('publicReport.list.title'),
+          title: translate('publicReport.list.mapPanelTitle'),
           useLocation: translate('publicReport.list.useLocation'),
           usingLocation: translate('publicReport.list.usingLocation'),
           searching: translate('publicReport.list.searching'),

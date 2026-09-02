@@ -56,6 +56,8 @@
   "list": {
     "eyebrow": "Comunidad",
     "title": "Avisos públicos",
+    "mapTitle": "Mapa de avisos",
+    "mapPanelTitle": "Avisos en el mapa",
     "description": "Mascotas perdidas y animales encontrados que necesitan ayuda cerca de ti.",
     "emptyTitle": "No hay avisos activos",
     "emptyDescription": "Cuando se publique un aviso activo aparecerá aquí.",

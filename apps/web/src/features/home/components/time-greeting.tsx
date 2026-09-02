@@ -11,6 +11,7 @@ interface TimeGreetingProps {
 }
 
 function getGreetingPeriod(hour: number): GreetingPeriod {
+  if (hour < 6 || hour >= 20) return 'night';
   if (hour < 12) return 'morning';
   if (hour < 20) return 'afternoon';
   return 'night';

@@ -45,7 +45,7 @@ export function AppTopbar({
             <PawPrint className="size-5" />
           </span>
 
-          <p className="truncate text-lg font-bold tracking-tight sm:text-xl lg:hidden">
+          <p className="truncate text-lg font-bold tracking-tight sm:text-xl">
             {sectionTitle || title}
           </p>
         </div>

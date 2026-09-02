@@ -18,16 +18,25 @@
     "privacyPrivatePointOne": "El teu correu electrònic i qualsevol dada d'accés.",
     "privacyPrivatePointTwo": "El teu telèfon, adreça i ubicació exacta.",
     "privacyPrivatePointThree": "Identificadors interns i dades que no hagis decidit publicar.",
-    "contactHowTitle": "El contacte es gestiona a cada avís",
-    "contactHowDescription": "Les comunicacions relacionades amb un animal es vinculen a l'avís corresponent. El teu perfil no necessita exposar dades de contacte per participar.",
-    "contactPrivacyTitle": "Les teves dades no es mostren per defecte",
-    "contactPrivacyDescription": "Quan una funció de contacte estigui disponible, s'aplicaran els permisos i la informació que hagis decidit compartir en aquell context.",
+    "contactSettingsTitle": "Preferències de notificacions",
+    "contactSettingsDescription": "Controla les notificacions que reps dins de BuscoHuella. Els avisos essencials de seguretat i compte sempre estaran actius.",
     "loadError": "No s'ha pogut carregar el perfil de l'usuari.",
     "completeProfile": "Per completar el teu compte, afegeix el teu nom. La fotografia de perfil és opcional.",
     "privacyTitle": "Privacitat per defecte",
     "privacyDescription": "El teu perfil comença sent privat. Activar-lo no publica el correu, el telèfon, l'adreça ni identificadors interns.",
     "contactTitle": "Contacte segur",
     "contactDescription": "Els avisos relacionats amb animals utilitzaran canals contextuals i no dependran d'exposar el teu perfil."
+  },
+  "contactSettings": {
+    "sightingsTitle": "Avistaments sobre els meus avisos",
+    "sightingsDescription": "Rebre una notificació quan algú enviï un avistament o quan se'n revisi un relacionat amb els teus avisos.",
+    "reportUpdatesTitle": "Canvis en els meus avisos",
+    "reportUpdatesDescription": "Rebre una notificació quan un dels teus avisos canviï d'estat.",
+    "essentialTitle": "Comunicacions essencials",
+    "essentialDescription": "BuscoHuella pot enviar-te comunicacions imprescindibles per a la seguretat, l'accés i el funcionament del teu compte.",
+    "saved": "Les preferències es desen automàticament.",
+    "saving": "Desant preferències…",
+    "error": "No s'han pogut desar les preferències. Torna-ho a provar."
   },
   "hub": {
     "sections": {

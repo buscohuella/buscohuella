@@ -4,9 +4,12 @@ import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { PageContainer } from '@/components/layout/page-container';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
+import { NotificationPreferencesForm } from '@/features/notifications/components/notification-preferences-form';
+import { getMyNotificationPreferences } from '@/features/notifications/lib/notification-preferences';
 
 export default async function ProfileContactPage() {
   const { translate } = await getServerTranslator();
+  const preferences = await getMyNotificationPreferences();
   const title = translate('profile.hub.sections.contact.title');
   return (
     <>
@@ -24,10 +27,14 @@ export default async function ProfileContactPage() {
             <CardDescription>{translate('profile.page.contactDescription')}</CardDescription>
           </CardHeader>
           <CardContent className="border-t border-border pt-6">
-            <h2 className="font-semibold">{translate('profile.page.contactHowTitle')}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{translate('profile.page.contactHowDescription')}</p>
-            <h2 className="mt-6 font-semibold">{translate('profile.page.contactPrivacyTitle')}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{translate('profile.page.contactPrivacyDescription')}</p>
+            <h2 className="font-semibold">{translate('profile.page.contactSettingsTitle')}</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{translate('profile.page.contactSettingsDescription')}</p>
+            <div className="mt-6">
+              <NotificationPreferencesForm
+                initialSightings={preferences.inAppSightings}
+                initialReportUpdates={preferences.inAppReportUpdates}
+              />
+            </div>
           </CardContent>
         </Card>
       </PageContainer>

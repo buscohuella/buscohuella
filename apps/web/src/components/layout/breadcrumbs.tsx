@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 export type BreadcrumbItem = {
@@ -22,10 +22,10 @@ export function Breadcrumbs({
       {backItem ? (
         <Link
           href={backItem.href!}
-          className="inline-flex min-h-10 items-center rounded-sm font-semibold text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft md:hidden"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border-soft bg-surface px-3.5 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-primary hover:bg-primary-soft hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft md:hidden"
         >
-          <span aria-hidden="true">←</span>
-          <span className="ml-2">{backItem.label}</span>
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          <span>{backItem.label}</span>
         </Link>
       ) : null}
       <nav aria-label={label} className={backItem ? 'hidden md:block' : undefined}>

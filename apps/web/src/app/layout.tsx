@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   title: 'BuscoHuella',
   description:
     'Plataforma colaborativa para ayudar a encontrar mascotas perdidas y comunicar avistamientos.',
+  icons: {
+    icon: '/brand/logo.png',
+    apple: '/brand/logo.png',
+  },
 };
 
 export const viewport: Viewport = {

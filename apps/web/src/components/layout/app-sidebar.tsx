@@ -1,10 +1,11 @@
 'use client';
 
-import { PawPrint, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import type { AuthUser } from '@/features/auth/types/auth-user';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 import { cn } from '@/lib/utils';
 
@@ -45,15 +46,7 @@ export function AppSidebar({
             'navigation.private.brandHome',
           )}
         >
-          <span
-            className="flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary"
-            aria-hidden="true"
-          >
-            <PawPrint className="size-6" />
-          </span>
-          <span className="text-xl font-bold tracking-tight">
-            BuscoHuella
-          </span>
+          <BrandLogo className="h-14 w-48" priority />
         </Link>
       </div>
 

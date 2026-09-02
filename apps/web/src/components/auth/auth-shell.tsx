@@ -1,13 +1,10 @@
 'use client';
 
-import {
-  PawPrint,
-  ShieldCheck,
-  Users,
-} from 'lucide-react';
+import { ShieldCheck, Users } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LanguageSelector } from '@/features/i18n/language-selector';
 import { useTranslations } from '@/features/i18n/i18n-provider';
@@ -39,15 +36,7 @@ export function AuthShell({
           className="inline-flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           aria-label={t('shell.homeAria')}
         >
-          <span
-            className="flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground"
-            aria-hidden="true"
-          >
-            <PawPrint className="size-7" />
-          </span>
-          <span className="text-2xl font-bold tracking-tight">
-            BuscoHuella
-          </span>
+          <BrandLogo className="h-20 w-56" priority />
         </Link>
 
         <div className="relative max-w-xl">
@@ -94,15 +83,7 @@ export function AuthShell({
             className="mb-10 inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
             aria-label={t('shell.homeAria')}
           >
-            <span
-              className="flex size-11 items-center justify-center rounded-full bg-primary-soft text-primary"
-              aria-hidden="true"
-            >
-              <PawPrint className="size-6" />
-            </span>
-            <span className="text-xl font-bold tracking-tight">
-              BuscoHuella
-            </span>
+            <BrandLogo className="h-16 w-48" priority />
           </Link>
 
           <div>

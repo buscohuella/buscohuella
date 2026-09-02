@@ -2,11 +2,11 @@ import {
   CircleUserRound,
   LogIn,
   Map,
-  PawPrint,
   ScrollText,
 } from 'lucide-react';
 import Link from 'next/link';
 
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import type { AuthUser } from '@/features/auth/types/auth-user';
 import { LanguageSelector } from '@/features/i18n/language-selector';
@@ -33,15 +33,7 @@ export async function PublicHeader({
             'common.navigation.homeAria',
           )}
         >
-          <span className="flex size-10 items-center justify-center rounded-full bg-primary-soft text-primary">
-            <PawPrint
-              className="size-5"
-              aria-hidden="true"
-            />
-          </span>
-          <span className="hidden text-lg font-bold sm:inline">
-            BuscoHuella
-          </span>
+          <BrandLogo className="h-12 w-40 sm:h-14 sm:w-48" priority />
         </Link>
 
         <nav

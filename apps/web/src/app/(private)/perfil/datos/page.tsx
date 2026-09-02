@@ -1,4 +1,5 @@
 import { CircleUserRound } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
@@ -44,6 +45,10 @@ export default async function ProfileDataPage({
         />
       </PageContainer>
       <PageContainer className="space-y-6 pt-2">
+        <Link href="/perfil" className="inline-flex min-h-10 items-center rounded-sm font-semibold text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+          <span aria-hidden="true">←</span>
+          <span className="ml-2">{translate('profile.page.back')}</span>
+        </Link>
         <AuthNotice
           message={setup === '1' ? translate('profile.page.completeProfile') : undefined}
           tone="info"

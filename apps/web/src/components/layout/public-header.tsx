@@ -4,9 +4,9 @@ import {
   Map,
   ScrollText,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
-import { BrandLogo } from '@/components/brand/brand-logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import type { AuthUser } from '@/features/auth/types/auth-user';
 import { LanguageSelector } from '@/features/i18n/language-selector';
@@ -33,7 +33,17 @@ export async function PublicHeader({
             'common.navigation.homeAria',
           )}
         >
-          <BrandLogo className="h-12 w-40 sm:h-14 sm:w-48" priority />
+          <Image
+            src="/brand/mark.png"
+            alt=""
+            width={40}
+            height={40}
+            className="size-10 object-contain"
+            priority
+          />
+          <span className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            BuscoHuella
+          </span>
         </Link>
 
         <nav

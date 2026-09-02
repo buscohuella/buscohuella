@@ -11,6 +11,12 @@
     "visualTitle": "Així ajuda BuscoHuella",
     "visualBadge": "Comunitat",
     "visualDescription": "Una manera senzilla de coordinar la cerca amb les persones que són a prop.",
+    "panelEyebrow": "Busca ajuda a prop teu",
+    "panelTitle": "Què necessites fer?",
+    "panelDescription": "Accedeix als avisos públics o consulta el mapa per orientar-te per la teva zona.",
+    "panelExplore": "Veure avisos públics",
+    "panelMap": "Obrir el mapa",
+    "panelPrivacy": "Pots consultar la informació pública sense crear un compte.",
     "stepOne": "Busca avisos a prop teu",
     "stepTwo": "Comparteix informació útil",
     "stepThree": "Ajuda’l a tornar a casa"
@@ -25,6 +31,11 @@
     "reportTitle": "Publica un avís",
     "reportDescription": "Crea una alerta perquè la teva comunitat pugui ajudar-te.",
     "reportAction": "Comença ara"
+  },
+  "help": {
+    "title": "Has perdut o has trobat una mascota?",
+    "description": "Crea un avís per compartir la informació amb la teva comunitat i facilitar-ne la cerca.",
+    "action": "Crea un avís"
   },
   "trust": {
     "title": "Informació clara quan més importa",

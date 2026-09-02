@@ -1,13 +1,15 @@
 import {
   ArrowRight,
   HeartHandshake,
+  LockKeyhole,
   Map,
-  PawPrint,
+  MapPin,
   Search,
   ShieldCheck,
   Users,
 } from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -81,8 +83,8 @@ export default async function PublicHomePage() {
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
-            <span className="flex size-14 items-center justify-center rounded-2xl bg-surface-elevated text-primary shadow-[var(--shadow-sm)]">
-              <PawPrint className="size-7" aria-hidden="true" />
+            <span className="flex size-14 items-center justify-center rounded-2xl bg-surface-elevated shadow-[var(--shadow-sm)]">
+              <Image src="/brand/mark.png" alt="" width={44} height={44} className="size-11 object-contain" priority />
             </span>
             <p className="mt-6 text-sm font-semibold text-primary">{translate('common.app.tagline')}</p>
             <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{translate('home.hero.title')}</h1>
@@ -107,22 +109,31 @@ export default async function PublicHomePage() {
           </Link>
             </div>
           </div>
-          <div className="relative rounded-3xl border border-primary/15 bg-surface-elevated/90 p-6 shadow-[var(--shadow-md)] sm:p-7">
-            <div className="flex items-center justify-between gap-4">
-              <p className="text-sm font-semibold text-primary">{translate('home.hero.visualTitle')}</p>
-              <span className="rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
-                {translate('home.hero.visualBadge')}
+          <div className="relative rounded-3xl border border-primary/15 bg-surface-elevated/95 p-6 shadow-[var(--shadow-md)] sm:p-7">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-primary">{translate('home.hero.panelEyebrow')}</p>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight">{translate('home.hero.panelTitle')}</h2>
+              </div>
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-primary">
+                <MapPin className="size-6" aria-hidden="true" />
               </span>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{translate('home.hero.visualDescription')}</p>
-            <ol className="mt-6 space-y-4">
-              {[translate('home.hero.stepOne'), translate('home.hero.stepTwo'), translate('home.hero.stepThree')].map((step, index) => (
-                <li key={step} className="flex items-center gap-3">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">{index + 1}</span>
-                  <span className="text-sm font-semibold">{step}</span>
-                </li>
-              ))}
-            </ol>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">{translate('home.hero.panelDescription')}</p>
+            <div className="mt-6 grid gap-3">
+              <Link href="/explorar-avisos" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-primary px-4 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+                <span className="flex items-center gap-2"><Search className="size-5" aria-hidden="true" />{translate('home.hero.panelExplore')}</span>
+                <ArrowRight className="size-5" aria-hidden="true" />
+              </Link>
+              <Link href="/mapa" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 font-semibold text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+                <span className="flex items-center gap-2"><Map className="size-5 text-primary" aria-hidden="true" />{translate('home.hero.panelMap')}</span>
+                <ArrowRight className="size-5" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="mt-6 flex items-start gap-3 border-t border-border-soft pt-5 text-sm text-muted-foreground">
+              <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+              <span>{translate('home.hero.panelPrivacy')}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -172,6 +183,24 @@ export default async function PublicHomePage() {
         </div>
       </section>
 
+      <section aria-labelledby="home-help-title" className="rounded-3xl border border-amber-200 bg-amber-50 p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
+              <HeartHandshake className="size-6" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 id="home-help-title" className="font-bold">{translate('home.help.title')}</h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">{translate('home.help.description')}</p>
+            </div>
+          </div>
+          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-amber-700 px-5 font-semibold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+            {translate('home.help.action')}
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
       <section aria-labelledby="home-trust-title" className="rounded-3xl border border-border-soft bg-surface-elevated p-6 sm:p-8">
         <div className="max-w-2xl">
           <h2 id="home-trust-title" className="text-2xl font-bold tracking-tight">{translate('home.trust.title')}</h2>
@@ -179,9 +208,9 @@ export default async function PublicHomePage() {
         </div>
         <div className="mt-6 grid gap-6 md:grid-cols-3">
           {[
-            { icon: ShieldCheck, title: 'privacyTitle', description: 'privacyDescription' },
+            { icon: LockKeyhole, title: 'privacyTitle', description: 'privacyDescription' },
             { icon: Users, title: 'communityTitle', description: 'communityDescription' },
-            { icon: HeartHandshake, title: 'accessibleTitle', description: 'accessibleDescription' },
+            { icon: ShieldCheck, title: 'accessibleTitle', description: 'accessibleDescription' },
           ].map(({ icon: Icon, title, description }) => (
             <div key={title} className="flex gap-3">
               <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary"><Icon className="size-5" aria-hidden="true" /></span>

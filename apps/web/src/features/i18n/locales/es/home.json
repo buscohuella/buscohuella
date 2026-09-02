@@ -11,6 +11,12 @@
     "visualTitle": "Así ayuda BuscoHuella",
     "visualBadge": "Comunidad",
     "visualDescription": "Una forma sencilla de coordinar la búsqueda con las personas que están cerca.",
+    "panelEyebrow": "Busca ayuda cerca de ti",
+    "panelTitle": "¿Qué necesitas hacer?",
+    "panelDescription": "Accede a los avisos públicos o consulta el mapa para orientarte por tu zona.",
+    "panelExplore": "Ver avisos públicos",
+    "panelMap": "Abrir el mapa",
+    "panelPrivacy": "Puedes consultar la información pública sin crear una cuenta.",
     "stepOne": "Busca avisos cerca de ti",
     "stepTwo": "Comparte información útil",
     "stepThree": "Ayuda a que vuelva a casa"
@@ -25,6 +31,11 @@
     "reportTitle": "Publica un aviso",
     "reportDescription": "Crea una alerta para que tu comunidad pueda ayudarte.",
     "reportAction": "Empieza ahora"
+  },
+  "help": {
+    "title": "¿Has perdido o encontrado una mascota?",
+    "description": "Crea un aviso para compartir la información con tu comunidad y facilitar la búsqueda.",
+    "action": "Crear un aviso"
   },
   "trust": {
     "title": "Información clara cuando más importa",

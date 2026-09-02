@@ -70,6 +70,7 @@ function MobileNavigationLink({
     item.href === '/mis-avisos' &&
     (
       pathname === '/mis-avisos' ||
+      pathname === '/explorar-avisos' ||
       pathname.startsWith('/mis-avisos/') ||
       pathname.startsWith('/reportes') ||
       pathname.startsWith('/mis-reportes') ||

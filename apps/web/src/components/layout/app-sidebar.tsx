@@ -19,6 +19,7 @@ export interface AppSidebarProps {
 function isNoticesPath(pathname: string) {
   return (
     pathname === '/mis-avisos' ||
+    pathname === '/explorar-avisos' ||
     pathname.startsWith('/mis-avisos/') ||
     pathname.startsWith('/reportes') ||
     pathname.startsWith('/mis-reportes') ||

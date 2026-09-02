@@ -65,7 +65,7 @@
     "open": "Obre les accions ràpides",
     "add": "Afegeix",
     "title": "Què vols comunicar?",
-    "description": "Tria una acció. Només mascota perduda està disponible en aquesta fase de l'MVP.",
+    "description": "Tria què vols comunicar. Algunes opcions estaran disponibles properament.",
     "close": "Tanca les accions ràpides",
     "comingSoon": "Properament",
     "lost": {
@@ -73,12 +73,12 @@
       "description": "Comunica ràpidament que una de les teves mascotes s'ha perdut."
     },
     "found": {
-      "title": "Animal trobat",
-      "description": "Informa d'un animal que has trobat."
+      "title": "He trobat un animal",
+      "description": "El tinc localitzat o l'estic ajudant temporalment."
     },
     "sighting": {
-      "title": "Avistament",
-      "description": "Comunica que has vist un animal perdut."
+      "title": "He vist un animal",
+      "description": "L'he vist, però no està sota la meva cura."
     },
     "incident": {
       "title": "Incidència o perill",

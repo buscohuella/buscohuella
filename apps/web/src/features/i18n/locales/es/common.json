@@ -65,7 +65,7 @@
     "open": "Abrir acciones rápidas",
     "add": "Añadir",
     "title": "¿Qué quieres comunicar?",
-    "description": "Elige una acción. Solo mascota perdida está disponible en esta fase del MVP.",
+    "description": "Elige qué quieres comunicar. Algunas opciones estarán disponibles próximamente.",
     "close": "Cerrar acciones rápidas",
     "comingSoon": "Próximamente",
     "lost": {
@@ -73,12 +73,12 @@
       "description": "Comunica rápidamente que una de tus mascotas se ha perdido."
     },
     "found": {
-      "title": "Animal encontrado",
-      "description": "Informa de un animal que has encontrado."
+      "title": "He encontrado un animal",
+      "description": "Lo tengo localizado o estoy ayudándolo temporalmente."
     },
     "sighting": {
-      "title": "Avistamiento",
-      "description": "Comunica que has visto un animal perdido."
+      "title": "He visto un animal",
+      "description": "Lo he visto, pero no está bajo mi cuidado."
     },
     "incident": {
       "title": "Incidencia o peligro",

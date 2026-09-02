@@ -55,7 +55,12 @@ export function GoogleAuthButton({
 
     const { error: authError } = await createClient().auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: callbackUrl.toString() },
+      options: {
+        redirectTo: callbackUrl.toString(),
+        queryParams: {
+          prompt: 'select_account',
+        },
+      },
     });
 
     if (authError) {

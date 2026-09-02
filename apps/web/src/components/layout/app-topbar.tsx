@@ -30,7 +30,7 @@ export function AppTopbar({
       ? t('navigation.private.pets')
       : pathname.startsWith('/perfil')
         ? t('navigation.private.profile')
-        : pathname === '/avisos' || pathname.startsWith('/avisos/')
+        : pathname === '/explorar-avisos' || pathname === '/avisos' || pathname.startsWith('/avisos/')
           ? t('navigation.private.publicReports')
           : pathname === '/mis-avisos'
             ? t('navigation.private.notices')

@@ -60,7 +60,7 @@ export async function PublicHeader({
             )}
           </Link>
           <Link
- href="/avisos"
+ href="/explorar-avisos"
             className={linkClass}
           >
             <ScrollText
@@ -142,7 +142,7 @@ export async function PublicHeader({
           {translate('common.navigation.map')}
         </Link>
         <Link
- href="/avisos"
+ href="/explorar-avisos"
           className={linkClass}
         >
           <ScrollText

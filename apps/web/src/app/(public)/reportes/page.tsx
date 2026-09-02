@@ -199,5 +199,5 @@ export async function PublicReportsPage() {
 }
 
 export default function LegacyPublicReportsPage() {
-  redirect('/avisos');
+  redirect('/explorar-avisos');
 }

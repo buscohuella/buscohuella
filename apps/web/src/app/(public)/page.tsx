@@ -63,7 +63,7 @@ export default async function PublicHomePage() {
       description: translate(
         'home.actions.reportsDescription',
       ),
-    href: '/avisos',
+    href: '/explorar-avisos',
       icon: Search,
     },
     {

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { getServerTranslator } from '@/features/i18n/server';
 
 const sections = [
-  { href: '/avisos', key: 'explore', icon: Search },
+  { href: '/explorar-avisos', key: 'explore', icon: Search },
   { href: '/mis-avisos/propios', key: 'mine', icon: MapPinned },
   { href: '/avistamientos', key: 'received', icon: Eye },
   { href: '/mis-avistamientos', key: 'reported', icon: Send },

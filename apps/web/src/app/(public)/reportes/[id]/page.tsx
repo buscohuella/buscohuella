@@ -167,7 +167,7 @@ export async function PublicReportPage({
     );
 
   const displayTitle = report.title;
-  const backHref = query.origen === 'mapa' ? '/mapa' : '/avisos';
+  const backHref = query.origen === 'mapa' ? '/mapa' : '/explorar-avisos';
   const backLabel = query.origen === 'mapa'
     ? translate('publicReport.backToMap')
     : translate('publicReport.back');

@@ -30,9 +30,21 @@ export function AppTopbar({
       ? t('navigation.private.pets')
       : pathname.startsWith('/perfil')
         ? t('navigation.private.profile')
-        : pathname.startsWith('/mis-avisos') || pathname.startsWith('/mis-reportes') || pathname.startsWith('/avistamientos') || pathname.startsWith('/mis-avistamientos')
-          ? t('navigation.private.notices')
-          : t('navigation.private.home');
+        : pathname === '/avisos' || pathname.startsWith('/avisos/')
+          ? t('navigation.private.publicReports')
+          : pathname === '/mis-avisos'
+            ? t('navigation.private.notices')
+            : pathname.startsWith('/mis-avisos/propios')
+              ? t('navigation.private.reports')
+              : pathname.startsWith('/mis-reportes/nuevo')
+                ? t('navigation.private.report')
+                : pathname.startsWith('/mis-reportes')
+                  ? t('navigation.private.reports')
+                  : pathname.startsWith('/avistamientos')
+                    ? t('navigation.private.sightings')
+                    : pathname.startsWith('/mis-avistamientos')
+                      ? t('navigation.private.mySightings')
+                      : t('navigation.private.home');
 
   return (
     <header className="sticky top-0 z-30 border-b border-border-soft bg-surface-elevated/95 backdrop-blur">

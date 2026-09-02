@@ -1,7 +1,13 @@
 {
   "page": {
+    "eyebrow": "Compte",
     "title": "El meu perfil",
     "description": "Gestiona la identitat del teu compte i decideix quina informació vols mostrar públicament.",
+    "sectionNavigation": "Seccions del perfil",
+    "publicTitle": "Perfil públic",
+    "publicDescription": "Aquestes dades formen la identitat que altres persones podran conèixer quan decideixis activar el teu perfil públic.",
+    "protectionTitle": "Privacitat i contacte",
+    "protectionDescription": "Consulta com protegim les teves dades i com es gestionen les comunicacions dels teus avisos.",
     "loadError": "No s'ha pogut carregar el perfil de l'usuari.",
     "completeProfile": "Per completar el teu compte, afegeix el teu nom. La fotografia de perfil és opcional.",
     "privacyTitle": "Privacitat per defecte",

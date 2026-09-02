@@ -1,7 +1,13 @@
 {
   "page": {
+    "eyebrow": "Cuenta",
     "title": "Mi perfil",
     "description": "Gestiona tu identidad de cuenta y decide qué información deseas mostrar públicamente.",
+    "sectionNavigation": "Secciones del perfil",
+    "publicTitle": "Perfil público",
+    "publicDescription": "Estos datos forman la identidad que otras personas podrán conocer cuando decidas activar tu perfil público.",
+    "protectionTitle": "Privacidad y contacto",
+    "protectionDescription": "Consulta cómo protegemos tus datos y cómo se gestionan las comunicaciones de tus avisos.",
     "loadError": "No se ha podido cargar el perfil del usuario.",
     "completeProfile": "Para completar tu cuenta, añade tu nombre. La fotografía de perfil es opcional.",
     "privacyTitle": "Privacidad por defecto",

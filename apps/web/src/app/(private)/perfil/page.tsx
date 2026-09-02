@@ -43,7 +43,7 @@ export default async function ProfilePage({
   }
 
   return (
-    <PageContainer className="space-y-6">
+    <PageContainer className="space-y-8">
       <AuthNotice
         message={
           setup === '1'
@@ -52,7 +52,38 @@ export default async function ProfilePage({
         }
         tone="info"
       />
-      <Card elevated>
+
+      <header className="max-w-3xl space-y-2">
+        <p className="text-sm font-semibold text-primary">
+          {translate('profile.page.eyebrow')}
+        </p>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          {translate('profile.page.title')}
+        </h1>
+        <p className="text-base leading-7 text-muted-foreground">
+          {translate('profile.page.description')}
+        </p>
+      </header>
+
+      <nav
+        aria-label={translate('profile.page.sectionNavigation')}
+        className="flex flex-wrap gap-2 border-b border-border pb-4"
+      >
+        <a
+          href="#perfil-publico"
+          className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {translate('profile.page.publicTitle')}
+        </a>
+        <a
+          href="#privacidad-contacto"
+          className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {translate('profile.page.protectionTitle')}
+        </a>
+      </nav>
+
+      <Card elevated id="perfil-publico" className="scroll-mt-6">
         <CardHeader>
           <span className="mb-4 flex size-14 items-center justify-center rounded-xl bg-primary-soft text-primary">
             <CircleUserRound
@@ -61,11 +92,11 @@ export default async function ProfilePage({
             />
           </span>
           <CardTitle>
-            {translate('profile.page.title')}
+            {translate('profile.page.publicTitle')}
           </CardTitle>
           <CardDescription>
             {translate(
-              'profile.page.description',
+              'profile.page.publicDescription',
             )}
           </CardDescription>
         </CardHeader>
@@ -78,45 +109,63 @@ export default async function ProfilePage({
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <ShieldCheck
-              className="mb-3 size-8 text-primary"
-              aria-hidden="true"
-            />
-            <CardTitle>
-              {translate(
-                'profile.page.privacyTitle',
-              )}
-            </CardTitle>
-            <CardDescription>
-              {translate(
-                'profile.page.privacyDescription',
-              )}
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <section
+        id="privacidad-contacto"
+        aria-labelledby="privacidad-contacto-title"
+        className="scroll-mt-6 space-y-4"
+      >
+        <div>
+          <h2
+            id="privacidad-contacto-title"
+            className="text-2xl font-semibold tracking-tight"
+          >
+            {translate('profile.page.protectionTitle')}
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {translate('profile.page.protectionDescription')}
+          </p>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <EyeOff
-              className="mb-3 size-8 text-primary"
-              aria-hidden="true"
-            />
-            <CardTitle>
-              {translate(
-                'profile.page.contactTitle',
-              )}
-            </CardTitle>
-            <CardDescription>
-              {translate(
-                'profile.page.contactDescription',
-              )}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <ShieldCheck
+                className="mb-3 size-8 text-primary"
+                aria-hidden="true"
+              />
+              <CardTitle>
+                {translate(
+                  'profile.page.privacyTitle',
+                )}
+              </CardTitle>
+              <CardDescription>
+                {translate(
+                  'profile.page.privacyDescription',
+                )}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <EyeOff
+                className="mb-3 size-8 text-primary"
+                aria-hidden="true"
+              />
+              <CardTitle>
+                {translate(
+                  'profile.page.contactTitle',
+                )}
+              </CardTitle>
+              <CardDescription>
+                {translate(
+                  'profile.page.contactDescription',
+                )}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </section>
     </PageContainer>
   );
 }

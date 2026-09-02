@@ -11,9 +11,9 @@
     "visualTitle": "Así ayuda BuscoHuella",
     "visualBadge": "Comunidad",
     "visualDescription": "Una forma sencilla de coordinar la búsqueda con las personas que están cerca.",
-    "panelEyebrow": "Busca ayuda cerca de ti",
-    "panelTitle": "¿Qué necesitas hacer?",
-    "panelDescription": "Accede a los avisos públicos o consulta el mapa para orientarte por tu zona.",
+    "panelEyebrow": "Acceso público",
+    "panelTitle": "Explora casos de tu zona",
+    "panelDescription": "Consulta avisos públicos o mira el mapa para orientarte y descubrir qué está pasando cerca de ti.",
     "panelExplore": "Ver avisos públicos",
     "panelMap": "Abrir el mapa",
     "panelPrivacy": "Puedes consultar la información pública sin crear una cuenta.",
@@ -22,8 +22,8 @@
     "stepThree": "Ayuda a que vuelva a casa"
   },
   "actions": {
-    "title": "Empieza por lo que necesitas",
-    "description": "Consulta la información pública sin cuenta. Regístrate solo cuando quieras publicar o guardar tus propios casos.",
+    "title": "Participa a tu manera",
+    "description": "Consulta casos, oriéntate en el mapa o comparte un aviso cuando necesites la ayuda de tu comunidad.",
     "mapTitle": "Explorar el mapa",
     "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
     "reportsTitle": "Consultar avisos",

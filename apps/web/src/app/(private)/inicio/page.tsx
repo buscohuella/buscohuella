@@ -40,16 +40,19 @@ export default async function PrivateHomePage({
 
   const shortcuts = [
     {
+      href: '/mapa',
       title: t('home.private.shortcuts.map.title'),
       description: t('home.private.shortcuts.map.description'),
       icon: Map,
     },
     {
+      href: '/mis-reportes',
       title: t('home.private.shortcuts.reports.title'),
       description: t('home.private.shortcuts.reports.description'),
       icon: ScrollText,
     },
     {
+      href: '/mis-mascotas',
       title: t('home.private.shortcuts.pets.title'),
       description: t('home.private.shortcuts.pets.description'),
       icon: PawPrint,
@@ -97,7 +100,13 @@ export default async function PrivateHomePage({
             const Icon = shortcut.icon;
 
             return (
-              <Card key={shortcut.title}>
+              <Link
+                key={shortcut.title}
+                href={shortcut.href}
+                className="group block rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                aria-label={`${shortcut.title}: ${shortcut.description}`}
+              >
+              <Card className="h-full transition-colors group-hover:border-primary group-hover:bg-primary-soft">
                 <CardHeader>
                   <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
                     <Icon className="size-6" aria-hidden="true" />
@@ -106,6 +115,7 @@ export default async function PrivateHomePage({
                   <CardDescription>{shortcut.description}</CardDescription>
                 </CardHeader>
               </Card>
+              </Link>
             );
           })}
         </div>

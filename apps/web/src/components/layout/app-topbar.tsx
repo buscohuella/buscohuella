@@ -31,14 +31,9 @@ export function AppTopbar({
             <PawPrint className="size-5" />
           </span>
 
-          <div className="min-w-0">
-            <p className="truncate text-xs font-medium text-muted-foreground lg:hidden">
-              BuscoHuella
-            </p>
-            <p className="truncate text-lg font-bold tracking-tight sm:text-xl">
-              {title}
-            </p>
-          </div>
+          <p className="truncate text-lg font-bold tracking-tight sm:text-xl lg:hidden">
+            {title}
+          </p>
         </div>
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">

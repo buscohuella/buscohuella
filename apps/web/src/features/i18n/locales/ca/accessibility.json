@@ -22,8 +22,8 @@
     }
   },
   "motion": {
-    "title": "Reduir el moviment",
-    "description": "Redueix les animacions i transicions de la interfície.",
+    "title": "Animacions i moviment",
+    "description": "Redueix les animacions i transicions de la interfície perquè l'experiència sigui més estable.",
     "decorative": "Preferència de moviment"
   },
   "saved": "Els canvis s'apliquen automàticament i es desen en aquest dispositiu."

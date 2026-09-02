@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Accessibility } from 'lucide-react';
 
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
@@ -30,7 +29,6 @@ export default async function AccessibilityPage() {
           </CardHeader>
           <CardContent><AccessibilitySettings /></CardContent>
         </Card>
-        <Link href="/perfil" className="inline-flex min-h-10 items-center rounded-lg font-semibold text-primary hover:text-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('accessibility.page.back')}</Link>
       </PageContainer>
     </>
   );

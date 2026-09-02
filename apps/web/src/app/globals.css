@@ -256,17 +256,37 @@ html[data-font-size='x-large'] body {
 }
 
 html[data-contrast='high'] {
-  --border: #475569;
-  --border-soft: #64748b;
-  --muted-foreground: #334155;
-  --subtle-foreground: #1f2937;
+  --background: #ffffff;
+  --surface: #f1f5f9;
+  --surface-elevated: #ffffff;
+  --surface-hover: #e2e8f0;
+  --foreground: #0f172a;
+  --muted-foreground: #1e293b;
+  --subtle-foreground: #334155;
+  --border: #1e293b;
+  --border-soft: #475569;
+  --border-strong: #0f172a;
+  --primary: #065f46;
+  --primary-hover: #064e3b;
+  --focus: #1d4ed8;
+  --focus-soft: rgb(29 78 216 / 0.28);
 }
 
 html[data-theme='dark'][data-contrast='high'] {
-  --border: #cbd5e1;
-  --border-soft: #94a3b8;
-  --muted-foreground: #f1f5f9;
+  --background: #000000;
+  --surface: #111827;
+  --surface-elevated: #000000;
+  --surface-hover: #1f2937;
+  --foreground: #ffffff;
+  --muted-foreground: #f8fafc;
   --subtle-foreground: #e2e8f0;
+  --border: #f8fafc;
+  --border-soft: #cbd5e1;
+  --border-strong: #ffffff;
+  --primary: #6ee7b7;
+  --primary-hover: #a7f3d0;
+  --focus: #facc15;
+  --focus-soft: rgb(250 204 21 / 0.32);
 }
 
 html[data-reduced-motion='true'] *,

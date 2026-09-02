@@ -22,8 +22,8 @@
     }
   },
   "motion": {
-    "title": "Reducir movimiento",
-    "description": "Reduce las animaciones y transiciones de la interfaz.",
+    "title": "Animaciones y movimiento",
+    "description": "Reduce las animaciones y transiciones de la interfaz para que la experiencia sea más estable.",
     "decorative": "Preferencia de movimiento"
   },
   "saved": "Los cambios se aplican automáticamente y se guardan en este dispositivo."

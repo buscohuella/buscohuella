@@ -79,7 +79,7 @@ export default async function PublicHomePage() {
 
   return (
     <PageContainer className="space-y-10 py-10 sm:py-14">
-      <section className="relative overflow-hidden rounded-3xl border border-border-soft bg-primary-soft p-6 sm:p-10 lg:p-14">
+      <section className="relative overflow-hidden rounded-3xl border border-primary/10 bg-[linear-gradient(135deg,var(--primary-soft)_0%,#f4fbf8_58%,#f7f8ff_100%)] p-6 shadow-[0_20px_60px_rgba(6,95,70,0.08)] sm:p-10 lg:p-14">
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
@@ -159,7 +159,7 @@ export default async function PublicHomePage() {
               <Link
                 key={action.id}
                 href={action.href}
-                className="rounded-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+                className="rounded-xl transition-transform duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
               >
                 <Card className="h-full">
                   <CardHeader>

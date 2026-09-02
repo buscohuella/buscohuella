@@ -35,6 +35,12 @@
     "accessibleDescription": "Pots començar sense compte i utilitzar-la des de qualsevol dispositiu."
   },
   "private": {
+    "greetingFallbackName": "Usuari",
+    "greeting": {
+      "morning": "Bon dia",
+      "afternoon": "Bona tarda",
+      "night": "Bona nit"
+    },
     "areaLabel": "Àrea personal",
     "title": "Tot a punt per protegir la teva família animal.",
     "description": "Des d’aquí gestionaràs animals, avisos, alertes i dades personals.",

@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/card';
 import { AuthNotice } from '@/features/auth/components/auth-notice';
 import { getServerTranslator } from '@/features/i18n/server';
+import { getCurrentUser } from '@/features/auth/queries/get-current-user';
+import { TimeGreeting } from '@/features/home/components/time-greeting';
 
 interface PrivateHomePageProps {
   searchParams: Promise<{
@@ -30,6 +32,7 @@ export default async function PrivateHomePage({
 }: PrivateHomePageProps) {
   const params = await searchParams;
   const { translate: t } = await getServerTranslator();
+  const user = await getCurrentUser();
 
   const notice =
     params.account_confirmed === '1'
@@ -64,7 +67,16 @@ export default async function PrivateHomePage({
       <AuthNotice message={notice} />
 
       <section className="rounded-xl border border-border-soft bg-primary-soft p-6 sm:p-8">
-        <p className="text-sm font-semibold text-primary">
+        <TimeGreeting
+          name={user?.fullName ?? t('home.private.greetingFallbackName')}
+          labels={{
+            morning: t('home.private.greeting.morning'),
+            afternoon: t('home.private.greeting.afternoon'),
+            night: t('home.private.greeting.night'),
+          }}
+        />
+
+        <p className="mt-2 text-sm font-semibold text-primary">
           {t('home.private.areaLabel')}
         </p>
 

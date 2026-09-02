@@ -35,6 +35,12 @@
     "accessibleDescription": "Puedes empezar sin cuenta y usarla desde cualquier dispositivo."
   },
   "private": {
+    "greetingFallbackName": "Usuario",
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "night": "Buenas noches"
+    },
     "areaLabel": "Área personal",
     "title": "Todo preparado para proteger a tu familia animal.",
     "description": "Desde aquí gestionarás mascotas, avisos, alertas y datos personales.",

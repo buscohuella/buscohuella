@@ -38,12 +38,12 @@ export function TimeGreeting({ name, labels }: TimeGreetingProps) {
   const Icon = period === 'morning' ? Sunrise : period === 'afternoon' ? Sun : Moon;
 
   return (
-    <p
-      className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-surface/80 px-3 py-1.5 text-base font-bold text-primary shadow-sm"
-      role="status"
+    <h2
+      className="mt-2 flex items-center gap-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
+      aria-live="polite"
     >
-      <Icon className="size-4" aria-hidden="true" />
+      <Icon className="size-6 shrink-0 text-primary" aria-hidden="true" />
       {labels[period]}, {name}
-    </p>
+    </h2>
   );
 }

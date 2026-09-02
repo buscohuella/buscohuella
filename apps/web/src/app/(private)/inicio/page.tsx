@@ -67,6 +67,10 @@ export default async function PrivateHomePage({
       <AuthNotice message={notice} />
 
       <section className="rounded-xl border border-border-soft bg-primary-soft p-6 sm:p-8">
+        <p className="text-sm font-semibold text-primary">
+          {t('home.private.areaLabel')}
+        </p>
+
         <TimeGreeting
           name={user?.fullName ?? t('home.private.greetingFallbackName')}
           labels={{
@@ -76,13 +80,9 @@ export default async function PrivateHomePage({
           }}
         />
 
-        <p className="mt-2 text-sm font-semibold text-primary">
-          {t('home.private.areaLabel')}
-        </p>
-
-        <h2 className="mt-2 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
+        <p className="mt-3 max-w-2xl text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
           {t('home.private.title')}
-        </h2>
+        </p>
 
         <p className="mt-4 max-w-2xl text-muted-foreground">
           {t('home.private.description')}

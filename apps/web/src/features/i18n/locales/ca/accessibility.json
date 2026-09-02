@@ -1,0 +1,30 @@
+{
+  "page": {
+    "title": "Preferències d'accessibilitat",
+    "description": "Aquests ajustos s'apliquen a aquesta aplicació en aquest dispositiu.",
+    "back": "Torna al meu perfil"
+  },
+  "fontSize": {
+    "title": "Mida del text",
+    "description": "Augmenta la mida sense perdre contingut ni funcionalitat.",
+    "options": {
+      "default": "Normal",
+      "large": "Gran",
+      "x-large": "Molt gran"
+    }
+  },
+  "contrast": {
+    "title": "Contrast",
+    "description": "Reforça les vores i el text per facilitar la lectura.",
+    "options": {
+      "default": "Estàndard",
+      "high": "Contrast alt"
+    }
+  },
+  "motion": {
+    "title": "Reduir el moviment",
+    "description": "Redueix les animacions i transicions de la interfície.",
+    "decorative": "Preferència de moviment"
+  },
+  "saved": "Els canvis s'apliquen automàticament i es desen en aquest dispositiu."
+}

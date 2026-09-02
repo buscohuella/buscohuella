@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { getDictionary } from '@/features/i18n/dictionaries';
 import { I18nProvider } from '@/features/i18n/i18n-provider';
 import { getRequestLocale } from '@/features/i18n/server';
+import { AccessibilityProvider } from '@/features/accessibility/accessibility-provider';
+import { AccessibilityScript } from '@/features/accessibility/accessibility-script';
 import { ThemeProvider } from '@/features/theme/theme-provider';
 import { ThemeScript } from '@/features/theme/theme-script';
 
@@ -62,13 +64,16 @@ export default async function RootLayout({
     >
       <head>
         <ThemeScript />
+        <AccessibilityScript />
       </head>
       <body className="flex min-h-full flex-col">
         <I18nProvider
           locale={locale}
           dictionary={dictionary}
         >
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <AccessibilityProvider>{children}</AccessibilityProvider>
+          </ThemeProvider>
         </I18nProvider>
       </body>
     </html>

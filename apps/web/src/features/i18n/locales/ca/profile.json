@@ -45,6 +45,11 @@
         "title": "Contacte i comunicacions",
         "description": "Consulta com es gestionen les comunicacions relacionades amb els teus avisos i animals.",
         "action": "Veure informació"
+      },
+      "accessibility": {
+        "title": "Accessibilitat",
+        "description": "Personalitza la lectura i el moviment de la interfície per utilitzar BuscoHuella amb més comoditat.",
+        "action": "Configura l'accessibilitat"
       }
     }
   },

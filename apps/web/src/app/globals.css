@@ -247,6 +247,37 @@ body {
   overflow-x: hidden;
 }
 
+html[data-font-size='large'] body {
+  font-size: 1.125rem;
+}
+
+html[data-font-size='x-large'] body {
+  font-size: 1.25rem;
+}
+
+html[data-contrast='high'] {
+  --border: #475569;
+  --border-soft: #64748b;
+  --muted-foreground: #334155;
+  --subtle-foreground: #1f2937;
+}
+
+html[data-theme='dark'][data-contrast='high'] {
+  --border: #cbd5e1;
+  --border-soft: #94a3b8;
+  --muted-foreground: #f1f5f9;
+  --subtle-foreground: #e2e8f0;
+}
+
+html[data-reduced-motion='true'] *,
+html[data-reduced-motion='true'] *::before,
+html[data-reduced-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+
 button,
 input,
 textarea,

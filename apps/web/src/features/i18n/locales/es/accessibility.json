@@ -1,0 +1,30 @@
+{
+  "page": {
+    "title": "Preferencias de accesibilidad",
+    "description": "Estos ajustes se aplican a esta aplicación en este dispositivo.",
+    "back": "Volver a Mi perfil"
+  },
+  "fontSize": {
+    "title": "Tamaño del texto",
+    "description": "Aumenta el tamaño sin perder contenido ni funcionalidad.",
+    "options": {
+      "default": "Normal",
+      "large": "Grande",
+      "x-large": "Muy grande"
+    }
+  },
+  "contrast": {
+    "title": "Contraste",
+    "description": "Refuerza los bordes y el texto para facilitar la lectura.",
+    "options": {
+      "default": "Estándar",
+      "high": "Contraste alto"
+    }
+  },
+  "motion": {
+    "title": "Reducir movimiento",
+    "description": "Reduce las animaciones y transiciones de la interfaz.",
+    "decorative": "Preferencia de movimiento"
+  },
+  "saved": "Los cambios se aplican automáticamente y se guardan en este dispositivo."
+}

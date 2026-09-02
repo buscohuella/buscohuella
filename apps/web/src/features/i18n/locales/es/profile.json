@@ -45,6 +45,11 @@
         "title": "Contacto y comunicaciones",
         "description": "Consulta cómo se gestionan las comunicaciones relacionadas con tus avisos y mascotas.",
         "action": "Ver información"
+      },
+      "accessibility": {
+        "title": "Accesibilidad",
+        "description": "Personaliza la lectura y el movimiento de la interfaz para utilizar BuscoHuella con más comodidad.",
+        "action": "Configurar accesibilidad"
       }
     }
   },

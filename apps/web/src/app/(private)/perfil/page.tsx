@@ -1,4 +1,4 @@
-import { EyeOff, ShieldCheck, UserRound } from 'lucide-react';
+import { Accessibility, EyeOff, ShieldCheck, UserRound } from 'lucide-react';
 import Link from 'next/link';
 
 import { PageContainer } from '@/components/layout/page-container';
@@ -15,6 +15,7 @@ const sections = [
   { href: '/perfil/datos', key: 'data', icon: UserRound },
   { href: '/perfil/privacidad', key: 'privacy', icon: ShieldCheck },
   { href: '/perfil/contacto', key: 'contact', icon: EyeOff },
+  { href: '/perfil/accesibilidad', key: 'accessibility', icon: Accessibility },
 ] as const;
 
 export default async function ProfileHubPage() {

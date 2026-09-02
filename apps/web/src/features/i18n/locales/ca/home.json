@@ -42,9 +42,7 @@
       "night": "Bona nit"
     },
     "areaLabel": "Àrea personal",
-    "title": "Tot a punt per protegir la teva família animal.",
     "description": "Des d’aquí gestionaràs animals, avisos, alertes i dades personals.",
-    "createReport": "Crea un avís",
     "shortcutsTitle": "Accessos principals",
     "shortcuts": {
       "map": { "title": "Explora el mapa", "description": "Consulta els casos i albiraments propers." },

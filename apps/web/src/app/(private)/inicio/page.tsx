@@ -1,10 +1,4 @@
-import {
-  Bell,
-  Map,
-  PawPrint,
-  Plus,
-  ScrollText,
-} from 'lucide-react';
+import { Bell, Map, PawPrint, ScrollText } from 'lucide-react';
 import Link from 'next/link';
 
 import { PageContainer } from '@/components/layout/page-container';
@@ -80,23 +74,9 @@ export default async function PrivateHomePage({
           }}
         />
 
-        <p className="mt-3 max-w-2xl text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-          {t('home.private.title')}
-        </p>
-
         <p className="mt-4 max-w-2xl text-muted-foreground">
           {t('home.private.description')}
         </p>
-
-        <div className="mt-6">
-          <Link
-            href="/mis-reportes/nuevo"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-          >
-            <Plus className="size-5" aria-hidden="true" />
-            {t('home.private.createReport')}
-          </Link>
-        </div>
       </section>
 
       <section aria-labelledby="private-shortcuts-title">

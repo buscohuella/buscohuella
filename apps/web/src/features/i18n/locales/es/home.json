@@ -42,9 +42,7 @@
       "night": "Buenas noches"
     },
     "areaLabel": "Área personal",
-    "title": "Todo preparado para proteger a tu familia animal.",
     "description": "Desde aquí gestionarás mascotas, avisos, alertas y datos personales.",
-    "createReport": "Crear aviso",
     "shortcutsTitle": "Accesos principales",
     "shortcuts": {
       "map": { "title": "Explorar el mapa", "description": "Consulta los casos y avistamientos próximos." },

@@ -7,6 +7,8 @@ export interface UserProfile {
   municipality: string;
   bio: string;
   isPublic: boolean;
+  publicShowAvatar: boolean;
+  publicShowMunicipality: boolean;
   createdAt: string;
   updatedAt: string;
 }

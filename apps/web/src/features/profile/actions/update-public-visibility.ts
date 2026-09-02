@@ -10,7 +10,11 @@ export type PublicVisibilityResult = {
 };
 
 export async function updatePublicVisibilityAction(
-  isPublic: boolean,
+  preferences: {
+    isPublic: boolean;
+    showAvatar: boolean;
+    showMunicipality: boolean;
+  },
 ): Promise<PublicVisibilityResult> {
   const supabase = await createClient();
   const {
@@ -26,13 +30,17 @@ export async function updatePublicVisibilityAction(
     .single<{ public_alias: string | null }>();
 
   if (profileError) return { ok: false, reason: 'DATABASE' };
-  if (isPublic && !profile.public_alias) {
+  if (preferences.isPublic && !profile.public_alias) {
     return { ok: false, reason: 'ALIAS_REQUIRED' };
   }
 
   const { error } = await supabase
     .from('profiles')
-    .update({ is_public: isPublic })
+    .update({
+      is_public: preferences.isPublic,
+      public_show_avatar: preferences.showAvatar,
+      public_show_municipality: preferences.showMunicipality,
+    } as never)
     .eq('id', user.id);
 
   if (error) return { ok: false, reason: 'DATABASE' };

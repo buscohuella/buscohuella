@@ -36,6 +36,15 @@ export async function getProfile(): Promise<UserProfile | null> {
     return null;
   }
 
+  const { data: privacyData } = await supabase
+    .from('profiles')
+    .select('public_show_avatar, public_show_municipality')
+    .eq('id', user.id)
+    .maybeSingle<{
+      public_show_avatar: boolean;
+      public_show_municipality: boolean;
+    }>();
+
   const { data: signedAvatar } = data.avatar_path
     ? await supabase.storage
         .from('profile-avatars')
@@ -51,6 +60,8 @@ export async function getProfile(): Promise<UserProfile | null> {
     municipality: data.municipality ?? '',
     bio: data.bio ?? '',
     isPublic: data.is_public,
+    publicShowAvatar: privacyData?.public_show_avatar ?? true,
+    publicShowMunicipality: privacyData?.public_show_municipality ?? true,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
   };

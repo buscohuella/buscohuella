@@ -13,23 +13,39 @@ import { updatePublicVisibilityAction } from '../actions/update-public-visibilit
 export function PublicVisibilityForm({
   isPublic,
   publicAlias,
+  publicShowAvatar,
+  publicShowMunicipality,
 }: {
   isPublic: boolean;
   publicAlias: string;
+  publicShowAvatar: boolean;
+  publicShowMunicipality: boolean;
 }) {
   const { t } = useTranslations('profile');
   const [checked, setChecked] = useState(isPublic);
+  const [showAvatar, setShowAvatar] = useState(publicShowAvatar);
+  const [showMunicipality, setShowMunicipality] = useState(publicShowMunicipality);
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  function handleChange(nextValue: boolean) {
+  function handleChange(nextValue: boolean, nextAvatar = showAvatar, nextMunicipality = showMunicipality) {
     const previousValue = checked;
+    const previousAvatar = showAvatar;
+    const previousMunicipality = showMunicipality;
     setChecked(nextValue);
+    setShowAvatar(nextAvatar);
+    setShowMunicipality(nextMunicipality);
     setMessage(null);
     startTransition(async () => {
-      const result = await updatePublicVisibilityAction(nextValue);
+      const result = await updatePublicVisibilityAction({
+        isPublic: nextValue,
+        showAvatar: nextAvatar,
+        showMunicipality: nextMunicipality,
+      });
       if (!result.ok) {
         setChecked(previousValue);
+        setShowAvatar(previousAvatar);
+        setShowMunicipality(previousMunicipality);
         setMessage(
           result.reason === 'ALIAS_REQUIRED'
             ? t('privacy.visibility.aliasRequired')
@@ -60,6 +76,24 @@ export function PublicVisibilityForm({
         label={t('privacy.visibility.label')}
         description={t('privacy.visibility.help')}
       />
+      <div className="space-y-3 rounded-xl border border-border-soft bg-surface p-4">
+        <h3 className="font-semibold">{t('privacy.visibility.sharedTitle')}</h3>
+        <p className="text-sm text-muted-foreground">{t('privacy.visibility.sharedDescription')}</p>
+        <Checkbox
+          id="profile-public-avatar"
+          checked={showAvatar}
+          disabled={isPending}
+          onChange={(event) => handleChange(checked, event.target.checked, showMunicipality)}
+          label={t('privacy.visibility.avatarLabel')}
+        />
+        <Checkbox
+          id="profile-public-municipality"
+          checked={showMunicipality}
+          disabled={isPending}
+          onChange={(event) => handleChange(checked, showAvatar, event.target.checked)}
+          label={t('privacy.visibility.municipalityLabel')}
+        />
+      </div>
       {checked && publicAlias ? (
         <Link
           href={`/u/${publicAlias}`}

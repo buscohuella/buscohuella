@@ -33,6 +33,8 @@ export default async function ProfilePrivacyPage() {
             <PublicVisibilityForm
               isPublic={profile.isPublic}
               publicAlias={profile.publicAlias}
+              publicShowAvatar={profile.publicShowAvatar}
+              publicShowMunicipality={profile.publicShowMunicipality}
             />
           </div>
           <div className="grid gap-6 border-t border-border px-6 py-6 md:grid-cols-2">

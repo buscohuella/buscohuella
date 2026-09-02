@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { Moon, Sun, Sunrise } from 'lucide-react';
 
 type GreetingPeriod = 'morning' | 'afternoon' | 'night';
 
@@ -34,8 +35,14 @@ export function TimeGreeting({ name, labels }: TimeGreetingProps) {
 
   if (!period) return null;
 
+  const Icon = period === 'morning' ? Sunrise : period === 'afternoon' ? Sun : Moon;
+
   return (
-    <p className="text-sm font-semibold text-primary" role="status">
+    <p
+      className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-surface/80 px-3 py-1.5 text-base font-bold text-primary shadow-sm"
+      role="status"
+    >
+      <Icon className="size-4" aria-hidden="true" />
       {labels[period]}, {name}
     </p>
   );

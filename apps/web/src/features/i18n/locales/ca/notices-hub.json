@@ -36,9 +36,5 @@
       "description": "Consulta les aportacions que tu has enviat sobre mascotes d'altres persones.",
       "action": "Veure el que jo he vist"
     }
-  },
-  "nearby": {
-    "title": "Properament: avisos realment propers",
-    "description": "Explorar avisos utilitzarà la teva ubicació o una zona escollida i un radi configurable. El llistat i el mapa compartiran els mateixos filtres geogràfics."
   }
 }

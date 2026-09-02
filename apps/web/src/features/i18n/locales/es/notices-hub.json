@@ -36,9 +36,5 @@
       "description": "Consulta las aportaciones que tú has enviado sobre mascotas de otras personas.",
       "action": "Ver lo que yo he visto"
     }
-  },
-  "nearby": {
-    "title": "Próximamente: avisos realmente cercanos",
-    "description": "Explorar avisos utilizará tu ubicación o una zona elegida y un radio configurable. El listado y el mapa compartirán los mismos filtros geográficos."
   }
 }

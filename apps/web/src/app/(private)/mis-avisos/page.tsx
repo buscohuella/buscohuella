@@ -40,10 +40,6 @@ export default async function NoticesHubPage() {
         ))}
       </div>
 
-      <aside className="rounded-xl border border-border bg-surface p-4">
-        <p className="font-semibold">{translate('noticesHub.nearby.title')}</p>
-        <p className="mt-1 text-sm text-muted-foreground">{translate('noticesHub.nearby.description')}</p>
-      </aside>
     </PageContainer>
   );
 }

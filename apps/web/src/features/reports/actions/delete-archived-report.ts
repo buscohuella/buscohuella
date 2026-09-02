@@ -42,15 +42,6 @@ export async function deleteArchivedReportAction(
       return { status: 'error', message: translate('reports.detail.errors.deleteOnlyArchived') };
     }
 
-    const { count: sightingsCount, error: sightingsError } = await client
-      .from('sightings')
-      .select('id', { count: 'exact', head: true })
-      .eq('report_id', reportId);
-    if (sightingsError) throw sightingsError;
-    if ((sightingsCount ?? 0) > 0) {
-      return { status: 'error', message: translate('reports.detail.errors.deleteHasSightings') };
-    }
-
     const { data: photos, error: photosError } = await client
       .from('report_photos')
       .select('storage_path')
@@ -62,6 +53,8 @@ export async function deleteArchivedReportAction(
       if (storageError) throw storageError;
     }
 
+    const { error: sightingsDeleteError } = await client.from('sightings').delete().eq('report_id', reportId);
+    if (sightingsDeleteError) throw sightingsDeleteError;
     const { error: eventsError } = await client.from('report_events').delete().eq('report_id', reportId);
     if (eventsError) throw eventsError;
     const { error: deleteError } = await client.from('reports').delete().eq('id', reportId).eq('status', 'ARCHIVED');

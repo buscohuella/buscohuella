@@ -347,7 +347,7 @@
       "delete": "Elimina definitivament",
       "deleting": "Eliminant…",
       "deleteTitle": "Eliminar “{title}”?",
-      "deleteDescription": "Aquesta acció eliminarà l'avís arxivat i les seves fotografies. No es pot desfer.",
+      "deleteDescription": "Aquesta acció eliminarà l'avís arxivat, els seus avistaments i les seves fotografies. No es pot desfer.",
       "deleteConfirm": "Sí, elimina l'avís",
       "archivedDescription": "Aquest avís està arxivat i es conserva com a historial."
     },

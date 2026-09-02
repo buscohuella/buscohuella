@@ -347,7 +347,7 @@
       "delete": "Eliminar definitivamente",
       "deleting": "Eliminando…",
       "deleteTitle": "¿Eliminar “{title}”?",
-      "deleteDescription": "Esta acción eliminará el aviso archivado y sus fotografías. No se puede deshacer.",
+      "deleteDescription": "Esta acción eliminará el aviso archivado, sus avistamientos y sus fotografías. No se puede deshacer.",
       "deleteConfirm": "Sí, eliminar aviso",
       "archivedDescription": "Este aviso está archivado y se conserva como historial."
     },

@@ -146,7 +146,6 @@ export default async function PublicMapPage() {
           sortTitle: translate('publicReport.list.sortTitle'),
           sortRecent: translate('publicReport.list.recent'),
           sortNearest: translate('publicReport.list.sortNearest'),
-          sortNearestUnavailable: translate('publicReport.list.sortNearestUnavailable'),
           title: translate('publicReport.list.mapPanelTitle'),
           useLocation: translate('publicReport.list.useLocation'),
           useLocationShort: translate('publicReport.list.useLocationShort'),

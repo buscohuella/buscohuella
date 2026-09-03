@@ -42,7 +42,6 @@ type PublicMapLabels = {
   sortTitle: string;
   sortRecent: string;
   sortNearest: string;
-  sortNearestUnavailable: string;
   title: string;
   useLocation: string;
   useLocationShort: string;
@@ -206,6 +205,15 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
       ),
     [visibleReports],
   );
+
+  useEffect(() => {
+    if (!locationError) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setLocationError(null), 8000);
+    return () => window.clearTimeout(timeout);
+  }, [locationError]);
 
   useEffect(() => {
     if (!sortMenuOpen) {
@@ -683,7 +691,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                   }}
                   className={`flex min-h-10 w-full items-center rounded-xl px-3 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${sortMode === 'nearest' ? 'bg-primary-soft text-primary' : 'text-foreground hover:bg-surface-sunken'} disabled:cursor-not-allowed disabled:opacity-45`}
                 >
-                  {userLocation ? labels.sortNearest : labels.sortNearestUnavailable}
+                  {labels.sortNearest}
                 </button>
               </div>
             ) : null}
@@ -796,7 +804,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         <div className="contents lg:col-span-2 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-4">
           <div
             id="map-mobile-filters"
-            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full items-center gap-2 overflow-x-auto pb-1 lg:col-start-1 lg:flex`}
+            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap items-center gap-2 pb-1 lg:col-start-1 lg:flex`}
             aria-label={labels.locationTitle}
           >
             <SlidersHorizontal className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />

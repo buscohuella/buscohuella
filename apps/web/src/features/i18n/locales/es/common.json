@@ -61,7 +61,8 @@
     "cancel": "Cancelar",
     "continue": "Continuar",
     "save": "Guardar",
-    "retry": "Volver a intentar"
+    "retry": "Volver a intentar",
+    "backToTop": "Volver arriba"
   },
   "status": {
     "loading": "Cargando…"

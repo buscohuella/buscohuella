@@ -61,7 +61,8 @@
     "cancel": "Cancel·la",
     "continue": "Continua",
     "save": "Desa",
-    "retry": "Torna-ho a provar"
+    "retry": "Torna-ho a provar",
+    "backToTop": "Torna amunt"
   },
   "status": {
     "loading": "Carregant…"

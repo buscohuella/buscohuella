@@ -1,17 +1,27 @@
 'use client';
 
-import { Menu, Map, ScrollText, X } from 'lucide-react';
+import { LogIn, Menu, Map, ScrollText, UserPlus, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export function MobilePublicNav({
   label,
   mapLabel,
   reportsLabel,
+  themeLabel,
+  loginLabel,
+  registerLabel,
+  showAuth,
 }: {
   label: string;
   mapLabel: string;
   reportsLabel: string;
+  themeLabel: string;
+  loginLabel: string;
+  registerLabel: string;
+  showAuth: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -39,6 +49,22 @@ export function MobilePublicNav({
             <ScrollText className="size-4" aria-hidden="true" />
             {reportsLabel}
           </Link>
+          <div className="flex min-h-11 items-center justify-between rounded-lg px-3 text-sm font-semibold text-muted-foreground">
+            {themeLabel}
+            <ThemeToggle />
+          </div>
+          {showAuth ? (
+            <>
+              <Link href="/login" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+                <LogIn className="size-4" aria-hidden="true" />
+                {loginLabel}
+              </Link>
+              <Link href="/registro" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg bg-public-action px-3 text-sm font-semibold !text-white transition-colors hover:bg-public-action-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+                <UserPlus className="size-4" aria-hidden="true" />
+                {registerLabel}
+              </Link>
+            </>
+          ) : null}
         </nav>
       ) : null}
     </div>

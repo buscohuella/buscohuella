@@ -131,9 +131,9 @@ function createOriginMarkerElement() {
   originElement.setAttribute('aria-hidden', 'true');
   originElement.className = 'pointer-events-none relative flex items-center justify-center';
   const originAccuracy = document.createElement('span');
-  originAccuracy.className = 'absolute inset-0 rounded-full border-2 border-[#2563eb]/35 bg-[#2563eb]/10';
+  originAccuracy.className = 'absolute inset-0 rounded-full border border-[#2563eb]/25 bg-[#2563eb]/[0.08]';
   const originDot = document.createElement('span');
-  originDot.className = 'relative z-10 block size-5 rounded-full border-[3px] border-white bg-[#2563eb] shadow-[0_1px_8px_rgba(37,99,235,0.55)]';
+  originDot.className = 'relative z-10 block size-4 rounded-full border-2 border-white bg-[#2563eb]';
   originElement.append(originAccuracy, originDot);
   return originElement;
 }
@@ -291,7 +291,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         attributionControl: true,
       });
 
-      map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+      map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right');
       mapRef.current = map;
       map.on('error', () => setMapError(true));
 
@@ -902,7 +902,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
               disabled={!userLocation}
               aria-label={labels.recenterLocation}
               title={labels.recenterLocation}
-              className="absolute bottom-24 right-3 z-10 flex size-11 items-center justify-center rounded-xl border border-border bg-surface-elevated text-primary shadow-md transition-colors hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft disabled:cursor-not-allowed disabled:opacity-45"
+              className="absolute right-3 top-3 z-10 flex size-11 items-center justify-center rounded-full border border-border bg-surface-elevated text-primary shadow-sm transition-colors hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft disabled:cursor-not-allowed disabled:opacity-45"
             >
               <LocateFixed className="size-5" aria-hidden="true" />
             </button>

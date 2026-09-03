@@ -33,6 +33,8 @@ import esReports from './locales/es/reports.json';
 import esSightingCreate from './locales/es/sighting-create.json';
 import esSightingPhotos from './locales/es/sighting-photos.json';
 import esReportVisual from './locales/es/report-visual.json';
+import esLegal from './locales/es/legal.json';
+import caLegal from './locales/ca/legal.json';
 
 const dictionaries = {
   es: {
@@ -52,6 +54,7 @@ const dictionaries = {
     mySightings: esMySightings,
     notifications: esNotifications,
     noticesHub: esNoticesHub,
+    legal: esLegal,
   },
   ca: {
     common: caCommon,
@@ -70,6 +73,7 @@ const dictionaries = {
     mySightings: caMySightings,
     notifications: caNotifications,
     noticesHub: caNoticesHub,
+    legal: caLegal,
   },
 } satisfies Record<
   AppLocale,

@@ -4,6 +4,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 import { ArrowUpRight, CheckCircle2, ClipboardList, Database, Eye, FileCheck2, LockKeyhole, Mail, Scale, ShieldCheck, UsersRound } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import { PrintButton } from './print-button';
 
 type LegalDocument = 'privacy' | 'terms' | 'cookies';
 
@@ -63,20 +64,20 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{translate('common.legal.eyebrow')}</p>
             <h1 className="mt-3 text-3xl font-extrabold tracking-[-0.025em] text-foreground sm:text-4xl">{translate(`${prefix}.title`)}</h1>
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">{translate(`${prefix}.intro`)}</p>
-            <p className="mt-4 text-sm text-muted-foreground">{translate('common.legal.lastUpdated')}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-3"><p className="text-sm text-muted-foreground">{translate('common.legal.lastUpdated')}</p><PrintButton label={translate('legal.print')} /></div>
           </header>
 
           <section className="mt-8 rounded-2xl bg-[#e9edff] p-5 sm:p-6" aria-labelledby="legal-summary-title">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-primary text-white"><ShieldCheck className="size-5" aria-hidden="true" /></span>
-              <div><h2 id="legal-summary-title" className="text-base font-bold">{translate('common.legal.summaryTitle')}</h2><p className="text-sm text-muted-foreground">{translate('common.legal.summaryBody')}</p></div>
+              <div><h2 id="legal-summary-title" className="text-base font-bold">{translate(`legal.${document}.summaryTitle`)}</h2><p className="text-sm text-muted-foreground">{translate(`legal.${document}.summaryBody`)}</p></div>
             </div>
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               {['privacy', 'clarity', 'control'].map((item) => (
                 <div key={item} className="rounded-xl bg-white p-4">
                   <CheckCircle2 className="size-4 text-primary" aria-hidden="true" />
-                  <p className="mt-2 text-sm font-semibold">{translate(`common.legal.summary.${item}.title`)}</p>
-                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{translate(`common.legal.summary.${item}.body`)}</p>
+                  <p className="mt-2 text-sm font-semibold">{translate(`legal.${document}.summary.${item}.title`)}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{translate(`legal.${document}.summary.${item}.body`)}</p>
                 </div>
               ))}
             </div>

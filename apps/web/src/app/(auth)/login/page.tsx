@@ -9,6 +9,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 export const metadata: Metadata = {
   title: 'Iniciar sesión | BuscoHuella',
   description: 'Accede a tu cuenta de BuscoHuella.',
+  robots: { index: false, follow: false },
 };
 
 interface LoginPageProps {

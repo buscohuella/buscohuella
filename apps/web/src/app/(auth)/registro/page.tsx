@@ -8,6 +8,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 export const metadata: Metadata = {
   title: 'Crear cuenta | BuscoHuella',
   description: 'Crea una cuenta en BuscoHuella.',
+  robots: { index: false, follow: false },
 };
 
 export default async function RegisterPage({

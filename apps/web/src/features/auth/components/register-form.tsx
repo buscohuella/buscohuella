@@ -83,7 +83,7 @@ export function RegisterForm({
   const hasFieldErrors = formErrors.length > 0;
 
   return (
-    <form action={formAction} noValidate className="space-y-5">
+    <form action={formAction} noValidate className="space-y-5 lg:space-y-4">
       <input
         type="hidden"
         name="next"

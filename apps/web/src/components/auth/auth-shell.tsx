@@ -1,10 +1,10 @@
 'use client';
 
 import { Map, ScrollText, ShieldCheck, Users } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-import { BrandLogo } from '@/components/brand/brand-logo';
 import { BackToTopButton } from '@/components/layout/back-to-top-button';
 import { MobilePublicNav } from '@/components/layout/mobile-public-nav';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -26,11 +26,12 @@ export function AuthShell({
   const { t: commonT } = useTranslations('common');
 
   return (
-    <main className="relative mx-auto min-h-screen max-w-7xl overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)]">
+    <main className="relative mx-auto min-h-screen max-w-7xl overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-2">
       <header className="absolute inset-x-0 top-0 z-20 border-b border-border-soft bg-surface-elevated/90 backdrop-blur">
         <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" aria-label={t('shell.homeAria')}>
-            <BrandLogo className="h-10 w-36 sm:h-12 sm:w-44" priority />
+            <Image src="/brand/mark.png" alt="" width={40} height={40} className="size-9 object-contain sm:size-10" priority />
+            <span className="text-base font-bold tracking-tight text-foreground sm:text-lg">BuscoHuella</span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label={commonT('navigation.publicLabel')}>
             <Link href="/mapa" className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"><Map className="size-4" aria-hidden="true" />{commonT('navigation.map')}</Link>

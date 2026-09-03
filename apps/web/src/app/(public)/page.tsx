@@ -9,7 +9,6 @@ import {
   Users,
 } from 'lucide-react';
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -83,10 +82,10 @@ export default async function PublicHomePage() {
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
-            <span className="flex size-14 items-center justify-center rounded-2xl bg-surface-elevated shadow-[var(--shadow-sm)]">
-              <Image src="/brand/mark.png" alt="" width={44} height={44} className="size-11 object-contain" priority />
-            </span>
-            <p className="mt-6 text-sm font-semibold text-primary">{translate('common.app.tagline')}</p>
+            <p className="inline-flex items-center gap-2 self-start rounded-full bg-surface-elevated px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-primary shadow-[var(--shadow-sm)]">
+              <span className="size-2 rounded-full bg-primary" aria-hidden="true" />
+              {translate('common.app.tagline')}
+            </p>
             <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{translate('home.hero.title')}</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">

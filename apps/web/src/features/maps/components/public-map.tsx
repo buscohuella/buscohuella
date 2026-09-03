@@ -108,9 +108,9 @@ function distanceInKm(
 function createOriginMarkerElement() {
   const originElement = document.createElement('div');
   originElement.setAttribute('aria-hidden', 'true');
-  originElement.className = 'flex size-9 items-center justify-center';
+  originElement.className = 'flex size-10 items-center justify-center';
   const originDot = document.createElement('span');
-  originDot.className = 'block size-7 rotate-45 rounded-full rounded-bl-none border-4 border-white bg-primary shadow-xl';
+  originDot.className = 'block size-5 rounded-full border-[3px] border-white bg-[#2563eb] shadow-[0_1px_8px_rgba(37,99,235,0.55)]';
   originElement.append(originDot);
   return originElement;
 }
@@ -128,6 +128,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const [sortRecent, setSortRecent] = useState(true);
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [addressQuery, setAddressQuery] = useState('');
@@ -275,6 +276,22 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             'line-opacity': 0.55,
           },
         });
+        map.addSource('user-location-accuracy', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] },
+        });
+        map.addLayer({
+          id: 'user-location-accuracy-fill',
+          type: 'fill',
+          source: 'user-location-accuracy',
+          paint: { 'fill-color': '#2563eb', 'fill-opacity': 0.12 },
+        });
+        map.addLayer({
+          id: 'user-location-accuracy-line',
+          type: 'line',
+          source: 'user-location-accuracy',
+          paint: { 'line-color': '#2563eb', 'line-width': 1.5, 'line-opacity': 0.35 },
+        });
         map.on('click', 'public-report-areas-fill', (event) => {
           const feature = event.features?.[0] as
             | { properties?: { reportId?: unknown } }
@@ -294,6 +311,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           }
           const nextLocation: [number, number] = [event.lngLat.lng, event.lngLat.lat];
           setUserLocation(nextLocation);
+          setUserAccuracy(null);
           setRadiusKm(null);
           setLocationError(false);
           selectingLocationRef.current = false;
@@ -373,12 +391,30 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
       })
         .setLngLat(userLocation)
         .addTo(map);
+
+      const accuracySource = map.getSource('user-location-accuracy') as
+        | { setData: (data: unknown) => void }
+        | undefined;
+      accuracySource?.setData({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            createApproximationCircle(
+              userLocation[0],
+              userLocation[1],
+              Math.max(userAccuracy ?? 80, 40),
+            ),
+          ],
+        },
+      });
     });
 
     return () => {
       cancelled = true;
     };
-  }, [mapReady, userLocation]);
+  }, [mapReady, userAccuracy, userLocation]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -458,6 +494,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
       ({ coords }) => {
         const nextLocation: [number, number] = [coords.longitude, coords.latitude];
         setUserLocation(nextLocation);
+        setUserAccuracy(coords.accuracy);
         setAddressQuery('');
         setAddressSuggestions([]);
         setLocating(false);
@@ -468,7 +505,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         setLocating(false);
         setLocationError(true);
       },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 },
     );
   }
 
@@ -483,6 +520,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
 
   function selectAddress(suggestion: AddressSuggestion) {
     setUserLocation(suggestion.center);
+    setUserAccuracy(null);
     skipAddressSearchRef.current = true;
     setAddressQuery(suggestion.label);
     setAddressSuggestions([]);
@@ -556,6 +594,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                     setAddressQuery('');
                     setAddressSuggestions([]);
                     setUserLocation(null);
+                    setUserAccuracy(null);
                     setRadiusKm(null);
                     setLocationError(false);
                     originMarkerRef.current?.remove();

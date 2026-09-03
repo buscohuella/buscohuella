@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import type { AuthUser } from '@/features/auth/types/auth-user';
 import { PublicHeader } from './public-header';
+import { PublicFooter } from './public-footer';
 
 export function PublicShell({
   children,
@@ -14,6 +15,7 @@ export function PublicShell({
     <div className="min-h-screen bg-background text-foreground">
       <PublicHeader user={user} />
       <main>{children}</main>
+      <PublicFooter />
     </div>
   );
 }

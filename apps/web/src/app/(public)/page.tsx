@@ -47,7 +47,7 @@ export default async function PublicHomePage() {
               <span className="size-2 rounded-full bg-primary" aria-hidden="true" />
               {translate('common.app.tagline')}
             </p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{translate('home.hero.title')}</h1>
+            <h1 className="relative mt-3 max-w-3xl pb-4 text-4xl font-bold tracking-tight after:absolute after:bottom-0 after:left-0 after:h-1 after:w-24 after:rounded-full after:bg-primary sm:text-5xl lg:text-6xl">{translate('home.hero.title')}</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
@@ -117,14 +117,14 @@ export default async function PublicHomePage() {
           <h2 id="home-trust-title" className="text-2xl font-bold tracking-tight">{translate('home.trust.title')}</h2>
           <p className="mt-2 text-muted-foreground">{translate('home.trust.description')}</p>
         </div>
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
           {[
-            { icon: LockKeyhole, title: 'privacyTitle', description: 'privacyDescription' },
-            { icon: Users, title: 'communityTitle', description: 'communityDescription' },
-            { icon: ShieldCheck, title: 'accessibleTitle', description: 'accessibleDescription' },
-          ].map(({ icon: Icon, title, description }) => (
-            <div key={title} className="flex gap-3">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary"><Icon className="size-5" aria-hidden="true" /></span>
+            { icon: LockKeyhole, title: 'privacyTitle', description: 'privacyDescription', tone: 'bg-primary-soft text-primary' },
+            { icon: Users, title: 'communityTitle', description: 'communityDescription', tone: 'bg-accent-soft text-accent' },
+            { icon: ShieldCheck, title: 'accessibleTitle', description: 'accessibleDescription', tone: 'bg-info-soft text-info' },
+          ].map(({ icon: Icon, title, description, tone }) => (
+            <div key={title} className="rounded-2xl border border-border-soft bg-surface p-4 transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[var(--shadow-sm)]">
+              <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl ${tone}`}><Icon className="size-5" aria-hidden="true" /></span>
               <div><h3 className="font-semibold">{translate(`home.trust.${title}`)}</h3><p className="mt-1 text-sm leading-6 text-muted-foreground">{translate(`home.trust.${description}`)}</p></div>
             </div>
           ))}

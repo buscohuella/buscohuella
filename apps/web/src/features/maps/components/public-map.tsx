@@ -160,6 +160,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
+  const [locationMode, setLocationMode] = useState<'gps' | 'address' | 'map' | null>(null);
   const [locationZoom, setLocationZoom] = useState<number | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<'secure-context' | 'unavailable' | null>(null);
@@ -384,6 +385,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           const nextLocation: [number, number] = [event.lngLat.lng, event.lngLat.lat];
           setUserLocation(nextLocation);
           setUserAccuracy(null);
+          setLocationMode('map');
           setLocationZoom(14);
           setRadiusKm(null);
           setLocationError(null);
@@ -610,6 +612,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         const nextLocation: [number, number] = [coords.longitude, coords.latitude];
         setUserLocation(nextLocation);
         setUserAccuracy(coords.accuracy);
+        setLocationMode('gps');
         setLocationZoom(14);
         setAddressQuery('');
         setAddressSuggestions([]);
@@ -649,6 +652,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   function selectAddress(suggestion: AddressSuggestion) {
     setUserLocation(suggestion.center);
     setUserAccuracy(null);
+    setLocationMode('address');
     setLocationZoom(Math.max(suggestion.zoom, 14));
     skipAddressSearchRef.current = true;
     setAddressQuery(suggestion.label);
@@ -725,7 +729,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             disabled={locating}
             aria-label={labels.useLocation}
             title={labels.useLocation}
-            className="order-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none"
+            className={`order-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold transition-colors disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none ${locationMode === 'gps' ? 'border-primary bg-primary-soft text-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}
           >
             <MapPin className="size-4" aria-hidden="true" />
             <span className="sm:hidden">{labels.useLocationShort}</span>
@@ -746,8 +750,8 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             onClick={enableMapSelection}
             aria-pressed={selectingLocation}
             className={`order-2 inline-flex min-h-10 items-center gap-2 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none ${
-              selectingLocation
-                ? 'border-primary bg-primary text-primary-foreground'
+              selectingLocation || locationMode === 'map'
+                ? 'border-primary bg-primary-soft text-primary'
                 : 'border-border text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -758,7 +762,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             <label htmlFor="map-location-search" className="sr-only">
               {labels.locationTitle}
             </label>
-            <div className="flex min-h-10 items-center gap-2 rounded-full border border-border px-3">
+            <div className={`flex min-h-10 items-center gap-2 rounded-full border px-3 ${locationMode === 'address' ? 'border-primary bg-primary-soft/40' : 'border-border'}`}>
               <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
               <input
                 id="map-location-search"
@@ -783,6 +787,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     setAddressSuggestions([]);
                     setUserLocation(null);
                     setUserAccuracy(null);
+                    setLocationMode(null);
                     setLocationZoom(null);
                     setRadiusKm(null);
                     setSortMode('recent');
@@ -841,7 +846,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     onClick={() => setSpeciesFilter(filter.key)}
                     className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
                       speciesFilter === filter.key
-                        ? 'border-primary bg-primary text-white'
+                        ? 'border-primary bg-primary-soft text-primary'
                         : 'border-border-soft bg-surface-sunken text-foreground hover:border-primary hover:text-primary'
                     }`}
                   >

@@ -805,6 +805,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           <div
             id="map-mobile-filters"
             className={`${mobileFiltersOpen ? 'flex' : 'hidden'} order-3 min-w-0 w-full flex-wrap items-center gap-2 overflow-visible pb-1 lg:order-none lg:col-start-1 lg:flex`}
+            style={{ order: 4 }}
             aria-label={labels.locationTitle}
           >
             <SlidersHorizontal className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -831,7 +832,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
               })()
             ))}
           </div>
-          <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} order-3 w-full flex-wrap gap-2 lg:order-none lg:col-start-2 lg:justify-end lg:flex`}>
+          <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} order-3 w-full flex-wrap gap-2 lg:order-none lg:col-start-2 lg:justify-end lg:flex`} style={{ order: 5 }}>
           {[1, 5, 10, 20].map((value) => (
             <button
               key={value}

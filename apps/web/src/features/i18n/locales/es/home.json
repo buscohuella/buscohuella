@@ -5,6 +5,8 @@
   },
   "hero": {
     "title": "Cuando una mascota se pierde, cada minuto cuenta.",
+    "titleLead": "Cuando una mascota se pierde,",
+    "titleAccent": "cada minuto cuenta.",
     "description": "Consulta avisos y avistamientos de tu zona, comparte información útil y ayuda a que vuelva a casa. Puedes empezar sin registrarte.",
     "explore": "Explorar avisos",
     "register": "Crear una cuenta",

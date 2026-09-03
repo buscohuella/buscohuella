@@ -43,11 +43,14 @@ export default async function PublicHomePage() {
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
-            <p className="inline-flex items-center gap-2 self-start rounded-full bg-surface-elevated px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-primary shadow-[var(--shadow-sm)]">
-              <span className="size-2 rounded-full bg-primary" aria-hidden="true" />
+            <p className="motion-safe:animate-[pulse_4s_ease-in-out_infinite] inline-flex items-center gap-2 self-start rounded-full bg-surface-elevated px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-primary shadow-[var(--shadow-sm)]">
+              <span className="size-2 rounded-full bg-primary motion-safe:animate-ping" aria-hidden="true" />
               {translate('common.app.tagline')}
             </p>
-            <h1 className="relative mt-3 max-w-3xl pb-4 text-4xl font-bold tracking-tight after:absolute after:bottom-0 after:left-0 after:h-1 after:w-24 after:rounded-full after:bg-primary sm:text-5xl lg:text-6xl">{translate('home.hero.title')}</h1>
+            <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              <span>{translate('home.hero.titleLead')} </span>
+              <span className="relative inline-block text-primary after:absolute after:-bottom-1 after:left-0 after:h-1.5 after:w-full after:rounded-full after:bg-primary/45 after:content-['']">{translate('home.hero.titleAccent')}</span>
+            </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link

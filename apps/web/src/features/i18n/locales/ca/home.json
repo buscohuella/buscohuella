@@ -5,6 +5,8 @@
   },
   "hero": {
     "title": "Quan una mascota es perd, cada minut compta.",
+    "titleLead": "Quan una mascota es perd,",
+    "titleAccent": "cada minut compta.",
     "description": "Consulta avisos i albiraments de la teva zona, comparteix informació útil i ajuda-la a tornar a casa. Pots començar sense registrar-te.",
     "explore": "Explora avisos",
     "register": "Crea un compte",

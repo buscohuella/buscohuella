@@ -78,7 +78,7 @@ export default async function PublicHomePage() {
 
   return (
     <PageContainer className="space-y-10 py-10 sm:py-14">
-      <section className="relative overflow-hidden rounded-3xl border border-primary/10 bg-[linear-gradient(135deg,var(--primary-soft)_0%,#f4fbf8_58%,#f7f8ff_100%)] p-6 shadow-[0_20px_60px_rgba(6,95,70,0.08)] sm:p-10 lg:p-14">
+      <section className="relative overflow-hidden rounded-3xl border border-primary/10 bg-[linear-gradient(135deg,var(--primary-soft)_0%,var(--surface)_58%,var(--surface-sunken)_100%)] p-6 shadow-[0_20px_60px_rgba(6,95,70,0.08)] sm:p-10 lg:p-14">
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
@@ -91,7 +91,7 @@ export default async function PublicHomePage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/explorar-avisos"
-            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-primary px-6 text-lg font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-primary px-6 text-lg font-semibold text-primary-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_24px_rgba(6,95,70,0.2)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
             {translate('home.hero.explore')}
             <ArrowRight
@@ -102,7 +102,7 @@ export default async function PublicHomePage() {
 
           <Link
             href="/registro"
-            className="inline-flex min-h-14 items-center justify-center rounded-full border border-border bg-surface-elevated px-6 text-lg font-semibold text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="inline-flex min-h-14 items-center justify-center rounded-full border border-border bg-surface-elevated px-6 text-lg font-semibold text-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
             {translate('home.hero.register')}
           </Link>
@@ -120,11 +120,11 @@ export default async function PublicHomePage() {
             </div>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">{translate('home.hero.panelDescription')}</p>
             <div className="mt-6 grid gap-3">
-              <Link href="/explorar-avisos" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-primary px-4 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+              <Link href="/explorar-avisos" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-primary px-4 font-semibold text-primary-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
                 <span className="flex items-center gap-2"><Search className="size-5" aria-hidden="true" />{translate('home.hero.panelExplore')}</span>
                 <ArrowRight className="size-5" aria-hidden="true" />
               </Link>
-              <Link href="/mapa" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 font-semibold text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+              <Link href="/mapa" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 font-semibold text-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
                 <span className="flex items-center gap-2"><Map className="size-5 text-primary" aria-hidden="true" />{translate('home.hero.panelMap')}</span>
                 <ArrowRight className="size-5" aria-hidden="true" />
               </Link>
@@ -182,10 +182,10 @@ export default async function PublicHomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="home-help-title" className="rounded-3xl border border-amber-200 bg-amber-50 p-5 sm:p-6">
+      <section aria-labelledby="home-help-title" className="rounded-3xl border border-accent/40 bg-accent-soft p-5 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-800">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-accent/20 text-accent">
               <HeartHandshake className="size-6" aria-hidden="true" />
             </span>
             <div>
@@ -193,7 +193,7 @@ export default async function PublicHomePage() {
               <p className="mt-1 text-sm leading-6 text-muted-foreground">{translate('home.help.description')}</p>
             </div>
           </div>
-          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-amber-700 px-5 font-semibold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-5 font-semibold text-accent-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
             {translate('home.help.action')}
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>

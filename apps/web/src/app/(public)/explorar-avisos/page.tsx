@@ -12,10 +12,6 @@ export default async function ExploreNoticesPage() {
           label={translate('noticesHub.breadcrumbs.label')}
           items={[
             { href: '/', label: translate('noticesHub.breadcrumbs.home') },
-            {
-              href: '/mis-avisos',
-              label: translate('noticesHub.breadcrumbs.section'),
-            },
             { label: translate('noticesHub.breadcrumbs.explore') },
           ]}
         />

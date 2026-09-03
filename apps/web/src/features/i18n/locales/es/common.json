@@ -46,6 +46,16 @@
       "notices": "Mis avisos"
     }
   },
+  "footer": {
+    "description": "Una forma clara y segura de consultar avisos públicos y compartir información útil sobre mascotas.",
+    "exploreTitle": "Explorar",
+    "accountTitle": "Tu cuenta",
+    "contactTitle": "Contacto",
+    "email": "info@buscohuella.com",
+    "location": "Sabadell (Barcelona)",
+    "privacy": "Privacidad y seguridad desde el diseño.",
+    "copyright": "BuscoHuella · MVP en desarrollo"
+  },
   "actions": {
     "close": "Cerrar",
     "cancel": "Cancelar",
@@ -60,6 +70,9 @@
     "description": "Una forma clara y segura de consultar avisos públicos y compartir información útil sobre mascotas.",
     "exploreTitle": "Explorar",
     "accountTitle": "Tu cuenta",
+    "contactTitle": "Contacto",
+    "email": "info@buscohuella.com",
+    "location": "Sabadell (Barcelona)",
     "privacy": "Privacidad y seguridad desde el diseño.",
     "copyright": "BuscoHuella · MVP en desarrollo"
   },

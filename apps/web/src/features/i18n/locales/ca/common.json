@@ -11,7 +11,7 @@
     "label": "Selecciona l'idioma",
     "changing": "Canviant l'idioma…",
     "options": {
-      "es": "Español",
+      "es": "Espanyol",
       "ca": "Català"
     }
   },
@@ -46,6 +46,16 @@
       "notices": "Els meus avisos"
     }
   },
+  "footer": {
+    "description": "Una manera clara i segura de consultar avisos públics i compartir informació útil sobre animals.",
+    "exploreTitle": "Explorar",
+    "accountTitle": "El teu compte",
+    "contactTitle": "Contacte",
+    "email": "info@buscohuella.com",
+    "location": "Sabadell (Barcelona)",
+    "privacy": "Privacitat i seguretat des del disseny.",
+    "copyright": "BuscoHuella · MVP en desenvolupament"
+  },
   "actions": {
     "close": "Tanca",
     "cancel": "Cancel·la",
@@ -60,6 +70,9 @@
     "description": "Una manera clara i segura de consultar avisos públics i compartir informació útil sobre animals.",
     "exploreTitle": "Explorar",
     "accountTitle": "El teu compte",
+    "contactTitle": "Contacte",
+    "email": "info@buscohuella.com",
+    "location": "Sabadell (Barcelona)",
     "privacy": "Privacitat i seguretat des del disseny.",
     "copyright": "BuscoHuella · MVP en desenvolupament"
   },

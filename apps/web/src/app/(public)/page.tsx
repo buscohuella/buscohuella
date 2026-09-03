@@ -43,9 +43,11 @@ export default async function PublicHomePage() {
         <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-primary/10" aria-hidden="true" />
         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-center">
           <div>
-            <p className="motion-safe:animate-[pulse_4s_ease-in-out_infinite] inline-flex items-center gap-2 self-start rounded-full bg-surface-elevated px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-primary shadow-[var(--shadow-sm)]">
+            <p className="motion-safe:animate-[pulse_4s_ease-in-out_infinite] inline-flex items-center gap-2 self-start rounded-full bg-surface-elevated px-3 py-1.5 text-xs font-bold uppercase tracking-wide shadow-[var(--shadow-sm)]">
               <span className="size-2 rounded-full bg-primary motion-safe:animate-ping" aria-hidden="true" />
-              {translate('common.app.tagline')}
+              <span className="text-primary">{translate('home.hero.slogan.find')}</span>
+              <span className="text-accent">{translate('home.hero.slogan.protect')}</span>
+              <span className="text-foreground">{translate('home.hero.slogan.connect')}</span>
             </p>
             <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               <span>{translate('home.hero.titleLead')} </span>

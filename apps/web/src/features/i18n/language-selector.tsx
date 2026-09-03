@@ -26,22 +26,21 @@ const shortLabels: Record<AppLocale, string> = {
 };
 
 const localeFlags: Record<AppLocale, string> = {
-  es: '🇪🇸',
+  es: '',
   ca: '',
 };
 
 function LocaleFlag({ locale }: { locale: AppLocale }) {
-  if (locale === 'ca') {
-    return (
-      <span
-        className="inline-block h-4 w-6 rounded-[3px] bg-[repeating-linear-gradient(to_bottom,#facc15_0_16%,#dc2626_16%_32%)]"
-        aria-hidden="true"
-      />
-    );
-  }
-
   return (
-    <span className="text-base leading-none" aria-hidden="true">
+    <span
+      className={[
+        'inline-block h-4 w-6 shrink-0 rounded-[3px] shadow-[inset_0_0_0_1px_rgb(15_23_42/0.12)]',
+        locale === 'es'
+          ? 'bg-[linear-gradient(to_bottom,#dc2626_0_25%,#facc15_25%_75%,#dc2626_75%_100%)]'
+          : 'bg-[repeating-linear-gradient(to_bottom,#facc15_0_16%,#dc2626_16%_32%)]',
+      ].join(' ')}
+      aria-hidden="true"
+    >
       {localeFlags[locale]}
     </span>
   );

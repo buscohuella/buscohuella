@@ -26,7 +26,7 @@ export function AuthShell({
   const { t: commonT } = useTranslations('common');
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
+    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)]">
       <header className="absolute inset-x-0 top-0 z-20 border-b border-border-soft bg-surface-elevated/90 backdrop-blur">
         <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" aria-label={t('shell.homeAria')}>
@@ -49,9 +49,9 @@ export function AuthShell({
         <ThemeToggle />
       </div>
 
-      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] p-10 lg:flex lg:flex-col lg:justify-center">
+      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] px-8 py-10 lg:flex lg:flex-col lg:justify-center xl:px-12">
         <div className="pointer-events-none absolute -right-28 top-24 size-96 rounded-full border-[3rem] border-primary/5" aria-hidden="true" />
-        <div className="relative max-w-xl">
+        <div className="relative mx-auto w-full max-w-lg">
           <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-surface-elevated text-primary shadow-[var(--shadow-sm)]">
             <ShieldCheck
               className="size-7"
@@ -63,7 +63,7 @@ export function AuthShell({
             {t('shell.tagline')}
           </p>
 
-          <h2 className="mt-3 text-4xl font-bold tracking-tight">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight xl:text-4xl">
             {t('shell.headline')}
           </h2>
 
@@ -71,10 +71,10 @@ export function AuthShell({
             {t('shell.description')}
           </p>
 
-          <ul className="mt-8 grid gap-3 text-sm font-semibold" aria-label={t('shell.benefitsLabel')}>
+          <ul className="mt-7 grid gap-2 text-sm font-semibold" aria-label={t('shell.benefitsLabel')}>
             {(['privacy', 'community', 'control'] as const).map((benefit, index) => (
-              <li key={benefit} className="flex items-center gap-3">
-                <span className="flex size-8 items-center justify-center rounded-full bg-surface-elevated text-primary shadow-[var(--shadow-sm)]" aria-hidden="true">
+              <li key={benefit} className="flex items-center gap-3 rounded-2xl border border-primary/10 bg-surface-elevated/75 p-3 shadow-[var(--shadow-sm)]">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary" aria-hidden="true">
                   {index === 1 ? <Users className="size-4" /> : <ShieldCheck className="size-4" />}
                 </span>
                 {t(`shell.benefits.${benefit}`)}
@@ -83,13 +83,13 @@ export function AuthShell({
           </ul>
         </div>
 
-        <p className="absolute bottom-10 left-10 text-sm text-muted-foreground">
+        <p className="absolute bottom-8 left-8 text-xs text-muted-foreground xl:left-12">
           {t('shell.pilot')}
         </p>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:bg-surface/60 lg:px-10 lg:backdrop-blur-sm">
-        <div className="w-full max-w-md">
+      <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:bg-surface/60 lg:px-8 lg:backdrop-blur-sm xl:px-10">
+        <div className="w-full max-w-[440px]">
           <div>
             <p className="text-sm font-semibold text-primary">
               {t('shell.secureAccess')}
@@ -102,7 +102,7 @@ export function AuthShell({
             </p>
           </div>
 
-          <div className="mt-8">{children}</div>
+          <div className="mt-6">{children}</div>
         </div>
       </section>
       <BackToTopButton label={commonT('actions.backToTop')} />

@@ -99,9 +99,6 @@ export function AuthShell({
           </ul>
         </div>
 
-        <p className="absolute bottom-8 left-8 text-xs text-muted-foreground xl:left-12">
-          {t('shell.pilot')}
-        </p>
       </section>
 
       <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:bg-surface/60 lg:px-8 lg:backdrop-blur-sm xl:px-10">

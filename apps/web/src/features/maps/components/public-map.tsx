@@ -429,6 +429,20 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   }, [locationZoom, mapReady, userLocation]);
 
   useEffect(() => {
+    if (!mapReady || !mapRef.current || !mapContainerRef.current) {
+      return;
+    }
+
+    const map = mapRef.current;
+    const resizeMap = () => map.resize();
+    resizeMap();
+    const observer = new ResizeObserver(resizeMap);
+    observer.observe(mapContainerRef.current);
+
+    return () => observer.disconnect();
+  }, [mapReady]);
+
+  useEffect(() => {
     if (!selectedId) {
       return;
     }
@@ -567,7 +581,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             type="button"
             aria-pressed={sortRecent}
             onClick={() => setSortRecent((current) => !current)}
-            className={`min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+            className={`order-2 min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none ${
               sortRecent
                 ? 'border-primary bg-primary-soft text-primary'
                 : 'border-border text-muted-foreground hover:text-foreground'
@@ -575,28 +589,30 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           >
             {labels.recent}
           </button>
-          <span className="ml-2 text-sm font-semibold">{labels.locationTitle}</span>
+          <span className="ml-2 hidden text-sm font-semibold sm:inline">{labels.locationTitle}</span>
           <button
             type="button"
             onClick={requestUserLocation}
             disabled={locating}
-            className="min-h-10 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="order-2 inline-flex min-h-10 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none"
           >
-            {locating ? labels.usingLocation : labels.useLocation}
+            <MapPin className="size-4" aria-hidden="true" />
+            <span>{locating ? labels.usingLocation : labels.useLocation}</span>
           </button>
           <button
             type="button"
             onClick={enableMapSelection}
             aria-pressed={selectingLocation}
-            className={`min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+            className={`order-2 inline-flex min-h-10 items-center gap-2 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none ${
               selectingLocation
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'border-border text-muted-foreground hover:text-foreground'
             }`}
           >
-            {selectingLocation ? labels.markingOnMap : labels.markOnMap}
+            <MapIcon className="size-4" aria-hidden="true" />
+            <span>{selectingLocation ? labels.markingOnMap : labels.markOnMap}</span>
           </button>
-          <div className="relative min-w-60 flex-1 basis-full sm:basis-72">
+          <div className="relative order-1 min-w-60 flex-1 basis-full sm:order-none sm:basis-72">
             <label htmlFor="map-location-search" className="sr-only">
               {labels.locationTitle}
             </label>

@@ -131,9 +131,9 @@ function createOriginMarkerElement() {
   originElement.setAttribute('aria-hidden', 'true');
   originElement.className = 'pointer-events-none relative flex items-center justify-center';
   const originAccuracy = document.createElement('span');
-  originAccuracy.className = 'absolute inset-0 rounded-full border border-[#2563eb]/25 bg-[#2563eb]/[0.08]';
+  originAccuracy.className = 'absolute inset-0 rounded-full border border-[#0f766e]/30 bg-[#0f766e]/[0.08]';
   const originDot = document.createElement('span');
-  originDot.className = 'relative z-10 block size-4 rounded-full border-2 border-white bg-[#2563eb]';
+  originDot.className = 'relative z-10 block size-4 rounded-full border-2 border-white bg-[#0f766e]';
   originElement.append(originAccuracy, originDot);
   return originElement;
 }
@@ -440,7 +440,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
       const radiusMeters = Math.max(userAccuracy ?? 80, 40);
       const latitudeDelta = (radiusMeters / 6_378_137) * (180 / Math.PI);
       const edge = map.project([userLocation[0], userLocation[1] + latitudeDelta]);
-      const radiusPixels = Math.max(Math.abs(edge.y - center.y), 20);
+      const radiusPixels = Math.max(Math.abs(edge.y - center.y), 10);
       originElement.style.width = `${radiusPixels * 2}px`;
       originElement.style.height = `${radiusPixels * 2}px`;
     };
@@ -459,10 +459,12 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         .addTo(map);
       updateOriginMarkerSize();
       map.on('move', updateOriginMarkerSize);
+      map.on('zoom', updateOriginMarkerSize);
       map.on('resize', updateOriginMarkerSize);
 
       originMarkerRef.current.once('remove', () => {
         map.off('move', updateOriginMarkerSize);
+        map.off('zoom', updateOriginMarkerSize);
         map.off('resize', updateOriginMarkerSize);
       });
     });

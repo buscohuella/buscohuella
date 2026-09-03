@@ -1,12 +1,14 @@
+'use client';
+
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { PageContainer } from '@/components/layout/page-container';
-import { getServerTranslator } from '@/features/i18n/server';
+import { useTranslations } from '@/features/i18n/i18n-provider';
 
-export async function PublicFooter() {
-  const { translate } = await getServerTranslator();
+export function PublicFooter() {
+  const { t: translate } = useTranslations('common');
 
   return (
     <footer className="mt-16 bg-footer-background text-footer-foreground">

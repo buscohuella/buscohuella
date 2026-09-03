@@ -804,7 +804,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         <div className="contents lg:col-span-2 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-4">
           <div
             id="map-mobile-filters"
-            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap items-center gap-2 pb-1 lg:col-start-1 lg:flex`}
+            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} min-w-0 w-full flex-wrap items-center gap-2 overflow-visible pb-1 lg:col-start-1 lg:flex`}
             aria-label={labels.locationTitle}
           >
             <SlidersHorizontal className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />

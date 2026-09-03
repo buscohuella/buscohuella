@@ -40,6 +40,9 @@ type PublicMapLabels = {
   radiusAll: string;
   radiusUnit: string;
   sortTitle: string;
+  sortRecent: string;
+  sortNearest: string;
+  sortNearestUnavailable: string;
   title: string;
   useLocation: string;
   useLocationShort: string;
@@ -143,7 +146,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
-  const [sortRecent, setSortRecent] = useState(true);
+  const [sortMode, setSortMode] = useState<'recent' | 'nearest'>('recent');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [speciesFilter, setSpeciesFilter] = useState<PublicMapSpeciesFilter['key']>('all');
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
@@ -171,14 +174,26 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         })
       : speciesFiltered;
 
-    return sortRecent
+    return sortMode === 'recent'
       ? [...filtered].sort((first, second) => {
           const firstTime = first.incidentAt ? Date.parse(first.incidentAt) : 0;
           const secondTime = second.incidentAt ? Date.parse(second.incidentAt) : 0;
           return secondTime - firstTime;
         })
-      : filtered;
-  }, [radiusKm, reports, sortRecent, speciesFilter, speciesFilters, userLocation]);
+      : userLocation
+        ? [...filtered].sort((first, second) => {
+            const firstDistance =
+              typeof first.latitude === 'number' && typeof first.longitude === 'number'
+                ? distanceInKm(userLocation, [first.longitude, first.latitude])
+                : Number.POSITIVE_INFINITY;
+            const secondDistance =
+              typeof second.latitude === 'number' && typeof second.longitude === 'number'
+                ? distanceInKm(userLocation, [second.longitude, second.latitude])
+                : Number.POSITIVE_INFINITY;
+            return firstDistance - secondDistance;
+          })
+        : filtered;
+  }, [radiusKm, reports, sortMode, speciesFilter, speciesFilters, userLocation]);
 
   const locatedReports = useMemo(
     () =>
@@ -605,19 +620,25 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
       <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-2 sm:p-3 lg:col-span-2 lg:grid lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-2">
         <div className="contents lg:flex lg:items-center lg:gap-2">
-          <span className="mr-1 hidden text-sm font-semibold sm:inline">{labels.sortTitle}</span>
-          <button
-            type="button"
-            aria-pressed={sortRecent}
-            onClick={() => setSortRecent((current) => !current)}
-            className={`order-2 min-h-10 rounded-full border px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none ${
-              sortRecent
-                ? 'border-primary bg-primary-soft text-primary'
-                : 'border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {labels.recent}
-          </button>
+          <label htmlFor="map-sort" className="mr-1 hidden text-sm font-semibold sm:inline">
+            {labels.sortTitle}
+          </label>
+          <div className="order-2 relative sm:order-none">
+            <select
+              id="map-sort"
+              value={sortMode}
+              onChange={(event) => setSortMode(event.target.value as 'recent' | 'nearest')}
+              className="min-h-10 appearance-none rounded-full border border-primary bg-primary-soft py-2 pl-3 pr-8 text-sm font-semibold text-primary outline-none transition-colors hover:bg-primary/10 focus-visible:ring-4 focus-visible:ring-focus-soft"
+            >
+              <option value="recent">{labels.sortRecent}</option>
+              <option value="nearest" disabled={!userLocation}>
+                {userLocation ? labels.sortNearest : labels.sortNearestUnavailable}
+              </option>
+            </select>
+            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-primary" aria-hidden="true">
+              ▾
+            </span>
+          </div>
         </div>
         <div className="contents lg:flex lg:flex-wrap lg:items-center lg:justify-end lg:gap-2">
           <span className="ml-2 hidden text-sm font-semibold sm:inline">{labels.locationTitle}</span>
@@ -687,6 +708,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     setUserAccuracy(null);
                     setLocationZoom(null);
                     setRadiusKm(null);
+                    setSortMode('recent');
                     setLocationError(null);
                     originMarkerRef.current?.remove();
                     originMarkerRef.current = null;

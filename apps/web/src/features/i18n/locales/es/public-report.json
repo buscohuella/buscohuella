@@ -87,6 +87,8 @@
     "filterFound": "Encontrados",
     "sortTitle": "Ordenar",
     "recent": "Más recientes",
+    "sortNearest": "Más cercanos",
+    "sortNearestUnavailable": "Más cercanos (activa tu ubicación)",
     "viewNotice": "Ver aviso",
     "sightingCtaTitle": "¿Has visto un animal en la calle?",
     "sightingCtaDescription": "Selecciona un aviso del mapa o de la lista para comunicar dónde y cuándo lo viste.",

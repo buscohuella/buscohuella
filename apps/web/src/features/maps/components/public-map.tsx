@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, List, Map as MapIcon, MapPin, PawPrint, Search, X } from 'lucide-react';
+import { CalendarClock, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -42,6 +42,9 @@ type PublicMapLabels = {
   sortTitle: string;
   title: string;
   useLocation: string;
+  useLocationShort: string;
+  moreFilters: string;
+  closeFilters: string;
   usingLocation: string;
   searching: string;
   unknownLocation: string;
@@ -136,6 +139,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [sortRecent, setSortRecent] = useState(true);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [speciesFilter, setSpeciesFilter] = useState<PublicMapSpeciesFilter['key']>('all');
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
@@ -611,10 +615,21 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             disabled={locating}
             aria-label={labels.useLocation}
             title={labels.useLocation}
-            className="order-2 inline-flex size-10 items-center justify-center gap-2 rounded-full border border-border p-0 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none sm:h-auto sm:min-h-10 sm:w-auto sm:px-3"
+            className="order-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none"
           >
             <MapPin className="size-4" aria-hidden="true" />
+            <span className="sm:hidden">{labels.useLocationShort}</span>
             <span className="hidden sm:inline">{locating ? labels.usingLocation : labels.useLocation}</span>
+          </button>
+          <button
+            type="button"
+            aria-expanded={mobileFiltersOpen}
+            aria-controls="map-mobile-filters"
+            onClick={() => setMobileFiltersOpen((open) => !open)}
+            className="order-2 inline-flex min-h-10 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
+          >
+            <SlidersHorizontal className="size-4" aria-hidden="true" />
+            <span>{mobileFiltersOpen ? labels.closeFilters : labels.moreFilters}</span>
           </button>
           <button
             type="button"
@@ -693,7 +708,11 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             ) : null}
           </div>
           <span className="w-full text-xs text-muted-foreground">{labels.chooseOnMap}</span>
-          <div className="flex w-full items-center gap-2 overflow-x-auto pb-1" aria-label={labels.locationTitle}>
+          <div
+            id="map-mobile-filters"
+            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full items-center gap-2 overflow-x-auto pb-1 lg:flex`}
+            aria-label={labels.locationTitle}
+          >
             <PawPrint className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
             {speciesFilters.map((filter) => (
               <button
@@ -711,6 +730,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
               </button>
             ))}
           </div>
+          <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap gap-2 lg:flex`}>
           {[1, 5, 10, 20].map((value) => (
             <button
               key={value}
@@ -736,6 +756,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           >
             {labels.radiusAll}
           </button>
+          </div>
           {locationError ? (
             <span role="alert" className="w-full text-sm text-danger">
               {locationError === 'secure-context' ? labels.locationSecureError : labels.locationError}

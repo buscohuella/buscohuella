@@ -610,6 +610,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             onClick={requestUserLocation}
             disabled={locating}
             aria-label={labels.useLocation}
+            title={labels.useLocation}
             className="order-2 inline-flex size-10 items-center justify-center gap-2 rounded-full border border-border p-0 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none sm:h-auto sm:min-h-10 sm:w-auto sm:px-3"
           >
             <MapPin className="size-4" aria-hidden="true" />

@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, List, Map as MapIcon, MapPin, Search, X } from 'lucide-react';
+import { CalendarClock, List, Map as MapIcon, MapPin, PawPrint, Search, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -15,6 +15,7 @@ export type PublicMapReport = {
   latitude: number | null;
   longitude: number | null;
   incidentAt: string | null;
+  speciesId: number;
 };
 
 type PublicMapLabels = {
@@ -47,9 +48,16 @@ type PublicMapLabels = {
   viewNotice: string;
 };
 
+export type PublicMapSpeciesFilter = {
+  key: 'all' | 'dog' | 'cat' | 'other';
+  label: string;
+  ids: number[];
+};
+
 type PublicMapProps = {
   labels: PublicMapLabels;
   reports: PublicMapReport[];
+  speciesFilters: PublicMapSpeciesFilter[];
 };
 
 type AddressSuggestion = {
@@ -117,7 +125,7 @@ function createOriginMarkerElement() {
   return originElement;
 }
 
-export function PublicMap({ labels, reports }: PublicMapProps) {
+export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapboxMap | null>(null);
   const originMarkerRef = useRef<Marker | null>(null);
@@ -128,6 +136,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [sortRecent, setSortRecent] = useState(true);
+  const [speciesFilter, setSpeciesFilter] = useState<PublicMapSpeciesFilter['key']>('all');
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
@@ -140,14 +149,18 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const [selectingLocation, setSelectingLocation] = useState(false);
 
   const visibleReports = useMemo(() => {
+    const selectedSpecies = speciesFilters.find((filter) => filter.key === speciesFilter);
+    const speciesFiltered = selectedSpecies && selectedSpecies.key !== 'all'
+      ? reports.filter((report) => selectedSpecies.ids.includes(report.speciesId))
+      : reports;
     const filtered = userLocation && radiusKm
-      ? reports.filter((report) => {
+      ? speciesFiltered.filter((report) => {
           if (typeof report.latitude !== 'number' || typeof report.longitude !== 'number') {
             return false;
           }
           return distanceInKm(userLocation, [report.longitude, report.latitude]) <= radiusKm;
         })
-      : reports;
+      : speciesFiltered;
 
     return sortRecent
       ? [...filtered].sort((first, second) => {
@@ -156,7 +169,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           return secondTime - firstTime;
         })
       : filtered;
-  }, [radiusKm, reports, sortRecent, userLocation]);
+  }, [radiusKm, reports, sortRecent, speciesFilter, speciesFilters, userLocation]);
 
   const locatedReports = useMemo(
     () =>
@@ -679,6 +692,24 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             ) : null}
           </div>
           <span className="w-full text-xs text-muted-foreground">{labels.chooseOnMap}</span>
+          <div className="flex w-full items-center gap-2 overflow-x-auto pb-1" aria-label={labels.locationTitle}>
+            <PawPrint className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            {speciesFilters.map((filter) => (
+              <button
+                key={filter.key}
+                type="button"
+                aria-pressed={speciesFilter === filter.key}
+                onClick={() => setSpeciesFilter(filter.key)}
+                className={`min-h-9 shrink-0 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+                  speciesFilter === filter.key
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
           {[1, 5, 10, 20].map((value) => (
             <button
               key={value}

@@ -6,6 +6,7 @@ import { PageContainer } from '@/components/layout/page-container';
 import { getServerTranslator } from '@/features/i18n/server';
 import {
   PublicMap,
+  type PublicMapSpeciesFilter,
   type PublicMapReport,
 } from '@/features/maps/components/public-map';
 import { createClient } from '@/services/supabase/server';
@@ -14,6 +15,7 @@ type RpcResult = {
   data: Array<{
     id: string;
     report_type: 'LOST_PET' | 'FOUND_ANIMAL';
+    species_id: number;
     title: string;
     description: string;
     municipality_name: string | null;
@@ -36,25 +38,40 @@ function getPublicReportsRpc(client: SupabaseClient<ReportDatabase>) {
   ) => Promise<RpcResult>;
 }
 
-async function loadPublicMapReports(): Promise<PublicMapReport[]> {
+async function loadPublicMapReports(speciesLabels: { all: string; dog: string; cat: string; other: string }): Promise<{ reports: PublicMapReport[]; speciesFilters: PublicMapSpeciesFilter[] }> {
   const supabase = await createClient();
   const client = supabase as unknown as SupabaseClient<ReportDatabase>;
-  const { data, error } = await getPublicReportsRpc(client)(
+  const [{ data, error }, { data: species, error: speciesError }] = await Promise.all([
+    getPublicReportsRpc(client)(
     'get_public_reports',
     {
       filter_species_id: null,
       filter_report_type: null,
       result_limit: 100,
     },
-  );
+    ),
+    supabase.from('pet_species').select('id, code').eq('is_enabled', true).eq('mvp_enabled', true).order('sort_order'),
+  ]);
 
   if (error) {
     throw error;
   }
+  if (speciesError) {
+    throw speciesError;
+  }
 
-  return (data ?? []).map((report) => ({
+  const speciesRows = species ?? [];
+  const dogId = speciesRows.find((item) => item.code === 'DOG')?.id;
+  const catId = speciesRows.find((item) => item.code === 'CAT')?.id;
+  const otherIds = speciesRows
+    .filter((item) => item.code !== 'DOG' && item.code !== 'CAT')
+    .map((item) => item.id);
+
+  return {
+    reports: (data ?? []).map((report) => ({
     id: report.id,
     reportType: report.report_type,
+    speciesId: report.species_id,
     title: report.title,
     description: report.description,
     municipalityName: report.municipality_name,
@@ -62,12 +79,25 @@ async function loadPublicMapReports(): Promise<PublicMapReport[]> {
     latitude: report.latitude,
     longitude: report.longitude,
     incidentAt: report.incident_at,
-  }));
+    })),
+    speciesFilters: [
+      { key: 'all', label: speciesLabels.all, ids: speciesRows.map((item) => item.id) },
+      ...(dogId === undefined ? [] : [{ key: 'dog' as const, label: speciesLabels.dog, ids: [dogId] }]),
+      ...(catId === undefined ? [] : [{ key: 'cat' as const, label: speciesLabels.cat, ids: [catId] }]),
+      { key: 'other' as const, label: speciesLabels.other, ids: otherIds },
+    ],
+  };
 }
 
 export default async function PublicMapPage() {
   const { translate } = await getServerTranslator();
-  const reports = await loadPublicMapReports();
+  const speciesLabels = {
+    all: translate('publicReport.list.speciesAll'),
+    dog: translate('pets.form.speciesOptions.DOG'),
+    cat: translate('pets.form.speciesOptions.CAT'),
+    other: translate('pets.form.speciesOptions.OTHER'),
+  };
+  const { reports, speciesFilters } = await loadPublicMapReports(speciesLabels);
 
   return (
     <PageContainer className="space-y-7 py-6 sm:py-10">
@@ -90,7 +120,8 @@ export default async function PublicMapPage() {
         </p>
       </header>
       <PublicMap
-        reports={reports.filter((report) => report.reportType === 'LOST_PET')}
+        reports={reports}
+        speciesFilters={speciesFilters}
         labels={{
           active: translate('publicReport.active'),
           description: translate('publicReport.list.description'),

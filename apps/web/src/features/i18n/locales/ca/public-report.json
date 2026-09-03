@@ -65,6 +65,7 @@
     "mapUnavailable": "El mapa no està disponible ara. Pots consultar els avisos a la llista.",
     "mapListTitle": "Avisos en aquesta zona",
     "locationTitle": "Distància",
+    "speciesAll": "Tots",
     "markOnMap": "Marca al mapa",
     "markingOnMap": "Fes clic al mapa…",
     "addressPlaceholder": "Escriu una adreça o municipi",

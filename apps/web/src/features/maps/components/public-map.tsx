@@ -844,11 +844,6 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     type="button"
                     aria-pressed={speciesFilter === filter.key}
                     onClick={() => setSpeciesFilter(filter.key)}
-                    style={speciesFilter === filter.key ? {
-                      backgroundColor: '#e6f7f3',
-                      borderColor: '#0f766e',
-                      color: '#0f766e',
-                    } : undefined}
                     className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
                       speciesFilter === filter.key
                         ? 'border-primary bg-primary-soft text-primary'

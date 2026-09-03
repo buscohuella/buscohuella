@@ -603,7 +603,8 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   return (
     <section aria-labelledby="public-map-heading" className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
-        <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-2 sm:p-3 lg:col-span-2">
+      <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-2 sm:p-3 lg:col-span-2 lg:grid lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-x-6 lg:gap-y-2">
+        <div className="contents lg:flex lg:items-center lg:gap-2">
           <span className="mr-1 hidden text-sm font-semibold sm:inline">{labels.sortTitle}</span>
           <button
             type="button"
@@ -617,6 +618,8 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           >
             {labels.recent}
           </button>
+        </div>
+        <div className="contents lg:flex lg:flex-wrap lg:items-center lg:justify-end lg:gap-2">
           <span className="ml-2 hidden text-sm font-semibold sm:inline">{labels.locationTitle}</span>
           <button
             type="button"
@@ -653,7 +656,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             <MapIcon className="size-4" aria-hidden="true" />
             <span>{selectingLocation ? labels.markingOnMap : labels.markOnMap}</span>
           </button>
-          <div className="relative order-1 min-w-60 flex-1 basis-full sm:order-none sm:basis-72">
+          <div className="relative order-1 min-w-60 flex-1 basis-full sm:order-none sm:basis-72 lg:order-none lg:basis-0 lg:min-w-64">
             <label htmlFor="map-location-search" className="sr-only">
               {labels.locationTitle}
             </label>
@@ -716,10 +719,12 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
               </p>
             ) : null}
           </div>
+        </div>
           <span className="w-full text-xs text-muted-foreground">{labels.chooseOnMap}</span>
+        <div className="contents lg:col-span-2 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-4">
           <div
             id="map-mobile-filters"
-            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full items-center gap-2 overflow-x-auto pb-1 lg:flex`}
+            className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full items-center gap-2 overflow-x-auto pb-1 lg:col-start-1 lg:flex`}
             aria-label={labels.locationTitle}
           >
             <PawPrint className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -739,7 +744,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
               </button>
             ))}
           </div>
-          <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap gap-2 lg:flex`}>
+          <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap gap-2 lg:col-start-2 lg:justify-end lg:flex`}>
           {[1, 5, 10, 20].map((value) => (
             <button
               key={value}
@@ -766,8 +771,9 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             {labels.radiusAll}
           </button>
           </div>
+        </div>
           {locationError ? (
-            <span role="alert" className="w-full text-sm text-danger">
+            <span role="alert" className="w-full text-sm text-danger lg:col-span-2">
               {locationError === 'secure-context' ? labels.locationSecureError : labels.locationError}
             </span>
           ) : null}

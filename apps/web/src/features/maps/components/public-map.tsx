@@ -736,7 +736,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             aria-expanded={mobileFiltersOpen}
             aria-controls="map-mobile-filters"
             onClick={() => setMobileFiltersOpen((open) => !open)}
-            className="order-2 inline-flex min-h-10 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
+            className={`order-2 inline-flex min-h-10 items-center gap-2 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden ${mobileFiltersOpen ? 'border-primary bg-primary-soft text-primary' : 'border-border text-muted-foreground hover:border-primary hover:text-primary'}`}
           >
             <SlidersHorizontal className="size-4" aria-hidden="true" />
             <span>{mobileFiltersOpen ? labels.closeFilters : labels.moreFilters}</span>

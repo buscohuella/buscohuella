@@ -722,7 +722,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               {visibleReports.length} {labels.active.toLowerCase()}
             </span>
           </div>
-          <div className="relative h-[24rem] bg-surface-sunken sm:h-[28rem]">
+          <div className="relative h-[24rem] bg-surface-sunken sm:h-[28rem]" style={{ height: '24rem' }}>
             <div
               ref={mapContainerRef}
               className="h-[24rem] w-full sm:h-[28rem]"

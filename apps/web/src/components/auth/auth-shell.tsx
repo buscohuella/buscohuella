@@ -26,7 +26,7 @@ export function AuthShell({
   const { t: commonT } = useTranslations('common');
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)]">
+    <main className="relative mx-auto min-h-screen max-w-7xl overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)]">
       <header className="absolute inset-x-0 top-0 z-20 border-b border-border-soft bg-surface-elevated/90 backdrop-blur">
         <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link href="/" className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" aria-label={t('shell.homeAria')}>
@@ -49,7 +49,7 @@ export function AuthShell({
         <ThemeToggle />
       </div>
 
-      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] px-8 py-10 lg:flex lg:flex-col lg:justify-center xl:px-12">
+      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] px-8 pb-10 pt-24 lg:flex lg:flex-col lg:justify-start xl:px-12">
         <div className="pointer-events-none absolute -right-28 top-24 size-96 rounded-full border-[3rem] border-primary/5" aria-hidden="true" />
         <div className="relative mx-auto w-full max-w-lg">
           <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-surface-elevated text-primary shadow-[var(--shadow-sm)]">

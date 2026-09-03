@@ -110,7 +110,7 @@ export function AuthShell({
               <a href="https://buscohuella.es/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.terms')}</a>
               <a href="mailto:info@buscohuella.com" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.contact')}</a>
             </nav>
-            <p className="mt-2">© 2026 BuscoHuella</p>
+            <a href="https://buscohuella.com/" className="mt-2 inline-block underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">© 2026 BuscoHuella</a>
           </footer>
         </div>
       </section>

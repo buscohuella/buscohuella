@@ -56,6 +56,9 @@
     "email": "info@buscohuella.com",
     "location": "Sabadell (Barcelona)",
     "privacy": "Privacitat i seguretat des del disseny.",
+    "legalTitle": "Informació legal",
+    "privacyLink": "Privacitat",
+    "termsLink": "Condicions",
     "copyright": "© 2026 BuscoHuella. Tots els drets reservats."
   },
   "actions": {

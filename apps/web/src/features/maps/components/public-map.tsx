@@ -129,10 +129,12 @@ function distanceInKm(
 function createOriginMarkerElement() {
   const originElement = document.createElement('div');
   originElement.setAttribute('aria-hidden', 'true');
-  originElement.className = 'flex size-10 items-center justify-center';
+  originElement.className = 'pointer-events-none relative flex items-center justify-center';
+  const originAccuracy = document.createElement('span');
+  originAccuracy.className = 'absolute inset-0 rounded-full border-2 border-[#2563eb]/35 bg-[#2563eb]/10';
   const originDot = document.createElement('span');
-  originDot.className = 'block size-5 rounded-full border-[3px] border-white bg-[#2563eb] shadow-[0_1px_8px_rgba(37,99,235,0.55)]';
-  originElement.append(originDot);
+  originDot.className = 'relative z-10 block size-5 rounded-full border-[3px] border-white bg-[#2563eb] shadow-[0_1px_8px_rgba(37,99,235,0.55)]';
+  originElement.append(originAccuracy, originDot);
   return originElement;
 }
 
@@ -344,22 +346,6 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             'line-opacity': 0.55,
           },
         });
-        map.addSource('user-location-accuracy', {
-          type: 'geojson',
-          data: { type: 'FeatureCollection', features: [] },
-        });
-        map.addLayer({
-          id: 'user-location-accuracy-fill',
-          type: 'fill',
-          source: 'user-location-accuracy',
-          paint: { 'fill-color': '#2563eb', 'fill-opacity': 0.12 },
-        });
-        map.addLayer({
-          id: 'user-location-accuracy-line',
-          type: 'line',
-          source: 'user-location-accuracy',
-          paint: { 'line-color': '#2563eb', 'line-width': 1.5, 'line-opacity': 0.35 },
-        });
         map.on('click', 'public-report-areas-fill', (event) => {
           const feature = event.features?.[0] as
             | { properties?: { reportId?: unknown } }
@@ -448,6 +434,17 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
     }
 
     const map = mapRef.current;
+    const originElement = createOriginMarkerElement();
+    const updateOriginMarkerSize = () => {
+      const center = map.project(userLocation);
+      const radiusMeters = Math.max(userAccuracy ?? 80, 40);
+      const latitudeDelta = (radiusMeters / 6_378_137) * (180 / Math.PI);
+      const edge = map.project([userLocation[0], userLocation[1] + latitudeDelta]);
+      const radiusPixels = Math.max(Math.abs(edge.y - center.y), 20);
+      originElement.style.width = `${radiusPixels * 2}px`;
+      originElement.style.height = `${radiusPixels * 2}px`;
+    };
+
     void import('mapbox-gl').then(({ default: mapboxgl }) => {
       if (cancelled || !mapRef.current) {
         return;
@@ -455,28 +452,18 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
 
       originMarkerRef.current?.remove();
       originMarkerRef.current = new mapboxgl.Marker({
-        element: createOriginMarkerElement(),
+        element: originElement,
         anchor: 'center',
       })
         .setLngLat(userLocation)
         .addTo(map);
+      updateOriginMarkerSize();
+      map.on('move', updateOriginMarkerSize);
+      map.on('resize', updateOriginMarkerSize);
 
-      const accuracySource = map.getSource('user-location-accuracy') as
-        | { setData: (data: unknown) => void }
-        | undefined;
-      accuracySource?.setData({
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            createApproximationCircle(
-              userLocation[0],
-              userLocation[1],
-              Math.max(userAccuracy ?? 80, 40),
-            ),
-          ],
-        },
+      originMarkerRef.current.once('remove', () => {
+        map.off('move', updateOriginMarkerSize);
+        map.off('resize', updateOriginMarkerSize);
       });
     });
 

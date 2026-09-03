@@ -57,7 +57,7 @@ export default async function PublicHomePage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/explorar-avisos"
-            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-public-action px-6 text-lg font-semibold text-white transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-public-action-hover hover:shadow-[0_10px_24px_rgba(0,100,88,0.24)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-public-action px-6 text-lg font-semibold !text-white shadow-[0_8px_20px_rgba(0,86,76,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-public-action-hover hover:shadow-[0_12px_26px_rgba(0,86,76,0.3)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
             {translate('home.hero.explore')}
             <ArrowRight

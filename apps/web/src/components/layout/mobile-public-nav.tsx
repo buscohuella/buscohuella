@@ -16,14 +16,14 @@ export function MobilePublicNav({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative md:hidden">
+    <div className="relative mr-1 md:hidden">
       <button
         type="button"
         aria-expanded={open}
         aria-controls="mobile-public-navigation"
         onClick={() => setOpen((current) => !current)}
         title={label}
-        className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+        className="flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-border-soft bg-surface-elevated text-muted-foreground shadow-[var(--shadow-sm)] transition-[background-color,color,box-shadow] hover:bg-surface-hover hover:text-foreground hover:shadow-[var(--shadow-md)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
       >
         <span className="sr-only">{label}</span>
         {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}

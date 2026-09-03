@@ -1024,7 +1024,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         className="flex flex-col gap-4 rounded-2xl border border-primary/25 bg-primary-soft/40 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5"
       >
         <div className="flex items-start gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary !text-white">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-public-action !text-white">
             <Eye className="size-5 !text-white" aria-hidden="true" />
           </span>
           <div>
@@ -1040,7 +1040,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         </div>
         <Link
           href={sightingHref}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold !text-white transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-public-action px-5 text-sm font-semibold !text-white transition-colors hover:bg-public-action-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           style={{ color: '#ffffff' }}
         >
           {selectedId

@@ -28,7 +28,8 @@
     "private": {
       "home": "Inici",
       "map": "Mapa",
-      "profile": "Perfil",
+    "profile": "Perfil",
+    "menu": "Menú",
       "reports": "Els meus avisos",
       "publicReports": "Avisos públics",
       "exploreReports": "Explora avisos",

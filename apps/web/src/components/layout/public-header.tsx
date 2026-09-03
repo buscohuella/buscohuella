@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { MobilePublicNav } from './mobile-public-nav';
 import type { AuthUser } from '@/features/auth/types/auth-user';
 import { LanguageSelector } from '@/features/i18n/language-selector';
 import { getServerTranslator } from '@/features/i18n/server';
@@ -135,27 +136,11 @@ export async function PublicHeader({
         </div>
       </div>
 
-      <nav className="grid grid-cols-2 border-t border-border-soft px-3 md:hidden">
-        <Link href="/mapa" className={linkClass}>
-          <Map
-            className="size-4"
-            aria-hidden="true"
-          />
-          {translate('common.navigation.map')}
-        </Link>
-        <Link
- href="/explorar-avisos"
-          className={linkClass}
-        >
-          <ScrollText
-            className="size-4"
-            aria-hidden="true"
-          />
-          {translate(
-            'common.navigation.reports',
-          )}
-        </Link>
-      </nav>
+      <MobilePublicNav
+        label={translate('common.navigation.menu')}
+        mapLabel={translate('common.navigation.map')}
+        reportsLabel={translate('common.navigation.reports')}
+      />
     </header>
   );
 }

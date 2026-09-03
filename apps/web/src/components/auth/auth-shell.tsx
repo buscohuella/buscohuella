@@ -1,10 +1,12 @@
 'use client';
 
-import { ShieldCheck, Users } from 'lucide-react';
+import { Map, ScrollText, ShieldCheck, Users } from 'lucide-react';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { BrandLogo } from '@/components/brand/brand-logo';
+import { BackToTopButton } from '@/components/layout/back-to-top-button';
+import { MobilePublicNav } from '@/components/layout/mobile-public-nav';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LanguageSelector } from '@/features/i18n/language-selector';
 import { useTranslations } from '@/features/i18n/i18n-provider';
@@ -21,24 +23,34 @@ export function AuthShell({
   description,
 }: AuthShellProps) {
   const { t } = useTranslations('auth');
+  const { t: commonT } = useTranslations('common');
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
-      <div className="absolute right-4 top-4 z-10 flex items-center gap-2 sm:right-6 sm:top-6">
+    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] pt-20 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
+      <header className="absolute inset-x-0 top-0 z-20 border-b border-border-soft bg-surface-elevated/90 backdrop-blur">
+        <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" aria-label={t('shell.homeAria')}>
+            <BrandLogo className="h-10 w-36 sm:h-12 sm:w-44" priority />
+          </Link>
+          <nav className="hidden items-center gap-1 md:flex" aria-label={commonT('navigation.publicLabel')}>
+            <Link href="/mapa" className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"><Map className="size-4" aria-hidden="true" />{commonT('navigation.map')}</Link>
+            <Link href="/explorar-avisos" className="flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"><ScrollText className="size-4" aria-hidden="true" />{commonT('navigation.reports')}</Link>
+          </nav>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <LanguageSelector />
+            <div className="hidden md:block"><ThemeToggle /></div>
+            <MobilePublicNav label={commonT('navigation.menu')} mapLabel={commonT('navigation.map')} reportsLabel={commonT('navigation.reports')} themeLabel={commonT('navigation.theme')} loginLabel={commonT('navigation.login')} registerLabel={commonT('navigation.register')} showAuth={true} />
+          </div>
+        </div>
+      </header>
+
+      <div className="hidden">
         <LanguageSelector />
         <ThemeToggle />
       </div>
 
-      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] p-10 lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] p-10 lg:flex lg:flex-col lg:justify-center">
         <div className="pointer-events-none absolute -right-28 top-24 size-96 rounded-full border-[3rem] border-primary/5" aria-hidden="true" />
-        <Link
-          href="/"
-          className="inline-flex w-fit items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-          aria-label={t('shell.homeAria')}
-        >
-          <BrandLogo className="h-20 w-56" priority />
-        </Link>
-
         <div className="relative max-w-xl">
           <span className="mb-6 flex size-14 items-center justify-center rounded-xl bg-surface-elevated text-primary shadow-[var(--shadow-sm)]">
             <ShieldCheck
@@ -71,21 +83,13 @@ export function AuthShell({
           </ul>
         </div>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="absolute bottom-10 left-10 text-sm text-muted-foreground">
           {t('shell.pilot')}
         </p>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-4 py-16 sm:px-6 lg:bg-surface/60 lg:px-10 lg:backdrop-blur-sm">
+      <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:bg-surface/60 lg:px-10 lg:backdrop-blur-sm">
         <div className="w-full max-w-md">
-          <Link
-            href="/"
-            className="mb-10 inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
-            aria-label={t('shell.homeAria')}
-          >
-            <BrandLogo className="h-12 w-40" priority />
-          </Link>
-
           <div>
             <p className="text-sm font-semibold text-primary">
               {t('shell.secureAccess')}
@@ -101,6 +105,7 @@ export function AuthShell({
           <div className="mt-8">{children}</div>
         </div>
       </section>
+      <BackToTopButton label={commonT('actions.backToTop')} />
     </main>
   );
 }

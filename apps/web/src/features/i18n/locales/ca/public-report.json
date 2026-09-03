@@ -62,7 +62,7 @@
     "emptyTitle": "No hi ha avisos actius",
     "emptyDescription": "Quan es publiqui un avís actiu apareixerà aquí.",
     "noPhoto": "Sense fotografia",
-    "mapUnavailable": "No s'ha pogut carregar el mapa. Pots consultar els avisos a la llista.",
+    "mapUnavailable": "El mapa no està disponible ara. Pots consultar els avisos a la llista.",
     "mapListTitle": "Avisos en aquesta zona",
     "locationTitle": "Distància",
     "markOnMap": "Marca al mapa",

@@ -4,7 +4,9 @@ import type { AuthUser } from '@/features/auth/types/auth-user';
 
 import { AppSidebar } from './app-sidebar';
 import { AppTopbar } from './app-topbar';
+import { BackToTopButton } from './back-to-top-button';
 import { MobileNavigation } from './mobile-navigation';
+import { getServerTranslator } from '@/features/i18n/server';
 
 export interface AppShellProps {
   children: ReactNode;
@@ -12,7 +14,9 @@ export interface AppShellProps {
   avatarUrl: string | null;
 }
 
-export function AppShell({ children, user, avatarUrl }: AppShellProps) {
+export async function AppShell({ children, user, avatarUrl }: AppShellProps) {
+  const { translate } = await getServerTranslator();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <AppSidebar user={user} avatarUrl={avatarUrl} />
@@ -23,6 +27,7 @@ export function AppShell({ children, user, avatarUrl }: AppShellProps) {
       </div>
 
       <MobileNavigation />
+      <BackToTopButton label={translate('common.actions.backToTop')} />
     </div>
   );
 }

@@ -52,7 +52,7 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
       />
       <nav className="mt-5 flex gap-2 overflow-x-auto pb-1" aria-label={translate('common.legal.documentNavigation')}>
         {documentLinks.map(({ key, href }) => (
-          <Link key={key} href={href} className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${key === document ? 'border-primary bg-primary !text-white shadow-sm hover:bg-primary-container' : 'border-border-soft bg-white text-muted-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary'}`}>
+          <Link key={key} href={href} className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-[background-color,border-color,color,box-shadow,transform] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${key === document ? 'border-primary bg-primary !text-white shadow-sm hover:bg-primary-container active:bg-primary-active' : 'border-border-soft bg-white text-muted-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary active:border-primary active:bg-primary-soft active:text-primary'}`}>
             {translate(`common.legal.${key}.title`)}
           </Link>
         ))}
@@ -104,7 +104,7 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
                 {sections[document].map((section, index) => <li key={section}><a className="group flex items-start gap-2 rounded-md text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" href={`#legal-${section}`}><span className="text-xs text-primary">{index + 1}.</span><span>{translate(`${prefix}.sections.${section}.title`)}<ArrowUpRight className="ml-1 inline size-3 opacity-0 transition-[opacity,transform] group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true" /></span></a></li>)}
               </ol>
             </nav>
-            <div className="rounded-2xl border border-primary/10 bg-[#e9edff] p-5"><h2 className="text-sm font-bold">{translate('common.legal.contactCardTitle')}</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{translate('common.legal.contactCardBody')}</p><a className="mt-4 inline-flex rounded-lg bg-white px-3 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-white" href="mailto:info@buscohuella.com">info@buscohuella.com</a></div>
+            <div className="rounded-2xl border border-primary/10 bg-[#e9edff] p-5"><h2 className="text-sm font-bold">{translate('common.legal.contactCardTitle')}</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{translate('common.legal.contactCardBody')}</p><a className="mt-4 inline-flex rounded-lg bg-white px-3 py-2 text-sm font-semibold text-primary transition-[background-color,color,transform] hover:-translate-y-0.5 hover:bg-primary hover:text-white active:translate-y-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft" href="mailto:info@buscohuella.com">info@buscohuella.com</a></div>
           </div>
         </aside>
       </div>

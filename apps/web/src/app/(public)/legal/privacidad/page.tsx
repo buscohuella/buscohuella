@@ -5,7 +5,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { translate } = await getServerTranslator();
-  return { title: translate('legal.privacy.title'), description: translate('legal.privacy.intro') };
+  return { title: translate('common.legal.privacy.title'), description: translate('common.legal.privacy.intro') };
 }
 
 export default function PrivacyPage() {

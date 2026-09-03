@@ -5,7 +5,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { translate } = await getServerTranslator();
-  return { title: translate('legal.cookies.title'), description: translate('legal.cookies.intro') };
+  return { title: translate('common.legal.cookies.title'), description: translate('common.legal.cookies.intro') };
 }
 
 export default function CookiesPage() {

@@ -12,7 +12,7 @@ const sections = {
 
 export async function LegalPage({ document }: { document: LegalDocument }) {
   const { translate } = await getServerTranslator();
-  const prefix = `legal.${document}`;
+  const prefix = `common.legal.${document}`;
 
   return (
     <PageContainer className="py-8 sm:py-12">
@@ -26,7 +26,7 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
       <article className="mx-auto mt-8 max-w-4xl rounded-3xl border border-border-soft bg-surface-elevated p-6 shadow-sm sm:p-10">
         <header className="border-b border-border-soft pb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
-            {translate('legal.eyebrow')}
+            {translate('common.legal.eyebrow')}
           </p>
           <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
             {translate(`${prefix}.title`)}
@@ -35,7 +35,7 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
             {translate(`${prefix}.intro`)}
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
-            {translate('legal.lastUpdated')}
+            {translate('common.legal.lastUpdated')}
           </p>
         </header>
         <div className="prose prose-slate mt-8 max-w-none dark:prose-invert">

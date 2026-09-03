@@ -5,7 +5,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { translate } = await getServerTranslator();
-  return { title: translate('legal.terms.title'), description: translate('legal.terms.intro') };
+  return { title: translate('common.legal.terms.title'), description: translate('common.legal.terms.intro') };
 }
 
 export default function TermsPage() {

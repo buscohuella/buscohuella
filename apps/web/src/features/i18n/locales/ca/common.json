@@ -21,6 +21,7 @@
     "homeAria": "BuscoHuella, inici públic",
     "map": "Mapa",
     "reports": "Explora avisos",
+    "help": "Ajuda i informa d’un problema",
     "login": "Entra",
     "register": "Crea un compte",
     "registerShort": "Registre",
@@ -62,6 +63,23 @@
     "termsLink": "Condicions",
     "cookiesLink": "Cookies",
     "copyright": "© 2026 BuscoHuella. Tots els drets reservats."
+  },
+  "support": {
+    "metadata": { "title": "Ajuda i informa d’un problema | BuscoHuella", "description": "Comunica un problema o envia una consulta sobre BuscoHuella." },
+    "eyebrow": "Som aquí per ajudar-te",
+    "title": "Ajuda i informa d’un problema",
+    "description": "Explica’ns què ha passat. Durant la beta revisarem cada avís per millorar l’experiència.",
+    "privacyNote": "No incloguis contrasenyes, dades bancàries ni informació sensible d’altres persones o animals.",
+    "categoryLabel": "Tipus de consulta",
+    "categories": { "bug": "Alguna cosa no funciona", "account": "El meu compte", "content": "Un avís o contingut", "other": "Una altra consulta" },
+    "descriptionLabel": "Què ha passat?",
+    "descriptionPlaceholder": "Descriu el problema amb el màxim detall possible.",
+    "emailLabel": "El teu correu electrònic",
+    "emailPlaceholder": "Per poder respondre’t",
+    "optional": "opcional",
+    "pageLabel": "Pàgina d’origen",
+    "subjectPrefix": "Consulta de suport BuscoHuella",
+    "submit": "Obrir correu de suport"
   },
   "legal": {
     "eyebrow": "Informació legal de l'aplicació",

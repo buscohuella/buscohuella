@@ -102,6 +102,7 @@ export async function PublicHeader({
             label={translate('common.navigation.menu')}
             mapLabel={translate('common.navigation.map')}
             reportsLabel={translate('common.navigation.reports')}
+            helpLabel={translate('common.navigation.help')}
             themeLabel={translate('common.navigation.theme')}
             loginLabel={translate('common.navigation.login')}
             registerLabel={translate('common.navigation.register')}

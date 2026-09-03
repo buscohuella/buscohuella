@@ -43,7 +43,7 @@ export function AuthShell({
           <div className="flex items-center gap-1 sm:gap-2">
             <LanguageSelector />
             <div className="hidden md:block"><ThemeToggle /></div>
-            <MobilePublicNav label={commonT('navigation.menu')} mapLabel={commonT('navigation.map')} reportsLabel={commonT('navigation.reports')} themeLabel={commonT('navigation.theme')} loginLabel={commonT('navigation.login')} registerLabel={commonT('navigation.register')} showAuth={true} />
+            <MobilePublicNav label={commonT('navigation.menu')} mapLabel={commonT('navigation.map')} reportsLabel={commonT('navigation.reports')} themeLabel={commonT('navigation.theme')} loginLabel={commonT('navigation.login')} registerLabel={commonT('navigation.register')} helpLabel={commonT('navigation.help')} showAuth={true} />
           </div>
         </div>
       </header>

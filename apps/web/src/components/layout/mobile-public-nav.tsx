@@ -1,6 +1,6 @@
 'use client';
 
-import { LogIn, Menu, Map, ScrollText, UserPlus, X } from 'lucide-react';
+import { CircleHelp, LogIn, Menu, Map, ScrollText, UserPlus, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -13,6 +13,7 @@ export function MobilePublicNav({
   themeLabel,
   loginLabel,
   registerLabel,
+  helpLabel,
   showAuth,
 }: {
   label: string;
@@ -21,6 +22,7 @@ export function MobilePublicNav({
   themeLabel: string;
   loginLabel: string;
   registerLabel: string;
+  helpLabel: string;
   showAuth: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -44,6 +46,10 @@ export function MobilePublicNav({
           <Link href="/mapa" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
             <Map className="size-4" aria-hidden="true" />
             {mapLabel}
+          </Link>
+          <Link href="/ayuda" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+            <CircleHelp className="size-4" aria-hidden="true" />
+            {helpLabel}
           </Link>
           <Link href="/explorar-avisos" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
             <ScrollText className="size-4" aria-hidden="true" />

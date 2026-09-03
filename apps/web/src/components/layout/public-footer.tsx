@@ -23,16 +23,16 @@ export async function PublicFooter() {
           <div>
             <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-footer-muted">{translate('common.footer.exploreTitle')}</h2>
             <nav className="mt-4 grid gap-3 text-sm" aria-label={translate('common.footer.exploreTitle')}>
-              <Link href="/explorar-avisos" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.reports')}<ArrowUpRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" /></Link>
-              <Link href="/mapa" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.map')}<ArrowUpRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" /></Link>
+              <Link href="/explorar-avisos" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.reports')}<ArrowUpRight className="size-3 text-footer-muted opacity-0 transition-[color,opacity,transform] group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" aria-hidden="true" /></Link>
+              <Link href="/mapa" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.map')}<ArrowUpRight className="size-3 text-footer-muted opacity-0 transition-[color,opacity,transform] group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" aria-hidden="true" /></Link>
             </nav>
           </div>
 
           <div>
             <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-footer-muted">{translate('common.footer.accountTitle')}</h2>
             <nav className="mt-4 grid gap-3 text-sm" aria-label={translate('common.footer.accountTitle')}>
-              <Link href="/login" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.login')}<ArrowUpRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" /></Link>
-              <Link href="/registro" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.register')}<ArrowUpRight className="size-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" /></Link>
+              <Link href="/login" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.login')}<ArrowUpRight className="size-3 text-footer-muted opacity-0 transition-[color,opacity,transform] group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" aria-hidden="true" /></Link>
+              <Link href="/registro" className="group inline-flex w-fit items-center gap-1 hover:text-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.navigation.register')}<ArrowUpRight className="size-3 text-footer-muted opacity-0 transition-[color,opacity,transform] group-hover:translate-x-0.5 group-hover:text-primary group-hover:opacity-100" aria-hidden="true" /></Link>
             </nav>
           </div>
 

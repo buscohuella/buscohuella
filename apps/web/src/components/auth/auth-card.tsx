@@ -8,8 +8,8 @@ export interface AuthCardProps {
 
 export function AuthCard({ children }: AuthCardProps) {
   return (
-    <Card elevated>
-      <CardContent className="pt-5">{children}</CardContent>
+    <Card elevated className="rounded-3xl border-border-soft shadow-[0_20px_60px_rgba(15,23,42,0.1)]">
+      <CardContent className="px-4 pb-5 pt-4 sm:px-6 sm:pb-6 sm:pt-6">{children}</CardContent>
     </Card>
   );
 }

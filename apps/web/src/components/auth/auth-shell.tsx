@@ -23,13 +23,13 @@ export function AuthShell({
   const { t } = useTranslations('auth');
 
   return (
-    <main className="relative min-h-screen bg-background lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
+    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_85%_10%,var(--primary-soft),transparent_30%),var(--background)] lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(420px,560px)]">
       <div className="absolute right-4 top-4 z-10 flex items-center gap-2 sm:right-6 sm:top-6">
         <LanguageSelector />
         <ThemeToggle />
       </div>
 
-      <section className="relative hidden overflow-hidden bg-primary-soft p-10 lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-[linear-gradient(145deg,var(--primary-soft)_0%,var(--background)_75%)] p-10 lg:flex lg:flex-col lg:justify-between">
         <div className="pointer-events-none absolute -right-28 top-24 size-96 rounded-full border-[3rem] border-primary/5" aria-hidden="true" />
         <Link
           href="/"
@@ -76,14 +76,14 @@ export function AuthShell({
         </p>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center px-4 py-20 sm:px-6 lg:px-10">
+      <section className="flex min-h-screen items-center justify-center px-4 py-16 sm:px-6 lg:bg-surface/60 lg:px-10 lg:backdrop-blur-sm">
         <div className="w-full max-w-md">
           <Link
             href="/"
             className="mb-10 inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
             aria-label={t('shell.homeAria')}
           >
-            <BrandLogo className="h-16 w-48" priority />
+            <BrandLogo className="h-12 w-40" priority />
           </Link>
 
           <div>

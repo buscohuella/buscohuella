@@ -34,3 +34,21 @@ GitHub conserva el detalle técnico; Notion conserva el seguimiento operativo.
 - Revisar el contenido jurídico definitivo antes del lanzamiento público.
 - Completar la auditoría transversal de responsive, accesibilidad, i18n, SEO/Open Graph, seguridad y pruebas manuales.
 - Mantener sincronizados este registro, el historial Git y la página operativa de Notion.
+
+## 2026-09-03 — Revisión desde móvil
+
+- Se añadió la flecha de volver arriba también al `AppShell` privado y se hizo visible antes en páginas largas.
+- Se respetó el área segura inferior del móvil y la reducción de movimiento.
+- Se generalizaron las transiciones de color, borde, sombra y transformación para que los estados interactivos sean suaves.
+- Se reforzaron los estados hover y focus del índice legal, incluida la animación de sus indicadores.
+- El mapa mantiene un mensaje recuperable cuando no está disponible y permite continuar usando el listado.
+
+### Bloqueo de entorno
+
+- El acceso al mapa requiere configurar `NEXT_PUBLIC_MAPBOX_TOKEN` en el entorno local.
+- Para probar desde la IP LAN, el token público de desarrollo debe permitir ese origen o no tener una restricción incompatible con la red local.
+- No se versionan tokens ni credenciales.
+
+### Referencia técnica
+
+- Commit: `e7ba749` — correcciones de mapa, scroll y estados interactivos.

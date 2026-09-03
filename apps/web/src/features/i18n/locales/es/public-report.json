@@ -73,6 +73,7 @@
     "clearLocation": "Borrar ubicación",
     "useLocation": "Usar mi ubicación",
     "useLocationShort": "Mi ubicación",
+    "recenterLocation": "Centrar el mapa en mi ubicación",
     "moreFilters": "Filtros",
     "closeFilters": "Ocultar filtros",
     "usingLocation": "Buscando ubicación…",

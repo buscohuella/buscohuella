@@ -149,6 +149,7 @@ export default async function PublicMapPage() {
           title: translate('publicReport.list.mapPanelTitle'),
           useLocation: translate('publicReport.list.useLocation'),
           useLocationShort: translate('publicReport.list.useLocationShort'),
+          recenterLocation: translate('publicReport.list.recenterLocation'),
           moreFilters: translate('publicReport.list.moreFilters'),
           closeFilters: translate('publicReport.list.closeFilters'),
           usingLocation: translate('publicReport.list.usingLocation'),

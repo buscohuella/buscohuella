@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, CalendarClock, Cat, ChevronDown, Dog, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, CalendarClock, Cat, ChevronDown, Dog, Eye, List, LocateFixed, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -45,6 +45,7 @@ type PublicMapLabels = {
   title: string;
   useLocation: string;
   useLocationShort: string;
+  recenterLocation: string;
   moreFilters: string;
   closeFilters: string;
   usingLocation: string;
@@ -626,6 +627,18 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
     }
   }
 
+  function recenterOnLocation() {
+    if (!userLocation || !mapRef.current) {
+      return;
+    }
+
+    mapRef.current.flyTo({
+      center: userLocation,
+      zoom: Math.max(mapRef.current.getZoom(), 14),
+      essential: true,
+    });
+  }
+
   function selectAddress(suggestion: AddressSuggestion) {
     setUserLocation(suggestion.center);
     setUserAccuracy(null);
@@ -896,6 +909,16 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                 {labels.description}
               </div>
             ) : null}
+            <button
+              type="button"
+              onClick={recenterOnLocation}
+              disabled={!userLocation}
+              aria-label={labels.recenterLocation}
+              title={labels.recenterLocation}
+              className="absolute bottom-24 right-3 z-10 flex size-11 items-center justify-center rounded-xl border border-border bg-surface-elevated text-primary shadow-md transition-colors hover:bg-primary-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft disabled:cursor-not-allowed disabled:opacity-45"
+            >
+              <LocateFixed className="size-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
 

@@ -73,6 +73,7 @@
     "clearLocation": "Esborra la ubicació",
     "useLocation": "Utilitza la meva ubicació",
     "useLocationShort": "La meva ubicació",
+    "recenterLocation": "Centra el mapa en la meva ubicació",
     "moreFilters": "Filtres",
     "closeFilters": "Amaga els filtres",
     "usingLocation": "Cercant la ubicació…",

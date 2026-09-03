@@ -13,13 +13,13 @@
       "connect": "Conecta."
     },
     "description": "Consulta avisos y avistamientos de tu zona, comparte información útil y ayuda a que vuelva a casa. Puedes empezar sin registrarte.",
-    "explore": "Explorar avisos",
+    "explore": "Explorar avisos cercanos",
     "register": "Crear una cuenta",
     "visualTitle": "Así ayuda BuscoHuella",
     "visualBadge": "Comunidad",
     "visualDescription": "Una forma sencilla de coordinar la búsqueda con las personas que están cerca.",
     "panelEyebrow": "Acceso público",
-    "panelTitle": "Explora casos de tu zona",
+    "panelTitle": "Consulta casos cerca de ti",
     "panelDescription": "Consulta el mapa para orientarte y descubrir qué está pasando cerca de ti.",
     "panelExplore": "Ver avisos públicos",
     "panelMap": "Abrir el mapa",
@@ -29,19 +29,19 @@
     "stepThree": "Ayuda a que vuelva a casa"
   },
   "help": {
-    "title": "¿Has perdido o encontrado una mascota?",
-    "description": "Crea un aviso para compartir la información con tu comunidad y facilitar la búsqueda.",
-    "action": "Crear un aviso"
+    "title": "¿Has perdido o visto un animal?",
+    "description": "Publica un aviso urgente y comparte la información con tu comunidad.",
+    "action": "Publicar aviso urgente"
   },
   "trust": {
     "title": "Información clara cuando más importa",
     "description": "BuscoHuella está diseñada para colaborar sin exponer datos privados.",
     "privacyTitle": "Privacidad por defecto",
     "privacyDescription": "Mostramos zonas aproximadas y protegemos los datos de contacto.",
-    "communityTitle": "Ayuda de la comunidad",
-    "communityDescription": "Cualquier persona puede consultar avisos y aportar información.",
-    "accessibleTitle": "Sencilla y accesible",
-    "accessibleDescription": "Puedes empezar sin cuenta y usarla desde cualquier dispositivo."
+    "communityTitle": "Gestiona tus avisos",
+    "communityDescription": "Crea, actualiza y sigue tus casos desde un solo lugar.",
+    "accessibleTitle": "Consulta sin cuenta",
+    "accessibleDescription": "Explora avisos públicos desde cualquier dispositivo."
   },
   "private": {
     "greetingFallbackName": "Usuario",

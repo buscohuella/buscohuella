@@ -54,6 +54,21 @@ export default async function PublicHomePage() {
               <span className="relative inline-block text-primary after:absolute after:-bottom-1 after:left-0 after:h-1.5 after:w-full after:rounded-full after:bg-primary/45 after:content-['']">{translate('home.hero.titleAccent')}</span>
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
+            <div className="mt-6 rounded-2xl border border-accent/40 bg-accent-soft p-4 sm:p-5">
+              <div className="flex items-start gap-3">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/20 text-accent">
+                  <HeartHandshake className="size-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-bold">{translate('home.help.title')}</h2>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{translate('home.help.description')}</p>
+                </div>
+              </div>
+              <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#b94f00] px-5 font-semibold !text-white shadow-[0_8px_20px_rgba(185,79,0,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#913d00] hover:shadow-[0_11px_24px_rgba(145,61,0,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:w-auto">
+                {translate('home.help.action')}
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </div>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/explorar-avisos"
@@ -96,24 +111,6 @@ export default async function PublicHomePage() {
               <span>{translate('home.hero.panelPrivacy')}</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="home-help-title" className="rounded-3xl border border-accent/40 bg-accent-soft p-5 sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-3">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-accent/20 text-accent">
-              <HeartHandshake className="size-6" aria-hidden="true" />
-            </span>
-            <div>
-              <h2 id="home-help-title" className="font-bold">{translate('home.help.title')}</h2>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">{translate('home.help.description')}</p>
-            </div>
-          </div>
-          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#b94f00] px-5 font-semibold !text-white shadow-[0_8px_20px_rgba(185,79,0,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#913d00] hover:shadow-[0_11px_24px_rgba(145,61,0,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
-            {translate('home.help.action')}
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
         </div>
       </section>
 

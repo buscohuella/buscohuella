@@ -13,13 +13,13 @@
       "connect": "Connecta."
     },
     "description": "Consulta avisos i albiraments de la teva zona, comparteix informació útil i ajuda-la a tornar a casa. Pots començar sense registrar-te.",
-    "explore": "Explora avisos",
+    "explore": "Explora avisos propers",
     "register": "Crea un compte",
     "visualTitle": "Així ajuda BuscoHuella",
     "visualBadge": "Comunitat",
     "visualDescription": "Una manera senzilla de coordinar la cerca amb les persones que són a prop.",
     "panelEyebrow": "Accés públic",
-    "panelTitle": "Explora casos de la teva zona",
+    "panelTitle": "Consulta casos a prop teu",
     "panelDescription": "Consulta el mapa per orientar-te i descobrir què passa a prop teu.",
     "panelExplore": "Veure avisos públics",
     "panelMap": "Obrir el mapa",
@@ -29,19 +29,19 @@
     "stepThree": "Ajuda’l a tornar a casa"
   },
   "help": {
-    "title": "Has perdut o has trobat una mascota?",
-    "description": "Crea un avís per compartir la informació amb la teva comunitat i facilitar-ne la cerca.",
-    "action": "Crea un avís"
+    "title": "Has perdut o has vist un animal?",
+    "description": "Publica un avís urgent i comparteix la informació amb la teva comunitat.",
+    "action": "Publica un avís urgent"
   },
   "trust": {
     "title": "Informació clara quan més importa",
     "description": "BuscoHuella està dissenyada per col·laborar sense exposar dades privades.",
     "privacyTitle": "Privacitat per defecte",
     "privacyDescription": "Mostrem zones aproximades i protegim les dades de contacte.",
-    "communityTitle": "Ajuda de la comunitat",
-    "communityDescription": "Qualsevol persona pot consultar avisos i aportar informació.",
-    "accessibleTitle": "Senzilla i accessible",
-    "accessibleDescription": "Pots començar sense compte i utilitzar-la des de qualsevol dispositiu."
+    "communityTitle": "Gestiona els teus avisos",
+    "communityDescription": "Crea, actualitza i segueix els teus casos des d’un sol lloc.",
+    "accessibleTitle": "Consulta sense compte",
+    "accessibleDescription": "Explora avisos públics des de qualsevol dispositiu."
   },
   "private": {
     "greetingFallbackName": "Usuari",

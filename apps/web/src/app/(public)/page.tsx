@@ -110,7 +110,7 @@ export default async function PublicHomePage() {
               <p className="mt-1 text-sm leading-6 text-muted-foreground">{translate('home.help.description')}</p>
             </div>
           </div>
-          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-5 font-semibold text-accent-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+          <Link href="/registro?intent=publish&next=/mis-reportes/nuevo" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-[#b94f00] px-5 font-semibold !text-white shadow-[0_8px_20px_rgba(185,79,0,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#913d00] hover:shadow-[0_11px_24px_rgba(145,61,0,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
             {translate('home.help.action')}
             <ArrowRight className="size-4" aria-hidden="true" />
           </Link>

@@ -131,9 +131,13 @@ function createOriginMarkerElement() {
   originElement.setAttribute('aria-hidden', 'true');
   originElement.className = 'pointer-events-none relative flex items-center justify-center';
   const originAccuracy = document.createElement('span');
-  originAccuracy.className = 'absolute inset-0 rounded-full border border-[#0f766e]/30 bg-[#0f766e]/[0.08]';
+  originAccuracy.className = 'absolute inset-0 rounded-full';
+  originAccuracy.style.border = '1px solid rgba(15, 118, 110, 0.3)';
+  originAccuracy.style.backgroundColor = 'rgba(15, 118, 110, 0.08)';
   const originDot = document.createElement('span');
-  originDot.className = 'relative z-10 block size-4 rounded-full border-2 border-white bg-[#0f766e]';
+  originDot.className = 'relative z-10 block size-4 rounded-full';
+  originDot.style.border = '2px solid #ffffff';
+  originDot.style.backgroundColor = '#0f766e';
   originElement.append(originAccuracy, originDot);
   return originElement;
 }

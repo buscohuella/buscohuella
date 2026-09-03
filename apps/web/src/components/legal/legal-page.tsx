@@ -52,7 +52,7 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
       />
       <nav className="mt-5 flex gap-2 overflow-x-auto pb-1" aria-label={translate('common.legal.documentNavigation')}>
         {documentLinks.map(({ key, href }) => (
-          <Link key={key} href={href} className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${key === document ? 'border-primary bg-primary text-white shadow-sm' : 'border-border-soft bg-white text-muted-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary'}`}>
+          <Link key={key} href={href} className={`shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${key === document ? 'border-primary bg-primary !text-white shadow-sm hover:bg-primary-container' : 'border-border-soft bg-white text-muted-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary'}`}>
             {translate(`common.legal.${key}.title`)}
           </Link>
         ))}

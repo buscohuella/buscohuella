@@ -176,10 +176,7 @@ export function LanguageSelector() {
       >
         <LocaleFlag locale={locale} />
 
-        <span className="hidden sm:inline">
-          {t(`language.options.${locale}`)}
-        </span>
-        <span className="sm:hidden">
+        <span>
           {shortLabels[locale]}
         </span>
 

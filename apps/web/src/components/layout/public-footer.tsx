@@ -48,8 +48,8 @@ export async function PublicFooter() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p>{translate('common.footer.privacy')}</p>
             <nav className="flex gap-3" aria-label={translate('common.footer.legalTitle')}>
-              <a href="https://buscohuella.es/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.privacyLink')}</a>
-              <a href="https://buscohuella.es/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.termsLink')}</a>
+              <a href="https://buscohuella.com/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.privacyLink')}</a>
+              <a href="https://buscohuella.com/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.termsLink')}</a>
             </nav>
           </div>
           <a href="https://buscohuella.com/" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.copyright')}</a>

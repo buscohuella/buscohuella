@@ -131,6 +131,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
+  const [locationZoom, setLocationZoom] = useState<number | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<'secure-context' | 'unavailable' | null>(null);
   const [addressQuery, setAddressQuery] = useState('');
@@ -314,6 +315,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           const nextLocation: [number, number] = [event.lngLat.lng, event.lngLat.lat];
           setUserLocation(nextLocation);
           setUserAccuracy(null);
+          setLocationZoom(14);
           setRadiusKm(null);
           setLocationError(null);
           selectingLocationRef.current = false;
@@ -419,6 +421,14 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   }, [mapReady, userAccuracy, userLocation]);
 
   useEffect(() => {
+    if (!mapReady || !userLocation || locationZoom === null || !mapRef.current) {
+      return;
+    }
+
+    mapRef.current.flyTo({ center: userLocation, zoom: locationZoom, essential: true });
+  }, [locationZoom, mapReady, userLocation]);
+
+  useEffect(() => {
     if (!selectedId) {
       return;
     }
@@ -476,7 +486,9 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                 ? 15
                 : feature.place_type?.includes('neighborhood')
                   ? 14
-                  : 12,
+                  : feature.place_type?.includes('place')
+                    ? 13
+                    : 14,
             })),
           );
         })
@@ -512,6 +524,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
         const nextLocation: [number, number] = [coords.longitude, coords.latitude];
         setUserLocation(nextLocation);
         setUserAccuracy(coords.accuracy);
+        setLocationZoom(14);
         setAddressQuery('');
         setAddressSuggestions([]);
         setLocating(false);
@@ -538,11 +551,11 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   function selectAddress(suggestion: AddressSuggestion) {
     setUserLocation(suggestion.center);
     setUserAccuracy(null);
+    setLocationZoom(Math.max(suggestion.zoom, 14));
     skipAddressSearchRef.current = true;
     setAddressQuery(suggestion.label);
     setAddressSuggestions([]);
     setLocationError(null);
-    mapRef.current?.flyTo({ center: suggestion.center, zoom: suggestion.zoom, essential: true });
   }
 
   return (
@@ -612,6 +625,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                     setAddressSuggestions([]);
                     setUserLocation(null);
                     setUserAccuracy(null);
+                    setLocationZoom(null);
                     setRadiusKm(null);
                     setLocationError(null);
                     originMarkerRef.current?.remove();

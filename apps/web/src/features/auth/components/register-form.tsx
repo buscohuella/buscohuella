@@ -135,6 +135,8 @@ export function RegisterForm({
         type="password"
         label={t('register.password')}
         placeholder={t('register.passwordPlaceholder')}
+        showPasswordLabel={t('register.showPassword')}
+        hidePasswordLabel={t('register.hidePassword')}
         autoComplete="new-password"
         hint={t('register.passwordHint')}
         minLength={8}
@@ -152,6 +154,8 @@ export function RegisterForm({
         type="password"
         label={t('register.confirmPassword')}
         placeholder={t('register.confirmPasswordPlaceholder')}
+        showPasswordLabel={t('register.showPassword')}
+        hidePasswordLabel={t('register.hidePassword')}
         autoComplete="new-password"
         minLength={8}
         value={confirmation}

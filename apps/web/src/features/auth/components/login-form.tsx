@@ -74,6 +74,8 @@ if (state.fieldErrors?.password) {
         type="password"
         label={t('login.password')}
         placeholder={t('login.passwordPlaceholder')}
+        showPasswordLabel={t('login.showPassword')}
+        hidePasswordLabel={t('login.hidePassword')}
         autoComplete="current-password"
         error={state.fieldErrors?.password}
         required

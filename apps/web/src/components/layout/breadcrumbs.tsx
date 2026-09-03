@@ -29,7 +29,7 @@ export function Breadcrumbs({
         </Link>
       ) : null}
       <nav aria-label={label} className={backItem ? 'hidden md:block' : undefined}>
-        <ol className="flex min-h-10 items-center gap-1 overflow-x-auto whitespace-nowrap text-muted-foreground">
+        <ol className="flex min-h-10 items-center gap-1 overflow-x-auto whitespace-nowrap text-[#0f766e]">
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
             return (
@@ -38,7 +38,7 @@ export function Breadcrumbs({
                 {isLast || !item.href ? (
                   <span aria-current={isLast ? 'page' : undefined} className={isLast ? 'font-semibold text-foreground' : undefined}>{item.label}</span>
                 ) : (
-                  <Link href={item.href} className="rounded-sm font-semibold hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{item.label}</Link>
+                  <Link href={item.href} className="rounded-sm font-semibold hover:text-[#075e59] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{item.label}</Link>
                 )}
               </li>
             );

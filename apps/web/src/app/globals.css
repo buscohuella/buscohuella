@@ -17,6 +17,10 @@
   --primary-soft: #ecfdf5;
   --primary-foreground: #ffffff;
 
+  --public-action: #007c6c;
+  --public-action-hover: #006458;
+  --public-action-foreground: #ffffff;
+
   --accent: #c45f0a;
   --accent-hover: #9a4a08;
   --accent-active: #7c3a06;
@@ -107,6 +111,10 @@
   --primary-soft: #063f35;
   --primary-foreground: #052e27;
 
+  --public-action: #18b89f;
+  --public-action-hover: #2dd4bf;
+  --public-action-foreground: #062e2a;
+
   --accent: #fb923c;
   --accent-hover: #fdba74;
   --accent-active: #fed7aa;
@@ -167,6 +175,10 @@
   --color-primary-active: var(--primary-active);
   --color-primary-soft: var(--primary-soft);
   --color-primary-foreground: var(--primary-foreground);
+
+  --color-public-action: var(--public-action);
+  --color-public-action-hover: var(--public-action-hover);
+  --color-public-action-foreground: var(--public-action-foreground);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);

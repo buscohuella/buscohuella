@@ -21,17 +21,6 @@
     "stepTwo": "Comparteix informació útil",
     "stepThree": "Ajuda’l a tornar a casa"
   },
-  "actions": {
-    "title": "Tria com ajudar",
-    "description": "Orienta't al mapa o comparteix un avís quan necessitis l'ajuda de la teva comunitat.",
-    "mapTitle": "Explora el mapa",
-    "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
-    "reportsTitle": "Consulta avisos",
-    "reportsDescription": "Cerca pèrdues, troballes i avisos públics.",
-    "reportTitle": "Publica un avís",
-    "reportDescription": "Crea una alerta perquè la teva comunitat pugui ajudar-te.",
-    "reportAction": "Comença ara"
-  },
   "help": {
     "title": "Has perdut o has trobat una mascota?",
     "description": "Crea un avís per compartir la informació amb la teva comunitat i facilitar-ne la cerca.",

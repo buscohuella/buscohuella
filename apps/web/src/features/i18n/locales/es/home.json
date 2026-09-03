@@ -21,17 +21,6 @@
     "stepTwo": "Comparte información útil",
     "stepThree": "Ayuda a que vuelva a casa"
   },
-  "actions": {
-    "title": "Elige cómo ayudar",
-    "description": "Oriéntate en el mapa o comparte un aviso cuando necesites la ayuda de tu comunidad.",
-    "mapTitle": "Explorar el mapa",
-    "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
-    "reportsTitle": "Consultar avisos",
-    "reportsDescription": "Busca pérdidas, hallazgos y avisos públicos.",
-    "reportTitle": "Publica un aviso",
-    "reportDescription": "Crea una alerta para que tu comunidad pueda ayudarte.",
-    "reportAction": "Empieza ahora"
-  },
   "help": {
     "title": "¿Has perdido o encontrado una mascota?",
     "description": "Crea un aviso para compartir la información con tu comunidad y facilitar la búsqueda.",

@@ -12,12 +12,6 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 import { getServerTranslator } from '@/features/i18n/server';
 
@@ -43,27 +37,6 @@ export default async function PublicHomePage() {
     redirect('/inicio');
   }
 
-  const actions = [
-    {
-      id: 'map',
-      title: translate(
-        'home.actions.mapTitle',
-      ),
-      description: translate(
-        'home.actions.mapDescription',
-      ),
-      href: '/mapa',
-      icon: Map,
-    },
-    {
-      id: 'create',
-      title: translate('home.actions.reportTitle'),
-      description: translate('home.actions.reportDescription'),
-      href: '/registro?intent=publish&next=/mis-reportes/nuevo',
-      icon: HeartHandshake,
-    },
-  ];
-
   return (
     <PageContainer className="space-y-10 py-10 sm:py-14">
       <section className="relative overflow-hidden rounded-3xl border border-primary/10 bg-[linear-gradient(135deg,var(--primary-soft)_0%,var(--surface)_58%,var(--surface-sunken)_100%)] p-6 shadow-[0_20px_60px_rgba(6,95,70,0.08)] sm:p-10 lg:p-14">
@@ -79,7 +52,7 @@ export default async function PublicHomePage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/explorar-avisos"
-            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-primary px-6 text-lg font-semibold text-primary-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_10px_24px_rgba(6,95,70,0.2)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-public-action px-6 text-lg font-semibold text-public-action-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-public-action-hover hover:shadow-[0_10px_24px_rgba(0,100,88,0.24)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
           >
             {translate('home.hero.explore')}
             <ArrowRight
@@ -118,51 +91,6 @@ export default async function PublicHomePage() {
               <span>{translate('home.hero.panelPrivacy')}</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="public-actions-title"
-      >
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <h2
-            id="public-actions-title"
-            className="text-2xl font-bold tracking-tight"
-          >
-            {translate('home.actions.title')}
-          </h2>
-          <p className="max-w-md text-sm text-muted-foreground">{translate('home.actions.description')}</p>
-        </div>
-
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {actions.map((action) => {
-            const Icon = action.icon;
-
-            return (
-              <Link
-                key={action.id}
-                href={action.href}
-                className="rounded-xl transition-transform duration-200 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
-              >
-                <Card className="h-full">
-                  <CardHeader>
-                    <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                      <Icon
-                        className="size-6"
-                        aria-hidden="true"
-                      />
-                    </span>
-                    <CardTitle>
-                      {action.title}
-                    </CardTitle>
-                    <CardDescription>
-                      {action.description}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
-            );
-          })}
         </div>
       </section>
 

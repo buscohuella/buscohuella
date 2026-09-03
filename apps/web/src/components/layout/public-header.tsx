@@ -117,7 +117,7 @@ export async function PublicHeader({
               </Link>
               <Link
                 href="/registro"
-                className="flex min-h-11 items-center gap-1 rounded-full bg-primary px-3 text-xs font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:gap-2 sm:px-4 sm:text-sm [&>span:last-child]:hidden [&>span:last-child]:sm:inline"
+                className="flex min-h-11 items-center gap-1 rounded-full bg-public-action px-3 text-xs font-semibold text-public-action-foreground transition-colors duration-150 hover:bg-public-action-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:gap-2 sm:px-4 sm:text-sm [&>span:last-child]:hidden [&>span:last-child]:sm:inline"
               >
                 <span className="sm:hidden">
                   {translate(

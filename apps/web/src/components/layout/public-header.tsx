@@ -42,8 +42,8 @@ export async function PublicHeader({
             className="size-8 object-contain sm:size-10"
             priority
           />
-          <span className="text-base font-bold tracking-tight text-foreground sm:text-xl">
-            BuscoHuella
+          <span className="text-base font-bold tracking-tight sm:text-xl">
+            <span className="text-primary">Busco</span><span className="text-accent">Huella</span>
           </span>
         </Link>
 

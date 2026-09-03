@@ -15,7 +15,7 @@ export async function PublicFooter() {
           <div className="max-w-sm">
             <a href="https://buscohuella.com/" className="inline-flex items-center gap-3 rounded-lg underline-offset-4 transition-[color,text-decoration-color] hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
               <Image src="/brand/mark.png" alt="" width={36} height={36} className="size-9 object-contain" />
-              <span className="text-lg font-bold tracking-tight">BuscoHuella</span>
+              <span className="text-lg font-bold tracking-tight"><span className="text-primary">Busco</span><span className="text-accent">Huella</span></span>
             </a>
             <p className="mt-4 text-sm leading-6 text-footer-muted">{translate('common.footer.description')}</p>
           </div>
@@ -48,8 +48,9 @@ export async function PublicFooter() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p>{translate('common.footer.privacy')}</p>
             <nav className="flex gap-3" aria-label={translate('common.footer.legalTitle')}>
-              <a href="https://buscohuella.com/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.privacyLink')}</a>
-              <a href="https://buscohuella.com/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.termsLink')}</a>
+              <Link href="/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.privacyLink')}</Link>
+              <Link href="/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.termsLink')}</Link>
+              <Link href="/legal/cookies" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.cookiesLink')}</Link>
             </nav>
           </div>
           <a href="https://buscohuella.com/" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{translate('common.footer.copyright')}</a>

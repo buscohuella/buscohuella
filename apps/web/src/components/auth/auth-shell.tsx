@@ -106,8 +106,10 @@ export function AuthShell({
           <div className="mt-6">{children}</div>
           <footer className="mt-6 border-t border-border-soft pt-4 text-center text-xs text-muted-foreground">
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2" aria-label={t('footer.label')}>
-              <a href="https://buscohuella.com/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.privacy')}</a>
-              <a href="https://buscohuella.com/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.terms')}</a>
+              <Link href="/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.privacy')}</Link>
+              <Link href="/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.terms')}</Link>
+              <Link href="/legal/cookies" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.cookies')}</Link>
+              <Link href="/legal/cookies" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.cookies')}</Link>
               <a href="mailto:info@buscohuella.com" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.contact')}</a>
             </nav>
             <a href="https://buscohuella.com/" className="mt-2 inline-block underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">© 2026 BuscoHuella</a>

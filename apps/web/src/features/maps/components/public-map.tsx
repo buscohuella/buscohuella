@@ -25,6 +25,7 @@ type PublicMapLabels = {
   found: string;
   lost: string;
   locationError: string;
+  locationSecureError: string;
   locationTitle: string;
   markOnMap: string;
   markingOnMap: string;
@@ -130,7 +131,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [userAccuracy, setUserAccuracy] = useState<number | null>(null);
   const [locating, setLocating] = useState(false);
-  const [locationError, setLocationError] = useState(false);
+  const [locationError, setLocationError] = useState<'secure-context' | 'unavailable' | null>(null);
   const [addressQuery, setAddressQuery] = useState('');
   const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([]);
   const [searchingAddress, setSearchingAddress] = useState(false);
@@ -313,7 +314,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           setUserLocation(nextLocation);
           setUserAccuracy(null);
           setRadiusKm(null);
-          setLocationError(false);
+          setLocationError(null);
           selectingLocationRef.current = false;
           setSelectingLocation(false);
           map.getCanvas().style.cursor = '';
@@ -483,13 +484,18 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   }, [addressQuery]);
 
   function requestUserLocation() {
+    if (!window.isSecureContext) {
+      setLocationError('secure-context');
+      return;
+    }
+
     if (!navigator.geolocation) {
-      setLocationError(true);
+      setLocationError('unavailable');
       return;
     }
 
     setLocating(true);
-    setLocationError(false);
+    setLocationError(null);
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const nextLocation: [number, number] = [coords.longitude, coords.latitude];
@@ -503,7 +509,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
       },
       () => {
         setLocating(false);
-        setLocationError(true);
+        setLocationError('unavailable');
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 },
     );
@@ -512,7 +518,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   function enableMapSelection() {
     selectingLocationRef.current = true;
     setSelectingLocation(true);
-    setLocationError(false);
+    setLocationError(null);
     if (mapRef.current) {
       mapRef.current.getCanvas().style.cursor = 'crosshair';
     }
@@ -524,7 +530,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
     skipAddressSearchRef.current = true;
     setAddressQuery(suggestion.label);
     setAddressSuggestions([]);
-    setLocationError(false);
+    setLocationError(null);
     mapRef.current?.flyTo({ center: suggestion.center, zoom: 12, essential: true });
   }
 
@@ -596,7 +602,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
                     setUserLocation(null);
                     setUserAccuracy(null);
                     setRadiusKm(null);
-                    setLocationError(false);
+                    setLocationError(null);
                     originMarkerRef.current?.remove();
                     originMarkerRef.current = null;
                   }}
@@ -655,7 +661,9 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             {labels.radiusAll}
           </button>
           {locationError ? (
-            <span role="alert" className="w-full text-sm text-danger">{labels.locationError}</span>
+            <span role="alert" className="w-full text-sm text-danger">
+              {locationError === 'secure-context' ? labels.locationSecureError : labels.locationError}
+            </span>
           ) : null}
         </div>
         <div className="overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-sm">

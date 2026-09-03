@@ -73,6 +73,7 @@
     "useLocation": "Utilitza la meva ubicació",
     "usingLocation": "Cercant la ubicació…",
     "locationError": "No hem pogut obtenir la teva ubicació. Pots continuar sense filtre de distància.",
+    "locationSecureError": "Per utilitzar la teva ubicació cal obrir l'aplicació amb HTTPS. En aquesta prova local pots continuar cercant per adreça.",
     "searching": "Cercant…",
     "radiusUnit": "km",
     "radiusAll": "Totes les distàncies",

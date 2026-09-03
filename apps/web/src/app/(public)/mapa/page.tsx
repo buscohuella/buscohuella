@@ -99,6 +99,7 @@ export default async function PublicMapPage() {
           found: translate('publicReport.type.FOUND_ANIMAL'),
           lost: translate('publicReport.type.LOST_PET'),
           locationError: translate('publicReport.list.locationError'),
+          locationSecureError: translate('publicReport.list.locationSecureError'),
           locationTitle: translate('publicReport.list.locationTitle'),
           markOnMap: translate('publicReport.list.markOnMap'),
           markingOnMap: translate('publicReport.list.markingOnMap'),

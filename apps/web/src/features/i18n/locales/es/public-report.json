@@ -73,6 +73,7 @@
     "useLocation": "Usar mi ubicación",
     "usingLocation": "Buscando ubicación…",
     "locationError": "No hemos podido obtener tu ubicación. Puedes continuar sin filtro de distancia.",
+    "locationSecureError": "Para usar tu ubicación necesitas abrir la aplicación con HTTPS. En esta prueba local puedes continuar buscando por dirección.",
     "searching": "Buscando…",
     "radiusUnit": "km",
     "radiusAll": "Todas las distancias",

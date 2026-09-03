@@ -561,8 +561,8 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
   return (
     <section aria-labelledby="public-map-heading" className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
-        <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-3 lg:col-span-2">
-          <span className="mr-1 text-sm font-semibold">{labels.sortTitle}</span>
+        <div className="order-first flex flex-wrap items-center gap-2 rounded-2xl border border-border-soft bg-surface-elevated p-2 sm:p-3 lg:col-span-2">
+          <span className="mr-1 hidden text-sm font-semibold sm:inline">{labels.sortTitle}</span>
           <button
             type="button"
             aria-pressed={sortRecent}
@@ -703,10 +703,10 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               {visibleReports.length} {labels.active.toLowerCase()}
             </span>
           </div>
-          <div className="relative min-h-[28rem] bg-surface-sunken">
+          <div className="relative min-h-[24rem] bg-surface-sunken sm:min-h-[28rem]">
             <div
               ref={mapContainerRef}
-              className="min-h-[28rem]"
+              className="min-h-[24rem] sm:min-h-[28rem]"
               aria-label={labels.description}
               role="region"
             />
@@ -723,12 +723,12 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-surface-elevated shadow-sm">
+        <div className="rounded-2xl border border-border bg-surface-elevated shadow-sm lg:sticky lg:top-24 lg:self-start">
           <div className="flex items-center gap-2 border-b border-border-soft px-4 py-3">
             <List className="size-5 text-primary" aria-hidden="true" />
             <h2 className="font-semibold">{labels.listTitle}</h2>
           </div>
-          <div className="max-h-[28rem] space-y-3 overflow-y-auto p-3">
+          <div className="max-h-[24rem] space-y-3 overflow-y-auto p-2 sm:max-h-[28rem] sm:p-3">
             {visibleReports.length === 0 ? (
               <div className="px-3 py-8 text-center">
                 <p className="font-semibold">{labels.emptyTitle}</p>

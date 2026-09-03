@@ -799,17 +799,10 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
             className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full items-center gap-2 overflow-x-auto pb-1 lg:col-start-1 lg:flex`}
             aria-label={labels.locationTitle}
           >
-            <PawPrint className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <SlidersHorizontal className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
             {speciesFilters.map((filter) => (
               (() => {
-                const SpeciesIcon = filter.key === 'dog' ? Dog : filter.key === 'cat' ? Cat : PawPrint;
-                const idleColor = filter.key === 'dog'
-                  ? 'border-transparent bg-sky-50 text-sky-800 hover:border-sky-300'
-                  : filter.key === 'cat'
-                    ? 'border-transparent bg-violet-50 text-violet-800 hover:border-violet-300'
-                    : filter.key === 'other'
-                      ? 'border-transparent bg-orange-50 text-orange-800 hover:border-orange-300'
-                      : 'border-transparent bg-primary-soft text-primary hover:border-primary/40';
+                const SpeciesIcon = filter.key === 'all' ? null : filter.key === 'dog' ? Dog : filter.key === 'cat' ? Cat : PawPrint;
 
                 return (
                   <button
@@ -820,10 +813,10 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
                       speciesFilter === filter.key
                         ? 'border-primary bg-primary text-white'
-                        : idleColor
+                        : 'border-border-soft bg-surface-sunken text-foreground hover:border-primary hover:text-primary'
                     }`}
                   >
-                    <SpeciesIcon className="size-3.5" aria-hidden="true" />
+                    {SpeciesIcon ? <SpeciesIcon className="size-3.5" aria-hidden="true" /> : null}
                     {filter.label}
                   </button>
                 );

@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, CalendarClock, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, CalendarClock, ChevronDown, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -147,6 +147,8 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
   const [mapReady, setMapReady] = useState(false);
   const [mapError, setMapError] = useState(false);
   const [sortMode, setSortMode] = useState<'recent' | 'nearest'>('recent');
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [speciesFilter, setSpeciesFilter] = useState<PublicMapSpeciesFilter['key']>('all');
   const [radiusKm, setRadiusKm] = useState<number | null>(null);
@@ -204,6 +206,21 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
       ),
     [visibleReports],
   );
+
+  useEffect(() => {
+    if (!sortMenuOpen) {
+      return;
+    }
+
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!sortMenuRef.current?.contains(event.target as Node)) {
+        setSortMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    return () => document.removeEventListener('pointerdown', closeOnOutsidePointer);
+  }, [sortMenuOpen]);
 
   async function reverseGeocode(coordinates: [number, number]) {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -623,21 +640,53 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           <label htmlFor="map-sort" className="mr-1 hidden text-sm font-semibold sm:inline">
             {labels.sortTitle}
           </label>
-          <div className="order-2 relative sm:order-none">
-            <select
+          <div ref={sortMenuRef} className="order-2 relative sm:order-none">
+            <button
               id="map-sort"
-              value={sortMode}
-              onChange={(event) => setSortMode(event.target.value as 'recent' | 'nearest')}
-              className="min-h-10 appearance-none rounded-full border border-primary bg-primary-soft py-2 pl-3 pr-8 text-sm font-semibold text-primary outline-none transition-colors hover:bg-primary/10 focus-visible:ring-4 focus-visible:ring-focus-soft"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={sortMenuOpen}
+              aria-controls="map-sort-options"
+              onClick={() => setSortMenuOpen((open) => !open)}
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-primary bg-primary-soft px-3 text-sm font-semibold text-primary outline-none transition-colors hover:bg-primary/10 focus-visible:ring-4 focus-visible:ring-focus-soft"
             >
-              <option value="recent">{labels.sortRecent}</option>
-              <option value="nearest" disabled={!userLocation}>
-                {userLocation ? labels.sortNearest : labels.sortNearestUnavailable}
-              </option>
-            </select>
-            <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-primary" aria-hidden="true">
-              ▾
-            </span>
+              {sortMode === 'recent' ? labels.sortRecent : labels.sortNearest}
+              <ChevronDown className={`size-4 transition-transform ${sortMenuOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+            </button>
+            {sortMenuOpen ? (
+              <div
+                id="map-sort-options"
+                role="listbox"
+                aria-label={labels.sortTitle}
+                className="absolute left-0 top-full z-30 mt-2 min-w-52 rounded-2xl border border-border-soft bg-surface-elevated p-1.5 shadow-lg"
+              >
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={sortMode === 'recent'}
+                  onClick={() => {
+                    setSortMode('recent');
+                    setSortMenuOpen(false);
+                  }}
+                  className={`flex min-h-10 w-full items-center rounded-xl px-3 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${sortMode === 'recent' ? 'bg-primary-soft text-primary' : 'text-foreground hover:bg-surface-sunken'}`}
+                >
+                  {labels.sortRecent}
+                </button>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={sortMode === 'nearest'}
+                  disabled={!userLocation}
+                  onClick={() => {
+                    setSortMode('nearest');
+                    setSortMenuOpen(false);
+                  }}
+                  className={`flex min-h-10 w-full items-center rounded-xl px-3 text-left text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${sortMode === 'nearest' ? 'bg-primary-soft text-primary' : 'text-foreground hover:bg-surface-sunken'} disabled:cursor-not-allowed disabled:opacity-45`}
+                >
+                  {userLocation ? labels.sortNearest : labels.sortNearestUnavailable}
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="contents lg:flex lg:flex-wrap lg:items-center lg:justify-end lg:gap-2">
@@ -709,6 +758,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
                     setLocationZoom(null);
                     setRadiusKm(null);
                     setSortMode('recent');
+                    setSortMenuOpen(false);
                     setLocationError(null);
                     originMarkerRef.current?.remove();
                     originMarkerRef.current = null;
@@ -918,7 +968,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         className="flex flex-col gap-4 rounded-2xl border border-primary/25 bg-primary-soft/40 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5"
       >
         <div className="flex items-start gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-white">
             <Eye className="size-5" aria-hidden="true" />
           </span>
           <div>
@@ -934,7 +984,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
         </div>
         <Link
           href={sightingHref}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           {selectedId
             ? labels.sightingCtaActionSelected

@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Building2,
   HeartHandshake,
   LockKeyhole,
   Map,
@@ -51,7 +52,7 @@ export default async function PublicHomePage() {
             </p>
             <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               <span>{translate('home.hero.titleLead')} </span>
-              <span className="relative inline-block text-primary after:absolute after:-bottom-1 after:left-0 after:h-1.5 after:w-full after:rounded-full after:bg-primary/45 after:content-['']">{translate('home.hero.titleAccent')}</span>
+              <span className="relative inline-block text-primary after:absolute after:-bottom-1 after:left-0 after:h-1.5 after:w-full after:-rotate-1 after:rounded-[50%] after:bg-primary/45 after:content-['']">{translate('home.hero.titleAccent')}</span>
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{translate('home.hero.description')}</p>
             <div className="mt-6 rounded-2xl border border-accent/40 bg-accent-soft p-4 sm:p-5">
@@ -131,6 +132,42 @@ export default async function PublicHomePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="home-how-title" className="rounded-3xl border border-border-soft bg-surface-elevated p-6 sm:p-10">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{translate('home.how.eyebrow')}</p>
+          <h2 id="home-how-title" className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">{translate('home.how.title')}</h2>
+          <p className="mt-2 text-muted-foreground">{translate('home.how.description')}</p>
+        </div>
+        <ol className="mt-8 grid gap-4 md:grid-cols-3">
+          {(['publish', 'community', 'reunion'] as const).map((step, index) => (
+            <li key={step} className="rounded-2xl border border-border-soft bg-surface p-5">
+              <span className={`flex size-11 items-center justify-center rounded-2xl text-lg font-bold ${index === 0 ? 'bg-info-soft text-info' : index === 1 ? 'bg-accent-soft text-accent' : 'bg-primary-soft text-primary'}`} aria-hidden="true">
+                0{index + 1}
+              </span>
+              <h3 className="mt-5 font-semibold">{translate(`home.how.steps.${step}.title`)}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{translate(`home.how.steps.${step}.description`)}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="home-community-title" className="flex flex-col gap-5 rounded-3xl border border-primary/10 bg-primary-soft p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div className="flex items-start gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+            <Building2 className="size-6" aria-hidden="true" />
+          </span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{translate('home.community.eyebrow')}</p>
+            <h2 id="home-community-title" className="mt-1 text-xl font-bold tracking-tight">{translate('home.community.title')}</h2>
+            <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">{translate('home.community.description')}</p>
+          </div>
+        </div>
+        <a href="mailto:info@buscohuella.com?subject=Colaboración%20con%20BuscoHuella" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-surface-elevated px-5 font-semibold text-foreground shadow-[var(--shadow-sm)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface hover:shadow-[var(--shadow-md)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
+          {translate('home.community.action')}
+          <ArrowRight className="size-4 text-primary" aria-hidden="true" />
+        </a>
       </section>
     </PageContainer>
   );

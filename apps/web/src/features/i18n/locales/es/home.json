@@ -43,6 +43,22 @@
     "accessibleTitle": "Consulta sin cuenta",
     "accessibleDescription": "Explora avisos públicos desde cualquier dispositivo."
   },
+  "how": {
+    "eyebrow": "Protocolo comunitario",
+    "title": "¿Cómo funciona BuscoHuella?",
+    "description": "Tres pasos sencillos para actuar cuando más importa.",
+    "steps": {
+      "publish": { "title": "Publica o avisa", "description": "Comparte los datos clave, una fotografía y una ubicación aproximada." },
+      "community": { "title": "Alerta a tu comunidad", "description": "Las personas cercanas pueden consultar el caso y comunicar información útil." },
+      "reunion": { "title": "Ayuda a reunirlos", "description": "Los avisos y avistamientos organizados facilitan el contacto seguro con la familia." }
+    }
+  },
+  "community": {
+    "eyebrow": "Red colaborativa",
+    "title": "¿Eres clínica veterinaria o protectora?",
+    "description": "Conecta con la comunidad local para ayudar a difundir casos y facilitar reencuentros.",
+    "action": "Colaborar con BuscoHuella"
+  },
   "private": {
     "greetingFallbackName": "Usuario",
     "greeting": {

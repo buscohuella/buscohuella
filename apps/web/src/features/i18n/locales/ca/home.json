@@ -43,6 +43,22 @@
     "accessibleTitle": "Consulta sense compte",
     "accessibleDescription": "Explora avisos públics des de qualsevol dispositiu."
   },
+  "how": {
+    "eyebrow": "Protocol comunitari",
+    "title": "Com funciona BuscoHuella?",
+    "description": "Tres passos senzills per actuar quan més importa.",
+    "steps": {
+      "publish": { "title": "Publica o avisa", "description": "Comparteix les dades clau, una fotografia i una ubicació aproximada." },
+      "community": { "title": "Avisa la teva comunitat", "description": "Les persones properes poden consultar el cas i comunicar informació útil." },
+      "reunion": { "title": "Ajuda a reunir-los", "description": "Els avisos i albiraments organitzats faciliten el contacte segur amb la família." }
+    }
+  },
+  "community": {
+    "eyebrow": "Xarxa col·laborativa",
+    "title": "Ets una clínica veterinària o protectora?",
+    "description": "Connecta amb la comunitat local per ajudar a difondre casos i facilitar retrobaments.",
+    "action": "Col·laborar amb BuscoHuella"
+  },
   "private": {
     "greetingFallbackName": "Usuari",
     "greeting": {

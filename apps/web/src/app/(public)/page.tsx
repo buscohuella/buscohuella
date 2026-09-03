@@ -4,7 +4,6 @@ import {
   LockKeyhole,
   Map,
   MapPin,
-  Search,
   ShieldCheck,
   Users,
 } from 'lucide-react';
@@ -45,17 +44,6 @@ export default async function PublicHomePage() {
   }
 
   const actions = [
-    {
-      id: 'reports',
-      title: translate(
-        'home.actions.reportsTitle',
-      ),
-      description: translate(
-        'home.actions.reportsDescription',
-      ),
-      href: '/explorar-avisos',
-      icon: Search,
-    },
     {
       id: 'map',
       title: translate(
@@ -120,10 +108,6 @@ export default async function PublicHomePage() {
             </div>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">{translate('home.hero.panelDescription')}</p>
             <div className="mt-6 grid gap-3">
-              <Link href="/explorar-avisos" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-primary px-4 font-semibold text-primary-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
-                <span className="flex items-center gap-2"><Search className="size-5" aria-hidden="true" />{translate('home.hero.panelExplore')}</span>
-                <ArrowRight className="size-5" aria-hidden="true" />
-              </Link>
               <Link href="/mapa" className="inline-flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 font-semibold text-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
                 <span className="flex items-center gap-2"><Map className="size-5 text-primary" aria-hidden="true" />{translate('home.hero.panelMap')}</span>
                 <ArrowRight className="size-5" aria-hidden="true" />
@@ -150,7 +134,7 @@ export default async function PublicHomePage() {
           <p className="max-w-md text-sm text-muted-foreground">{translate('home.actions.description')}</p>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
           {actions.map((action) => {
             const Icon = action.icon;
 

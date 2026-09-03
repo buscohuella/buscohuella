@@ -13,7 +13,7 @@
     "visualDescription": "Una forma sencilla de coordinar la búsqueda con las personas que están cerca.",
     "panelEyebrow": "Acceso público",
     "panelTitle": "Explora casos de tu zona",
-    "panelDescription": "Consulta avisos públicos o mira el mapa para orientarte y descubrir qué está pasando cerca de ti.",
+    "panelDescription": "Consulta el mapa para orientarte y descubrir qué está pasando cerca de ti.",
     "panelExplore": "Ver avisos públicos",
     "panelMap": "Abrir el mapa",
     "panelPrivacy": "Puedes consultar la información pública sin crear una cuenta.",
@@ -22,8 +22,8 @@
     "stepThree": "Ayuda a que vuelva a casa"
   },
   "actions": {
-    "title": "Participa a tu manera",
-    "description": "Consulta casos, oriéntate en el mapa o comparte un aviso cuando necesites la ayuda de tu comunidad.",
+    "title": "Elige cómo ayudar",
+    "description": "Oriéntate en el mapa o comparte un aviso cuando necesites la ayuda de tu comunidad.",
     "mapTitle": "Explorar el mapa",
     "mapDescription": "Consulta casos y avistamientos cercanos sin iniciar sesión.",
     "reportsTitle": "Consultar avisos",

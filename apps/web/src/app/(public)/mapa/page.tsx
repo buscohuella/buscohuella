@@ -1,6 +1,7 @@
 import type { Database as ReportDatabase } from '@buscohuella/report-data';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { PageContainer } from '@/components/layout/page-container';
 import { getServerTranslator } from '@/features/i18n/server';
 import {
@@ -70,6 +71,13 @@ export default async function PublicMapPage() {
 
   return (
     <PageContainer className="space-y-7 py-6 sm:py-10">
+      <Breadcrumbs
+        label={translate('common.navigation.publicLabel')}
+        items={[
+          { href: '/', label: translate('noticesHub.breadcrumbs.home') },
+          { label: translate('publicReport.list.mapTitle') },
+        ]}
+      />
       <header>
         <p className="text-sm font-semibold text-primary">
           {translate('publicReport.list.eyebrow')}

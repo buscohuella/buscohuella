@@ -13,7 +13,7 @@
     "visualDescription": "Una manera senzilla de coordinar la cerca amb les persones que són a prop.",
     "panelEyebrow": "Accés públic",
     "panelTitle": "Explora casos de la teva zona",
-    "panelDescription": "Consulta avisos públics o mira el mapa per orientar-te i descobrir què passa a prop teu.",
+    "panelDescription": "Consulta el mapa per orientar-te i descobrir què passa a prop teu.",
     "panelExplore": "Veure avisos públics",
     "panelMap": "Obrir el mapa",
     "panelPrivacy": "Pots consultar la informació pública sense crear un compte.",
@@ -22,8 +22,8 @@
     "stepThree": "Ajuda’l a tornar a casa"
   },
   "actions": {
-    "title": "Participa a la teva manera",
-    "description": "Consulta casos, orienta't al mapa o comparteix un avís quan necessitis l'ajuda de la teva comunitat.",
+    "title": "Tria com ajudar",
+    "description": "Orienta't al mapa o comparteix un avís quan necessitis l'ajuda de la teva comunitat.",
     "mapTitle": "Explora el mapa",
     "mapDescription": "Consulta casos i albiraments propers sense iniciar la sessió.",
     "reportsTitle": "Consulta avisos",

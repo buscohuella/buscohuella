@@ -703,10 +703,10 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               {visibleReports.length} {labels.active.toLowerCase()}
             </span>
           </div>
-          <div className="relative min-h-[24rem] bg-surface-sunken sm:min-h-[28rem]">
+          <div className="relative h-[24rem] bg-surface-sunken sm:h-[28rem]">
             <div
               ref={mapContainerRef}
-              className="min-h-[24rem] sm:min-h-[28rem]"
+              className="h-[24rem] sm:h-[28rem]"
               aria-label={labels.description}
               role="region"
             />

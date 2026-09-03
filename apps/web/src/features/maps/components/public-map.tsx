@@ -306,6 +306,20 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
 
         window.requestAnimationFrame(() => map.resize());
 
+        // Limpia capas de precisión de versiones anteriores que pueden quedar
+        // vivas durante una actualización en caliente del mapa.
+        for (const layerId of [
+          'user-location-accuracy-fill',
+          'user-location-accuracy-line',
+        ]) {
+          if (map.getLayer(layerId)) {
+            map.removeLayer(layerId);
+          }
+        }
+        if (map.getSource('user-location-accuracy')) {
+          map.removeSource('user-location-accuracy');
+        }
+
         const bounds = new mapboxgl.LngLatBounds();
         const approximateReports = locatedReports.filter(
           (report) => report.publicLocationPrecision !== 'EXACT',

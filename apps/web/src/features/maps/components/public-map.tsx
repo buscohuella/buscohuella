@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, CalendarClock, ChevronDown, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, CalendarClock, Cat, ChevronDown, Dog, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -801,19 +801,33 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           >
             <PawPrint className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
             {speciesFilters.map((filter) => (
-              <button
-                key={filter.key}
-                type="button"
-                aria-pressed={speciesFilter === filter.key}
-                onClick={() => setSpeciesFilter(filter.key)}
-                className={`min-h-9 shrink-0 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
-                  speciesFilter === filter.key
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
-                }`}
-              >
-                {filter.label}
-              </button>
+              (() => {
+                const SpeciesIcon = filter.key === 'dog' ? Dog : filter.key === 'cat' ? Cat : PawPrint;
+                const idleColor = filter.key === 'dog'
+                  ? 'border-transparent bg-sky-50 text-sky-800 hover:border-sky-300'
+                  : filter.key === 'cat'
+                    ? 'border-transparent bg-violet-50 text-violet-800 hover:border-violet-300'
+                    : filter.key === 'other'
+                      ? 'border-transparent bg-orange-50 text-orange-800 hover:border-orange-300'
+                      : 'border-transparent bg-primary-soft text-primary hover:border-primary/40';
+
+                return (
+                  <button
+                    key={filter.key}
+                    type="button"
+                    aria-pressed={speciesFilter === filter.key}
+                    onClick={() => setSpeciesFilter(filter.key)}
+                    className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft ${
+                      speciesFilter === filter.key
+                        ? 'border-primary bg-primary text-white'
+                        : idleColor
+                    }`}
+                  >
+                    <SpeciesIcon className="size-3.5" aria-hidden="true" />
+                    {filter.label}
+                  </button>
+                );
+              })()
             ))}
           </div>
           <div className={`${mobileFiltersOpen ? 'flex' : 'hidden'} w-full flex-wrap gap-2 lg:col-start-2 lg:justify-end lg:flex`}>

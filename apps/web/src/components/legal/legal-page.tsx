@@ -1,7 +1,8 @@
 import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { PageContainer } from '@/components/layout/page-container';
 import { getServerTranslator } from '@/features/i18n/server';
-import { ArrowUpRight, CheckCircle2, ClipboardList, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, ClipboardList, Database, Eye, FileCheck2, LockKeyhole, Mail, Scale, ShieldCheck, UsersRound } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
 type LegalDocument = 'privacy' | 'terms' | 'cookies';
@@ -11,6 +12,23 @@ const sections = {
   terms: ['scope', 'service', 'accounts', 'content', 'responsibilities', 'contact'],
   cookies: ['scope', 'necessary', 'preferences', 'thirdParties', 'control', 'contact'],
 } as const;
+
+const sectionIcons: Record<string, LucideIcon> = {
+  scope: FileCheck2,
+  data: Database,
+  purposes: ShieldCheck,
+  sharing: UsersRound,
+  rights: Scale,
+  contact: Mail,
+  service: Eye,
+  accounts: LockKeyhole,
+  content: FileCheck2,
+  responsibilities: ShieldCheck,
+  necessary: LockKeyhole,
+  preferences: Eye,
+  thirdParties: UsersRound,
+  control: Scale,
+};
 
 export async function LegalPage({ document }: { document: LegalDocument }) {
   const { translate } = await getServerTranslator();
@@ -64,13 +82,16 @@ export async function LegalPage({ document }: { document: LegalDocument }) {
             </div>
           </section>
 
-          <div className="mt-10">
-            {sections[document].map((section, index) => (
-              <section id={`legal-${section}`} key={section} className="scroll-mt-24 border-b border-border-soft py-8 first:pt-0 last:border-b-0">
-                <div className="flex items-center gap-3"><span className="grid size-7 place-items-center rounded-md bg-primary-fixed text-xs font-bold text-on-primary-fixed">{String(index + 1).padStart(2, '0')}</span><h2 className="text-xl font-bold tracking-tight">{translate(`${prefix}.sections.${section}.title`)}</h2></div>
-                <p className="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">{translate(`${prefix}.sections.${section}.body`)}</p>
-              </section>
-            ))}
+          <div className="mt-10 space-y-4">
+            {sections[document].map((section, index) => {
+              const SectionIcon = sectionIcons[section] ?? FileCheck2;
+              return (
+                <section id={`legal-${section}`} key={section} className="scroll-mt-24 rounded-2xl bg-[#f6f7ff] p-5 sm:p-6">
+                  <div className="flex items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-fixed text-on-primary-fixed"><span className="text-xs font-bold">{String(index + 1).padStart(2, '0')}</span></span><span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-primary"><SectionIcon className="size-4" aria-hidden="true" /></span><h2 className="text-xl font-bold tracking-tight">{translate(`${prefix}.sections.${section}.title`)}</h2></div>
+                  <p className="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">{translate(`${prefix}.sections.${section}.body`)}</p>
+                </section>
+              );
+            })}
           </div>
         </article>
 

@@ -83,7 +83,7 @@ export default async function PublicHomePage() {
 
           <Link
             href="/registro"
-            className="inline-flex min-h-14 items-center justify-center rounded-full border border-border bg-surface-elevated px-6 text-lg font-semibold text-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+            className="inline-flex min-h-14 items-center justify-center rounded-full border border-border bg-surface-elevated px-6 text-lg font-semibold text-foreground transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-surface-hover hover:shadow-[var(--shadow-sm)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft lg:hidden"
           >
             {translate('home.hero.register')}
           </Link>

@@ -66,16 +66,6 @@
   "status": {
     "loading": "Carregant…"
   },
-  "footer": {
-    "description": "Una manera clara i segura de consultar avisos públics i compartir informació útil sobre animals.",
-    "exploreTitle": "Explorar",
-    "accountTitle": "El teu compte",
-    "contactTitle": "Contacte",
-    "email": "info@buscohuella.com",
-    "location": "Sabadell (Barcelona)",
-    "privacy": "Privacitat i seguretat des del disseny.",
-    "copyright": "BuscoHuella · MVP en desenvolupament"
-  },
   "notFound": {
     "title": "Pàgina no trobada",
     "description": "La pàgina no existeix o no està disponible públicament.",

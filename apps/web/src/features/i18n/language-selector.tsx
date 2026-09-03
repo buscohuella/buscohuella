@@ -3,7 +3,6 @@
 import {
   Check,
   ChevronDown,
-  Languages,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -25,6 +24,28 @@ const shortLabels: Record<AppLocale, string> = {
   es: 'ES',
   ca: 'CA',
 };
+
+const localeFlags: Record<AppLocale, string> = {
+  es: '🇪🇸',
+  ca: '',
+};
+
+function LocaleFlag({ locale }: { locale: AppLocale }) {
+  if (locale === 'ca') {
+    return (
+      <span
+        className="inline-block h-4 w-6 rounded-[3px] bg-[repeating-linear-gradient(to_bottom,#facc15_0_16%,#dc2626_16%_32%)]"
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return (
+    <span className="text-base leading-none" aria-hidden="true">
+      {localeFlags[locale]}
+    </span>
+  );
+}
 
 export function LanguageSelector() {
   const router = useRouter();
@@ -154,12 +175,12 @@ export function LanguageSelector() {
           'disabled:cursor-wait disabled:opacity-65',
         ].join(' ')}
       >
-        <Languages
-          className="size-4 text-primary"
-          aria-hidden="true"
-        />
+        <LocaleFlag locale={locale} />
 
-        <span>
+        <span className="hidden sm:inline">
+          {t(`language.options.${locale}`)}
+        </span>
+        <span className="sm:hidden">
           {shortLabels[locale]}
         </span>
 
@@ -206,22 +227,20 @@ export function LanguageSelector() {
                     'hover:bg-surface',
                     'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft',
                     isSelected
-                      ? 'font-semibold text-primary'
+                      ? 'bg-primary-soft font-semibold text-primary'
                       : 'text-foreground',
                   ].join(' ')}
                 >
-                  <span>
-                    <span className="mr-2 font-semibold">
-                      {
-                        shortLabels[
-                          supportedLocale
-                        ]
-                      }
+                  <span className="flex items-center gap-3">
+                    <LocaleFlag locale={supportedLocale} />
+                    <span>
+                      <span className="block font-semibold">
+                        {t(`language.options.${supportedLocale}`)}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {shortLabels[supportedLocale]}
+                      </span>
                     </span>
-
-                    {t(
-                      `language.options.${supportedLocale}`,
-                    )}
                   </span>
 
                   {isSelected ? (

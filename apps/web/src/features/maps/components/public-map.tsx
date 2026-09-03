@@ -235,6 +235,8 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           return;
         }
 
+        window.requestAnimationFrame(() => map.resize());
+
         const bounds = new mapboxgl.LngLatBounds();
         const approximateReports = locatedReports.filter(
           (report) => report.publicLocationPrecision !== 'EXACT',
@@ -594,10 +596,11 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             type="button"
             onClick={requestUserLocation}
             disabled={locating}
-            className="order-2 inline-flex min-h-10 items-center gap-2 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none"
+            aria-label={labels.useLocation}
+            className="order-2 inline-flex size-10 items-center justify-center gap-2 rounded-full border border-border p-0 text-sm font-semibold text-muted-foreground hover:text-foreground disabled:cursor-wait disabled:opacity-60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft sm:order-none sm:h-auto sm:min-h-10 sm:w-auto sm:px-3"
           >
             <MapPin className="size-4" aria-hidden="true" />
-            <span>{locating ? labels.usingLocation : labels.useLocation}</span>
+            <span className="hidden sm:inline">{locating ? labels.usingLocation : labels.useLocation}</span>
           </button>
           <button
             type="button"
@@ -722,7 +725,8 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
           <div className="relative h-[24rem] bg-surface-sunken sm:h-[28rem]">
             <div
               ref={mapContainerRef}
-              className="h-[24rem] sm:h-[28rem]"
+              className="h-[24rem] w-full sm:h-[28rem]"
+              style={{ height: '24rem', width: '100%' }}
               aria-label={labels.description}
               role="region"
             />

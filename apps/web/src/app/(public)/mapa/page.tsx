@@ -153,6 +153,11 @@ export default async function PublicMapPage() {
           searching: translate('publicReport.list.searching'),
           unknownLocation: translate('publicReport.details.unknown'),
           viewNotice: translate('publicReport.list.viewNotice'),
+          sightingCtaTitle: translate('publicReport.list.sightingCtaTitle'),
+          sightingCtaDescription: translate('publicReport.list.sightingCtaDescription'),
+          sightingCtaAction: translate('publicReport.list.sightingCtaAction'),
+          sightingCtaActionSelected: translate('publicReport.list.sightingCtaActionSelected'),
+          sightingCtaSelectNotice: translate('publicReport.list.sightingCtaSelectNotice'),
         }}
       />
     </PageContainer>

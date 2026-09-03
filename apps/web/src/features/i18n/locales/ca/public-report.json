@@ -88,6 +88,11 @@
     "sortTitle": "Ordenar",
     "recent": "Més recents",
     "viewNotice": "Veure avís",
+    "sightingCtaTitle": "Has vist un animal al carrer?",
+    "sightingCtaDescription": "Selecciona un avís del mapa o de la llista per comunicar on i quan l’has vist.",
+    "sightingCtaAction": "Selecciona un avís",
+    "sightingCtaActionSelected": "Comunica l’avistament",
+    "sightingCtaSelectNotice": "Tria primer un avís actiu per vincular correctament el teu avistament.",
     "resultOne": "avís",
     "resultMany": "avisos"
   },

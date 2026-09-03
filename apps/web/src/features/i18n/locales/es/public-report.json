@@ -88,6 +88,11 @@
     "sortTitle": "Ordenar",
     "recent": "Más recientes",
     "viewNotice": "Ver aviso",
+    "sightingCtaTitle": "¿Has visto un animal en la calle?",
+    "sightingCtaDescription": "Selecciona un aviso del mapa o de la lista para comunicar dónde y cuándo lo viste.",
+    "sightingCtaAction": "Seleccionar un aviso",
+    "sightingCtaActionSelected": "Comunicar avistamiento",
+    "sightingCtaSelectNotice": "Elige primero un aviso activo para vincular correctamente tu avistamiento.",
     "resultOne": "aviso",
     "resultMany": "avisos"
   },

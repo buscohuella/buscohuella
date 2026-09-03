@@ -3,7 +3,7 @@
 import type { Map as MapboxMap, Marker } from 'mapbox-gl';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, CalendarClock, Eye, List, Map as MapIcon, MapPin, PawPrint, Search, SlidersHorizontal, X } from 'lucide-react';
 
 export type PublicMapReport = {
   id: string;
@@ -49,6 +49,11 @@ type PublicMapLabels = {
   searching: string;
   unknownLocation: string;
   viewNotice: string;
+  sightingCtaTitle: string;
+  sightingCtaDescription: string;
+  sightingCtaAction: string;
+  sightingCtaActionSelected: string;
+  sightingCtaSelectNotice: string;
 };
 
 export type PublicMapSpeciesFilter = {
@@ -591,6 +596,10 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
     setLocationError(null);
   }
 
+  const sightingHref = selectedId
+    ? `/reportes/${selectedId}`
+    : '/reportes';
+
   return (
     <section aria-labelledby="public-map-heading" className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
@@ -876,6 +885,35 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
           </div>
         </div>
       </div>
+      <aside
+        aria-labelledby="map-sighting-cta-title"
+        className="flex flex-col gap-4 rounded-2xl border border-primary/25 bg-primary-soft/40 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5"
+      >
+        <div className="flex items-start gap-3">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <Eye className="size-5" aria-hidden="true" />
+          </span>
+          <div>
+            <h2 id="map-sighting-cta-title" className="font-semibold">
+              {labels.sightingCtaTitle}
+            </h2>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+              {selectedId
+                ? labels.sightingCtaDescription
+                : labels.sightingCtaSelectNotice}
+            </p>
+          </div>
+        </div>
+        <Link
+          href={sightingHref}
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+        >
+          {selectedId
+            ? labels.sightingCtaActionSelected
+            : labels.sightingCtaAction}
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
+      </aside>
     </section>
   );
 }

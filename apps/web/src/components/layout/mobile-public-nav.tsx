@@ -16,20 +16,21 @@ export function MobilePublicNav({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-t border-border-soft md:hidden">
+    <div className="relative md:hidden">
       <button
         type="button"
         aria-expanded={open}
         aria-controls="mobile-public-navigation"
         onClick={() => setOpen((current) => !current)}
-        className="flex min-h-12 w-full items-center justify-end gap-2 px-4 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+        title={label}
+        className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
       >
-        {label}
+        <span className="sr-only">{label}</span>
         {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
       </button>
 
       {open ? (
-        <nav id="mobile-public-navigation" className="grid gap-1 border-t border-border-soft px-3 pb-3 pt-2" aria-label={label}>
+        <nav id="mobile-public-navigation" className="absolute right-0 top-full z-50 grid w-56 gap-1 rounded-xl border border-border bg-surface-elevated p-2 shadow-[var(--shadow-lg)]" aria-label={label}>
           <Link href="/mapa" onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-surface hover:text-foreground focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">
             <Map className="size-4" aria-hidden="true" />
             {mapLabel}

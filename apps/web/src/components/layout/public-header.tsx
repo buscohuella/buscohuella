@@ -39,10 +39,10 @@ export async function PublicHeader({
             alt=""
             width={40}
             height={40}
-            className="size-10 object-contain"
+            className="size-8 object-contain sm:size-10"
             priority
           />
-          <span className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+          <span className="text-base font-bold tracking-tight text-foreground sm:text-xl">
             BuscoHuella
           </span>
         </Link>
@@ -133,14 +133,13 @@ export async function PublicHeader({
               </Link>
             </>
           )}
+          <MobilePublicNav
+            label={translate('common.navigation.menu')}
+            mapLabel={translate('common.navigation.map')}
+            reportsLabel={translate('common.navigation.reports')}
+          />
         </div>
       </div>
-
-      <MobilePublicNav
-        label={translate('common.navigation.menu')}
-        mapLabel={translate('common.navigation.map')}
-        reportsLabel={translate('common.navigation.reports')}
-      />
     </header>
   );
 }

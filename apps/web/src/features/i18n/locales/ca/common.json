@@ -24,12 +24,12 @@
     "register": "Crea un compte",
     "registerShort": "Registre",
     "profile": "El meu perfil",
+    "menu": "Menú",
     "openProfile": "Obre el perfil de {name}",
     "private": {
       "home": "Inici",
       "map": "Mapa",
     "profile": "Perfil",
-    "menu": "Menú",
       "reports": "Els meus avisos",
       "publicReports": "Avisos públics",
       "exploreReports": "Explora avisos",

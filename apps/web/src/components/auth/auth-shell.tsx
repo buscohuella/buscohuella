@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { BackToTopButton } from '@/components/layout/back-to-top-button';
+import { Breadcrumbs } from '@/components/layout/breadcrumbs';
 import { MobilePublicNav } from '@/components/layout/mobile-public-nav';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LanguageSelector } from '@/features/i18n/language-selector';
@@ -91,6 +92,13 @@ export function AuthShell({
 
       <section className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:bg-surface/60 lg:px-8 lg:backdrop-blur-sm xl:px-10">
         <div className="w-full max-w-[440px]">
+          <Breadcrumbs
+            label={commonT('navigation.publicLabel')}
+            items={[
+              { href: '/', label: commonT('navigation.home') },
+              { label: title },
+            ]}
+          />
           <div>
             <p className="text-sm font-semibold text-primary">
               {t('shell.secureAccess')}
@@ -108,7 +116,6 @@ export function AuthShell({
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2" aria-label={t('footer.label')}>
               <Link href="/legal/privacidad" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.privacy')}</Link>
               <Link href="/legal/terminos" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.terms')}</Link>
-              <Link href="/legal/cookies" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.cookies')}</Link>
               <Link href="/legal/cookies" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.cookies')}</Link>
               <a href="mailto:info@buscohuella.com" className="underline-offset-4 transition-colors hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft">{t('footer.contact')}</a>
             </nav>

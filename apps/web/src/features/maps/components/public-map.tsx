@@ -56,6 +56,7 @@ type AddressSuggestion = {
   id: string;
   label: string;
   center: [number, number];
+  zoom: number;
 };
 
 const DEFAULT_CENTER: [number, number] = [2.108, 41.548];
@@ -457,7 +458,12 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
             throw new Error('Geocoding request failed');
           }
           return (await response.json()) as {
-            features?: Array<{ id: string; place_name: string; center: [number, number] }>;
+            features?: Array<{
+              id: string;
+              place_name: string;
+              center: [number, number];
+              place_type?: string[];
+            }>;
           };
         })
         .then((data) => {
@@ -466,6 +472,11 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
               id: feature.id,
               label: feature.place_name,
               center: feature.center,
+              zoom: feature.place_type?.some((type) => type === 'address' || type === 'poi')
+                ? 15
+                : feature.place_type?.includes('neighborhood')
+                  ? 14
+                  : 12,
             })),
           );
         })
@@ -531,7 +542,7 @@ export function PublicMap({ labels, reports }: PublicMapProps) {
     setAddressQuery(suggestion.label);
     setAddressSuggestions([]);
     setLocationError(null);
-    mapRef.current?.flyTo({ center: suggestion.center, zoom: 12, essential: true });
+    mapRef.current?.flyTo({ center: suggestion.center, zoom: suggestion.zoom, essential: true });
   }
 
   return (

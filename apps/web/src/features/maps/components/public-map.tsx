@@ -455,7 +455,7 @@ export function PublicMap({ labels, reports, speciesFilters }: PublicMapProps) {
       originMarkerRef.current?.remove();
       originMarkerRef.current = new mapboxgl.Marker({
         element: createOriginMarkerElement(),
-        anchor: 'bottom',
+        anchor: 'center',
       })
         .setLngLat(userLocation)
         .addTo(map);

@@ -14,6 +14,8 @@ R1 consolida la web ciudadana existente para que sea pequeña, segura y demostra
 - [Gaps y backlog](known-gaps.md)
 - [Criterios Beta](beta-checklist.md)
 - [Estrategia de pruebas](testing-strategy.md)
+- [Drift de migraciones `public_profiles`](migrations-drift-public-profiles.md)
+- [Checklist de validación `public_profiles`](public-profiles-validation.md)
 - [Principios de producto, ética, identidad y diseño](../product/principles.md)
 
 ## Alcance y autoridad

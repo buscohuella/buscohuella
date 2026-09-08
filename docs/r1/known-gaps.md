@@ -19,26 +19,26 @@ Corte: 8 de septiembre de 2026. Todos los elementos técnicos siguen abiertos sa
 
 | ID | Prioridad | Trabajo y criterio de cierre |
 | --- | --- | --- |
-| R1-SEC-001 | P0 | public_profiles seguro, campos/visibilidad probados y lectura legítima conservada |
-| R1-SEC-002 | P0 | RPC/helpers/triggers: privilegios mínimos por firma, PUBLIC incluido, sin romper policies |
-| R1-SEC-003 | P0 | Grants mínimos tablas/vistas, matriz antes/después y regresión A/B |
-| R1-SEC-004 | P0 | Leaked password protection verificada o bloqueo documentado |
-| R1-DATA-001 | P0 | Migraciones reconciliadas y reproducción en local/staging |
-| R1-TYPES-001 | P0 | Tipos pet-data/report-data regenerados, consumidores reconciliados y typecheck |
-| R1-QA-001 | P0 | Tests anon/A-B/Storage/RPC y ausencia de datos privados en proyecciones públicas |
-| R1-QA-002 | P0 | E2E de auth → mascota/foto → reporte → mapa → avistamiento → notificación → resolución |
-| R1-QA-003 | P0 | Auditoría dependencias y secret scanning formal, incluido historial, con hallazgos gestionados |
-| R1-SEO-001 a 007 | P0 | robots, sitemap, noindex, metadata, OG/Twitter, canonical/alternates ES-CA y decisión de indexación pública |
-| R1-I18N-001 | P0 | Test falla ante claves ES/CA faltantes o sobrantes; comprobar interpolaciones y textos mezclados |
-| R1-A11Y-001 | P0 | Labels, foco, teclado, contraste, alt, formularios y mapa probados |
-| R1-PROD-001 | P0 | Eliminar cuenta implementado o decisión temporal explícita y operativa antes de Beta pública |
-| R1-PROD-002 | P0 | FOUND_ANIMAL completo y probado o exclusión Beta explícita |
-| R1-PROD-003 | P1 | Estados vacíos/error/sesión expirada comprensibles en flujos principales |
-| R1-OPS-001 | P0 | Runbook, testers, canal de bugs, responsables y criterio de bloqueo |
-| R1-DATA-002 | P0 | Cleanup Storage de reportes/mascotas sin éxito silencioso ni pérdida de metadatos para reintentar |
-| R1-INT-001 | P0 | Un evento por transición efectiva; cero en no-op; notificaciones sin duplicados |
+| [R1-SEC-001](https://github.com/buscohuella/buscohuella/issues/2) | P0 | public_profiles seguro, campos/visibilidad probados y lectura legítima conservada |
+| [R1-SEC-002](https://github.com/buscohuella/buscohuella/issues/3) | P0 | RPC/helpers/triggers: privilegios mínimos por firma, PUBLIC incluido, sin romper policies |
+| [R1-SEC-003](https://github.com/buscohuella/buscohuella/issues/4) | P0 | Grants mínimos tablas/vistas, matriz antes/después y regresión A/B |
+| [R1-SEC-004](https://github.com/buscohuella/buscohuella/issues/5) | P0 | Leaked password protection verificada o bloqueo documentado |
+| [R1-DATA-001](https://github.com/buscohuella/buscohuella/issues/6) | P0 | Migraciones reconciliadas y reproducción en local/staging |
+| [R1-TYPES-001](https://github.com/buscohuella/buscohuella/issues/7) | P0 | Tipos pet-data/report-data regenerados, consumidores reconciliados y typecheck |
+| [R1-QA-001](https://github.com/buscohuella/buscohuella/issues/8) | P0 | Tests anon/A-B/Storage/RPC y ausencia de datos privados en proyecciones públicas |
+| [R1-QA-002](https://github.com/buscohuella/buscohuella/issues/9) | P0 | E2E de auth → mascota/foto → reporte → mapa → avistamiento → notificación → resolución |
+| [R1-QA-003](https://github.com/buscohuella/buscohuella/issues/10) | P0 | Auditoría dependencias y secret scanning formal, incluido historial, con hallazgos gestionados |
+| [R1-SEO-001 a 007](https://github.com/buscohuella/buscohuella/issues/11) | P0 | robots, sitemap, noindex, metadata, OG/Twitter, canonical/alternates ES-CA y decisión de indexación pública |
+| [R1-I18N-001](https://github.com/buscohuella/buscohuella/issues/12) | P0 | Test falla ante claves ES/CA faltantes o sobrantes; comprobar interpolaciones y textos mezclados |
+| [R1-A11Y-001](https://github.com/buscohuella/buscohuella/issues/13) | P0 | Labels, foco, teclado, contraste, alt, formularios y mapa probados |
+| [R1-PROD-001](https://github.com/buscohuella/buscohuella/issues/14) | P0 | Eliminar cuenta implementado o decisión temporal explícita y operativa antes de Beta pública |
+| [R1-PROD-002](https://github.com/buscohuella/buscohuella/issues/15) | P0 | FOUND_ANIMAL completo y probado o exclusión Beta explícita |
+| [R1-PROD-003](https://github.com/buscohuella/buscohuella/issues/16) | P1 | Estados vacíos/error/sesión expirada comprensibles en flujos principales |
+| [R1-OPS-001](https://github.com/buscohuella/buscohuella/issues/17) | P0 | Runbook, testers, canal de bugs, responsables y criterio de bloqueo |
+| [R1-DATA-002](https://github.com/buscohuella/buscohuella/issues/18) | P0 | Cleanup Storage de reportes/mascotas sin éxito silencioso ni pérdida de metadatos para reintentar |
+| [R1-INT-001](https://github.com/buscohuella/buscohuella/issues/19) | P0 | Un evento por transición efectiva; cero en no-op; notificaciones sin duplicados |
 
-Los IDs DATA-002 e INT-001 agrupan los riesgos de borrado e integridad ya registrados en la auditoría Notion; no añaden funcionalidades futuras. Los enlaces de issues se incorporan aquí al crearlos.
+Los IDs DATA-002 e INT-001 agrupan los riesgos de borrado e integridad ya registrados en la auditoría Notion; no añaden funcionalidades futuras. Los enlaces anteriores apuntan a los 18 issues abiertos; su creación no cierra los riesgos.
 
 ## Evidencias y límites
 

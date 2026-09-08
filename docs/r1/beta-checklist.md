@@ -5,10 +5,10 @@ Estado inicial: sin validación R1 ejecutada. Cada casilla requiere evidencia, f
 ## Preparación R1.0
 
 - [ ] PR documental con los siete archivos revisado.
-- [ ] Archivo accidental de less eliminado en commit de limpieza.
-- [ ] Issues enlazados, dependencias y prioridades visibles.
-- [ ] Notion y Drive enlazan el estado real de la entrega.
-- [ ] 11 commits locales preservados y excluidos del PR documental.
+- [x] Archivo accidental de less eliminado en commit de limpieza eb52041.
+- [x] Issues enlazados, dependencias y prioridades visibles: 18 issues, #2–#19.
+- [x] Notion y Drive enlazan el PR documental #1 y las guías versionadas.
+- [x] 11 commits locales preservados y excluidos del PR documental desde ce304aa.
 
 ## Beta privada pequeña
 

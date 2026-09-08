@@ -2,6 +2,23 @@
 
 Estado: plan. Las pruebas propuestas no han sido ejecutadas por crear este documento.
 
+## Resultado de preparación R1.0
+
+Validación local del 8 de septiembre de 2026 sobre código base ce304aa, con cambios solo documentales y eliminación de la ayuda accidental de less:
+
+| Comprobación | Resultado |
+| --- | --- |
+| Node 22.12.0 / pnpm 10.32.1; install --frozen-lockfile | Correcto; lockfile sin cambios |
+| pnpm lint | Correcto |
+| Build de los cuatro paquetes internos | Correcto |
+| pnpm typecheck | Correcto |
+| pnpm test | Correcto; suites existentes de paquetes |
+| pnpm build | Correcto; web con placeholders Supabase equivalentes a CI |
+| Siete Markdown, enlaces relativos y git diff --check | Correcto |
+| RLS/anon/A-B/Storage/RPC live, E2E y accesibilidad | Pendientes; no ejecutados en R1.0 |
+
+En Windows se usó pnpm.cmd porque el shim PowerShell falla al cargar módulos del entorno. pnpm informó de scripts de instalación omitidos para sharp/unrs-resolver; no se habilitaron ni cambió configuración, y el build terminó correctamente. CI remoto se consulta en el PR: estos resultados son locales.
+
 ## Base disponible
 
 `package.json` expone `pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm build`. CI instala con lockfile, ejecuta lint, construye los cuatro paquetes internos, typecheck, tests y build web. Hay tests Node en paquetes de dominio/datos; apps/web no declara script test propio.

@@ -2,6 +2,8 @@
 
 Estado: preparación documental; no acredita una Beta validada. Corte: 8 de septiembre de 2026.
 
+Entrega: [PR documental #1](https://github.com/buscohuella/buscohuella/pull/1), abierto como borrador para revisión. [18 issues](known-gaps.md) preparados. Validación local de la base: lint, typecheck, tests y build correctos; no equivale a pruebas R1 de seguridad ni despliegue.
+
 R1 consolida la web ciudadana existente para que sea pequeña, segura y demostrable. Repositorio activo: [buscohuella/buscohuella](https://github.com/buscohuella/buscohuella).
 
 ## Índice

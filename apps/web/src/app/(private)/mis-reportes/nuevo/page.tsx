@@ -56,7 +56,16 @@ export default async function NewReportPage() {
         </p>
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <section
+        aria-labelledby="available-report-types"
+        className="space-y-3"
+      >
+        <h2
+          id="available-report-types"
+          className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+        >
+          {translate('reports.create.availableTitle')}
+        </h2>
         <AvailableType
           href="/mis-reportes/nuevo/perdida"
           icon={<TriangleAlert />}
@@ -69,60 +78,82 @@ export default async function NewReportPage() {
           action={translate(
             'reports.create.lostAction',
           )}
+          flow={translate(
+            'reports.create.lostFlow',
+          )}
         />
+      </section>
 
-        <UnavailableType
-          icon={<Search />}
-          title={translate(
-            'reports.create.foundTitle',
-          )}
-          description={translate(
-            'reports.create.foundDescription',
-          )}
-          status={translate(
-            'reports.create.comingSoon',
-          )}
-        />
+      <section
+        aria-labelledby="upcoming-report-types"
+        className="space-y-3"
+      >
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2
+            id="upcoming-report-types"
+            className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+          >
+            {translate('reports.create.upcomingTitle')}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {translate('reports.create.upcomingDescription')}
+          </p>
+        </div>
 
-        <UnavailableType
-          icon={<Eye />}
-          title={translate(
-            'reports.create.sightingTitle',
-          )}
-          description={translate(
-            'reports.create.sightingDescription',
-          )}
-          status={translate(
-            'reports.create.comingSoon',
-          )}
-        />
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <UnavailableType
+            icon={<Search />}
+            title={translate(
+              'reports.create.foundTitle',
+            )}
+            description={translate(
+              'reports.create.foundDescription',
+            )}
+            status={translate(
+              'reports.create.comingSoon',
+            )}
+          />
 
-        <UnavailableType
-          icon={<AlertTriangle />}
-          title={translate(
-            'reports.create.incidentTitle',
-          )}
-          description={translate(
-            'reports.create.incidentDescription',
-          )}
-          status={translate(
-            'reports.create.comingSoon',
-          )}
-        />
+          <UnavailableType
+            icon={<Eye />}
+            title={translate(
+              'reports.create.sightingTitle',
+            )}
+            description={translate(
+              'reports.create.sightingDescription',
+            )}
+            status={translate(
+              'reports.create.comingSoon',
+            )}
+          />
 
-        <UnavailableType
-          icon={<Siren />}
-          title={translate(
-            'reports.create.sosTitle',
-          )}
-          description={translate(
-            'reports.create.sosDescription',
-          )}
-          status={translate(
-            'reports.create.comingSoon',
-          )}
-        />
-      </div>
+          <UnavailableType
+            icon={<AlertTriangle />}
+            title={translate(
+              'reports.create.incidentTitle',
+            )}
+            description={translate(
+              'reports.create.incidentDescription',
+            )}
+            status={translate(
+              'reports.create.comingSoon',
+            )}
+          />
+
+          <UnavailableType
+            icon={<Siren />}
+            title={translate(
+              'reports.create.sosTitle',
+            )}
+            description={translate(
+              'reports.create.sosDescription',
+            )}
+            status={translate(
+              'reports.create.comingSoon',
+            )}
+          />
+        </div>
+      </section>
     </PageContainer>
   );
 }
@@ -133,31 +164,36 @@ function AvailableType({
   title,
   description,
   action,
+  flow,
 }: {
   href: string;
   icon: React.ReactNode;
   title: string;
   description: string;
   action: string;
+  flow: string;
 }) {
   return (
     <Card
       elevated
-      className="h-full transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-md)]"
+      className="h-full border-primary/35 bg-primary-soft/35 shadow-[var(--shadow-md)] transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-[var(--shadow-lg)]"
     >
-      <CardHeader>
-        <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-danger/10 text-danger [&>svg]:size-6">
+      <CardHeader className="p-6 sm:p-8">
+        <span className="mb-3 flex size-14 items-center justify-center rounded-2xl bg-danger-soft text-danger [&>svg]:size-7">
           {icon}
         </span>
         <CardTitle>{title}</CardTitle>
         <CardDescription>
           {description}
         </CardDescription>
+        <p className="pt-3 text-sm font-medium text-primary">
+          {flow}
+        </p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-6 pb-6 sm:px-8 sm:pb-8">
         <Link
           href={href}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
+          className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground shadow-[var(--shadow-sm)] hover:bg-primary-hover hover:shadow-[var(--shadow-md)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-soft"
         >
           {action}
           <ArrowRight
@@ -182,17 +218,20 @@ function UnavailableType({
   status: string;
 }) {
   return (
-    <Card className="h-full opacity-80">
-      <CardHeader>
+    <Card
+      className="h-full border-dashed bg-surface/70"
+      aria-disabled="true"
+    >
+      <CardHeader className="p-5">
         <div className="flex items-start justify-between gap-3">
-          <span className="flex size-12 items-center justify-center rounded-xl bg-surface text-muted-foreground [&>svg]:size-6">
+          <span className="flex size-11 items-center justify-center rounded-xl bg-surface text-muted-foreground [&>svg]:size-5">
             {icon}
           </span>
-          <span className="rounded-full bg-surface px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+          <span className="rounded-full border border-border-soft bg-surface px-2.5 py-1 text-xs font-semibold text-muted-foreground">
             {status}
           </span>
         </div>
-        <CardTitle className="pt-2">
+        <CardTitle className="pt-2 text-base">
           {title}
         </CardTitle>
         <CardDescription>

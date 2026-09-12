@@ -213,9 +213,11 @@
     "deleteDialogDescription": "Aquesta acció eliminarà definitivament la fitxa i les seves fotografies. No es pot desfer.",
     "deleteConfirm": "Sí, elimina la mascota",
     "deleteOnlyArchived": "Només es poden eliminar mascotes arxivades.",
-    "deleteHasReports": "Primer elimina o arxiva els avisos associats a aquesta mascota.",
+    "deleteHasReports": "Aquesta mascota té avisos o historial associat. Resol primer aquestes dependències abans d'eliminar-la.",
     "deleteSuccess": "La mascota s'ha eliminat definitivament.",
-    "deleteError": "No s'ha pogut eliminar la mascota. Torna-ho a provar."
+    "deleteError": "No s'ha pogut eliminar la mascota. No s'ha confirmat cap eliminació. Torna-ho a provar.",
+    "deleteStorageError": "No s'ha eliminat la mascota perquè no hem pogut netejar-ne les fotografies. La fitxa i les seves dades es conserven. Torna-ho a provar.",
+    "deleteDatabaseAfterStorageError": "Les fotografies s'han netejat, però no s'ha pogut completar l'eliminació de la fitxa. La mascota es conserva i l'error s'ha registrat. Torna-ho a provar."
   },
   "photos": {
     "cancelEditing": "Cancel·la l'edició",

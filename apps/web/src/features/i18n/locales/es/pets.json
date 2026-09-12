@@ -213,9 +213,11 @@
     ,"deleteDialogDescription": "Esta acción eliminará definitivamente la ficha y sus fotografías. No se puede deshacer.",
     "deleteConfirm": "Sí, eliminar mascota"
     ,"deleteOnlyArchived": "Solo se pueden eliminar mascotas archivadas."
-    ,"deleteHasReports": "Primero elimina o archiva los avisos asociados a esta mascota."
+    ,"deleteHasReports": "Esta mascota tiene avisos o historial asociado. Resuelve primero esas dependencias antes de eliminarla."
     ,"deleteSuccess": "La mascota se ha eliminado definitivamente."
-    ,"deleteError": "No se ha podido eliminar la mascota. Inténtalo de nuevo."
+    ,"deleteError": "No se ha podido eliminar la mascota. No se ha confirmado ningún borrado. Inténtalo de nuevo."
+    ,"deleteStorageError": "No se ha eliminado la mascota porque no pudimos limpiar sus fotografías. La ficha y sus datos se conservan. Inténtalo de nuevo."
+    ,"deleteDatabaseAfterStorageError": "Las fotografías se limpiaron, pero no se pudo completar el borrado de la ficha. La mascota sigue conservada y el fallo se ha registrado. Inténtalo de nuevo."
   },
   "photos": {
     "cancelEditing": "Cancelar edición",

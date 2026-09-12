@@ -3,8 +3,8 @@
 > **Documento:** `PET_BUSINESS_RULES.md`  
 > **Área:** Dominio de producto  
 > **Estado:** Propuesta para FP-004  
-> **Versión:** 1.0  
-> **Última actualización:** Agosto de 2026  
+> **Versión:** 1.1
+> **Última actualización:** Septiembre de 2026
 > **Ámbito:** MVP web responsive  
 > **Documento principal relacionado:** `PET_DOMAIN.md`
 
@@ -487,6 +487,59 @@ Al eliminar físicamente una mascota elegible, sus fotografías deben tratarse m
 ### BR-PET-DELETE-005 — Auditoría
 
 El archivo, restauración y eliminación deben registrarse.
+
+### BR-PET-DELETE-006 — Orden seguro entre Storage y base de datos
+
+El borrado físico de una mascota elegible debe ejecutarse en este orden:
+
+1. Autenticar al actor y comprobar que es el responsable principal.
+2. Comprobar que la mascota está archivada y cumple todas las condiciones de
+   eliminación.
+3. Comprobar que no existen reportes ni otras dependencias históricas que deban
+   conservarse.
+4. Obtener las rutas de todas las filas `pet_photos` asociadas.
+5. Eliminar primero los objetos del bucket privado `pet-photos`.
+6. Solo después de una limpieza de Storage correcta, eliminar la mascota en
+   PostgreSQL. La FK `pet_photos.pet_id ON DELETE CASCADE` elimina sus metadatos
+   dentro de la misma operación de base de datos.
+
+No debe utilizarse `service_role` para el flujo del propietario. La autorización
+de Storage y PostgreSQL se mantiene mediante su sesión y las políticas RLS.
+
+### BR-PET-DELETE-007 — Fallo de Storage
+
+Si Storage devuelve un error:
+
+- No se ejecuta el borrado de PostgreSQL.
+- La mascota y las filas `pet_photos` se conservan.
+- Se devuelve un error controlado que no afirma que la mascota fue eliminada.
+- El fallo se registra sin incluir rutas, nombres ni otros datos personales.
+- La operación completa puede reintentarse.
+
+### BR-PET-DELETE-008 — Fallo de DB después de Storage
+
+Supabase Storage y PostgreSQL no comparten una transacción. Si el borrado de la
+mascota falla después de limpiar Storage:
+
+- La mascota y las filas `pet_photos` permanecen en PostgreSQL por la atomicidad
+  de la operación de base de datos.
+- Las fotografías ya eliminadas no se restauran ni se oculta el estado parcial.
+- Se devuelve un error específico y se registra el evento
+  `pet.delete_archived.database_failed_after_storage_cleanup`.
+- El reintento vuelve a ejecutar Storage de forma idempotente para las mismas
+  rutas y después repite el borrado de DB.
+
+Esta recuperación prioriza no dejar blobs sin referencia y no eliminar historial
+silenciosamente. Durante el estado parcial puede haber metadatos que apunten a
+objetos ya eliminados; permanecen asociados a una mascota existente y se eliminan
+en el reintento exitoso.
+
+### BR-PET-DELETE-009 — Sin atomicidad distribuida
+
+No debe asumirse atomicidad entre Supabase Storage y PostgreSQL. Una respuesta de
+éxito solo puede emitirse después de confirmar tanto la limpieza de Storage como
+el borrado de la fila `pets`. Los fallos parciales deben ser observables y nunca
+convertirse en éxito silencioso.
 
 ---
 

@@ -340,8 +340,10 @@ a {
   transition-timing-function: var(--ease-standard);
 }
 
-a {
-  color: inherit;
+@layer base {
+  a {
+    color: inherit;
+  }
 }
 
 img,

@@ -123,7 +123,7 @@ Formulario
 → validación local
 → supabase.auth.signUp()
 → envío de correo
-→ confirmación mediante token_hash
+→ confirmación mediante code PKCE o token_hash
 → sesión autenticada
 → /inicio
 ```
@@ -146,20 +146,25 @@ Route Handler:
 apps/web/src/app/auth/confirm/route.ts
 ```
 
-La plantilla de correo utiliza:
+La plantilla activa puede utilizar el enlace estándar de Supabase:
 
 ```html
-<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">
+<a href="{{ .ConfirmationURL }}">
   Confirmar correo electrónico
 </a>
 ```
 
-El servidor:
+Después de verificar el correo, Supabase redirige al `emailRedirectTo` indicado
+en `signUp` y entrega un `code` PKCE. El servidor:
 
-1. recibe `token_hash`;
-2. ejecuta `verifyOtp`;
+1. recibe `code`;
+2. ejecuta `exchangeCodeForSession`;
 3. establece la sesión mediante cookies;
 4. redirige a `/inicio?account_confirmed=1`.
+
+La ruta mantiene compatibilidad con plantillas personalizadas que envíen
+`token_hash + type`; en ese caso ejecuta `verifyOtp`. No es necesario modificar
+la plantilla activa en el Dashboard para que el registro funcione.
 
 ## 8. Inicio de sesión
 

@@ -9,6 +9,7 @@ import { Field } from '@/components/ui/field';
 import {
   FormErrorSummary,
   type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
 } from '@/components/ui/form-error-summary';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -71,6 +72,10 @@ export function ProfileForm({
 
   const hasFieldErrors =
     formErrors.length > 0;
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    hasFieldErrors,
+  );
 
   return (
     <div className="space-y-7">
@@ -90,6 +95,7 @@ export function ProfileForm({
 
       <FormErrorSummary
         errors={formErrors}
+        focusKey={errorSummaryFocusKey}
         title={
           state.message ??
           t('validation.review')

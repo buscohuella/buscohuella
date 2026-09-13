@@ -3,18 +3,26 @@
 import type { Pet, PetBreed, PetSpecies } from '@buscohuella/pet-domain';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
-import { FormErrorSummary, type FormErrorItem } from '@/components/ui/form-error-summary';
+import {
+  FormErrorSummary,
+  type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
+} from '@/components/ui/form-error-summary';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 
+import {
+  hasSubmittedSpecies,
+  resolvePetFormSpeciesId,
+} from '../lib/resolve-pet-form-species';
 import type { PetActionState } from '../types/pet-action-state';
 import { BreedFields } from './breed-fields';
 
@@ -30,10 +38,20 @@ export function PetFormFields({
   pet?: Pet;
 }) {
   const { t } = useTranslations('pets');
-  const initialSpeciesId = pet?.speciesId ?? null;
-  const [speciesId, setSpeciesId] = useState<number | null>(initialSpeciesId);
+  const actionHasSubmittedSpecies = hasSubmittedSpecies(state);
+  const initialSpeciesId = actionHasSubmittedSpecies
+    ? state.speciesId ?? null
+    : pet?.speciesId ?? null;
+  const [localSpeciesId, setLocalSpeciesId] = useState<number | null>(initialSpeciesId);
   const [birthDate, setBirthDate] = useState(pet?.birthDate ?? '');
-  const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const actionStateAtLocalSelectionRef = useRef(state);
+  const speciesId = resolvePetFormSpeciesId({
+    actionState: state,
+    // This ref intentionally snapshots which action result the local choice followed.
+    // eslint-disable-next-line react-hooks/refs
+    actionStateAtLocalSelection: actionStateAtLocalSelectionRef.current,
+    localSpeciesId,
+  });
   const isOriginalSpecies = speciesId === initialSpeciesId;
   const cancelHref = pet ? `/mis-mascotas/${pet.id}` : '/mis-mascotas';
 
@@ -44,24 +62,14 @@ export function PetFormFields({
       message,
     }),
   );
-
-  useEffect(() => {
-    if (errors.length === 0) return;
-
-    const frame = window.requestAnimationFrame(() => {
-      errorSummaryRef.current?.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-        block: 'start',
-      });
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, [errors.length, state.message]);
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    errors.length > 0,
+  );
 
   return (
-    <form action={action} noValidate className="space-y-8">
+    <form action={action} noValidate className="space-y-8"
+      onReset={(event) => event.preventDefault()}>
       {pet ? <input type="hidden" name="petId" value={pet.id} /> : null}
 
       {!errors.length && state.message ? (
@@ -69,12 +77,11 @@ export function PetFormFields({
           {state.message}
         </Alert>
       ) : null}
-      <div ref={errorSummaryRef} tabIndex={-1}>
-        <FormErrorSummary
-          errors={errors}
-          title={state.message ?? t('validation.review')}
-        />
-      </div>
+      <FormErrorSummary
+        errors={errors}
+        focusKey={errorSummaryFocusKey}
+        title={state.message ?? t('validation.review')}
+      />
 
       <section className="space-y-5">
         <div>
@@ -89,8 +96,13 @@ export function PetFormFields({
             error={state.fieldErrors?.speciesId} errorId="pet-species-error" required>
             <Select id="pet-species" name="speciesId" value={speciesId ?? ''}
               required hasError={Boolean(state.fieldErrors?.speciesId)}
-              onChange={(event) => setSpeciesId(event.target.value ? Number(event.target.value) : null)}>
-              <option value="" disabled>{t('form.speciesPlaceholder')}</option>
+              onChange={(event) => {
+                actionStateAtLocalSelectionRef.current = state;
+                setLocalSpeciesId(event.target.value ? Number(event.target.value) : null);
+              }}>
+              <option value="" disabled={speciesId !== null}>
+  {t('form.speciesPlaceholder')}
+</option>
               {species.map((item) => (
                 <option key={item.id} value={item.id}>
                   {t(`form.speciesOptions.${item.code}`)}

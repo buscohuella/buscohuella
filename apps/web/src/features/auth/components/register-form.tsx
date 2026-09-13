@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormErrorSummary,
   type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
 } from '@/components/ui/form-error-summary';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 
@@ -29,7 +30,7 @@ export function RegisterForm({
   next?: string;
 }) {
   const { t } = useTranslations('auth');
-  const [state, formAction] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     registerAction,
     initialAuthActionState,
   );
@@ -81,6 +82,10 @@ export function RegisterForm({
   }
 
   const hasFieldErrors = formErrors.length > 0;
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    hasFieldErrors,
+  );
 
   return (
     <form action={formAction} noValidate className="space-y-5 lg:space-y-4">
@@ -95,6 +100,7 @@ export function RegisterForm({
 
       <FormErrorSummary
         errors={formErrors}
+        focusKey={errorSummaryFocusKey}
         title={
           state.message ??
           t('validation.review')

@@ -17,6 +17,7 @@ import { useTranslations } from '@/features/i18n/i18n-provider';
 import {
   FormErrorSummary,
   type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
 } from '@/components/ui/form-error-summary';
 
 import { recoverPasswordAction } from '../actions/recover-password';
@@ -137,9 +138,13 @@ function RecoverySuccessState({
 
 export function PasswordRecoveryForm() {
   const { t } = useTranslations('auth');
-  const [state, formAction] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     recoverPasswordAction,
     initialAuthActionState,
+  );
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    Boolean(state.fieldErrors?.email),
   );
 
   if (state.status === 'success') {
@@ -159,7 +164,6 @@ export function PasswordRecoveryForm() {
       message: state.fieldErrors.email,
     });
   }
-
   return (
     <form action={formAction} className="space-y-5">
       {formErrors.length === 0 ? (
@@ -168,6 +172,7 @@ export function PasswordRecoveryForm() {
 
       <FormErrorSummary
         errors={formErrors}
+        focusKey={errorSummaryFocusKey}
         title={
           state.message ??
           t('validation.review')

@@ -7,6 +7,7 @@ import { useActionState } from 'react';
 import {
   FormErrorSummary,
   type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
 } from '@/components/ui/form-error-summary';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 
@@ -23,7 +24,7 @@ export function LoginForm({
   next?: string;
 }) {
   const { t } = useTranslations('auth');
-  const [state, formAction] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     loginAction,
     initialAuthActionState,
   );
@@ -45,6 +46,10 @@ if (state.fieldErrors?.password) {
     message: state.fieldErrors.password,
   });
 }
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    formErrors.length > 0,
+  );
 
   return (
     <form action={formAction} noValidate className="space-y-5">
@@ -54,7 +59,7 @@ if (state.fieldErrors?.password) {
         value={next ?? ''}
       />
       <ActionMessage state={state} />
-      <FormErrorSummary errors={formErrors} />
+      <FormErrorSummary errors={formErrors} focusKey={errorSummaryFocusKey} />
 
       <FormField
         id="email"

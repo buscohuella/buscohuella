@@ -9,6 +9,7 @@ import {
 import {
   FormErrorSummary,
   type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
 } from '@/components/ui/form-error-summary';
 
 import { updatePasswordAction } from '../actions/update-password';
@@ -20,7 +21,7 @@ import { PasswordRequirements } from './password-requirements';
 import { SubmitButton } from './submit-button';
 
 export function UpdatePasswordForm() {
-  const [state, formAction] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     updatePasswordAction,
     initialAuthActionState,
   );
@@ -46,6 +47,10 @@ export function UpdatePasswordForm() {
         state.fieldErrors.confirmPassword,
     });
   }
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    formErrors.length > 0,
+  );
 
   return (
     <form action={formAction} className="space-y-5">
@@ -55,6 +60,7 @@ export function UpdatePasswordForm() {
 
       <FormErrorSummary
         errors={formErrors}
+        focusKey={errorSummaryFocusKey}
         title={
           state.message ??
           'Revisa los requisitos de la nueva contraseña.'

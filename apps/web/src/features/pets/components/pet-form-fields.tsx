@@ -3,13 +3,17 @@
 import type { Pet, PetBreed, PetSpecies } from '@buscohuella/pet-domain';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
-import { FormErrorSummary, type FormErrorItem } from '@/components/ui/form-error-summary';
+import {
+  FormErrorSummary,
+  type FormErrorItem,
+  useInvalidFormSubmissionFocusKey,
+} from '@/components/ui/form-error-summary';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -33,7 +37,6 @@ export function PetFormFields({
   const initialSpeciesId = pet?.speciesId ?? null;
   const [speciesId, setSpeciesId] = useState<number | null>(initialSpeciesId);
   const [birthDate, setBirthDate] = useState(pet?.birthDate ?? '');
-  const errorSummaryRef = useRef<HTMLDivElement>(null);
   const isOriginalSpecies = speciesId === initialSpeciesId;
   const cancelHref = pet ? `/mis-mascotas/${pet.id}` : '/mis-mascotas';
 
@@ -44,21 +47,10 @@ export function PetFormFields({
       message,
     }),
   );
-
-  useEffect(() => {
-    if (errors.length === 0) return;
-
-    const frame = window.requestAnimationFrame(() => {
-      errorSummaryRef.current?.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-        block: 'start',
-      });
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, [errors.length, state.message]);
+  const errorSummaryFocusKey = useInvalidFormSubmissionFocusKey(
+    isPending,
+    errors.length > 0,
+  );
 
   return (
     <form action={action} noValidate className="space-y-8">
@@ -69,12 +61,11 @@ export function PetFormFields({
           {state.message}
         </Alert>
       ) : null}
-      <div ref={errorSummaryRef} tabIndex={-1}>
-        <FormErrorSummary
-          errors={errors}
-          title={state.message ?? t('validation.review')}
-        />
-      </div>
+      <FormErrorSummary
+        errors={errors}
+        focusKey={errorSummaryFocusKey}
+        title={state.message ?? t('validation.review')}
+      />
 
       <section className="space-y-5">
         <div>

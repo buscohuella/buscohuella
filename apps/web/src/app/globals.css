@@ -9,6 +9,8 @@
 :root,
 [data-theme="light"] {
   color-scheme: light;
+  /* Topbar (4.5rem) plus enough room for a field label above its control. */
+  --sticky-header-scroll-offset: 7rem;
 
   /* Brand and actions */
   --primary: #047857;
@@ -255,6 +257,7 @@
 
 html {
   min-height: 100%;
+  scroll-padding-top: var(--sticky-header-scroll-offset);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -44,12 +44,13 @@ export const PET_SPECIES_CATEGORIES = [
 
 export const PET_LIMITS = {
   nameMinLength: 1,
-  nameMaxLength: 80,
+  nameMaxLength: 30,
   breedMaxLength: 120,
   colorMaxLength: 80,
   secondaryColorsMaxCount: 8,
   descriptionMaxLength: 1_000,
   distinctiveFeaturesMaxLength: 1_000,
+  weightMaxKg: 200,
   identificationNotesMaxLength: 1_000,
   privateNotesMaxLength: 2_000,
   microchipMinLength: 8,

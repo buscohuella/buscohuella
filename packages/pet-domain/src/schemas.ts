@@ -30,6 +30,31 @@ const nullablePositiveInteger = z
   .nullable()
   .optional();
 
+export const normalizePetName = (value: string) =>
+  value.trim().replace(/\s+/gu, ' ');
+
+export const getUnicodeCodePointLength = (value: string) =>
+  Array.from(value).length;
+
+const petNameSchema = z
+  .string()
+  .transform(normalizePetName)
+  .pipe(
+    z
+      .string()
+      .min(PET_LIMITS.nameMinLength)
+      .refine(
+        (value) => getUnicodeCodePointLength(value) <= PET_LIMITS.nameMaxLength,
+        { message: 'PET_NAME_TOO_LONG' },
+      )
+      .refine((value) => /^[\p{L}\p{N} .'-]+$/u.test(value), {
+        message: 'PET_NAME_CHARACTERS_INVALID',
+      })
+      .refine((value) => /[\p{L}\p{N}]/u.test(value), {
+        message: 'PET_NAME_REQUIRES_LETTER_OR_NUMBER',
+      }),
+  );
+
 export const petStatusSchema = z.enum(PET_STATUSES);
 export const petVisibilitySchema = z.enum(PET_VISIBILITIES);
 export const petSexSchema = z.enum(PET_SEXES);
@@ -54,11 +79,7 @@ export const microchipSchema = z
 
 const petInputShape = {
   speciesId: z.number().int().positive(),
-  name: z
-    .string()
-    .trim()
-    .min(PET_LIMITS.nameMinLength)
-    .max(PET_LIMITS.nameMaxLength),
+  name: petNameSchema,
   breed: nullableTrimmedString(PET_LIMITS.breedMaxLength),
   breedKnowledge: breedKnowledgeSchema.default(
     DEFAULT_PET_VALUES.breedKnowledge,
@@ -76,7 +97,14 @@ const petInputShape = {
     DEFAULT_PET_VALUES.birthDatePrecision,
   ),
   size: petSizeSchema.default(DEFAULT_PET_VALUES.size),
-  weightKg: z.number().positive().max(9_999.99).nullable().optional(),
+  weightKg: z
+    .number()
+    .positive()
+    .max(PET_LIMITS.weightMaxKg, {
+      message: 'PET_WEIGHT_TOO_HIGH',
+    })
+    .nullable()
+    .optional(),
   primaryColor: nullableTrimmedString(PET_LIMITS.colorMaxLength),
   secondaryColors: z
     .array(z.string().trim().min(1).max(PET_LIMITS.colorMaxLength))
@@ -153,6 +181,14 @@ const validatePetInputConsistency = (
       code: 'custom',
       path: ['microchipNumber'],
       message: 'PET_MICROCHIP_WITHOUT_FLAG',
+    });
+  }
+
+  if (value.hasMicrochip === true && !value.microchipNumber) {
+    context.addIssue({
+      code: 'custom',
+      path: ['microchipNumber'],
+      message: 'PET_MICROCHIP_REQUIRED',
     });
   }
 

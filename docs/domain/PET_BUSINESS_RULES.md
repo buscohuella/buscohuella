@@ -83,9 +83,9 @@ Para crear una mascota activa se requiere:
 El nombre:
 
 - No necesita ser único.
-- Debe tener entre 1 y 80 caracteres.
-- Debe eliminar espacios sobrantes.
-- No puede contener únicamente símbolos.
+- Debe tener entre 1 y 30 code points Unicode después de la normalización. No se cuentan grapheme clusters.
+- Debe eliminar espacios al principio y al final y colapsar los espacios internos repetidos.
+- Debe contener al menos una letra o un número Unicode.
 - Puede utilizarse un alias cuando se desconozca el nombre real.
 
 ### BR-PET-CREATE-005 — Especie
@@ -193,7 +193,7 @@ El peso:
 
 - Es opcional.
 - Debe ser mayor que cero.
-- Debe respetar un límite razonable definido por el sistema.
+- Debe respetar un límite máximo de 200 kg para el MVP.
 
 ### BR-PET-EDIT-006 — Texto libre
 

@@ -22,67 +22,102 @@ import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
 import type { CreateLostReportDraftState } from '../types/create-lost-report-draft-state';
+import {
+  copyPetPhotosToReport,
+  createDraftWithOptionalPetPhotos,
+  PetPhotoCopyError,
+  rollbackFailedDraft,
+} from '../lib/lost-report-photo-copy';
 
 const PET_PHOTOS_BUCKET = 'pet-photos';
 const REPORT_PHOTOS_BUCKET = 'report-photos';
 
-function photoExtension(
-  mimeType: string | null,
+type RollbackLifecycleAction =
+  | 'CLOSE'
+  | 'ARCHIVE';
+
+type RollbackLifecycleResult = {
+  data: ReportDatabase['public']['Tables']['reports']['Row'] | null;
+  error: {
+    code?: string;
+    message?: string;
+    details?: string;
+    hint?: string;
+  } | null;
+};
+
+type WebSupabaseClient = Awaited<
+  ReturnType<typeof createClient>
+>;
+
+function getRollbackLifecycleRpc(
+  client: SupabaseClient<ReportDatabase>,
 ) {
-  if (mimeType === 'image/jpeg') return 'jpg';
-  if (mimeType === 'image/png') return 'png';
-  return 'webp';
+  return client.rpc.bind(
+    client,
+  ) as unknown as (
+    functionName:
+      'manage_report_lifecycle',
+    args: {
+      target_report_id: string;
+      target_action:
+        RollbackLifecycleAction;
+      target_resolution_type: null;
+      target_notes: string | null;
+    },
+  ) => Promise<RollbackLifecycleResult>;
 }
 
-async function copyPetPhotosToReport({
+async function copyExistingPetPhotos({
   supabase,
   reportClient,
   userId,
   petId,
   reportId,
 }: {
-  supabase: Awaited<ReturnType<typeof createClient>>;
+  supabase: WebSupabaseClient;
   reportClient: SupabaseClient<ReportDatabase>;
   userId: string;
   petId: string;
   reportId: string;
 }) {
   const petClient =
-    supabase as unknown as SupabaseClient<PetDatabase>;
+    supabase as unknown as
+      SupabaseClient<PetDatabase>;
   const photoRepository =
     new PetPhotoRepository(petClient);
-  const petPhotos =
-    await photoRepository.listPetPhotos(petId);
 
-  if (petPhotos.length === 0) {
-    return;
-  }
+  await copyPetPhotosToReport({
+    userId,
+    petId,
+    reportId,
+    listPetPhotos: (targetPetId) =>
+      photoRepository.listPetPhotos(
+        targetPetId,
+      ),
+    downloadPetPhoto: async (
+      storagePath,
+    ) => {
+      const { data, error } =
+        await supabase.storage
+          .from(PET_PHOTOS_BUCKET)
+          .download(storagePath);
 
-  const uploadedPaths: string[] = [];
-  const insertedPhotoIds: string[] = [];
-
-  try {
-    for (const [index, petPhoto] of petPhotos.entries()) {
-      const {
-        data: file,
-        error: downloadError,
-      } = await supabase.storage
-        .from(PET_PHOTOS_BUCKET)
-        .download(petPhoto.storagePath);
-
-      if (downloadError || !file) {
-        throw downloadError ?? new Error(
-          'Pet photo download returned no file',
-        );
+      if (error || !data) {
+        throw error ??
+          new Error(
+            'Pet photo download returned no file',
+          );
       }
 
-      const photoId = crypto.randomUUID();
-      const mimeType =
-        petPhoto.mimeType ?? 'image/webp';
-      const storagePath =
-        `${userId}/${reportId}/${photoId}.${photoExtension(mimeType)}`;
-
-      const { error: uploadError } =
+      return data;
+    },
+    uploadReportPhoto: async ({
+      storagePath,
+      file,
+      mimeType,
+    }) => {
+      const { error } =
         await supabase.storage
           .from(REPORT_PHOTOS_BUCKET)
           .upload(storagePath, file, {
@@ -91,51 +126,173 @@ async function copyPetPhotosToReport({
             upsert: false,
           });
 
-      if (uploadError) {
-        throw uploadError;
+      if (error) {
+        throw error;
       }
+    },
+    insertReportPhotoMetadata:
+      async (metadata) => {
+        const { error } =
+          await reportClient
+            .from('report_photos')
+            .insert({
+              id: metadata.id,
+              report_id:
+                metadata.reportId,
+              storage_path:
+                metadata.storagePath,
+              position:
+                metadata.position,
+              is_primary:
+                metadata.isPrimary,
+              alt_text:
+                metadata.altText,
+              mime_type:
+                metadata.mimeType,
+              file_size_bytes:
+                metadata.fileSizeBytes,
+              width: metadata.width,
+              height: metadata.height,
+            });
 
-      uploadedPaths.push(storagePath);
-      insertedPhotoIds.push(photoId);
+        if (error) {
+          throw error;
+        }
+      },
+    removeReportPhotos: async (
+      paths,
+    ) => {
+      const { error } =
+        await supabase.storage
+          .from(REPORT_PHOTOS_BUCKET)
+          .remove(paths);
 
-      const { error: metadataError } =
+      if (error) {
+        throw error;
+      }
+    },
+    deleteReportPhotoMetadata:
+      async (photoIds) => {
+        const { error } =
+          await reportClient
+            .from('report_photos')
+            .delete()
+            .in('id', photoIds);
+
+        if (error) {
+          throw error;
+        }
+      },
+    generatePhotoId: () =>
+      crypto.randomUUID(),
+    onCleanupFailure: (
+      stage,
+      error,
+    ) => {
+      logServerError(
+        'report.draft.photo_copy_cleanup_failed',
+        error,
+        {
+          userId,
+          petId,
+          reportId,
+          stage,
+        },
+      );
+    },
+  });
+}
+
+async function compensateFailedDraft({
+  reportClient,
+  userId,
+  petId,
+  reportId,
+}: {
+  reportClient: SupabaseClient<ReportDatabase>;
+  userId: string;
+  petId: string;
+  reportId: string;
+}) {
+  const lifecycleRpc =
+    getRollbackLifecycleRpc(
+      reportClient,
+    );
+
+  const transition = async (
+    action: RollbackLifecycleAction,
+  ) => {
+    const { data, error } =
+      await lifecycleRpc(
+        'manage_report_lifecycle',
+        {
+          target_report_id: reportId,
+          target_action: action,
+          target_resolution_type: null,
+          target_notes:
+            action === 'CLOSE'
+              ? 'DRAFT_CREATION_PHOTO_COPY_FAILED'
+              : null,
+        },
+      );
+
+    if (error || !data) {
+      throw error ??
+        new Error(
+          `Draft rollback ${action} returned no report`,
+        );
+    }
+  };
+
+  return rollbackFailedDraft({
+    closeDraft: () =>
+      transition('CLOSE'),
+    archiveDraft: () =>
+      transition('ARCHIVE'),
+    deleteReportEvents: async () => {
+      const { error } =
         await reportClient
-          .from('report_photos')
-          .insert({
-            id: photoId,
-            report_id: reportId,
-            storage_path: storagePath,
-            position: index,
-            is_primary:
-              petPhoto.isPrimary || index === 0,
-            alt_text: petPhoto.altText,
-            mime_type: mimeType,
-            file_size_bytes:
-              petPhoto.fileSizeBytes ?? file.size,
-            width: petPhoto.width,
-            height: petPhoto.height,
-          });
+          .from('report_events')
+          .delete()
+          .eq('report_id', reportId);
 
-      if (metadataError) {
-        throw metadataError;
+      if (error) {
+        throw error;
       }
-    }
-  } catch (error) {
-    if (uploadedPaths.length > 0) {
-      await supabase.storage
-        .from(REPORT_PHOTOS_BUCKET)
-        .remove(uploadedPaths);
-    }
+    },
+    deleteReport: async () => {
+      const { data, error } =
+        await reportClient
+          .from('reports')
+          .delete()
+          .eq('id', reportId)
+          .eq('status', 'ARCHIVED')
+          .select('id')
+          .single();
 
-    if (insertedPhotoIds.length > 0) {
-      await reportClient
-        .from('report_photos')
-        .delete()
-        .in('id', insertedPhotoIds);
-    }
-
-    throw error;
-  }
+      if (error || !data) {
+        throw error ??
+          new Error(
+            'Draft rollback delete returned no report',
+          );
+      }
+    },
+    onRollbackFailure: (
+      stage,
+      error,
+    ) => {
+      logServerError(
+        'report.draft.rollback_failed',
+        error,
+        {
+          userId,
+          petId,
+          reportId,
+          stage,
+        },
+      );
+    },
+  });
 }
 
 function getString(
@@ -518,21 +675,34 @@ export async function createLostReportDraftAction(
         reportClient,
       );
 
-    const report =
-      await reportRepository.createReport(
-        user.id,
-        parsed.data,
-      );
+    const reportId =
+      await createDraftWithOptionalPetPhotos({
+        usePetPhotos,
+        createDraft: async () => {
+          const report =
+            await reportRepository.createReport(
+              user.id,
+              parsed.data,
+            );
 
-    if (usePetPhotos) {
-      await copyPetPhotosToReport({
-        supabase,
-        reportClient,
-        userId: user.id,
-        petId: pet.id,
-        reportId: report.id,
+          return report.id;
+        },
+        copyPetPhotos: (createdReportId) =>
+          copyExistingPetPhotos({
+            supabase,
+            reportClient,
+            userId: user.id,
+            petId: pet.id,
+            reportId: createdReportId,
+          }),
+        rollbackDraft: (createdReportId) =>
+          compensateFailedDraft({
+            reportClient,
+            userId: user.id,
+            petId: pet.id,
+            reportId: createdReportId,
+          }),
       });
-    }
 
     revalidatePath('/mis-reportes');
 
@@ -541,7 +711,7 @@ export async function createLostReportDraftAction(
       message: translate(
         'reports.review.success',
       ),
-      reportId: report.id,
+      reportId,
     };
   } catch (error) {
     if (
@@ -558,10 +728,18 @@ export async function createLostReportDraftAction(
 
     logServerError(
       'report.draft.create_failed',
-      error,
+      error instanceof
+      PetPhotoCopyError
+        ? error.cause
+        : error,
       {
         userId: user.id,
         petId,
+        photoCopyCleanupCompleted:
+          error instanceof
+          PetPhotoCopyError
+            ? error.cleanupCompleted
+            : undefined,
       },
     );
 

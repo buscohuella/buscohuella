@@ -23,6 +23,7 @@ import {
   BreedFormError,
   resolveBreedFormData,
 } from '../lib/breed-form-data';
+import { toPetSpeciesIdOrNull } from '../lib/resolve-pet-form-species';
 import type { PetActionState } from '../types/pet-action-state';
 
 function getString(formData: FormData, name: string) {
@@ -113,6 +114,7 @@ export async function updatePetAction(
     return {
       status: 'error',
       message: translate('pets.result.petMissing'),
+      speciesId: null,
     };
   }
 
@@ -129,6 +131,7 @@ export async function updatePetAction(
     return {
       status: 'error',
       message: translate('pets.result.sessionExpired'),
+      speciesId: toPetSpeciesIdOrNull(speciesId),
     };
   }
 
@@ -173,6 +176,7 @@ export async function updatePetAction(
       return {
         status: 'error',
         message: translate('pets.validation.review'),
+        speciesId: toPetSpeciesIdOrNull(speciesId),
         fieldErrors: mapValidationErrors(parsed.error.issues, translate),
       };
     }
@@ -183,6 +187,7 @@ export async function updatePetAction(
       return {
         status: 'error',
         message: translate('pets.validation.breedReview'),
+        speciesId: toPetSpeciesIdOrNull(speciesId),
         fieldErrors: {
           [error.field]: error.userMessage,
         },
@@ -200,6 +205,7 @@ export async function updatePetAction(
         return {
           status: 'error',
           message: translate('pets.result.microchipDuplicate'),
+          speciesId: toPetSpeciesIdOrNull(speciesId),
           fieldErrors: {
             microchipNumber: translate('pets.result.microchipCheck'),
           },
@@ -210,6 +216,7 @@ export async function updatePetAction(
         return {
           status: 'error',
           message: translate('pets.result.notAvailable'),
+          speciesId: toPetSpeciesIdOrNull(speciesId),
         };
       }
     }
@@ -217,6 +224,7 @@ export async function updatePetAction(
     return {
       status: 'error',
       message: translate('pets.result.updateError'),
+      speciesId: toPetSpeciesIdOrNull(speciesId),
     };
   }
 

@@ -1,3 +1,4 @@
+export * from './archived-pet-deletion.js';
 export * from './database.types.js';
 export * from './errors.js';
 export * from './mappers.js';

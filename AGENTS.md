@@ -545,9 +545,35 @@ Toda decisión importante debe quedar registrada.
 
 ---
 
-## 19. Git y ramas
+## 19. Git, main y ramas
 
-No realizar cambios directos en `main` salvo autorización expresa.
+`main` es la rama estable y protegida. No se desarrolla directamente sobre `main`.
+Solo entra trabajo validado mediante Pull Request.
+
+Para el desarrollo diario se utiliza un único laboratorio reutilizable, por ejemplo:
+
+```text
+D:\Proyectos\buscohuella-dev
+```
+
+El laboratorio conserva `node_modules/`, `.env.local` y builds locales cuando sea
+seguro hacerlo. Antes de ejecutar `pnpm install`, comprueba si el entorno ya está
+preparado. No se crea un worktree nuevo por cada tarea: solo se permite cuando hay
+paralelismo real o una necesidad técnica justificada.
+
+Cada ticket tiene una rama corta creada desde `origin/main` actualizado y se trabaja
+en la misma carpeta de laboratorio cambiando de rama:
+
+```text
+origin/main actualizado
+        ↓
+rama corta por ticket
+        ↓
+PASS → PR → main → borrar rama → actualizar laboratorio desde main
+FAIL → corregir en la misma rama hasta quedar verde
+```
+
+Evita ramas largas acumuladas e integraciones intermedias innecesarias.
 
 Formato recomendado de ramas:
 
@@ -693,22 +719,98 @@ Las skills definen procedimientos concretos.
 
 ---
 
-## 25. Flujo de trabajo recomendado
+## 25. Flujo de trabajo obligatorio
 
 Para cada tarea:
 
 ```text
-Comprender
-→ Localizar documentación
-→ Confirmar alcance
-→ Analizar código
-→ Proponer cambio mínimo
-→ Implementar
+Antes: cwd → rama → git status --short → git log -1 --oneline → origin/main actual
+→ Comprender alcance y documentación necesaria
+→ Cambio mínimo, sin refactors ajenos
 → Validar
-→ Documentar
+→ Documentar y registrar evidencia
 → Revisar diff
-→ Preparar commit
+→ Commit referenciado al ticket
+→ PR y revisión humana
 ```
+
+Antes de modificar:
+
+- confirmar cwd, rama, `git status --short`, `git log -1 --oneline` y la base `origin/main` actualizada;
+- no cambiar de rama con trabajo local sin revisar su estado;
+- no tocar Supabase LIVE ni secretos;
+- no hacer auto-merge.
+
+Durante:
+
+- mantener el cambio mínimo y dentro del ticket;
+- no añadir dependencias sin justificación;
+- validar permisos, roles, datos y RLS cuando aplique;
+- respetar arquitectura, i18n y accesibilidad existentes.
+
+Después:
+
+- ejecutar tests relevantes, lint, typecheck, `git diff --check` y build cuando aplique;
+- realizar validación manual real cuando corresponda;
+- revisar WCAG 2.2 AA, responsive/móvil, estados loading/error/empty, i18n y SEO si afectan al cambio;
+- registrar evidencia y pendientes conocidos.
+
+No vuelvas a leer todo el repositorio para una tarea pequeña, no reinstales dependencias
+si el laboratorio ya está preparado y no repitas validaciones completas si no hubo
+cambios relevantes.
+
+### Política de eficiencia
+
+La eficiencia de contexto, ejecución y razonamiento reduce tiempo y trabajo repetido
+sin rebajar la calidad ni la seguridad.
+
+#### Contexto
+
+Para una tarea pequeña se lee solo lo necesario, en este orden preferido:
+
+```text
+AGENTS.md → documento específico → archivos afectados → tests relacionados
+```
+
+Amplía el contexto únicamente cuando aparezca una dependencia real. Reutiliza las
+decisiones ya documentadas en lugar de investigarlas de nuevo.
+
+#### Entorno y ejecución
+
+- no ejecutes `pnpm install` si `node_modules/` ya está preparado;
+- no reconstruyas paquetes que no estén afectados;
+- reutiliza el laboratorio único, `.env.local` y builds existentes;
+- no crees worktrees adicionales salvo necesidad justificada;
+- no levantes Docker/Supabase local si la tarea no lo requiere.
+
+#### Validación proporcional
+
+- ejecuta primero los tests específicos del área afectada;
+- ejecuta validaciones globales cuando el riesgo o la integración lo justifique;
+- no repitas suites completas si no hubo cambios relevantes desde la última validación;
+- cualquier cambio posterior a una validación invalida esa validación y obliga a repetir
+  la parte afectada.
+
+#### Escalado de razonamiento/modelo
+
+La documentación no depende de nombres concretos de modelos. Usa el menor nivel
+suficiente y escala cuando aumenten el riesgo o la incertidumbre:
+
+| Nivel | Casos orientativos |
+| --- | --- |
+| Ligero | documentación, i18n simple, CSS pequeño, cambios mecánicos, Git, renombrados y tareas repetitivas |
+| Medio | componentes, bugs normales, formularios, lógica acotada, tests e integración entre módulos |
+| Alto | seguridad, Auth, Supabase/RLS, migraciones, datos, permisos/roles, arquitectura, concurrencia, trade-offs importantes y bugs difíciles o no entendidos |
+
+#### Salidas
+
+- comunica resultados concisos;
+- no pegues logs completos si basta con resultado y error relevante;
+- resume archivos modificados, tests PASS/FAIL y pendientes;
+- no repitas contexto ya conocido innecesariamente.
+
+La eficiencia nunca elimina seguridad, privacidad, accesibilidad, i18n, tests
+necesarios, validación de datos ni trazabilidad.
 
 ---
 
@@ -730,6 +832,31 @@ Antes de finalizar una tarea, comprobar:
 - [ ] El diff no contiene cambios accidentales.
 - [ ] El commit tiene un propósito único.
 - [ ] Se declararon limitaciones o riesgos pendientes.
+
+La entrega debe distinguir explícitamente estos estados:
+
+```text
+IMPLEMENTED
+STATICALLY REVIEWED
+VERIFIED LOCAL
+VERIFIED LIVE
+CLOSED
+```
+
+Un commit no implica `CLOSED`. `VERIFIED LIVE` requiere evidencia explícita en el
+entorno correspondiente y nunca se asume por haber pasado tests locales.
+
+La i18n no debe hardcodear textos visibles: se mantienen ES/CA y se prepara la
+compatibilidad futura con EN/EU/GL, revisando longitud y pluralización cuando proceda.
+
+La accesibilidad incluye teclado, foco visible, lector de pantalla, contraste,
+targets táctiles, `prefers-reduced-motion` cuando aplique y no depender solo del color.
+
+La seguridad exige no tocar LIVE directamente, versionar migraciones, mantener RLS
+para cambios de datos, validar permisos/roles y no exponer secretos.
+
+Cada ticket debe tener ID; commit y PR deben referenciarlo cuando exista. GitHub/docs
+son las instrucciones versionadas y Notion el seguimiento operativo.
 
 ---
 

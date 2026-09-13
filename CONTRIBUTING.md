@@ -94,6 +94,9 @@ Antes de modificar código o documentación:
 
 No empieces a implementar una funcionalidad si los requisitos no están claros.
 
+Aplica la política de eficiencia de contexto, entorno, validación y escalado definida
+en [`docs/project/DEVELOPMENT_WORKFLOW.md`](docs/project/DEVELOPMENT_WORKFLOW.md).
+
 ---
 
 ## 4. Estructura general
@@ -153,31 +156,37 @@ pnpm --version
 
 ## 6. Flujo de trabajo Git
 
-No trabajes directamente sobre `main` salvo autorización expresa.
+`main` es estable y protegido. No se desarrolla directamente sobre `main`; solo
+entra trabajo validado mediante Pull Request.
 
-Flujo recomendado:
+Usa un único laboratorio reutilizable para el trabajo diario, por ejemplo:
 
 ```text
-main
-└── rama de trabajo
-    └── commits pequeños
-        └── revisión
-            └── Pull Request
-                └── merge
+D:\Proyectos\buscohuella-dev
 ```
 
-Antes de empezar:
+Reutiliza `node_modules/`, `.env.local` y builds locales. Antes de ejecutar
+`pnpm install`, comprueba si el laboratorio ya está preparado. Crea worktrees
+adicionales solo para paralelismo real o una necesidad técnica justificada.
+
+Antes de empezar una tarea:
 
 ```bash
-git checkout main
-git pull origin main
+git fetch origin main
+git status --short
+git log -1 --oneline
+git switch -c tipo/nombre-tarea origin/main
 ```
 
-Crear rama:
+La rama debe ser corta, creada desde `origin/main` actualizado y reutilizar la
+misma carpeta de laboratorio. El flujo es:
 
-```bash
-git checkout -b tipo/nombre-tarea
+```text
+PASS → PR → main → borrar rama → actualizar laboratorio desde main
+FAIL → corregir en la misma rama hasta quedar verde
 ```
+
+Evita ramas largas acumuladas e integraciones intermedias innecesarias.
 
 Ejemplos:
 
@@ -307,6 +316,11 @@ Es preferible:
 git add ruta/del/archivo
 ```
 
+Antes de modificar cualquier tarea confirma siempre cwd, rama, `git status --short`,
+`git log -1 --oneline` y que la base sea el `origin/main` actual. Durante el trabajo
+mantén el cambio mínimo, no hagas refactors fuera de alcance, no añadas dependencias
+sin justificación, no toques Supabase LIVE, no incluyas secretos y no hagas auto-merge.
+
 ---
 
 ## 10. Código
@@ -385,7 +399,8 @@ Toda tabla nueva debe considerar:
 
 Las migraciones deben versionarse.
 
-No edites producción manualmente sin registrar el cambio.
+No toques Supabase LIVE directamente ni edites producción manualmente sin registrar
+el cambio. Los cambios de datos deben mantener RLS y validación de permisos/roles.
 
 ---
 
@@ -408,6 +423,7 @@ Toda interfaz debe considerar:
 - mensajes de error;
 - estados de carga;
 - áreas táctiles;
+- `prefers-reduced-motion` cuando aplique;
 - alternativas al color;
 - alternativas textuales para mapas.
 
@@ -433,6 +449,9 @@ Reglas:
 - contemplar pluralización;
 - contemplar diferentes longitudes;
 - mantener fallback controlado.
+
+Los textos visibles no se hardcodean. ES y CA son los idiomas actuales y las claves
+deben seguir siendo compatibles con EN, EU y GL.
 
 ---
 
@@ -461,6 +480,28 @@ Tipos:
 - accesibilidad;
 - seguridad;
 - regresión.
+
+Después de implementar ejecuta, según corresponda:
+
+```bash
+pnpm --filter @buscohuella/web test
+pnpm --filter @buscohuella/web lint
+pnpm --filter @buscohuella/web typecheck
+pnpm --filter @buscohuella/web build
+git diff --check
+```
+
+Añade validación manual real cuando proceda y revisa seguridad/datos/RLS,
+accesibilidad WCAG 2.2 AA, i18n ES/CA, SEO de contenido indexable, responsive/móvil
+y estados loading/error/empty. No repitas validaciones completas si no hubo cambios
+relevantes.
+
+No confundas los estados `IMPLEMENTED`, `STATICALLY REVIEWED`, `VERIFIED LOCAL`,
+`VERIFIED LIVE` y `CLOSED`. Un commit no significa `CLOSED`.
+
+Cada ticket debe tener un ID; referencia ese ID en el commit y el Pull Request cuando
+exista, registra la evidencia de tests y deja constancia de los pendientes conocidos.
+Notion mantiene el seguimiento operativo y GitHub/docs las instrucciones versionadas.
 
 ---
 

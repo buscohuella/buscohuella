@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 import { getServerTranslator } from '@/features/i18n/server';
+import { ProfileBackLink } from '@/features/profile/components/profile-back-link';
 import { ProfileForm } from '@/features/profile/components/profile-form';
 import { getProfile } from '@/features/profile/queries/get-profile';
 
@@ -44,6 +45,7 @@ export default async function ProfileDataPage({
         />
       </PageContainer>
       <PageContainer className="space-y-6 pt-2">
+        <ProfileBackLink label={translate('profile.page.backToProfile')} />
         <AuthNotice
           message={setup === '1' ? translate('profile.page.completeProfile') : undefined}
           tone="info"

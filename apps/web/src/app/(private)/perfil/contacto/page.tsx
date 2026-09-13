@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { getServerTranslator } from '@/features/i18n/server';
 import { NotificationPreferencesForm } from '@/features/notifications/components/notification-preferences-form';
 import { getMyNotificationPreferences } from '@/features/notifications/lib/notification-preferences';
+import { ProfileBackLink } from '@/features/profile/components/profile-back-link';
 
 export default async function ProfileContactPage() {
   const { translate } = await getServerTranslator();
@@ -15,6 +16,7 @@ export default async function ProfileContactPage() {
     <>
       <PageContainer className="pb-0"><Breadcrumbs label={translate('profile.page.breadcrumbLabel')} items={[{ href: '/inicio', label: translate('profile.page.home') }, { href: '/perfil', label: translate('profile.page.title') }, { label: title }]} /></PageContainer>
       <PageContainer className="space-y-6 pt-2">
+        <ProfileBackLink label={translate('profile.page.backToProfile')} />
         <header className="max-w-3xl space-y-2">
           <p className="text-sm font-semibold text-primary">{translate('profile.page.eyebrow')}</p>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>

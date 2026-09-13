@@ -84,18 +84,33 @@ Slack, correo o conversaciones informales no sustituyen a GitHub ni Notion.
 
 ## 3. Ciclo obligatorio de trabajo
 
-Todo bloque de trabajo sigue este ciclo:
+`main` es estable y protegido. Todo trabajo se desarrolla en una rama corta creada
+desde `origin/main` actualizado, usando un único laboratorio reutilizable, por ejemplo
+`D:\Proyectos\buscohuella-dev`. El laboratorio conserva `node_modules/`, `.env.local`
+y builds cuando sea seguro; antes de `pnpm install` se comprueba si ya está preparado.
+No se crean worktrees nuevos por costumbre, solo por paralelismo real o necesidad técnica.
+
+Antes de modificar:
+
+```text
+confirmar cwd → rama → git status --short → git log -1 --oneline → origin/main actual
+```
+
+Todo bloque sigue este ciclo:
 
 ```text
 1. Diseñar
-2. Implementar
-3. Probar
+2. Implementar el cambio mínimo
+3. Probar y revisar seguridad/accesibilidad/i18n según aplique
 4. Documentar
-5. Revisar
-6. Commit
-7. Push
-8. Actualizar Notion
+5. Revisar diff
+6. Commit referenciado al ticket
+7. Pull Request y revisión humana
+8. Merge a main solo tras validación
+9. Actualizar Notion
 ```
+
+Si falla una validación, se corrige en la misma rama hasta quedar verde.
 
 ### 3.1 Diseñar
 
@@ -129,8 +144,11 @@ Cada cambio debe superar las validaciones aplicables.
 Para la aplicación web:
 
 ```powershell
+pnpm --filter @buscohuella/web test
 pnpm --filter @buscohuella/web lint
+pnpm --filter @buscohuella/web typecheck
 pnpm --filter @buscohuella/web build
+git diff --check
 ```
 
 Cuando existan tests:
@@ -149,7 +167,11 @@ También se revisa manualmente:
 - estados vacíos;
 - carga;
 - permisos;
-- traducciones.
+- traducciones;
+- SEO cuando afecte contenido indexable;
+- estados loading/error/empty y responsive/móvil.
+
+No se repiten validaciones completas si no hubo cambios relevantes.
 
 ### 3.4 Documentar
 
@@ -214,16 +236,27 @@ test(pets): añadir validaciones del formulario
 chore(monorepo): actualizar configuración del workspace
 ```
 
-### 3.7 Push
+El commit debe referenciar el ID del ticket cuando exista. Un commit no implica que
+el trabajo esté cerrado.
 
-Después del commit:
+### 3.7 Pull Request y ciclo de rama
+
+Después de un commit validado:
 
 ```powershell
-git push origin main
-git status
+git push -u origin nombre-de-la-rama
 ```
 
-El estado final debe ser:
+El trabajo entra en `main` únicamente mediante Pull Request aprobado. Tras el merge:
+
+```text
+PASS → PR → main → borrar rama → actualizar laboratorio desde main
+FAIL → corregir en la misma rama hasta quedar verde
+```
+
+No se hace auto-merge ni se desarrollan ramas largas acumuladas.
+
+El estado local final esperado antes del PR es:
 
 ```text
 nothing to commit, working tree clean
@@ -239,6 +272,30 @@ Al cerrar un bloque se actualiza:
 - bloqueos;
 - siguiente acción;
 - enlace a commit, PR o release cuando proceda.
+
+### 3.9 Política de eficiencia
+
+Para reducir tiempo, tokens y trabajo repetido sin reducir calidad:
+
+- lee solo lo necesario: `AGENTS.md` → documento específico → archivos afectados → tests relacionados;
+- amplía el contexto solo ante dependencias reales y reutiliza decisiones ya documentadas;
+- comprueba que `node_modules/` está preparado antes de `pnpm install`, reutiliza el laboratorio, `.env.local` y builds, y no reconstruyas paquetes no afectados;
+- no crees worktrees adicionales ni levantes Docker/Supabase local si no son necesarios;
+- ejecuta primero tests específicos y escala a validaciones globales según riesgo o integración;
+- cualquier cambio posterior invalida la validación de la parte afectada;
+- no repitas suites completas sin cambios relevantes desde la última validación.
+
+El razonamiento/modelo se escala sin depender de nombres concretos: nivel ligero para
+documentación, i18n simple, CSS pequeño, Git y cambios mecánicos; medio para
+componentes, bugs normales, formularios, tests e integraciones; alto para seguridad,
+Auth, Supabase/RLS, migraciones, datos, permisos, arquitectura, concurrencia,
+trade-offs importantes y bugs difíciles o no entendidos. Usa siempre el menor nivel
+suficiente.
+
+Las salidas deben ser concisas: resume resultados, PASS/FAIL, errores relevantes,
+archivos y pendientes sin pegar logs completos ni repetir contexto conocido. Esta
+eficiencia nunca elimina seguridad, privacidad, accesibilidad, i18n, tests necesarios,
+validación de datos ni trazabilidad.
 
 ---
 
@@ -399,6 +456,27 @@ Un Feature Pack no está completado hasta que:
 - actualiza Notion.
 
 Este conjunto constituye la Definition of Done de BuscoHuella.
+
+### Estados de entrega de un ticket
+
+No se deben confundir estos estados:
+
+```text
+IMPLEMENTED
+STATICALLY REVIEWED
+VERIFIED LOCAL
+VERIFIED LIVE
+CLOSED
+```
+
+Un commit o un merge no convierten automáticamente un ticket en `CLOSED`.
+`VERIFIED LIVE` requiere evidencia explícita en el entorno vivo y nunca se asume
+por haber pasado tests locales.
+
+Cada ticket debe tener un ID. El commit y el Pull Request deben referenciarlo cuando
+exista; los tests ejecutados, la evidencia manual y los pendientes conocidos deben
+quedar registrados. Notion mantiene el seguimiento operativo y GitHub/docs las
+instrucciones versionadas.
 
 ---
 
@@ -638,6 +716,8 @@ git diff --cached
 ```
 
 Los secretos deben gestionarse mediante variables de entorno y proveedores autorizados.
+No se toca Supabase LIVE directamente; los cambios de datos se realizan mediante
+migraciones versionadas y mantienen RLS y validación de permisos/roles.
 
 ---
 
@@ -661,29 +741,19 @@ Los lockfiles sí deben versionarse cuando cambien dependencias.
 
 ## 17. Ramas y Pull Requests
 
-Durante la fase inicial y con un único desarrollador se permite trabajar en `main` con:
-
-- cambios pequeños;
-- validaciones previas;
-- commits frecuentes;
-- árbol limpio.
-
-Cuando aumente el equipo o el riesgo, se utilizarán ramas:
+Siempre se utilizan ramas cortas por ticket, creadas desde `origin/main` actualizado.
+El laboratorio diario es la carpeta reutilizable; no se abre un worktree por tarea
+salvo justificación técnica o paralelismo real.
 
 ```text
-feature/FP-001-app-shell
+feat/FP-001-app-shell
 fix/auth-redirect
 docs/design-system
 ```
 
-Los Pull Requests serán obligatorios cuando:
-
-- haya varias personas;
-- el cambio sea crítico;
-- afecte seguridad;
-- cambie base de datos;
-- modifique producción;
-- requiera revisión externa.
+Los Pull Requests son obligatorios para todo trabajo que entre en `main`, y requieren
+validaciones y revisión humana. Los cambios críticos, de seguridad, base de datos o
+producción deben incluir además sus evidencias y riesgos explícitos.
 
 ---
 

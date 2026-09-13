@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface BrandLogoProps {
   className?: string;
@@ -6,17 +7,28 @@ interface BrandLogoProps {
 }
 
 export function BrandLogo({
-  className = 'h-12 w-44',
+  className,
   priority = false,
 }: BrandLogoProps) {
   return (
-    <Image
-      src="/brand/logobusco-cropped.png"
-      alt=""
-      width={1280}
-      height={1280}
-      className={`object-contain ${className}`}
-      priority={priority}
-    />
+    <span
+      className={cn(
+        'inline-flex items-center gap-2 whitespace-nowrap',
+        className,
+      )}
+    >
+      <Image
+        src="/brand/mark.png"
+        alt=""
+        width={720}
+        height={720}
+        className="size-11 object-contain"
+        priority={priority}
+      />
+      <span className="text-[1.05rem] font-extrabold tracking-[-0.04em]">
+        <span className="text-primary">Busco</span>
+        <span className="text-accent">Huella</span>
+      </span>
+    </span>
   );
 }

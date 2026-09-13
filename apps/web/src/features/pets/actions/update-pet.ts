@@ -2,9 +2,14 @@
 
 import {
   BIRTH_DATE_PRECISIONS,
+  PET_LIMITS,
   PET_SEXES,
   PET_SIZES,
   PetDomainError,
+  canEditPet,
+  isPetSpeciesAllowed,
+  isPetWeightValid,
+  parseOptionalWeight,
   updatePetSchema,
   type BirthDatePrecision,
   type PetSex,
@@ -33,13 +38,6 @@ function getString(formData: FormData, name: string) {
 
 function getNullableString(formData: FormData, name: string) {
   return getString(formData, name) || null;
-}
-
-function getOptionalNumber(formData: FormData, name: string) {
-  const value = getString(formData, name);
-  if (!value) return null;
-  const number = Number(value);
-  return Number.isFinite(number) ? number : Number.NaN;
 }
 
 function isOneOf<const T extends readonly string[]>(
@@ -76,12 +74,15 @@ function mapValidationErrors(
 ) {
   const fieldErrors: Record<string, string> = {};
   const codeKeys: Record<string, string> = {
+    PET_NAME_CHARACTERS_INVALID: 'pets.validation.nameCharacters',
+    PET_NAME_REQUIRES_LETTER_OR_NUMBER: 'pets.validation.nameCharacters',
     PET_BIRTH_DATE_FUTURE: 'pets.validation.birthFuture',
     PET_BIRTH_DATE_REQUIRED: 'pets.validation.birthRequired',
     PET_MICROCHIP_WITHOUT_FLAG: 'pets.validation.microchipFlag',
     PET_PRIMARY_BREED_REQUIRED: 'pets.validation.primaryBreed',
     PET_SECONDARY_BREED_REQUIRES_MIXED: 'pets.validation.secondaryMixed',
     PET_BREEDS_MUST_DIFFER: 'pets.validation.breedsDiffer',
+    PET_WEIGHT_TOO_HIGH: 'pets.validation.weightTooHigh',
   };
   const fieldKeys: Record<string, string> = {
     speciesId: 'pets.validation.species',
@@ -121,6 +122,22 @@ export async function updatePetAction(
   const speciesId = Number(getString(formData, 'speciesId'));
   const birthDate = getNullableString(formData, 'birthDate');
   const hasMicrochip = formData.get('hasMicrochip') === 'on';
+  const weightKg = parseOptionalWeight(getString(formData, 'weightKg'));
+
+  if (weightKg !== null && !isPetWeightValid(weightKg)) {
+    return {
+      status: 'error',
+      message: translate('pets.validation.review'),
+      speciesId: toPetSpeciesIdOrNull(speciesId),
+      fieldErrors: {
+        weightKg: translate(
+          Number.isFinite(weightKg) && weightKg > PET_LIMITS.weightMaxKg
+            ? 'pets.validation.weightTooHigh'
+            : 'pets.validation.weight',
+        ),
+      },
+    };
+  }
 
   const supabase = await createClient();
   const {
@@ -139,6 +156,30 @@ export async function updatePetAction(
 
   try {
     const currentPet = await repository.getOwnPetById(petId);
+
+    if (!canEditPet(currentPet.status)) {
+      return {
+        status: 'error',
+        message: translate('pets.result.notAvailable'),
+        speciesId: toPetSpeciesIdOrNull(speciesId),
+      };
+    }
+
+    const availableSpecies = await repository.listEnabledSpecies({
+      mvpOnly: true,
+    });
+
+    if (!isPetSpeciesAllowed(availableSpecies, speciesId)) {
+      return {
+        status: 'error',
+        message: translate('pets.validation.review'),
+        speciesId: toPetSpeciesIdOrNull(speciesId),
+        fieldErrors: {
+          speciesId: translate('pets.validation.species'),
+        },
+      };
+    }
+
     const breedData = await resolveBreedFormData({
       repository,
       speciesId,
@@ -157,7 +198,7 @@ export async function updatePetAction(
         Boolean(birthDate),
       ),
       size: getPetSize(formData),
-      weightKg: getOptionalNumber(formData, 'weightKg'),
+      weightKg,
       primaryColor: getNullableString(formData, 'primaryColor'),
       description: getNullableString(formData, 'description'),
       distinctiveFeatures: getNullableString(

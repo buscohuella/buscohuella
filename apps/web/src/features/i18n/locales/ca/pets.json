@@ -157,7 +157,9 @@
     "microchipFlag": "Marca que té microxip abans d'introduir-ne el número.",
     "primaryBreed": "Selecciona una raça principal del catàleg.",
     "secondaryMixed": "Marca que és un encreuament abans d'afegir una altra raça.",
-    "breedsDiffer": "Les dues races han de ser diferents."
+    "breedsDiffer": "Les dues races han de ser diferents.",
+    "nameCharacters": "El nom ha d'incloure almenys una lletra o un número i només pot contenir lletres, números, espais, punts, apòstrofs i guions.",
+    "weightTooHigh": "El pes no pot superar els 200 kg."
   },
   "result": {
     "sessionExpired": "La teva sessió ha caducat. Torna a iniciar la sessió.",

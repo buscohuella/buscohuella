@@ -545,53 +545,37 @@ Toda decisión importante debe quedar registrada.
 
 ---
 
-## 19. Git, main y ramas
+## 19. Git, main y laboratorio
 
 `main` es la rama estable y protegida. No se desarrolla directamente sobre `main`.
-Solo entra trabajo validado mediante Pull Request.
+Solo entra trabajo validado mediante una integración controlada.
 
-Para el desarrollo diario se utiliza un único laboratorio reutilizable, por ejemplo:
+Para el desarrollo diario se utiliza este único laboratorio permanente:
 
 ```text
 D:\Proyectos\buscohuella-dev
+rama: lab/dev
 ```
 
 El laboratorio conserva `node_modules/`, `.env.local` y builds locales cuando sea
 seguro hacerlo. Antes de ejecutar `pnpm install`, comprueba si el entorno ya está
-preparado. No se crea un worktree nuevo por cada tarea: solo se permite cuando hay
-paralelismo real o una necesidad técnica justificada.
+preparado. No se crea una rama ni un worktree por cada ticket salvo necesidad técnica
+real explícitamente autorizada.
 
-Cada ticket tiene una rama corta creada desde `origin/main` actualizado y se trabaja
-en la misma carpeta de laboratorio cambiando de rama:
+El flujo vigente es:
 
 ```text
-origin/main actualizado
+main estable y alineado con origin/main
         ↓
-rama corta por ticket
+trabajo y validación en lab/dev
         ↓
-PASS → PR → main → borrar rama → actualizar laboratorio desde main
-FAIL → corregir en la misma rama hasta quedar verde
-```
-
-Evita ramas largas acumuladas e integraciones intermedias innecesarias.
-
-Formato recomendado de ramas:
-
-```text
-docs/nombre-tarea
-feat/nombre-funcionalidad
-fix/nombre-error
-refactor/nombre-modulo
-chore/nombre-tarea
-```
-
-Ejemplos:
-
-```text
-docs/agents-guidelines
-feat/pet-registration
-fix/report-map-filter
-refactor/supabase-client
+tests y revisión
+        ↓
+integración controlada en main
+        ↓
+push
+        ↓
+realinear lab/dev con origin/main
 ```
 
 ---
@@ -685,18 +669,18 @@ Un agente no debe:
 
 ---
 
-## 24. Skills de Codex
+## 24. Skills compartidas del proyecto
 
-Las skills específicas del proyecto se ubicarán en:
+Las skills compartidas del proyecto se ubicarán en:
 
 ```text
-.codex/skills/
+.agents/skills/
 ```
 
 Cada skill debe tener:
 
 ```text
-.codex/skills/<nombre>/SKILL.md
+.agents/skills/<skill-name>/SKILL.md
 ```
 
 No se deben crear skills vacías.
@@ -706,16 +690,16 @@ Una skill solo debe añadirse cuando exista un procedimiento repetitivo y bien d
 Ejemplos futuros:
 
 ```text
-.codex/skills/buscohuella-docs/SKILL.md
-.codex/skills/buscohuella-feature/SKILL.md
-.codex/skills/buscohuella-review/SKILL.md
+.agents/skills/buscohuella-docs/SKILL.md
+.agents/skills/buscohuella-feature/SKILL.md
+.agents/skills/buscohuella-review/SKILL.md
 ```
 
 Las skills no sustituyen a este archivo.
 
 `AGENTS.md` define reglas permanentes.
 
-Las skills definen procedimientos concretos.
+Las skills definen procedimientos reutilizables y no deben duplicar `AGENTS.md`.
 
 ---
 
@@ -726,18 +710,19 @@ Para cada tarea:
 ```text
 Antes: cwd → rama → git status --short → git log -1 --oneline → origin/main actual
 → Comprender alcance y documentación necesaria
-→ Cambio mínimo, sin refactors ajenos
-→ Validar
+→ Trabajar en lab/dev con el cambio mínimo, sin refactors ajenos
+→ Tests, validación y revisión
 → Documentar y registrar evidencia
-→ Revisar diff
-→ Commit referenciado al ticket
-→ PR y revisión humana
+→ Integración controlada en main → push
+→ Realinear lab/dev con origin/main
 ```
 
 Antes de modificar:
 
 - confirmar cwd, rama, `git status --short`, `git log -1 --oneline` y la base `origin/main` actualizada;
+- confirmar que el trabajo se realiza en `D:\Proyectos\buscohuella-dev` sobre `lab/dev`;
 - no cambiar de rama con trabajo local sin revisar su estado;
+- no crear una rama ni un worktree por ticket salvo necesidad técnica real explícitamente autorizada;
 - no tocar Supabase LIVE ni secretos;
 - no hacer auto-merge.
 

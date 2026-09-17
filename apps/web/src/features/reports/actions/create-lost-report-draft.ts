@@ -19,6 +19,7 @@ import { revalidatePath } from 'next/cache';
 
 import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
+import { finalizeArchivedReportDeletion } from '@/services/database/report-cleanup';
 import { createClient } from '@/services/supabase/server';
 
 import type { CreateLostReportDraftState } from '../types/create-lost-report-draft-state';
@@ -249,32 +250,16 @@ async function compensateFailedDraft({
       transition('CLOSE'),
     archiveDraft: () =>
       transition('ARCHIVE'),
-    deleteReportEvents: async () => {
-      const { error } =
-        await reportClient
-          .from('report_events')
-          .delete()
-          .eq('report_id', reportId);
+    finalizeArchivedReportDeletion: async () => {
+      const deleted = await finalizeArchivedReportDeletion(
+        reportId,
+        userId,
+      );
 
-      if (error) {
-        throw error;
-      }
-    },
-    deleteReport: async () => {
-      const { data, error } =
-        await reportClient
-          .from('reports')
-          .delete()
-          .eq('id', reportId)
-          .eq('status', 'ARCHIVED')
-          .select('id')
-          .single();
-
-      if (error || !data) {
-        throw error ??
-          new Error(
-            'Draft rollback delete returned no report',
-          );
+      if (!deleted) {
+        throw new Error(
+          'Draft rollback finalizer returned no deletion',
+        );
       }
     },
     onRollbackFailure: (

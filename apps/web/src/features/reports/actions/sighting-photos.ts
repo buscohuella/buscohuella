@@ -14,6 +14,7 @@ import {
 import type {
   ReportDatabaseWithSightingPhotos,
 } from '@/features/reports/lib/sighting-photo-database';
+import { canUploadSightingPhoto } from '@/features/reports/lib/sighting-photo-upload-authorization';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -39,6 +40,7 @@ const text = (
 async function getOwnedSighting(
   sightingId: string,
   reportId: string,
+  requireAcceptingPhotos = false,
 ) {
   const supabase = await createClient();
   const {
@@ -74,6 +76,19 @@ async function getOwnedSighting(
       supabase,
       user,
     };
+  }
+
+  if (requireAcceptingPhotos) {
+    if (!await canUploadSightingPhoto(
+      client,
+      sightingId,
+    )) {
+      return {
+        ok: false as const,
+        supabase,
+        user,
+      };
+    }
   }
 
   return {
@@ -160,6 +175,7 @@ export async function uploadSightingPhotoAction(
     await getOwnedSighting(
       sightingId,
       reportId,
+      true,
     );
 
   if (!ownership.ok) {

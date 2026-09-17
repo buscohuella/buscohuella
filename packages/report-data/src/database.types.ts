@@ -112,6 +112,20 @@ type SightingRow = {
   updated_at: string;
 };
 
+type SightingPhotoRow = {
+  alt_text: string | null;
+  created_at: string;
+  file_size_bytes: number | null;
+  height: number | null;
+  id: string;
+  mime_type: string | null;
+  position: number;
+  sighting_id: string;
+  storage_path: string;
+  updated_at: string;
+  width: number | null;
+};
+
 type ReportEventRow = {
   actor_id: string | null;
   created_at: string;
@@ -177,6 +191,26 @@ export type Database = {
         >;
         Relationships: Relation[];
       };
+      sighting_photos: {
+        Row: SightingPhotoRow;
+        Insert: {
+          alt_text?: string | null;
+          created_at?: string;
+          file_size_bytes?: number | null;
+          height?: number | null;
+          id?: string;
+          mime_type?: string | null;
+          position?: number;
+          sighting_id: string;
+          storage_path: string;
+          updated_at?: string;
+          width?: number | null;
+        };
+        Update: Partial<
+          Database['public']['Tables']['sighting_photos']['Insert']
+        >;
+        Relationships: Relation[];
+      };
       report_events: {
         Row: ReportEventRow;
         Insert: never;
@@ -186,6 +220,12 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      can_manage_sighting_photo_storage: {
+        Args: {
+          target_sighting_id: string;
+        };
+        Returns: boolean;
+      };
       get_public_reports: {
         Args: {
           filter_report_type?: string | null;

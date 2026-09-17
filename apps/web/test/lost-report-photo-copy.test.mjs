@@ -322,7 +322,7 @@ test('si falla limpiar Storage no borra metadata ni cambia el estado del DRAFT',
   );
 });
 
-test('la compensación respeta close, archive, events y report', async () => {
+test('la compensación respeta close, archive y finalización DB', async () => {
   const calls = [];
 
   const completed =
@@ -333,11 +333,8 @@ test('la compensación respeta close, archive, events y report', async () => {
       async archiveDraft() {
         calls.push('archive');
       },
-      async deleteReportEvents() {
-        calls.push('events');
-      },
-      async deleteReport() {
-        calls.push('report');
+      async finalizeArchivedReportDeletion() {
+        calls.push('database');
       },
       onRollbackFailure() {
         calls.push('failure');
@@ -348,8 +345,7 @@ test('la compensación respeta close, archive, events y report', async () => {
   assert.deepEqual(calls, [
     'close',
     'archive',
-    'events',
-    'report',
+    'database',
   ]);
 });
 
@@ -367,11 +363,8 @@ test('un fallo de compensación se registra y detiene los pasos posteriores', as
           'FORCED_ARCHIVE_FAILURE',
         );
       },
-      async deleteReportEvents() {
-        calls.push('events');
-      },
-      async deleteReport() {
-        calls.push('report');
+      async finalizeArchivedReportDeletion() {
+        calls.push('database');
       },
       onRollbackFailure(stage) {
         calls.push(`failure:${stage}`);

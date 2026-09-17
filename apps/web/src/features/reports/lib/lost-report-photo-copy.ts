@@ -29,8 +29,7 @@ type PhotoCopyCleanupStage =
 type DraftRollbackStage =
   | 'close'
   | 'archive'
-  | 'events'
-  | 'report';
+  | 'database';
 
 export class PetPhotoCopyError extends Error {
   readonly cleanupCompleted: boolean;
@@ -225,14 +224,12 @@ export async function copyPetPhotosToReport({
 export async function rollbackFailedDraft({
   closeDraft,
   archiveDraft,
-  deleteReportEvents,
-  deleteReport,
+  finalizeArchivedReportDeletion,
   onRollbackFailure,
 }: {
   closeDraft: () => Promise<void>;
   archiveDraft: () => Promise<void>;
-  deleteReportEvents: () => Promise<void>;
-  deleteReport: () => Promise<void>;
+  finalizeArchivedReportDeletion: () => Promise<void>;
   onRollbackFailure: (
     stage: DraftRollbackStage,
     error: unknown,
@@ -245,10 +242,9 @@ export async function rollbackFailedDraft({
     { stage: 'close', run: closeDraft },
     { stage: 'archive', run: archiveDraft },
     {
-      stage: 'events',
-      run: deleteReportEvents,
+      stage: 'database',
+      run: finalizeArchivedReportDeletion,
     },
-    { stage: 'report', run: deleteReport },
   ];
 
   for (const step of steps) {

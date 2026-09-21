@@ -6,7 +6,6 @@ interface PublicProfileRow {
   public_alias: string;
   avatar_path: string | null;
   municipality: string | null;
-  bio: string | null;
   created_at: string;
 }
 
@@ -24,7 +23,7 @@ export async function getPublicProfile(
   const { data, error } = await supabase
     .from('public_profiles')
     .select(
-      'public_alias, avatar_path, municipality, bio, created_at',
+      'public_alias, avatar_path, municipality, created_at',
     )
     .eq('public_alias', normalizedAlias)
     .maybeSingle<PublicProfileRow>();
@@ -44,7 +43,7 @@ export async function getPublicProfile(
     avatarPath: data.avatar_path ?? '',
     avatarUrl: signedAvatar?.signedUrl ?? '',
     municipality: data.municipality ?? '',
-    bio: data.bio ?? '',
+    bio: '',
     createdAt: data.created_at,
   };
 }

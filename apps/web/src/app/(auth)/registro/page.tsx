@@ -17,6 +17,7 @@ export default async function RegisterPage({
   searchParams: Promise<{
     next?: string;
     intent?: string;
+    edit?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -34,7 +35,10 @@ export default async function RegisterPage({
             <p className="mt-1 text-sm text-muted-foreground">{translate('auth.register.publishNoticeDescription')}</p>
           </div>
         ) : null}
-        <RegisterForm next={params.next} />
+        <RegisterForm
+          next={params.next}
+          restoreDraft={params.edit === '1'}
+        />
       </AuthCard>
     </AuthShell>
   );

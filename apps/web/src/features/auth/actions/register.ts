@@ -6,17 +6,14 @@ import { createClient } from '@/services/supabase/server';
 import { getRequestLocale } from '@/features/i18n/server';
 import { getServerTranslator } from '@/features/i18n/server';
 
+import {
+  buildEmailConfirmationRedirectUrl,
+} from '../lib/email-confirmation';
 import { validateEmail } from '../lib/email-policy';
 import { validatePassword } from '../lib/password-policy';
+import { getSafeInternalPath } from '../lib/safe-redirect';
 import type { AuthActionState } from '../types/auth-action-state';
 import { getRequestOrigin, getString } from './helpers';
-
-function safeNext(value: string) {
-  return value.startsWith('/') &&
-    !value.startsWith('//')
-    ? value
-    : '';
-}
 
 export async function registerAction(
   _previousState: AuthActionState,
@@ -24,7 +21,7 @@ export async function registerAction(
 ): Promise<AuthActionState> {
   const { translate } = await getServerTranslator();
   const fullName = getString(formData, 'fullName');
-  const next = safeNext(
+  const next = getSafeInternalPath(
     getString(formData, 'next'),
   );
   const emailValidation = validateEmail(
@@ -48,7 +45,9 @@ export async function registerAction(
   }
 
   if (!emailValidation.isValid) {
-    fieldErrors.email = emailValidation.error;
+    fieldErrors.email = emailValidation.normalizedEmail
+      ? translate('auth.validation.emailInvalid')
+      : translate('auth.validation.emailRequired');
   }
 
   if (!passwordValidation.isValid) {
@@ -84,7 +83,11 @@ export async function registerAction(
         full_name: fullName,
         locale,
       },
-      emailRedirectTo: `${origin}/auth/confirm?locale=${locale}`,
+      emailRedirectTo: buildEmailConfirmationRedirectUrl({
+        origin,
+        locale,
+        next,
+      }),
     },
   });
 

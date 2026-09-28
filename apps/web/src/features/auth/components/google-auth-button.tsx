@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { createClient } from '@/services/supabase/client';
 
+import { getSafeInternalPath } from '../lib/safe-redirect';
+
 function GoogleMark() {
   return (
     <svg
@@ -51,7 +53,9 @@ export function GoogleAuthButton({
     setError(false);
 
     const callbackUrl = new URL('/auth/callback', window.location.origin);
-    if (next) callbackUrl.searchParams.set('next', next);
+    const safeNext = getSafeInternalPath(next ?? null);
+
+    if (safeNext) callbackUrl.searchParams.set('next', safeNext);
 
     const { error: authError } = await createClient().auth.signInWithOAuth({
       provider: 'google',

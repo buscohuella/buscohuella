@@ -71,6 +71,12 @@ Cambio observable por el usuario
 Revisión independiente de una entrega relevante
 → buscohuella-independent-audit
 
+Integrar a `main` una referencia ya validada y revisada
+→ buscohuella-integration
+
+Aplicar a Supabase remoto un cambio ya integrado y autorizado
+→ buscohuella-supabase-rollout
+
 Cambio mecánico o documentación con contenido completamente definido
 → operación determinista; no gastar un agente de código por defecto
 ```

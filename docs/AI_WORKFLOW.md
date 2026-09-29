@@ -396,20 +396,44 @@ Skills activas:
 - `buscohuella-independent-audit`
 - `buscohuella-security-rls-audit`
 - `buscohuella-qa-e2e`
-
-Skills operativas previstas:
-
 - `buscohuella-integration`
 - `buscohuella-supabase-rollout`
 
-No se crean Skills preventivamente.
+Cobertura:
 
-Una nueva Skill debe cubrir un procedimiento:
+```text
+implementación local
+→ delivery
+
+revisión técnica
+→ independent-audit
+
+Auth / RLS / Storage / privacidad
+→ security-rls-audit
+
+integración validada hacia main
+→ integration
+
+rollout Supabase remoto autorizado
+→ supabase-rollout
+
+comportamiento funcional LOCAL / DEV-TEST
+→ qa-e2e
+```
+
+No se crea `buscohuella-beta-qa`: su función ya está cubierta por
+`buscohuella-qa-e2e`.
+
+No se crean Skills preventivamente. Una nueva Skill debe cubrir un procedimiento:
 
 - repetitivo;
 - suficientemente estable;
 - relevante para BuscoHuella;
 - no cubierto adecuadamente por las Skills existentes.
+
+Regla:
+
+> Seleccionar por fase y riesgo. No ejecutar toda la cadena si la tarea no lo necesita.
 
 ## 13. Adopciones técnicas condicionadas
 

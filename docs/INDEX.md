@@ -68,6 +68,8 @@ Skills activas:
 .agents/skills/buscohuella-independent-audit/
 .agents/skills/buscohuella-security-rls-audit/
 .agents/skills/buscohuella-qa-e2e/
+.agents/skills/buscohuella-integration/
+.agents/skills/buscohuella-supabase-rollout/
 ```
 
 No crear nuevas Skills ni añadir herramientas o agentes preventivamente. Antes debe

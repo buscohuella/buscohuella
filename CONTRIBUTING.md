@@ -159,50 +159,69 @@ pnpm --version
 `main` es estable y protegido. No se desarrolla directamente sobre `main`; solo
 entra trabajo validado mediante Pull Request.
 
-Usa un único laboratorio reutilizable para el trabajo diario, por ejemplo:
+El laboratorio ordinario y reutilizable es:
 
 ```text
 D:\Proyectos\buscohuella-dev
 ```
 
-Reutiliza `node_modules/`, `.env.local` y builds locales. Antes de ejecutar
-`pnpm install`, comprueba si el laboratorio ya está preparado. Crea worktrees
-adicionales solo para paralelismo real o una necesidad técnica justificada.
+La rama ordinaria de trabajo es:
+
+```text
+lab/dev
+```
+
+Por defecto no se crea una rama nueva por ticket. Se mantiene un único writer
+principal sobre `lab/dev` para reducir divergencias, worktrees, instalaciones,
+contexto duplicado y coste operativo.
 
 Antes de empezar una tarea:
 
-```bash
-git fetch origin main
-git status --short
-git log -1 --oneline
-git switch -c tipo/nombre-tarea origin/main
+```powershell
+git -C "D:\Proyectos\buscohuella-dev" fetch origin --prune
+git -C "D:\Proyectos\buscohuella-dev" status --short --branch
+git -C "D:\Proyectos\buscohuella-dev" branch --show-current
+git -C "D:\Proyectos\buscohuella-dev" log -1 --oneline
 ```
 
-La rama debe ser corta, creada desde `origin/main` actualizado y reutilizar la
-misma carpeta de laboratorio. El flujo es:
+Debe confirmarse:
+
+- `cwd` correcto;
+- rama `lab/dev`;
+- working tree conocido;
+- base remota conocida;
+- ausencia de cambios accidentales.
+
+Flujo habitual:
 
 ```text
-PASS → PR → main → borrar rama → actualizar laboratorio desde main
-FAIL → corregir en la misma rama hasta quedar verde
+lab/dev
+  ↓
+cambio mínimo
+  ↓
+validaciones aplicables
+  ↓
+revisión
+  ↓
+push
+  ↓
+Pull Request
+  ↓
+main
+  ↓
+realinear lab/dev de forma consciente
 ```
 
-Evita ramas largas acumuladas e integraciones intermedias innecesarias.
-
-Ejemplos:
-
-```text
-docs/actualizar-stack
-feat/registro-mascotas
-fix/filtro-distancia
-refactor/supabase-client
-chore/configurar-eslint
-```
+No se crean ramas, clones o worktrees adicionales por rutina. Solo se justifican
+por paralelismo real, aislamiento técnico necesario, hotfix u otra razón explícita.
 
 ---
 
-## 7. Convención de ramas
+## 7. Ramas adicionales
 
-Usa uno de estos prefijos:
+Las ramas adicionales son una excepción, no el flujo diario.
+
+Cuando estén justificadas, usa prefijos coherentes:
 
 ```text
 feat/
@@ -218,24 +237,15 @@ ci/
 Ejemplos:
 
 ```text
-feat/auth-supabase
-fix/map-radius-filter
+fix/auth-redirect
 docs/update-architecture
 refactor/report-service
-test/pet-registration
-chore/monorepo-setup
-ci/vercel-preview
 ```
 
-Los nombres deben:
-
-- estar en minúsculas;
-- usar guiones;
-- ser breves;
-- describir una sola tarea.
+No abras una rama adicional si `lab/dev` resuelve el trabajo con seguridad.
+No mantengas ramas largas ni mezcles tareas independientes sin necesidad.
 
 ---
-
 ## 8. Commits
 
 Usa Conventional Commits.

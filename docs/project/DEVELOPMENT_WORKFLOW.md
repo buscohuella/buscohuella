@@ -84,16 +84,22 @@ Slack, correo o conversaciones informales no sustituyen a GitHub ni Notion.
 
 ## 3. Ciclo obligatorio de trabajo
 
-`main` es estable y protegido. Todo trabajo se desarrolla en una rama corta creada
-desde `origin/main` actualizado, usando un único laboratorio reutilizable, por ejemplo
-`D:\Proyectos\buscohuella-dev`. El laboratorio conserva `node_modules/`, `.env.local`
-y builds cuando sea seguro; antes de `pnpm install` se comprueba si ya está preparado.
-No se crean worktrees nuevos por costumbre, solo por paralelismo real o necesidad técnica.
+`main` es estable y protegido. El trabajo diario se realiza en el laboratorio
+reutilizable `D:\Proyectos\buscohuella-dev` sobre la rama permanente `lab/dev`.
+
+Por defecto trabaja un único writer principal sobre `lab/dev`. No se crea una rama
+nueva por ticket ni un worktree nuevo por costumbre. Ramas o worktrees adicionales
+solo se justifican por paralelismo real, aislamiento técnico, hotfix u otra necesidad
+explícita.
+
+El laboratorio conserva `node_modules/`, `.env.local` y builds cuando sea seguro.
+Antes de reinstalar o reconstruir, se comprueba si el entorno ya está preparado.
 
 Antes de modificar:
 
 ```text
-confirmar cwd → rama → git status --short → git log -1 --oneline → origin/main actual
+confirmar cwd → confirmar lab/dev → git status --short --branch
+→ git log -1 --oneline → conocer estado de origin/main y origin/lab/dev
 ```
 
 Todo bloque sigue este ciclo:
@@ -104,14 +110,15 @@ Todo bloque sigue este ciclo:
 3. Probar y revisar seguridad/accesibilidad/i18n según aplique
 4. Documentar
 5. Revisar diff
-6. Commit referenciado al ticket
-7. Pull Request y revisión humana
-8. Merge a main solo tras validación
-9. Actualizar Notion
+6. Commit referenciado al ticket cuando exista
+7. Push de lab/dev
+8. Pull Request y revisión humana
+9. Merge a main solo tras validación
+10. Actualizar Notion
+11. Realinear lab/dev de forma consciente
 ```
 
-Si falla una validación, se corrige en la misma rama hasta quedar verde.
-
+Si falla una validación, se corrige en `lab/dev` hasta quedar verde.
 ### 3.1 Diseñar
 
 Antes de escribir código se define:
@@ -239,29 +246,29 @@ chore(monorepo): actualizar configuración del workspace
 El commit debe referenciar el ID del ticket cuando exista. Un commit no implica que
 el trabajo esté cerrado.
 
-### 3.7 Pull Request y ciclo de rama
+### 3.7 Pull Request y ciclo de integración
 
 Después de un commit validado:
 
 ```powershell
-git push -u origin nombre-de-la-rama
+git -C "D:\Proyectos\buscohuella-dev" push origin lab/dev
 ```
 
-El trabajo entra en `main` únicamente mediante Pull Request aprobado. Tras el merge:
+El trabajo entra en `main` únicamente mediante Pull Request aprobado.
 
 ```text
-PASS → PR → main → borrar rama → actualizar laboratorio desde main
-FAIL → corregir en la misma rama hasta quedar verde
+PASS → push lab/dev → PR → main → realinear lab/dev
+FAIL → corregir en lab/dev hasta quedar verde
 ```
 
-No se hace auto-merge ni se desarrollan ramas largas acumuladas.
+No se hace auto-merge. Antes de realinear `lab/dev` tras un merge, se comprueba que
+no existan commits o cambios pendientes que puedan perderse.
 
-El estado local final esperado antes del PR es:
+El estado local esperado antes de abrir o actualizar el PR es:
 
 ```text
 nothing to commit, working tree clean
 ```
-
 ### 3.8 Actualizar Notion
 
 Al cerrar un bloque se actualiza:
@@ -741,22 +748,21 @@ Los lockfiles sí deben versionarse cuando cambien dependencias.
 
 ## 17. Ramas y Pull Requests
 
-Siempre se utilizan ramas cortas por ticket, creadas desde `origin/main` actualizado.
-El laboratorio diario es la carpeta reutilizable; no se abre un worktree por tarea
-salvo justificación técnica o paralelismo real.
+El flujo ordinario usa la rama permanente `lab/dev` en el laboratorio
+`D:\Proyectos\buscohuella-dev`.
 
-```text
-feat/FP-001-app-shell
-fix/auth-redirect
-docs/design-system
-```
+No se crean ramas cortas por ticket de forma automática. Una rama o worktree
+adicional requiere una razón explícita: paralelismo real, aislamiento técnico,
+hotfix o necesidad equivalente.
 
-Los Pull Requests son obligatorios para todo trabajo que entre en `main`, y requieren
+Los Pull Requests son obligatorios para integrar trabajo en `main` y requieren
 validaciones y revisión humana. Los cambios críticos, de seguridad, base de datos o
 producción deben incluir además sus evidencias y riesgos explícitos.
 
----
+La protección de `main`, CI, tests, RLS y demás barreras deterministas prevalecen
+sobre depender únicamente de instrucciones escritas para agentes.
 
+---
 ## 18. Excepciones urgentes
 
 Un hotfix puede reducir pasos previos cuando existe:

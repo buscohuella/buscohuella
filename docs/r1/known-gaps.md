@@ -49,3 +49,8 @@ PWA completa, entrega push y cobertura legal no se presumen por existir una web,
 ## Seguimiento
 
 Notion registra decisiones/resultados y enlaces a issue/PR; Drive START HERE enlaza esta documentación versionada. No marcar cerrado un gap por haber creado un issue. Cada cierre necesita evidencia, entorno/commit y revisión; distinguir corrección versionada de despliegue.
+
+
+### Cierres verificados posteriores al corte
+
+- **R1-SEC-004 — CLOSED LOCAL (2026-09-29), resultado: BLOCKED BY PLAN.** El Security Advisor de `buscohuella-beta` confirma `Leaked Password Protection Disabled`. En Authentication → Sign In / Providers → Email, el Dashboard muestra `Prevent use of leaked passwords` desactivado e indica que solo está disponible en Pro o superior. La organización está en plan FREE. No se modificó configuración remota ni se declara la protección como activa.

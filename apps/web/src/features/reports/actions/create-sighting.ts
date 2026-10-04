@@ -10,8 +10,6 @@ import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 import type { CreateSightingState } from '../types/create-sighting-state';
 
-type Row = ReportDatabase['public']['Tables']['sightings']['Row'];
-type RpcResult = { data: Row | null; error: { code?: string; message?: string } | null };
 const text = (fd: FormData, name: string) => {
   const value = fd.get(name);
   return typeof value === 'string' ? value.trim() : '';
@@ -46,33 +44,22 @@ export async function createSightingAction(
   }
 
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return { status: 'error', message: translate('sightingCreate.errors.session') };
 
   const client = supabase as unknown as SupabaseClient<ReportDatabase>;
-  const rpc = client.rpc.bind(client) as unknown as (
-    name: 'create_report_sighting',
-    args: {
-      target_report_id: string;
-      target_observed_at: string;
-      target_confidence: string;
-      target_notes: string | null;
-      target_location_source: string;
-      target_latitude: number | null;
-      target_longitude: number | null;
-      target_location_label: string | null;
-    },
-  ) => Promise<RpcResult>;
 
-  const { data, error } = await rpc('create_report_sighting', {
+  const { data, error } = await client.rpc('create_report_sighting', {
     target_report_id: reportId,
     target_observed_at: date.toISOString(),
     target_confidence: confidence,
-    target_notes: notes,
     target_location_source: locationSource,
-    target_latitude: latitude,
-    target_longitude: longitude,
-    target_location_label: locationLabel,
+    ...(notes !== null ? { target_notes: notes } : {}),
+    ...(latitude !== null ? { target_latitude: latitude } : {}),
+    ...(longitude !== null ? { target_longitude: longitude } : {}),
+    ...(locationLabel !== null ? { target_location_label: locationLabel } : {}),
   });
 
   if (error || !data) {

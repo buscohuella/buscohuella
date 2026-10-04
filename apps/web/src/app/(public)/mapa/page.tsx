@@ -11,46 +11,29 @@ import {
 } from '@/features/maps/components/public-map';
 import { createClient } from '@/services/supabase/server';
 
-type RpcResult = {
-  data: Array<{
-    id: string;
-    report_type: 'LOST_PET' | 'FOUND_ANIMAL';
-    species_id: number;
-    title: string;
-    description: string;
-    municipality_name: string | null;
-    public_location_precision: string;
-    latitude: number | null;
-    longitude: number | null;
-    incident_at: string | null;
-  }> | null;
-  error: { message?: string } | null;
-};
+function toPublicReportType(value: string): 'LOST_PET' | 'FOUND_ANIMAL' {
+  if (value === 'LOST_PET' || value === 'FOUND_ANIMAL') {
+    return value;
+  }
 
-function getPublicReportsRpc(client: SupabaseClient<ReportDatabase>) {
-  return client.rpc.bind(client) as unknown as (
-    functionName: 'get_public_reports',
-    args: {
-      filter_species_id: null;
-      filter_report_type: null;
-      result_limit: number;
-    },
-  ) => Promise<RpcResult>;
+  throw new Error('Unexpected public report type: ' + value);
 }
-
-async function loadPublicMapReports(speciesLabels: { all: string; dog: string; cat: string; other: string }): Promise<{ reports: PublicMapReport[]; speciesFilters: PublicMapSpeciesFilter[] }> {
+async function loadPublicMapReports(speciesLabels: {
+  all: string;
+  dog: string;
+  cat: string;
+  other: string;
+}): Promise<{ reports: PublicMapReport[]; speciesFilters: PublicMapSpeciesFilter[] }> {
   const supabase = await createClient();
   const client = supabase as unknown as SupabaseClient<ReportDatabase>;
   const [{ data, error }, { data: species, error: speciesError }] = await Promise.all([
-    getPublicReportsRpc(client)(
-    'get_public_reports',
-    {
-      filter_species_id: null,
-      filter_report_type: null,
-      result_limit: 100,
-    },
-    ),
-    supabase.from('pet_species').select('id, code').eq('is_enabled', true).eq('mvp_enabled', true).order('sort_order'),
+    client.rpc('get_public_reports', { result_limit: 100 }),
+    supabase
+      .from('pet_species')
+      .select('id, code')
+      .eq('is_enabled', true)
+      .eq('mvp_enabled', true)
+      .order('sort_order'),
   ]);
 
   if (error) {
@@ -69,21 +52,25 @@ async function loadPublicMapReports(speciesLabels: { all: string; dog: string; c
 
   return {
     reports: (data ?? []).map((report) => ({
-    id: report.id,
-    reportType: report.report_type,
-    speciesId: report.species_id,
-    title: report.title,
-    description: report.description,
-    municipalityName: report.municipality_name,
-    publicLocationPrecision: report.public_location_precision,
-    latitude: report.latitude,
-    longitude: report.longitude,
-    incidentAt: report.incident_at,
+      id: report.id,
+      reportType: toPublicReportType(report.report_type),
+      speciesId: report.species_id,
+      title: report.title,
+      description: report.description,
+      municipalityName: report.municipality_name,
+      publicLocationPrecision: report.public_location_precision,
+      latitude: report.latitude,
+      longitude: report.longitude,
+      incidentAt: report.incident_at,
     })),
     speciesFilters: [
       { key: 'all', label: speciesLabels.all, ids: speciesRows.map((item) => item.id) },
-      ...(dogId === undefined ? [] : [{ key: 'dog' as const, label: speciesLabels.dog, ids: [dogId] }]),
-      ...(catId === undefined ? [] : [{ key: 'cat' as const, label: speciesLabels.cat, ids: [catId] }]),
+      ...(dogId === undefined
+        ? []
+        : [{ key: 'dog' as const, label: speciesLabels.dog, ids: [dogId] }]),
+      ...(catId === undefined
+        ? []
+        : [{ key: 'cat' as const, label: speciesLabels.cat, ids: [catId] }]),
       { key: 'other' as const, label: speciesLabels.other, ids: otherIds },
     ],
   };
@@ -134,9 +121,9 @@ export default async function PublicMapPage() {
           locationTitle: translate('publicReport.list.locationTitle'),
           markOnMap: translate('publicReport.list.markOnMap'),
           markingOnMap: translate('publicReport.list.markingOnMap'),
-    addressPlaceholder: translate('publicReport.list.addressPlaceholder'),
-    chooseOnMap: translate('publicReport.list.chooseOnMap'),
-    clearLocation: translate('publicReport.list.clearLocation'),
+          addressPlaceholder: translate('publicReport.list.addressPlaceholder'),
+          chooseOnMap: translate('publicReport.list.chooseOnMap'),
+          clearLocation: translate('publicReport.list.clearLocation'),
           mapUnavailable: translate('publicReport.list.mapUnavailable'),
           listTitle: translate('publicReport.list.mapListTitle'),
           petLabel: translate('publicReport.details.name'),

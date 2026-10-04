@@ -11,14 +11,7 @@ export async function updateNotificationPreferencesAction(
 ) {
   const supabase = await createClient();
   const client = supabase as unknown as SupabaseClient<ReportDatabase>;
-  const rpc = client.rpc.bind(client) as unknown as (
-    name: 'update_my_notification_preferences',
-    args: {
-      target_in_app_sightings: boolean;
-      target_in_app_report_updates: boolean;
-    },
-  ) => Promise<{ data: boolean | null; error: { message?: string } | null }>;
-  const { data, error } = await rpc('update_my_notification_preferences', {
+  const { data, error } = await client.rpc('update_my_notification_preferences', {
     target_in_app_sightings: inAppSightings,
     target_in_app_report_updates: inAppReportUpdates,
   });

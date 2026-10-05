@@ -66,17 +66,19 @@ Auth / RLS / Storage / autorización / privacidad / datos sensibles
 → buscohuella-security-rls-audit
 
 Cambio observable por el usuario
-→ buscohuella-qa-e2e tras implementación e integración
+- usar `buscohuella-qa-e2e` tras la implementacion en LOCAL o sobre DEV/TEST/BETA/STAGING segun el alcance
+- la QA remota puede realizarse antes de integrar en main
 
-Revisión independiente de una entrega relevante
-→ buscohuella-independent-audit
+Revision independiente de una entrega relevante
+- usar `buscohuella-independent-audit`
 
 Integrar a `main` una referencia ya validada y revisada
-→ buscohuella-integration
+- usar `buscohuella-integration`
 
-Aplicar a Supabase remoto un cambio ya integrado y autorizado
-→ buscohuella-supabase-rollout
-
+Aplicar a Supabase remoto un cambio validado, revisado y autorizado
+- usar `buscohuella-supabase-rollout`
+- DEV/TEST/BETA/STAGING puede usar una referencia exacta auditada antes de main
+- PRODUCCION/LIVE exige origin/main + INTEGRATION_PASS
 Cambio mecánico o documentación con contenido completamente definido
 → operación determinista; no gastar un agente de código por defecto
 ```
@@ -105,7 +107,7 @@ Reutilizar decisiones ya documentadas y evitar repetir análisis cerrados.
 Dejar trazables, cuando apliquen:
 
 - ID de tarea o ticket;
-- estado real (`IMPLEMENTED`, `VERIFIED LOCAL`, `VERIFIED LIVE`, etc.);
+- estado real (`IMPLEMENTED`, `VERIFIED LOCAL`, `VERIFIED REMOTE - <ENTORNO>`, `VERIFIED LIVE`, etc.);
 - commit o PR relacionado;
 - pruebas ejecutadas y resultado;
 - riesgos o bloqueos abiertos;

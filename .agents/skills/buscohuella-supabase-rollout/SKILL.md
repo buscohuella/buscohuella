@@ -1,24 +1,26 @@
 ---
 name: buscohuella-supabase-rollout
-description: Aplicar de forma controlada a un entorno Supabase remoto cambios ya implementados, integrados y revisados —migraciones SQL o configuración explícitamente autorizada— con baseline, comprobación de pendientes, backup/restore, rollback y verificación LIVE. No desarrolla migraciones ni corrige código.
+description: Aplicar de forma controlada a un entorno Supabase remoto cambios ya implementados y revisados - migraciones SQL o configuracion explicitamente autorizada - con baseline, comprobacion de pendientes, backup/restore, rollback y verificacion. Para PRODUCCION/LIVE exige ademas integracion previa en origin/main; DEV/TEST/BETA/STAGING puede usar una referencia exacta auditada antes de main. No desarrolla migraciones ni corrige codigo.
 ---
 
 # BuscoHuella Supabase Rollout
 
-Aplica primero [AGENTS.md](../../../AGENTS.md). Esta skill empieza después de `buscohuella-delivery`, las auditorías aplicables y `buscohuella-integration`. No sustituye ninguna de ellas.
+Aplica primero [AGENTS.md](../../../AGENTS.md). Esta skill empieza después de `buscohuella-delivery` y de las auditorías aplicables. En DEV/TEST/BETA/STAGING puede ejecutarse antes de `buscohuella-integration` sobre una referencia exacta ya validada y auditada; en PRODUCCIÓN/LIVE empieza después de `buscohuella-integration`. No sustituye ninguna de ellas.
 
 ## Precondiciones obligatorias
 
-1. Identificar explícitamente proyecto Supabase y entorno objetivo. No inferirlo por nombre, sesión o último proyecto usado.
-2. El cambio exacto debe estar integrado en `origin/main`, su SHA registrado y debe existir `INTEGRATION_PASS`; cualquier CI requerida sobre ese SHA debe estar en PASS.
-3. La migración/configuración debe tener validación local aplicable (`VERIFIED LOCAL`) y revisión independiente favorable.
+1. Identificar explicitamente proyecto Supabase y entorno objetivo. No inferirlo por nombre, sesion o ultimo proyecto usado. Clasificarlo como DEV/TEST/BETA/STAGING o PRODUCCION/LIVE antes de continuar.
+2. Fijar la referencia fuente exacta del cambio mediante SHA/commit auditado:
+   - DEV/TEST/BETA/STAGING: puede ser una referencia validada de `lab/dev` todavia no integrada en `main`, siempre que el cambio exacto tenga `VERIFIED LOCAL`, las revisiones aplicables y no contenga trabajo adicional no auditado.
+   - PRODUCCION/LIVE: el cambio exacto debe estar integrado en `origin/main`, su SHA registrado, debe existir `INTEGRATION_PASS` y cualquier CI requerida sobre ese SHA debe estar en PASS.
+3. La migracion/configuracion debe tener validacion local aplicable (`VERIFIED LOCAL`) y revision independiente favorable sobre la misma referencia fuente.
 4. Si afecta Auth, RLS, policies, Storage, grants, SECURITY DEFINER, privacidad o acceso: exigir `SECURITY_REVIEW_PASS` sobre la misma referencia.
-5. Debe existir autorización explícita para tocar el entorno remoto indicado.
-6. Debe estar comprobado el mecanismo de backup/restore o recuperación aplicable y registrado el punto de retorno.
+5. Debe existir autorizacion explicita para tocar el proyecto y entorno remoto indicados. Una autorizacion para BETA/STAGING no autoriza PRODUCCION/LIVE.
+6. Debe estar comprobado el mecanismo de backup/restore o recuperacion aplicable y registrado el punto de retorno.
 7. No puede existir drift remoto inexplicado en los objetos que el cambio va a modificar.
-8. `supabase migration list` debe ofrecer un historial local↔remoto reconciliado que permita identificar inequívocamente el conjunto pendiente. Si existen versiones local-only/remote-only históricas sin reconciliar —aunque el esquema parezca correcto— esta skill termina con `ROLLOUT_BLOCKED`. La reparación del migration history es una tarea separada y explícitamente autorizada; esta skill **no ejecuta `migration repair`, `db pull` ni mutaciones del historial para desbloquearse a sí misma**.
-9. Debe definirse el orden de despliegue código ↔ base de datos. Si la app desplegada todavía depende del esquema anterior o el nuevo código requiere el esquema nuevo, documentar compatibilidad y secuencia antes de aplicar; preferir cambios backward-compatible/expand-contract cuando sea necesario.
-10. Si el cambio es destructivo, irreversible, contiene backfill material o puede bloquear tablas/objetos críticos, debe existir evaluación explícita de impacto, ventana/estrategia operativa y recuperación suficiente. Sin ello: `ROLLOUT_BLOCKED`.
+8. `supabase migration list` debe ofrecer un historial local-remoto reconciliado que permita identificar inequivocamente el conjunto pendiente. Si existen versiones local-only/remote-only historicas sin reconciliar - aunque el esquema parezca correcto - esta skill termina con `ROLLOUT_BLOCKED`. La reparacion del migration history es una tarea separada y explicitamente autorizada; esta skill **no ejecuta `migration repair`, `db pull` ni mutaciones del historial para desbloquearse a si misma**.
+9. Debe definirse el orden de despliegue codigo-base de datos. Si la app desplegada todavia depende del esquema anterior o el nuevo codigo requiere el esquema nuevo, documentar compatibilidad y secuencia antes de aplicar; preferir cambios backward-compatible/expand-contract cuando sea necesario. Un rollout previo a BETA/STAGING debe registrar que SHA lo origino y esa migracion ya aplicada no puede editarse antes de su integracion posterior.
+10. Si el cambio es destructivo, irreversible, contiene backfill material o puede bloquear tablas/objetos criticos, debe existir evaluacion explicita de impacto, ventana/estrategia operativa y recuperacion suficiente. Sin ello: `ROLLOUT_BLOCKED`.
 
 Si falla una precondición, termina con `ROLLOUT_BLOCKED` sin escribir en remoto.
 
@@ -28,7 +30,7 @@ Antes de aplicar:
 
 1. Registrar identidad/ref del proyecto y entorno.
 2. Capturar historial remoto de migraciones.
-3. Compararlo con `supabase/migrations/` de `origin/main` y con la evidencia canónica de reconciliación del migration history.
+3. Compararlo con `supabase/migrations/` de la referencia fuente exacta autorizada y con la evidencia canónica de reconciliación del migration history. En PRODUCCIÓN/LIVE esa referencia debe ser el SHA integrado en `origin/main`.
 4. Ejecutar/inspeccionar `supabase migration list` en modo no mutante y exigir que las versiones local↔remoto estén reconciliadas. Si el CLI aborta por remote-only/local-only históricos no resueltos, `ROLLOUT_BLOCKED`; no intentar repararlos dentro de esta ejecución.
 5. Determinar **el conjunto exacto de migraciones pendientes**.
 6. Si existe cualquier migración pendiente adicional a las expresamente autorizadas para este rollout, `ROLLOUT_BLOCKED`. No usar `db push` para aplicar implícitamente un lote mayor.
@@ -75,7 +77,8 @@ Tras una aplicación técnicamente exitosa:
 
 - `ROLLOUT_BLOCKED`: no se escribió en remoto porque faltaba una precondición, había drift o pendientes inesperados.
 - `APPLIED_NOT_VERIFIED`: el cambio quedó aplicado, pero falta una verificación necesaria o existe una incidencia no resuelta. No continuar con dependencias posteriores.
-- `VERIFIED LIVE`: el cambio exacto está aplicado y todas las verificaciones requeridas terminaron en PASS con evidencia.
+- `VERIFIED REMOTE - <ENTORNO>`: el cambio exacto está aplicado en el entorno remoto indicado y todas las verificaciones requeridas terminaron en PASS con evidencia.
+- `VERIFIED LIVE`: solo para PRODUCCIÓN/LIVE, después de cumplir además las precondiciones de integración en `origin/main` y verificar el entorno de producción.
 
 Si la verificación falla después de aplicar:
 
@@ -85,7 +88,7 @@ Si la verificación falla después de aplicar:
 4. revisar/auditar la corrección antes de aplicarla salvo incidente que requiera respuesta urgente expresamente autorizada;
 5. registrar estado parcial y evidencia. Nunca convertir un fallo en éxito silencioso.
 
-`VERIFIED LIVE` de esta skill no significa `CLOSED` del Feature Pack o bloque funcional.
+`VERIFIED REMOTE - <ENTORNO>` o `VERIFIED LIVE` no significan por sí solos `CLOSED` del Feature Pack o bloque funcional.
 
 ## Guardrails
 

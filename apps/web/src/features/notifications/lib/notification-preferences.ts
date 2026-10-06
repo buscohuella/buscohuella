@@ -13,18 +13,10 @@ const defaults: NotificationPreferences = {
   inAppReportUpdates: true,
 };
 
-type PreferencesRow = {
-  in_app_sightings: boolean;
-  in_app_report_updates: boolean;
-};
-
 export async function getMyNotificationPreferences(): Promise<NotificationPreferences> {
   const supabase = await createClient();
   const client = supabase as unknown as SupabaseClient<ReportDatabase>;
-  const rpc = client.rpc.bind(client) as unknown as (
-    name: 'get_my_notification_preferences',
-  ) => Promise<{ data: PreferencesRow[] | null; error: { message?: string } | null }>;
-  const { data, error } = await rpc('get_my_notification_preferences');
+  const { data, error } = await client.rpc('get_my_notification_preferences');
 
   if (error) {
     // A deployment can briefly have the UI ahead of the database migration.

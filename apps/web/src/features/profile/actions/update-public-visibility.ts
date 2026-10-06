@@ -9,13 +9,11 @@ export type PublicVisibilityResult = {
   reason?: 'SESSION' | 'ALIAS_REQUIRED' | 'DATABASE';
 };
 
-export async function updatePublicVisibilityAction(
-  preferences: {
-    isPublic: boolean;
-    showAvatar: boolean;
-    showMunicipality: boolean;
-  },
-): Promise<PublicVisibilityResult> {
+export async function updatePublicVisibilityAction(preferences: {
+  isPublic: boolean;
+  showAvatar: boolean;
+  showMunicipality: boolean;
+}): Promise<PublicVisibilityResult> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -40,7 +38,7 @@ export async function updatePublicVisibilityAction(
       is_public: preferences.isPublic,
       public_show_avatar: preferences.showAvatar,
       public_show_municipality: preferences.showMunicipality,
-    } as never)
+    })
     .eq('id', user.id);
 
   if (error) return { ok: false, reason: 'DATABASE' };

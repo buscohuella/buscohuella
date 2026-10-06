@@ -671,7 +671,7 @@ Un agente no debe:
 
 ## 24. Skills compartidas del proyecto
 
-Las skills compartidas del proyecto se ubicarán en:
+Las skills compartidas del proyecto viven en:
 
 ```text
 .agents/skills/
@@ -683,17 +683,31 @@ Cada skill debe tener:
 .agents/skills/<skill-name>/SKILL.md
 ```
 
-No se deben crear skills vacías.
-
-Una skill solo debe añadirse cuando exista un procedimiento repetitivo y bien definido.
-
-Ejemplos futuros:
+Skills activas:
 
 ```text
-.agents/skills/buscohuella-docs/SKILL.md
-.agents/skills/buscohuella-feature/SKILL.md
-.agents/skills/buscohuella-review/SKILL.md
+buscohuella-delivery
+buscohuella-independent-audit
+buscohuella-security-rls-audit
+buscohuella-qa-e2e
+buscohuella-integration
+buscohuella-supabase-rollout
 ```
+
+Responsabilidades:
+
+- `buscohuella-delivery`: implementar/corregir hasta `VERIFIED LOCAL`.
+- `buscohuella-independent-audit`: revisión técnica independiente READ-ONLY.
+- `buscohuella-security-rls-audit`: auditoría READ-ONLY de Auth/RLS/Storage/privacidad.
+- `buscohuella-qa-e2e`: QA funcional/E2E en LOCAL o DEV/TEST.
+- `buscohuella-integration`: integrar a `main` trabajo ya validado/revisado.
+- `buscohuella-supabase-rollout`: aplicar y verificar cambios Supabase remotos ya integrados y autorizados.
+
+No ejecutar todas las skills por defecto: elegir únicamente las que correspondan a la
+fase y superficie de la tarea según `docs/AI_WORKFLOW.md`.
+
+No se deben crear skills vacías. Una nueva skill solo se añade cuando exista un
+procedimiento repetitivo, estable y no cubierto adecuadamente por las skills actuales.
 
 Las skills no sustituyen a este archivo.
 

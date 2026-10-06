@@ -4,6 +4,7 @@ import { AuthCard } from '@/components/auth/auth-card';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { AuthNotice } from '@/features/auth/components/auth-notice';
 import { LoginForm } from '@/features/auth/components/login-form';
+import { RegistrationSuccessNotice } from '@/features/auth/components/registration-success-notice';
 import { getServerTranslator } from '@/features/i18n/server';
 
 export const metadata: Metadata = {
@@ -28,10 +29,9 @@ export default async function LoginPage({
   const params = await searchParams;
   const { translate } = await getServerTranslator();
 
+  const registrationSucceeded = params.registered === '1';
   const notice =
-    params.registered === '1'
-      ? translate('auth.login.registered')
-      : params.password_updated === '1'
+    params.password_updated === '1'
         ? translate('auth.login.passwordUpdated')
       : params.logged_out === '1'
         ? translate('auth.login.loggedOut')
@@ -45,6 +45,9 @@ export default async function LoginPage({
       description={translate('auth.login.description')}
     >
       <AuthCard>
+        {registrationSucceeded ? (
+          <RegistrationSuccessNotice next={params.next} />
+        ) : null}
         <AuthNotice message={notice} />
         <LoginForm next={params.next} />
       </AuthCard>

@@ -1,17 +1,10 @@
-import type {
-  Database as ReportDatabase,
-} from '@buscohuella/report-data';
-import type {
-  SupabaseClient,
-} from '@supabase/supabase-js';
+import type { Database as ReportDatabase } from '@buscohuella/report-data';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type {
-  ReportDatabaseWithSightingPhotos,
-} from '@/features/reports/lib/sighting-photo-database';
+import type { ReportDatabaseWithSightingPhotos } from '@/features/reports/lib/sighting-photo-database';
 import { createClient } from '@/services/supabase/server';
 
-const SIGHTING_PHOTOS_BUCKET =
-  'sighting-photos';
+const SIGHTING_PHOTOS_BUCKET = 'sighting-photos';
 
 export type OwnerSighting = {
   id: string;
@@ -20,16 +13,8 @@ export type OwnerSighting = {
   petName: string | null;
   observedAt: string;
   notes: string | null;
-  confidence:
-    | 'UNSURE'
-    | 'POSSIBLE'
-    | 'LIKELY'
-    | 'CERTAIN';
-  reviewStatus:
-    | 'PENDING'
-    | 'ACCEPTED'
-    | 'REJECTED'
-    | 'FLAGGED';
+  confidence: 'UNSURE' | 'POSSIBLE' | 'LIKELY' | 'CERTAIN';
+  reviewStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FLAGGED';
   locationLabel: string | null;
   locationSource: 'GPS' | 'MANUAL';
   publicLocationPrecision: string;
@@ -51,22 +36,10 @@ export type OwnerSightingPhoto = {
 };
 
 export type OwnerSightingFilters = {
-  status?:
-    | 'ALL'
-    | 'PENDING'
-    | 'ACCEPTED'
-    | 'REJECTED'
-    | 'FLAGGED';
-  archive?:
-    | 'ACTIVE'
-    | 'ARCHIVED'
-    | 'ALL';
+  status?: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FLAGGED';
+  archive?: 'ACTIVE' | 'ARCHIVED' | 'ALL';
   hasPhotos?: boolean | null;
-  sort?:
-    | 'RECENT'
-    | 'OLDEST'
-    | 'CONFIDENCE'
-    | 'PHOTOS';
+  sort?: 'RECENT' | 'OLDEST' | 'CONFIDENCE' | 'PHOTOS';
   page?: number;
   pageSize?: number;
 };
@@ -82,74 +55,17 @@ export type OwnerSightingsSummary = {
   withPhotos: number;
 };
 
-type OwnerSightingRpcRow = {
-  id: string;
-  report_id: string;
-  report_title: string;
-  pet_name: string | null;
-  observed_at: string;
-  notes: string | null;
-  confidence: string;
-  review_status: string;
-  location_label: string | null;
-  location_source: string;
-  public_location_precision: string;
-  exact_latitude: number | null;
-  exact_longitude: number | null;
-  public_latitude: number | null;
-  public_longitude: number | null;
-  created_at: string;
-  updated_at: string;
-  photo_count: number | string;
-  archived_at?: string | null;
-  total_count?: number | string;
-};
+type OwnerSightingRow =
+  ReportDatabase['public']['Functions']['get_owned_sightings']['Returns'][number];
 
-type RpcError = {
-  code?: string;
-  message?: string;
-  details?: string;
-  hint?: string;
-};
+type OwnerSightingPageRow =
+  ReportDatabase['public']['Functions']['get_owned_sightings_page']['Returns'][number];
 
-type OwnerSightingsRpcResult = {
-  data: OwnerSightingRpcRow[] | null;
-  error: RpcError | null;
-};
-
-type SummaryRpcRow = {
-  total: number | string;
-  active: number | string;
-  archived: number | string;
-  pending: number | string;
-  accepted: number | string;
-  rejected: number | string;
-  flagged: number | string;
-  with_photos: number | string;
-};
-
-type SummaryRpcResult = {
-  data: SummaryRpcRow[] | null;
-  error: RpcError | null;
-};
-
-type ArchiveStateRpcResult = {
-  data: boolean | null;
-  error: RpcError | null;
-};
-
-function getClient(
-  supabase: Awaited<
-    ReturnType<typeof createClient>
-  >,
-) {
-  return supabase as unknown as
-    SupabaseClient<ReportDatabase>;
+function getClient(supabase: Awaited<ReturnType<typeof createClient>>) {
+  return supabase as unknown as SupabaseClient<ReportDatabase>;
 }
 
-function mapRow(
-  row: OwnerSightingRpcRow,
-): OwnerSighting {
+function mapRow(row: OwnerSightingRow | OwnerSightingPageRow): OwnerSighting {
   return {
     id: row.id,
     reportId: row.report_id,
@@ -157,15 +73,11 @@ function mapRow(
     petName: row.pet_name,
     observedAt: row.observed_at,
     notes: row.notes,
-    confidence:
-      row.confidence as OwnerSighting['confidence'],
-    reviewStatus:
-      row.review_status as OwnerSighting['reviewStatus'],
+    confidence: row.confidence as OwnerSighting['confidence'],
+    reviewStatus: row.review_status as OwnerSighting['reviewStatus'],
     locationLabel: row.location_label,
-    locationSource:
-      row.location_source as OwnerSighting['locationSource'],
-    publicLocationPrecision:
-      row.public_location_precision,
+    locationSource: row.location_source as OwnerSighting['locationSource'],
+    publicLocationPrecision: row.public_location_precision,
     exactLatitude: row.exact_latitude,
     exactLongitude: row.exact_longitude,
     publicLatitude: row.public_latitude,
@@ -173,8 +85,7 @@ function mapRow(
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     photoCount: Number(row.photo_count),
-    archivedAt:
-      row.archived_at ?? null,
+    archivedAt: 'archived_at' in row ? row.archived_at : null,
   };
 }
 
@@ -189,15 +100,7 @@ export async function listOwnedSightings() {
   }
 
   const client = getClient(supabase);
-  const rpc =
-    client.rpc.bind(
-      client,
-    ) as unknown as (
-      name: 'get_owned_sightings',
-    ) => Promise<OwnerSightingsRpcResult>;
-
-  const { data, error } =
-    await rpc('get_owned_sightings');
+  const { data, error } = await client.rpc('get_owned_sightings');
 
   if (error) {
     throw error;
@@ -206,9 +109,7 @@ export async function listOwnedSightings() {
   return (data ?? []).map(mapRow);
 }
 
-export async function listOwnedSightingsPage(
-  filters: OwnerSightingFilters,
-) {
+export async function listOwnedSightingsPage(filters: OwnerSightingFilters) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -223,49 +124,22 @@ export async function listOwnedSightingsPage(
     };
   }
 
-  const page = Math.max(
-    filters.page ?? 1,
-    1,
-  );
-  const pageSize = Math.min(
-    Math.max(filters.pageSize ?? 20, 1),
-    50,
-  );
+  const page = Math.max(filters.page ?? 1, 1);
+  const pageSize = Math.min(Math.max(filters.pageSize ?? 20, 1), 50);
 
   const client = getClient(supabase);
-  const rpc =
-    client.rpc.bind(
-      client,
-    ) as unknown as (
-      name:
-        'get_owned_sightings_page',
-      args: {
-        target_status: string;
-        target_archive: string;
-        target_has_photos:
-          | boolean
-          | null;
-        target_sort: string;
-        target_page: number;
-        target_page_size: number;
-      },
-    ) => Promise<OwnerSightingsRpcResult>;
-
-  const { data, error } = await rpc(
-    'get_owned_sightings_page',
-    {
-      target_status:
-        filters.status ?? 'ALL',
-      target_archive:
-        filters.archive ?? 'ACTIVE',
-      target_has_photos:
-        filters.hasPhotos ?? null,
-      target_sort:
-        filters.sort ?? 'RECENT',
-      target_page: page,
-      target_page_size: pageSize,
-    },
-  );
+  const { data, error } = await client.rpc('get_owned_sightings_page', {
+    target_status: filters.status ?? 'ALL',
+    target_archive: filters.archive ?? 'ACTIVE',
+    ...(filters.hasPhotos !== null && filters.hasPhotos !== undefined
+      ? {
+          target_has_photos: filters.hasPhotos,
+        }
+      : {}),
+    target_sort: filters.sort ?? 'RECENT',
+    target_page: page,
+    target_page_size: pageSize,
+  });
 
   if (error) {
     throw error;
@@ -275,12 +149,7 @@ export async function listOwnedSightingsPage(
 
   return {
     sightings: rows.map(mapRow),
-    total:
-      rows.length > 0
-        ? Number(
-            rows[0].total_count ?? 0,
-          )
-        : 0,
+    total: rows.length > 0 ? Number(rows[0].total_count ?? 0) : 0,
     page,
     pageSize,
   };
@@ -306,17 +175,7 @@ export async function getOwnedSightingsSummary(): Promise<OwnerSightingsSummary>
   }
 
   const client = getClient(supabase);
-  const rpc =
-    client.rpc.bind(
-      client,
-    ) as unknown as (
-      name:
-        'get_owned_sightings_summary',
-    ) => Promise<SummaryRpcResult>;
-
-  const { data, error } = await rpc(
-    'get_owned_sightings_summary',
-  );
+  const { data, error } = await client.rpc('get_owned_sightings_summary');
 
   if (error) {
     throw error;
@@ -345,29 +204,17 @@ export async function getOwnedSightingsSummary(): Promise<OwnerSightingsSummary>
     accepted: Number(row.accepted),
     rejected: Number(row.rejected),
     flagged: Number(row.flagged),
-    withPhotos: Number(
-      row.with_photos,
-    ),
+    withPhotos: Number(row.with_photos),
   };
 }
 
-export async function getOwnedSighting(
-  sightingId: string,
-) {
-  const sightings =
-    await listOwnedSightings();
+export async function getOwnedSighting(sightingId: string) {
+  const sightings = await listOwnedSightings();
 
-  return (
-    sightings.find(
-      (sighting) =>
-        sighting.id === sightingId,
-    ) ?? null
-  );
+  return sightings.find((sighting) => sighting.id === sightingId) ?? null;
 }
 
-export async function getOwnedSightingArchiveState(
-  sightingId: string,
-) {
+export async function getOwnedSightingArchiveState(sightingId: string) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -378,24 +225,9 @@ export async function getOwnedSightingArchiveState(
   }
 
   const client = getClient(supabase);
-  const rpc =
-    client.rpc.bind(
-      client,
-    ) as unknown as (
-      name:
-        'get_owned_sighting_archive_state',
-      args: {
-        target_sighting_id: string;
-      },
-    ) => Promise<ArchiveStateRpcResult>;
-
-  const { data, error } = await rpc(
-    'get_owned_sighting_archive_state',
-    {
-      target_sighting_id:
-        sightingId,
-    },
-  );
+  const { data, error } = await client.rpc('get_owned_sighting_archive_state', {
+    target_sighting_id: sightingId,
+  });
 
   if (error) {
     throw error;
@@ -404,9 +236,7 @@ export async function getOwnedSightingArchiveState(
   return data === true;
 }
 
-export async function getOwnedSightingPhotos(
-  sightingId: string,
-): Promise<OwnerSightingPhoto[]> {
+export async function getOwnedSightingPhotos(sightingId: string): Promise<OwnerSightingPhoto[]> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -416,26 +246,18 @@ export async function getOwnedSightingPhotos(
     return [];
   }
 
-  const client =
-    supabase as unknown as
-      SupabaseClient<ReportDatabaseWithSightingPhotos>;
+  const client = supabase as unknown as SupabaseClient<ReportDatabaseWithSightingPhotos>;
 
-  const { data: photos, error } =
-    await client
-      .from('sighting_photos')
-      .select(
-        'id, storage_path, alt_text, position',
-      )
-      .eq(
-        'sighting_id',
-        sightingId,
-      )
-      .order('position', {
-        ascending: true,
-      })
-      .order('created_at', {
-        ascending: true,
-      });
+  const { data: photos, error } = await client
+    .from('sighting_photos')
+    .select('id, storage_path, alt_text, position')
+    .eq('sighting_id', sightingId)
+    .order('position', {
+      ascending: true,
+    })
+    .order('created_at', {
+      ascending: true,
+    });
 
   if (error) {
     throw error;
@@ -445,16 +267,10 @@ export async function getOwnedSightingPhotos(
     return [];
   }
 
-  const {
-    data: signed,
-    error: signError,
-  } = await supabase.storage
+  const { data: signed, error: signError } = await supabase.storage
     .from(SIGHTING_PHOTOS_BUCKET)
     .createSignedUrls(
-      photos.map(
-        (photo) =>
-          photo.storage_path,
-      ),
+      photos.map((photo) => photo.storage_path),
       900,
     );
 
@@ -467,11 +283,7 @@ export async function getOwnedSightingPhotos(
       id: photo.id,
       altText: photo.alt_text,
       position: photo.position,
-      signedUrl:
-        signed[index]?.signedUrl ?? '',
+      signedUrl: signed[index]?.signedUrl ?? '',
     }))
-    .filter(
-      (photo) =>
-        photo.signedUrl.length > 0,
-    );
+    .filter((photo) => photo.signedUrl.length > 0);
 }

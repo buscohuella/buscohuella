@@ -29,9 +29,7 @@ import {
 } from './mappers.js';
 
 export class ReportRepository {
-  constructor(
-    private readonly client: SupabaseClient<Database>,
-  ) {}
+  constructor(private readonly client: SupabaseClient<Database>) {}
 
   async listOwnReports(): Promise<Report[]> {
     const { data, error } = await this.client
@@ -45,11 +43,7 @@ export class ReportRepository {
   }
 
   async getOwnReportById(id: string): Promise<Report> {
-    const { data, error } = await this.client
-      .from('reports')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data, error } = await this.client.from('reports').select('*').eq('id', id).single();
 
     if (error) {
       throw normalizeReportDataError(error, 'REPORT_NOT_FOUND');
@@ -58,10 +52,7 @@ export class ReportRepository {
     return mapReportRow(data);
   }
 
-  async createReport(
-    createdBy: string,
-    input: CreateReportData,
-  ): Promise<Report> {
+  async createReport(createdBy: string, input: CreateReportData): Promise<Report> {
     const { data, error } = await this.client
       .from('reports')
       .insert(mapCreateReportToInsert(createdBy, input))
@@ -73,10 +64,7 @@ export class ReportRepository {
     return mapReportRow(data);
   }
 
-  async updateReport(
-    id: string,
-    input: UpdateReportData,
-  ): Promise<Report> {
+  async updateReport(id: string, input: UpdateReportData): Promise<Report> {
     const { data, error } = await this.client
       .from('reports')
       .update(mapUpdateReportToUpdate(input))
@@ -91,10 +79,7 @@ export class ReportRepository {
     return mapReportRow(data);
   }
 
-  async publishReport(
-    id: string,
-    input: PublishReportData,
-  ): Promise<Report> {
+  async publishReport(id: string, input: PublishReportData): Promise<Report> {
     return this.updateReport(id, {
       ...input,
       status: 'ACTIVE',
@@ -109,20 +94,14 @@ export class ReportRepository {
     return this.updateReport(id, { status: 'ACTIVE' });
   }
 
-  async resolveReport(
-    id: string,
-    input: ResolveReportData,
-  ): Promise<Report> {
+  async resolveReport(id: string, input: ResolveReportData): Promise<Report> {
     return this.updateReport(id, {
       status: 'RESOLVED',
       ...input,
     });
   }
 
-  async closeReport(
-    id: string,
-    input: CloseReportData,
-  ): Promise<Report> {
+  async closeReport(id: string, input: CloseReportData): Promise<Report> {
     return this.updateReport(id, {
       status: 'CLOSED',
       ...input,
@@ -138,14 +117,11 @@ export class ReportRepository {
     reportType?: 'LOST_PET' | 'FOUND_ANIMAL';
     limit?: number;
   }): Promise<PublicReport[]> {
-    const { data, error } = await this.client.rpc(
-      'get_public_reports',
-      {
-        filter_species_id: options?.speciesId ?? null,
-        filter_report_type: options?.reportType ?? null,
-        result_limit: options?.limit ?? 100,
-      },
-    );
+    const { data, error } = await this.client.rpc('get_public_reports', {
+      ...(options?.speciesId !== undefined ? { filter_species_id: options.speciesId } : {}),
+      ...(options?.reportType !== undefined ? { filter_report_type: options.reportType } : {}),
+      result_limit: options?.limit ?? 100,
+    });
 
     if (error) throw normalizeReportDataError(error);
 
@@ -166,9 +142,7 @@ export class ReportRepository {
 }
 
 export class SightingRepository {
-  constructor(
-    private readonly client: SupabaseClient<Database>,
-  ) {}
+  constructor(private readonly client: SupabaseClient<Database>) {}
 
   async listForReport(reportId: string): Promise<Sighting[]> {
     const { data, error } = await this.client
@@ -201,9 +175,7 @@ export class SightingRepository {
 }
 
 export class ReportPhotoRepository {
-  constructor(
-    private readonly client: SupabaseClient<Database>,
-  ) {}
+  constructor(private readonly client: SupabaseClient<Database>) {}
 
   async listForReport(reportId: string): Promise<ReportPhoto[]> {
     const { data, error } = await this.client
@@ -218,10 +190,7 @@ export class ReportPhotoRepository {
     return (data ?? []).map(mapReportPhotoRow);
   }
 
-  async createMetadata(
-    storagePath: string,
-    input: ReportPhotoInput,
-  ): Promise<ReportPhoto> {
+  async createMetadata(storagePath: string, input: ReportPhotoInput): Promise<ReportPhoto> {
     const { data, error } = await this.client
       .from('report_photos')
       .insert(mapReportPhotoToInsert(storagePath, input))
@@ -233,10 +202,7 @@ export class ReportPhotoRepository {
     return mapReportPhotoRow(data);
   }
 
-  async updateAltText(
-    id: string,
-    altText: string | null,
-  ): Promise<ReportPhoto> {
+  async updateAltText(id: string, altText: string | null): Promise<ReportPhoto> {
     const { data, error } = await this.client
       .from('report_photos')
       .update({ alt_text: altText })
@@ -252,10 +218,7 @@ export class ReportPhotoRepository {
   }
 
   async deleteMetadata(id: string): Promise<void> {
-    const { error } = await this.client
-      .from('report_photos')
-      .delete()
-      .eq('id', id);
+    const { error } = await this.client.from('report_photos').delete().eq('id', id);
 
     if (error) {
       throw normalizeReportDataError(error, 'REPORT_NOT_FOUND');

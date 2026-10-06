@@ -34,7 +34,7 @@ export async function recoverPasswordAction(
     await supabase.auth.resetPasswordForEmail(
       emailValidation.normalizedEmail,
       {
-        redirectTo: `${origin}/nueva-contrasena`,
+        redirectTo: `${origin}/auth/confirm?flow=recovery&next=%2Fnueva-contrasena`,
       },
     );
 

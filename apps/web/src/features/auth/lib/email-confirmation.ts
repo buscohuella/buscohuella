@@ -1,5 +1,7 @@
 import type { EmailOtpType } from '@supabase/supabase-js';
 
+import { getSafeInternalPath } from './safe-redirect';
+
 const EMAIL_OTP_TYPES = [
   'email',
   'signup',
@@ -8,7 +10,6 @@ const EMAIL_OTP_TYPES = [
   'recovery',
   'email_change',
 ] as const satisfies readonly EmailOtpType[];
-const INTERNAL_ORIGIN = 'https://buscohuella.invalid';
 
 export type EmailConfirmationAttempt =
   | { method: 'pkce'; code: string }
@@ -17,6 +18,27 @@ export type EmailConfirmationAttempt =
       tokenHash: string;
       type: EmailOtpType;
     };
+
+export function buildEmailConfirmationRedirectUrl({
+  origin,
+  locale,
+  next,
+}: {
+  origin: string;
+  locale: string;
+  next: string | null;
+}) {
+  const redirectUrl = new URL('/auth/confirm', origin);
+  redirectUrl.searchParams.set('locale', locale);
+
+  const safeNext = getSafeInternalPath(next);
+
+  if (safeNext) {
+    redirectUrl.searchParams.set('next', safeNext);
+  }
+
+  return redirectUrl.toString();
+}
 
 function isEmailOtpType(value: string | null): value is EmailOtpType {
   return value !== null && EMAIL_OTP_TYPES.some((type) => type === value);
@@ -41,20 +63,26 @@ export function getEmailConfirmationAttempt(
   return null;
 }
 
+export function isPasswordRecoveryConfirmation(
+  searchParams: URLSearchParams,
+  attempt: EmailConfirmationAttempt,
+) {
+  return (
+    (attempt.method === 'token_hash' &&
+      attempt.type === 'recovery') ||
+    (attempt.method === 'pkce' &&
+      searchParams.get('flow') === 'recovery')
+  );
+}
+
 export function getSafeEmailConfirmationNextPath(
   value: string | null,
   attempt: EmailConfirmationAttempt,
 ) {
-  if (value && value.startsWith('/') && !value.startsWith('//')) {
-    try {
-      const resolved = new URL(value, INTERNAL_ORIGIN);
+  const safeNext = getSafeInternalPath(value);
 
-      if (resolved.origin === INTERNAL_ORIGIN) {
-        return value;
-      }
-    } catch {
-      // Fall through to the safe default for malformed destinations.
-    }
+  if (safeNext) {
+    return safeNext;
   }
 
   return attempt.method === 'token_hash' && attempt.type === 'recovery'

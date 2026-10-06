@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 type Relation = {
   foreignKeyName: string;
@@ -15,9 +9,6 @@ type Relation = {
 };
 
 export type Database = {
-  __InternalSupabase: {
-    PostgrestVersion: '14.15';
-  };
   public: {
     Tables: {
       pet_breeds: {
@@ -45,9 +36,7 @@ export type Database = {
           species_id: number;
           updated_at?: string;
         };
-        Update: Partial<
-          Database['public']['Tables']['pet_breeds']['Insert']
-        >;
+        Update: Partial<Database['public']['Tables']['pet_breeds']['Insert']>;
         Relationships: Relation[];
       };
       pet_photos: {
@@ -81,9 +70,7 @@ export type Database = {
           visibility?: string;
           width?: number | null;
         };
-        Update: Partial<
-          Database['public']['Tables']['pet_photos']['Insert']
-        >;
+        Update: Partial<Database['public']['Tables']['pet_photos']['Insert']>;
         Relationships: Relation[];
       };
       pet_species: {
@@ -107,9 +94,7 @@ export type Database = {
           sort_order?: number;
           updated_at?: string;
         };
-        Update: Partial<
-          Database['public']['Tables']['pet_species']['Insert']
-        >;
+        Update: Partial<Database['public']['Tables']['pet_species']['Insert']>;
         Relationships: Relation[];
       };
       pets: {
@@ -173,9 +158,7 @@ export type Database = {
           visibility?: string;
           weight_kg?: number | null;
         };
-        Update: Partial<
-          Database['public']['Tables']['pets']['Insert']
-        >;
+        Update: Partial<Database['public']['Tables']['pets']['Insert']>;
         Relationships: Relation[];
       };
       profiles: {
@@ -188,6 +171,8 @@ export type Database = {
           is_public: boolean;
           municipality: string | null;
           public_alias: string | null;
+          public_show_avatar: boolean;
+          public_show_municipality: boolean;
           updated_at: string;
         };
         Insert: {
@@ -199,27 +184,82 @@ export type Database = {
           is_public?: boolean;
           municipality?: string | null;
           public_alias?: string | null;
+          public_show_avatar?: boolean;
+          public_show_municipality?: boolean;
           updated_at?: string;
         };
-        Update: Partial<
-          Database['public']['Tables']['profiles']['Insert']
-        >;
+        Update: Partial<Database['public']['Tables']['profiles']['Insert']>;
         Relationships: Relation[];
       };
-    };
-    Views: {
       public_profiles: {
         Row: {
           avatar_path: string | null;
-          bio: string | null;
-          created_at: string | null;
+          created_at: string;
           municipality: string | null;
-          public_alias: string | null;
+          public_alias: string;
         };
+        Insert: {
+          avatar_path?: string | null;
+          created_at: string;
+          municipality?: string | null;
+          public_alias: string;
+        };
+        Update: Partial<Database['public']['Tables']['public_profiles']['Insert']>;
         Relationships: Relation[];
       };
     };
-    Functions: Record<string, never>;
+    Views: Record<string, never>;
+    Functions: {
+      reorder_pet_photos: {
+        Args: {
+          ordered_photo_ids: string[];
+          target_pet_id: string;
+        };
+        Returns: Database['public']['Tables']['pet_photos']['Row'][];
+        SetofOptions: {
+          from: '*';
+          to: 'pet_photos';
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      repair_pet_photo_collection: {
+        Args: {
+          target_pet_id: string;
+        };
+        Returns: undefined;
+      };
+      set_pet_primary_photo: {
+        Args: {
+          target_photo_id: string;
+        };
+        Returns: Database['public']['Tables']['pet_photos']['Row'];
+        SetofOptions: {
+          from: '*';
+          to: 'pet_photos';
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      user_can_delete_pet_photo_for_storage: {
+        Args: {
+          target_pet_id: string;
+        };
+        Returns: boolean;
+      };
+      user_owns_active_pet_for_storage: {
+        Args: {
+          target_pet_id: string;
+        };
+        Returns: boolean;
+      };
+      user_owns_pet_for_storage: {
+        Args: {
+          target_pet_id: string;
+        };
+        Returns: boolean;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };
@@ -227,8 +267,7 @@ export type Database = {
 
 type PublicSchema = Database['public'];
 
-export type Tables<T extends keyof PublicSchema['Tables']> =
-  PublicSchema['Tables'][T]['Row'];
+export type Tables<T extends keyof PublicSchema['Tables']> = PublicSchema['Tables'][T]['Row'];
 
 export type TablesInsert<T extends keyof PublicSchema['Tables']> =
   PublicSchema['Tables'][T]['Insert'];

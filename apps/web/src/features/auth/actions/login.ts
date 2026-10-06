@@ -4,15 +4,9 @@ import { redirect } from 'next/navigation';
 
 import { createClient } from '@/services/supabase/server';
 import { getServerTranslator } from '@/features/i18n/server';
+import { getPostLoginRedirectPath } from '../lib/safe-redirect';
 import type { AuthActionState } from '../types/auth-action-state';
 import { getString } from './helpers';
-
-function safeNext(value: string) {
-  return value.startsWith('/') &&
-    !value.startsWith('//')
-    ? value
-    : '/inicio?login=success';
-}
 
 export async function loginAction(
   _previousState: AuthActionState,
@@ -21,7 +15,7 @@ export async function loginAction(
   const email = getString(formData, 'email').toLowerCase();
   const { translate } = await getServerTranslator();
   const password = getString(formData, 'password');
-  const next = safeNext(
+  const next = getPostLoginRedirectPath(
     getString(formData, 'next'),
   );
   const fieldErrors: AuthActionState['fieldErrors'] = {};

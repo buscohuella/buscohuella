@@ -16,7 +16,15 @@ import {
 import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import { registerAction } from '../actions/register';
-import { emailInputPattern } from '../lib/email-policy';
+import { useRegistrationDraft } from '../hooks/use-registration-draft';
+import {
+  emailInputPattern,
+  validateEmail,
+} from '../lib/email-policy';
+import {
+  createRegistrationDraft,
+  registrationDraftStorageKey,
+} from '../lib/registration-draft';
 import { initialAuthActionState } from '../types/auth-action-state';
 import { ActionMessage } from './action-message';
 import { FormField } from './form-field';
@@ -26,18 +34,36 @@ import { SubmitButton } from './submit-button';
 
 export function RegisterForm({
   next,
+  restoreDraft = false,
 }: {
   next?: string;
+  restoreDraft?: boolean;
 }) {
   const { t } = useTranslations('auth');
   const [state, formAction, isPending] = useActionState(
     registerAction,
     initialAuthActionState,
   );
+  const restoredDraft = useRegistrationDraft(restoreDraft);
+  const [fullNameInput, setFullNameInput] = useState<string | null>(null);
+  const [emailInput, setEmailInput] = useState<string | null>(null);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] =
     useState('');
+  const fullName = fullNameInput ?? restoredDraft?.fullName ?? '';
+  const email = emailInput ?? restoredDraft?.email ?? '';
 
+  const clientEmailError =
+    emailTouched && email.trim() && !validateEmail(email).isValid
+      ? t('validation.emailInvalid')
+      : undefined;
+  const serverEmailError =
+    email === submittedEmail
+      ? state.fieldErrors?.email
+      : undefined;
+  const emailError = serverEmailError ?? clientEmailError;
   const formErrors: FormErrorItem[] = [];
 
   if (state.fieldErrors?.fullName) {
@@ -48,11 +74,11 @@ export function RegisterForm({
     });
   }
 
-  if (state.fieldErrors?.email) {
+  if (serverEmailError) {
     formErrors.push({
       id: 'email',
       fieldId: 'register-email',
-      message: state.fieldErrors.email,
+      message: serverEmailError,
     });
   }
 
@@ -88,7 +114,34 @@ export function RegisterForm({
   );
 
   return (
-    <form action={formAction} noValidate className="space-y-5 lg:space-y-4">
+    <form
+      action={formAction}
+      noValidate
+      className="space-y-5 lg:space-y-4"
+      onSubmit={() => {
+        setSubmittedEmail(email);
+        setEmailTouched(true);
+
+        try {
+          const draft = createRegistrationDraft({
+            fullName,
+            email,
+            next,
+          });
+
+          if (draft) {
+            window.sessionStorage.setItem(
+              registrationDraftStorageKey,
+              JSON.stringify(draft),
+            );
+          } else {
+            window.sessionStorage.removeItem(registrationDraftStorageKey);
+          }
+        } catch {
+          // Storage can be unavailable without blocking registration.
+        }
+      }}
+    >
       <input
         type="hidden"
         name="next"
@@ -115,6 +168,8 @@ export function RegisterForm({
         placeholder={t('register.fullNamePlaceholder')}
         autoComplete="name"
         maxLength={120}
+        value={fullName}
+        onChange={(event) => setFullNameInput(event.currentTarget.value)}
         error={state.fieldErrors?.fullName}
         required
       />
@@ -131,7 +186,10 @@ export function RegisterForm({
         pattern={emailInputPattern}
         title={t('register.emailHint')}
         hint={t('register.emailHint')}
-        error={state.fieldErrors?.email}
+        value={email}
+        onChange={(event) => setEmailInput(event.currentTarget.value)}
+        onBlur={() => setEmailTouched(true)}
+        error={emailError}
         required
       />
 

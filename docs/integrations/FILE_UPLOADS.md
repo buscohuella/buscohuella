@@ -22,6 +22,10 @@ Establecer reglas comunes para subir archivos a BuscoHuella.
 
 FP-004 aplica estas reglas a fotografías de mascotas.
 
+En la aplicación web desplegada en Vercel, la entrada máxima para una
+fotografía de mascota es de 4 MiB. Este margen mantiene el body multipart por
+debajo del límite de infraestructura de 4,5 MB de Vercel Functions.
+
 ---
 
 ## 2. Validación por capas
@@ -29,7 +33,7 @@ FP-004 aplica estas reglas a fotografías de mascotas.
 ### Cliente
 
 - Número máximo de archivos.
-- Tamaño declarado.
+- Tamaño declarado (4 MiB para fotografías de mascota en Web).
 - Extensión.
 - Vista previa.
 - Dimensiones mínimas cuando proceda.

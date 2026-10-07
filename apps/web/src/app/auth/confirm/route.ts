@@ -10,9 +10,11 @@ import {
   recoveryFlowCookieMaxAge,
 } from '@/features/auth/lib/recovery-flow';
 import {
+  getEmailConfirmationErrorPath,
   getEmailConfirmationAttempt,
   getSafeEmailConfirmationNextPath,
   isPasswordRecoveryConfirmation,
+  verifyEmailConfirmationAttempt,
 } from '@/features/auth/lib/email-confirmation';
 import { createClient } from '@/services/supabase/server';
 
@@ -27,16 +29,13 @@ export async function GET(request: NextRequest) {
 
   if (attempt) {
     const supabase = await createClient();
+    const confirmationSucceeded =
+      await verifyEmailConfirmationAttempt(
+        attempt,
+        supabase.auth,
+      );
 
-    const { error } =
-      attempt.method === 'pkce'
-        ? await supabase.auth.exchangeCodeForSession(attempt.code)
-        : await supabase.auth.verifyOtp({
-            type: attempt.type,
-            token_hash: attempt.tokenHash,
-          });
-
-    if (!error) {
+    if (confirmationSucceeded) {
       const next = getSafeEmailConfirmationNextPath(
         request.nextUrl.searchParams.get('next'),
         attempt,
@@ -75,16 +74,12 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.searchParams.get('flow') === 'recovery') {
-    return NextResponse.redirect(
-      new URL(
-        '/recuperar-contrasena?recovery_expired=1',
-        request.url,
-      ),
-    );
-  }
-
   return NextResponse.redirect(
-    new URL('/login?auth_error=confirmation', request.url),
+    new URL(
+      getEmailConfirmationErrorPath(
+        request.nextUrl.searchParams,
+      ),
+      request.url,
+    ),
   );
 }

@@ -11,7 +11,7 @@ proteger la privacidad y mejorar rendimiento.
 
 ## Reglas implementadas
 
-- máximo de entrada: 8 MB;
+- máximo de entrada Web para fotografías de mascota: 4 MiB;
 - formatos de entrada: JPEG, PNG y WebP;
 - firma binaria validada antes de procesar;
 - mínimo: 300 × 300 píxeles;

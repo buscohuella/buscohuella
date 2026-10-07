@@ -33,9 +33,11 @@ const transpiled = ts.transpileModule(source, {
 
 const {
   buildEmailConfirmationRedirectUrl,
+  getEmailConfirmationErrorPath,
   getEmailConfirmationAttempt,
   getSafeEmailConfirmationNextPath,
   isPasswordRecoveryConfirmation,
+  verifyEmailConfirmationAttempt,
 } = await import(
   `data:text/javascript;base64,${Buffer.from(transpiled).toString('base64')}`
 );
@@ -56,6 +58,32 @@ test('acepta el code que entrega el flujo PKCE de confirmación', () => {
     getSafeEmailConfirmationNextPath(null, attempt),
     '/inicio?account_confirmed=1',
   );
+});
+
+test('confirma PKCE solo cuando exchangeCodeForSession termina sin error', async () => {
+  const calls = [];
+  const attempt = getEmailConfirmationAttempt(
+    new URLSearchParams({ code: 'auth-code' }),
+  );
+
+  assert.ok(attempt);
+
+  const succeeded = await verifyEmailConfirmationAttempt(
+    attempt,
+    {
+      async exchangeCodeForSession(code) {
+        calls.push(['exchange', code]);
+        return { error: null };
+      },
+      async verifyOtp(params) {
+        calls.push(['verify', params]);
+        return { error: null };
+      },
+    },
+  );
+
+  assert.equal(succeeded, true);
+  assert.deepEqual(calls, [['exchange', 'auth-code']]);
 });
 
 test('reconoce recovery en el flujo PKCE cuando lleva el marcador recovery', () => {
@@ -135,6 +163,74 @@ test('mantiene compatibilidad con token_hash y type válidos', () => {
     tokenHash: 'hashed-token',
     type: 'email',
   });
+});
+
+test('confirma token_hash con verifyOtp y devuelve una URL de éxito sin auth_error', async () => {
+  const calls = [];
+  const searchParams = new URLSearchParams({
+    token_hash: 'hashed-token',
+    type: 'email',
+  });
+  const attempt = getEmailConfirmationAttempt(searchParams);
+
+  assert.ok(attempt);
+
+  const succeeded = await verifyEmailConfirmationAttempt(
+    attempt,
+    {
+      async exchangeCodeForSession(code) {
+        calls.push(['exchange', code]);
+        return { error: null };
+      },
+      async verifyOtp(params) {
+        calls.push(['verify', params]);
+        return { error: null };
+      },
+    },
+  );
+
+  const nextPath = getSafeEmailConfirmationNextPath(
+    searchParams.get('next'),
+    attempt,
+  );
+
+  assert.equal(succeeded, true);
+  assert.deepEqual(calls, [
+    [
+      'verify',
+      { type: 'email', token_hash: 'hashed-token' },
+    ],
+  ]);
+  assert.equal(nextPath, '/inicio?account_confirmed=1');
+  assert.equal(nextPath.includes('auth_error'), false);
+});
+
+test('una confirmación inválida o caducada conserva un estado de error', async () => {
+  const searchParams = new URLSearchParams({
+    token_hash: 'expired-token',
+    type: 'email',
+  });
+  const attempt = getEmailConfirmationAttempt(searchParams);
+
+  assert.ok(attempt);
+
+  const succeeded = await verifyEmailConfirmationAttempt(
+    attempt,
+    {
+      async exchangeCodeForSession() {
+        return { error: new Error('expired') };
+      },
+      async verifyOtp() {
+        return { error: new Error('expired') };
+      },
+    },
+  );
+
+  assert.equal(succeeded, false);
+  assert.equal(
+    getEmailConfirmationErrorPath(searchParams),
+    '/login?auth_error=confirmation',
+  );
 });
 
 test('rechaza parámetros incompletos o tipos OTP no permitidos', () => {
@@ -217,6 +313,13 @@ test('conserva recovery y bloquea redirecciones externas', () => {
       recoveryAttempt,
     ),
     '/inicio?foo=1#pet-species',
+  );
+
+  assert.equal(
+    getEmailConfirmationErrorPath(
+      new URLSearchParams({ flow: 'recovery' }),
+    ),
+    '/recuperar-contrasena?recovery_expired=1',
   );
 });
 

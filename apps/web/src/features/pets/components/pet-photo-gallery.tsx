@@ -24,6 +24,9 @@ import { Input } from '@/components/ui/input';
 import { useTranslations } from '@/features/i18n/i18n-provider';
 
 import { uploadPetPhotoAction } from '../actions/upload-pet-photo';
+import {
+  uploadPetPhotoBatch,
+} from '../lib/upload-pet-photo-batch';
 import { PetPhotoControls } from './pet-photo-controls';
 import { PetPhotoLightbox } from './pet-photo-lightbox';
 
@@ -256,79 +259,60 @@ export function PetPhotoGallery({
       return;
     }
 
-    setIsUploading(true);
     setSelectionMessage(null);
-    let uploadedCount = 0;
-
-    for (const photo of pending) {
-      if (photo.status === 'success') {
-        continue;
-      }
-
-      setPending((current) =>
-        current.map((item) =>
-          item.id === photo.id
-            ? {
-                ...item,
-                status: 'uploading',
-                message: undefined,
-              }
-            : item,
+    const uploadedCount =
+      await uploadPetPhotoBatch({
+        items: pending.filter(
+          (photo) =>
+            photo.status !==
+            'success',
         ),
-      );
+        async upload(photo) {
+          const formData =
+            new FormData();
+          formData.set(
+            'petId',
+            petId,
+          );
+          formData.set(
+            'photo',
+            photo.file,
+          );
+          formData.set(
+            'width',
+            String(photo.width),
+          );
+          formData.set(
+            'height',
+            String(photo.height),
+          );
+          formData.set(
+            'altText',
+            photo.altText,
+          );
 
-      const formData = new FormData();
-      formData.set('petId', petId);
-      formData.set(
-        'photo',
-        photo.file,
-      );
-      formData.set(
-        'width',
-        String(photo.width),
-      );
-      formData.set(
-        'height',
-        String(photo.height),
-      );
-      formData.set(
-        'altText',
-        photo.altText,
-      );
-
-      const result =
-        await uploadPetPhotoAction(
-          formData,
-        );
-
-      if (
-        result.status === 'success'
-      ) {
-        uploadedCount += 1;
-      }
-
-      setPending((current) =>
-        current.map((item) =>
-          item.id === photo.id
-            ? {
-                ...item,
-                status:
-                  result.status ===
-                  'success'
-                    ? 'success'
-                    : 'error',
-                message:
-                  result.message ??
-                  t(
-                    'photos.uploadError',
-                  ),
-              }
-            : item,
+          return uploadPetPhotoAction(
+            formData,
+          );
+        },
+        onStatus(photo, status) {
+          setPending((current) =>
+            current.map((item) =>
+              item.id === photo.id
+                ? {
+                    ...item,
+                    ...status,
+                  }
+                : item,
+            ),
+          );
+        },
+        setUploading:
+          setIsUploading,
+        unexpectedErrorMessage: t(
+          'photos.uploadRetry',
         ),
-      );
-    }
-
-    setIsUploading(false);
+      });
 
     if (uploadedCount > 0) {
       setSelectionMessage({

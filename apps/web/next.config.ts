@@ -1,6 +1,16 @@
 import type { NextConfig } from 'next';
+import { join } from 'node:path';
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: join(
+    __dirname,
+    '../..',
+  ),
+  outputFileTracingIncludes: {
+    '/*': [
+      '../../node_modules/.pnpm/@img+sharp-libvips-*/node_modules/@img/sharp-libvips-*/lib/**/*',
+    ],
+  },
   allowedDevOrigins: (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? '192.168.0.12')
     .split(',')
     .map((origin) => origin.trim())
@@ -22,6 +32,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
+      // Vercel still enforces its own 4.5 MB raw request limit.
       bodySizeLimit: '10mb',
     },
   },

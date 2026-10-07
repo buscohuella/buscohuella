@@ -56,7 +56,7 @@ export const PET_LIMITS = {
   microchipMinLength: 8,
   microchipMaxLength: 30,
   photosMaxCount: 10,
-  photoMaxSizeBytes: 8 * 1024 * 1024,
+  photoMaxSizeBytes: 4 * 1024 * 1024,
   photoAltTextMaxLength: 300,
 } as const;
 

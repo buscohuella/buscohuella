@@ -176,6 +176,10 @@ Las operaciones deberán manejar archivos huérfanos.
 
 Estos límites podrán modificarse sin cambiar el dominio.
 
+El límite de 8 MiB corresponde al bucket. La aplicación Web acepta como
+entrada fotografías de mascota de hasta 4 MiB para respetar el límite del body
+de Vercel Functions; el objeto normalizado que llega a Storage no supera 2 MiB.
+
 ---
 
 ## 9. Seguridad

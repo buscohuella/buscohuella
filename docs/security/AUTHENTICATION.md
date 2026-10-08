@@ -123,7 +123,7 @@ Formulario
 → validación local
 → supabase.auth.signUp()
 → envío de correo
-→ confirmación mediante code PKCE o token_hash
+→ confirmación mediante token_hash (preferente en SSR)
 → sesión autenticada
 → /inicio
 ```
@@ -146,25 +146,47 @@ Route Handler:
 apps/web/src/app/auth/confirm/route.ts
 ```
 
-La plantilla activa puede utilizar el enlace estándar de Supabase:
+Para el flujo SSR, la plantilla **Confirm signup** de Supabase debe enviar el
+`token_hash` directamente al `emailRedirectTo` construido por la aplicación:
 
 ```html
-<a href="{{ .ConfirmationURL }}">
+<a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email">
   Confirmar correo electrónico
 </a>
 ```
 
-Después de verificar el correo, Supabase redirige al `emailRedirectTo` indicado
-en `signUp` y entrega un `code` PKCE. El servidor:
+Se usa `type=email`, como indica la documentación SSR vigente de Supabase para
+verificar un `TokenHash` de alta de correo. La ruta conserva `type=signup` por
+compatibilidad, pero no es el valor recomendado para esta plantilla.
 
-1. recibe `code`;
-2. ejecuta `exchangeCodeForSession`;
+`registerAction` siempre genera un `emailRedirectTo` en `/auth/confirm` con al
+menos el parámetro `locale`, por lo que la plantilla puede añadir los parámetros
+con `&`. Supabase debe tener permitida la URL de Beta correspondiente en la lista
+de Redirect URLs.
+
+El servidor:
+
+1. recibe `token_hash` y `type=email`;
+2. ejecuta `verifyOtp`;
 3. establece la sesión mediante cookies;
-4. redirige a `/inicio?account_confirmed=1`.
+4. redirige al `next` interno seguro o, por defecto, a
+   `/inicio?account_confirmed=1`.
 
-La ruta mantiene compatibilidad con plantillas personalizadas que envíen
-`token_hash + type`; en ese caso ejecuta `verifyOtp`. No es necesario modificar
-la plantilla activa en el Dashboard para que el registro funcione.
+La ruta mantiene compatibilidad con callbacks PKCE que envíen `code` y en ese
+caso ejecuta `exchangeCodeForSession`. Ese mecanismo necesita el `code_verifier`
+guardado al iniciar el flujo y solo es fiable en el mismo navegador y dispositivo.
+No debe ser el mecanismo principal del correo de confirmación porque el cliente
+de correo puede abrir el enlace en otro contexto.
+
+**Estado de Beta:** el código queda preparado localmente para `token_hash`, pero
+la plantilla remota observada continúa usando `{{ .ConfirmationURL }}`. Sustituir
+esa plantilla requiere una actuación autorizada en Supabase Beta; hasta entonces
+seguirá activa la limitación del `code_verifier` en enlaces abiertos fuera del
+contexto donde se inició el registro.
+
+Si `verifyOtp` o `exchangeCodeForSession` fallan, no se muestra el estado de
+éxito: el usuario vuelve al login con un error comprensible. El mensaje de cuenta
+confirmada solo se muestra después de una verificación sin error.
 
 ## 8. Inicio de sesión
 
@@ -532,4 +554,6 @@ Pendiente de configurar manualmente en Supabase Auth:
 
 - activar la protección contra contraseñas filtradas en Auth → Password Security;
 - revisar CAPTCHA y límites de autenticación antes del piloto;
+- sustituir en Supabase Beta la plantilla **Confirm signup** por el enlace SSR con
+  `{{ .RedirectTo }}`, `{{ .TokenHash }}` y `type=email` documentado en la sección 7;
 - validar las plantillas de correo en español y catalán después de cualquier cambio.

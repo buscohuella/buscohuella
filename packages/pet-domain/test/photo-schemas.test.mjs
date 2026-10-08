@@ -33,7 +33,12 @@ test('rechaza una posición fuera del MVP', () => {
   assert.equal(result.success, false);
 });
 
-test('rechaza una fotografía superior a 8 MB', () => {
+test('limita la entrada a 4 MiB para caber en una Server Action de Vercel', () => {
+  assert.equal(
+    PET_LIMITS.photoMaxSizeBytes,
+    4 * 1024 * 1024,
+  );
+
   const result = createPetPhotoMetadataSchema.safeParse({
     ...validPhoto,
     fileSizeBytes: PET_LIMITS.photoMaxSizeBytes + 1,

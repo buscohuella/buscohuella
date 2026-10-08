@@ -37,7 +37,9 @@ export default async function LoginPage({
         ? translate('auth.login.loggedOut')
         : params.auth_error === 'oauth'
           ? translate('auth.login.oauthError')
-          : undefined;
+          : params.auth_error === 'confirmation'
+            ? translate('auth.login.confirmationError')
+            : undefined;
 
   return (
     <AuthShell
@@ -48,7 +50,10 @@ export default async function LoginPage({
         {registrationSucceeded ? (
           <RegistrationSuccessNotice next={params.next} />
         ) : null}
-        <AuthNotice message={notice} />
+        <AuthNotice
+          message={notice}
+          tone={params.auth_error ? 'error' : 'success'}
+        />
         <LoginForm next={params.next} />
       </AuthCard>
     </AuthShell>

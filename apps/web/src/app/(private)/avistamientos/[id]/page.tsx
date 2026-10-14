@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { OwnerSightingActions } from '@/features/reports/components/owner-sighting-actions';
 import { OwnerSightingArchiveAction } from '@/features/reports/components/owner-sighting-archive-action';
@@ -61,16 +62,6 @@ export default async function OwnerSightingDetailPage({
       ),
     ]);
 
-  const dateFormatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'long',
-        timeStyle: 'short',
-      },
-    );
 
   const reportTitle = sighting.reportTitle;
 
@@ -197,11 +188,10 @@ export default async function OwnerSightingDetailPage({
                   label={translate(
                     'ownerSightings.detail.when',
                   )}
-                  value={dateFormatter.format(
-                    new Date(
-                      sighting.observedAt,
-                    ),
-                  )}
+                  value={formatDate(sighting.observedAt, locale, {
+                    dateStyle: 'long',
+                    timeStyle: 'short',
+                  })}
                 />
                 <Info
                   icon={<MapPin />}

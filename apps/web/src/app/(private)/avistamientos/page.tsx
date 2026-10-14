@@ -18,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { OwnerSightingArchiveAction } from '@/features/reports/components/owner-sighting-archive-action';
 import { OwnerSightingStatus } from '@/features/reports/components/owner-sighting-status';
@@ -164,16 +165,6 @@ export default async function OwnerSightingsPage({
     getServerTranslator(),
   ]);
 
-  const dateFormatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      },
-    );
 
   const totalPages = Math.max(
     Math.ceil(
@@ -464,11 +455,7 @@ export default async function OwnerSightingsPage({
                           {reportTitle}
                         </CardTitle>
                         <CardDescription>
-                          {dateFormatter.format(
-                            new Date(
-                              sighting.observedAt,
-                            ),
-                          )}
+                          {formatDate(sighting.observedAt, locale, { dateStyle: 'medium', timeStyle: 'short' })}
                         </CardDescription>
                       </div>
 

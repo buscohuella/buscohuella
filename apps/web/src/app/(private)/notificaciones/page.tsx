@@ -21,6 +21,7 @@ CardDescription,
 CardHeader,
 CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { MarkAllReadButton } from '@/features/notifications/components/mark-all-read-button';
 import { openNotificationAction } from '@/features/notifications/actions/notification-actions';
@@ -130,16 +131,6 @@ export default async function NotificationsPage({
     getServerTranslator(),
   ]);
 
-  const formatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      },
-    );
 
   const totalPages =
     Math.max(
@@ -277,11 +268,10 @@ export default async function NotificationsPage({
                 notification={
                   notification
                 }
-                date={formatter.format(
-                  new Date(
-                    notification.createdAt,
-                  ),
-                )}
+                date={formatDate(notification.createdAt, locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
                 translate={
                   translate
                 }

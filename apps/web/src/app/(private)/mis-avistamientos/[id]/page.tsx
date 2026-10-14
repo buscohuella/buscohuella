@@ -25,6 +25,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import {
   getMySighting,
@@ -65,16 +66,6 @@ export default async function MySightingDetailPage({
       ),
     ]);
 
-  const formatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'long',
-        timeStyle: 'short',
-      },
-    );
 
   const title = sighting.reportTitle;
 
@@ -178,11 +169,7 @@ export default async function MySightingDetailPage({
                   label={translate(
                     'mySightings.detail.when',
                   )}
-                  value={formatter.format(
-                    new Date(
-                      sighting.observedAt,
-                    ),
-                  )}
+                  value={formatDate(sighting.observedAt, locale, { dateStyle: 'long', timeStyle: 'short' })}
                 />
                 <Info
                   icon={<MapPin />}
@@ -310,11 +297,7 @@ export default async function MySightingDetailPage({
                           event.key
                         }
                         event={event}
-                        date={formatter.format(
-                          new Date(
-                            event.createdAt,
-                          ),
-                        )}
+                        date={formatDate(event.createdAt, locale, { dateStyle: 'long', timeStyle: 'short' })}
                         label={timelineLabel(
                           event,
                           translate,

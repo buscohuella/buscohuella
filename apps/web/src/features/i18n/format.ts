@@ -1,4 +1,4 @@
-import type { AppLocale } from './config';
+import { appTimeZone, type AppLocale } from './config';
 
 const localeTags: Record<AppLocale, string> = {
   es: 'es-ES',
@@ -16,7 +16,7 @@ export function formatDate(
 ): string {
   return new Intl.DateTimeFormat(
     getLocaleTag(locale),
-    options,
+    { timeZone: appTimeZone, ...options },
   ).format(new Date(value));
 }
 

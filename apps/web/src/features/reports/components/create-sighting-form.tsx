@@ -6,6 +6,7 @@ import { useTranslations } from '@/features/i18n/i18n-provider';
 import { createSightingAction } from '@/features/reports/actions/create-sighting';
 import { initialCreateSightingState } from '@/features/reports/types/create-sighting-state';
 import { LocationPicker } from '@/features/maps/components/location-picker';
+import { localDateTimeToIso } from '@/features/reports/lib/sighting-datetime';
 
 type Mode = 'GPS' | 'MANUAL';
 type Coordinates = { latitude: number; longitude: number };
@@ -21,6 +22,8 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
   const [manualCoordinates, setManualCoordinates] = useState<Coordinates | null>(null);
   const [locationLabel, setLocationLabel] = useState('');
   const [gps, setGps] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [observedAtLocal, setObservedAtLocal] = useState(() => localNow());
+  const observedAt = useMemo(() => localDateTimeToIso(observedAtLocal) ?? '', [observedAtLocal]);
   const [state, action, pending] = useActionState(createSightingAction, initialCreateSightingState);
  const maxDate = useMemo(
   () => localNow(),
@@ -45,9 +48,10 @@ export function CreateSightingForm({ reportId }: { reportId: string }) {
     <input type="hidden" name="latitude" value={coords.latitude} />
     <input type="hidden" name="longitude" value={coords.longitude} />
     <input type="hidden" name="locationLabel" value={locationLabel} />
+    <input type="hidden" name="observedAt" value={observedAt} />
 
     <Field label={t('fields.when')} help={t('fields.whenHelp')} htmlFor="observedAt">
-      <input id="observedAt" name="observedAt" type="datetime-local" required max={maxDate} defaultValue={maxDate} className="min-h-12 w-full rounded-lg border border-border bg-background px-3" />
+      <input id="observedAt" type="datetime-local" required max={maxDate} value={observedAtLocal} onChange={(event) => setObservedAtLocal(event.target.value)} className="min-h-12 w-full rounded-lg border border-border bg-background px-3" />
     </Field>
 
     <fieldset className="space-y-3">

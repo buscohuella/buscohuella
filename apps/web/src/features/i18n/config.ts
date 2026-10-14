@@ -3,6 +3,7 @@ export const supportedLocales = ['es', 'ca'] as const;
 export type AppLocale = (typeof supportedLocales)[number];
 
 export const defaultLocale: AppLocale = 'es';
+export const appTimeZone = 'Europe/Madrid';
 export const localeCookieName = 'buscohuella-locale';
 export const localeCookieMaxAge = 60 * 60 * 24 * 365;
 

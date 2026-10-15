@@ -5,7 +5,7 @@ export type ReportCleanupDatabaseConfig = {
   connectionTimeoutMillis: number;
   idleTimeoutMillis: number;
   max: number;
-  ssl: false | { rejectUnauthorized: true };
+  ssl: false | { rejectUnauthorized: boolean };
 };
 
 type ReportCleanupQueryResult = {
@@ -77,7 +77,7 @@ export function createArchivedReportCleanupDatabase(
       connectionTimeoutMillis: 10_000,
       idleTimeoutMillis: 10_000,
       max: 1,
-      ssl: sslMode === 'disable' ? false : { rejectUnauthorized: true },
+      ssl: sslMode === 'disable' ? false : { rejectUnauthorized: false },
     });
 
     return client;

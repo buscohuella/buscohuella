@@ -10,7 +10,10 @@ import { revalidatePath } from 'next/cache';
 
 import { getServerTranslator } from '@/features/i18n/server';
 import { logServerError } from '@/lib/server-logger';
-import { finalizeArchivedReportDeletion as finalizeArchivedReportDeletionInDatabase } from '@/services/database/report-cleanup';
+import {
+  finalizeArchivedReportDeletion as finalizeArchivedReportDeletionInDatabase,
+  preflightArchivedReportDeletion as preflightArchivedReportDeletionInDatabase,
+} from '@/services/database/report-cleanup';
 import { createClient } from '@/services/supabase/server';
 
 import type { ReportLifecycleState } from '../types/report-lifecycle-state';
@@ -78,6 +81,9 @@ export async function deleteArchivedReportAction(
             storagePath: photo.storage_path,
           }));
         },
+        async preflightDatabaseCleanup() {
+          await preflightArchivedReportDeletionInDatabase();
+        },
         async removeSightingPhotoObjects(paths) {
           const { error } = await supabase.storage
             .from('sighting-photos')
@@ -113,9 +119,11 @@ export async function deleteArchivedReportAction(
     if (error instanceof ArchivedReportDeletionError) {
       const event = error.stage === 'path_validation'
         ? 'report.delete_archived.path_validation_failed'
-        : error.stage === 'storage_cleanup'
-          ? 'report.delete_archived.storage_cleanup_failed'
-          : 'report.delete_archived.database_failed_after_storage_cleanup';
+        : error.stage === 'database_preflight'
+          ? 'report.delete_archived.database_preflight_failed'
+          : error.stage === 'storage_cleanup'
+            ? 'report.delete_archived.storage_cleanup_failed'
+            : 'report.delete_archived.database_failed_after_storage_cleanup';
       logServerError(event, error, { userId: user.id, reportId });
       return { status: 'error', message: translate('reports.detail.errors.deleteGeneric') };
     }

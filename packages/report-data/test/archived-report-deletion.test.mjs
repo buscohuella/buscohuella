@@ -42,6 +42,7 @@ function createDeletionHarness({
   const sightingBlobs = new Set();
   const events = [];
   const finalizerCalls = [];
+  const preflightCalls = [];
   const storageCalls = { 'report-photos': 0, 'sighting-photos': 0 };
 
   for (const path of reportPhotoPaths) {
@@ -121,6 +122,13 @@ function createDeletionHarness({
           storagePath: photo.path,
         }));
     },
+    async preflightDatabaseCleanup() {
+      events.push('database:preflight');
+      preflightCalls.push({ reportId, actorUserId: ownerId });
+      if (databaseFailure === 'preflight') {
+        throw new Error('FORCED_PREFLIGHT_FAILURE');
+      }
+    },
     async removeSightingPhotoObjects(paths) {
       await removeObjects('sighting-photos', paths, sightingBlobs);
     },
@@ -173,6 +181,7 @@ function createDeletionHarness({
     state: {
       events,
       finalizerCalls,
+      preflightCalls,
       reportBlobs,
       reportPhotoRows,
       reports,
@@ -200,7 +209,7 @@ function assertNoDestructiveCalls(state) {
     state.events.some(
       (event) =>
         Array.isArray(event) ||
-        (typeof event === 'string' && event.startsWith('database:')),
+        event === 'database:finalizer',
     ),
     false,
   );
@@ -239,6 +248,48 @@ test('elimina las fotos propias del reporte antes de la base de datos', async ()
   assert.equal((await runDeletion(harness)).reportPhotoCount, 1);
   assert.equal(harness.state.reportBlobs.has(path), false);
   assertTargetDeleted(harness.state);
+});
+
+test('un preflight correcto se ejecuta antes de Storage y permite continuar', async () => {
+  const path = photoPath(ownerId, reportId, 92);
+  const harness = createDeletionHarness({ reportPhotoPaths: [path] });
+
+  assert.equal((await runDeletion(harness)).status, 'deleted');
+  assert.equal(harness.state.preflightCalls.length, 1);
+  assert.ok(
+    harness.state.events.indexOf('database:preflight') <
+      harness.state.events.findIndex(
+        (event) => Array.isArray(event) && event[0] === 'storage:report-photos',
+      ),
+  );
+  assert.ok(
+    harness.state.events.indexOf('database:preflight') <
+      harness.state.events.indexOf('database:finalizer'),
+  );
+});
+
+test('un fallo de preflight no toca Storage ni ejecuta el finalizador', async () => {
+  const reportPath = photoPath(ownerId, reportId, 93);
+  const sightingPath = photoPath(authorId, firstSightingId, 94);
+  const harness = createDeletionHarness({
+    reportPhotoPaths: [reportPath],
+    sightings: [{ id: firstSightingId, photoPaths: [sightingPath] }],
+    databaseFailsAt: 'preflight',
+  });
+
+  await assert.rejects(runDeletion(harness), (error) => {
+    assert.ok(error instanceof ArchivedReportDeletionError);
+    assert.equal(error.stage, 'database_preflight');
+    assert.equal(error.cause.message, 'FORCED_PREFLIGHT_FAILURE');
+    return true;
+  });
+  assert.deepEqual(harness.state.storageCalls, {
+    'report-photos': 0,
+    'sighting-photos': 0,
+  });
+  assert.equal(harness.state.finalizerCalls.length, 0);
+  assert.equal(harness.state.reportBlobs.has(reportPath), true);
+  assert.equal(harness.state.sightingBlobs.has(sightingPath), true);
 });
 
 test('elimina una foto perteneciente a un avistamiento', async () => {
@@ -345,7 +396,7 @@ test('un error material de Storage impide cualquier borrado de DB', async () => 
   });
   assert.equal(
     harness.state.events.some(
-      (event) => typeof event === 'string' && event.startsWith('database:'),
+      (event) => event === 'database:finalizer',
     ),
     false,
   );
@@ -443,7 +494,7 @@ test('el fallo de un lote posterior detiene DB y deja explícito el parcial', as
   assert.equal(harness.state.reports.has(reportId), true);
   assert.equal(
     harness.state.events.some(
-      (event) => typeof event === 'string' && event.startsWith('database:'),
+      (event) => event === 'database:finalizer',
     ),
     false,
   );

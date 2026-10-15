@@ -9,13 +9,16 @@ export type ReportCleanupDatabaseConfig = {
 };
 
 type ReportCleanupQueryResult = {
-  rows: Array<{ deleted: boolean }>;
+  rows: Array<{
+    can_execute?: boolean;
+    deleted?: boolean;
+  }>;
 };
 
 export type ReportCleanupDatabaseClient = {
   query(config: {
     text: string;
-    values: [string, string];
+    values?: [string, string];
   }): Promise<ReportCleanupQueryResult>;
 };
 
@@ -26,19 +29,31 @@ export class ReportCleanupDatabaseConfigurationError extends Error {
   }
 }
 
-export function createArchivedReportFinalizer(dependencies: {
+export class ReportCleanupDatabasePreflightError extends Error {
+  readonly code = 'REPORT_CLEANUP_EXECUTE_DENIED';
+
+  constructor() {
+    super('The cleanup database role cannot execute the archived report finalizer');
+    this.name = 'ReportCleanupDatabasePreflightError';
+  }
+}
+
+type ReportCleanupDatabaseDependencies = {
   createClient: (
     config: ReportCleanupDatabaseConfig,
   ) => ReportCleanupDatabaseClient;
   getDatabaseUrl: () => string | undefined;
   getSslMode: () => string | undefined;
-}) {
+};
+
+export function createArchivedReportCleanupDatabase(
+  dependencies: ReportCleanupDatabaseDependencies,
+) {
   let client: ReportCleanupDatabaseClient | undefined;
 
-  return async function finalizeArchivedReportDeletion(
-    reportId: string,
-    actorUserId: string,
-  ): Promise<boolean> {
+  function getClient(): ReportCleanupDatabaseClient {
+    if (client) return client;
+
     const connectionString = dependencies.getDatabaseUrl()?.trim();
 
     if (!connectionString) {
@@ -55,7 +70,7 @@ export function createArchivedReportFinalizer(dependencies: {
       );
     }
 
-    client ??= dependencies.createClient({
+    client = dependencies.createClient({
       application_name: 'buscohuella-report-cleanup',
       allowExitOnIdle: true,
       connectionString,
@@ -65,7 +80,28 @@ export function createArchivedReportFinalizer(dependencies: {
       ssl: sslMode === 'disable' ? false : { rejectUnauthorized: true },
     });
 
-    const result = await client.query({
+    return client;
+  }
+
+  async function preflightArchivedReportDeletion(): Promise<void> {
+    const result = await getClient().query({
+      text: `select has_function_privilege(
+        current_user,
+        'private.finalize_archived_report_deletion(uuid, uuid)',
+        'EXECUTE'
+      ) as can_execute`,
+    });
+
+    if (result.rows[0]?.can_execute !== true) {
+      throw new ReportCleanupDatabasePreflightError();
+    }
+  }
+
+  async function finalizeArchivedReportDeletion(
+    reportId: string,
+    actorUserId: string,
+  ): Promise<boolean> {
+    const result = await getClient().query({
       text: `select private.finalize_archived_report_deletion(
         $1::uuid,
         $2::uuid
@@ -74,5 +110,17 @@ export function createArchivedReportFinalizer(dependencies: {
     });
 
     return result.rows[0]?.deleted === true;
+  }
+
+  return {
+    finalizeArchivedReportDeletion,
+    preflightArchivedReportDeletion,
   };
+}
+
+export function createArchivedReportFinalizer(
+  dependencies: ReportCleanupDatabaseDependencies,
+) {
+  return createArchivedReportCleanupDatabase(dependencies)
+    .finalizeArchivedReportDeletion;
 }

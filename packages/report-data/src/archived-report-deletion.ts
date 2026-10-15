@@ -10,6 +10,7 @@ export type ArchivedReportDeletionResult =
 
 export type ArchivedReportDeletionFailureStage =
   | 'path_validation'
+  | 'database_preflight'
   | 'storage_cleanup'
   | 'database_cleanup_after_storage';
 
@@ -20,6 +21,7 @@ export class ArchivedReportDeletionError extends Error {
   constructor(stage: ArchivedReportDeletionFailureStage, cause?: unknown) {
     const messages: Record<ArchivedReportDeletionFailureStage, string> = {
       path_validation: 'Report photo storage path validation failed',
+      database_preflight: 'Report cleanup database preflight failed',
       storage_cleanup: 'Report photo storage cleanup failed',
       database_cleanup_after_storage:
         'Report database cleanup failed after storage cleanup',
@@ -49,6 +51,7 @@ export interface ArchivedReportDeletionOperations {
   listSightingPhotos(
     sightingIds: string[],
   ): Promise<ArchivedReportSightingPhoto[]>;
+  preflightDatabaseCleanup(): Promise<void>;
   removeSightingPhotoObjects(paths: string[]): Promise<void>;
   removeReportPhotoObjects(paths: string[]): Promise<void>;
   finalizeArchivedReportDeletion(
@@ -171,6 +174,12 @@ export async function deleteArchivedReportSafely(
     );
   } catch (error) {
     throw new ArchivedReportDeletionError('path_validation', error);
+  }
+
+  try {
+    await operations.preflightDatabaseCleanup();
+  } catch (error) {
+    throw new ArchivedReportDeletionError('database_preflight', error);
   }
 
   try {

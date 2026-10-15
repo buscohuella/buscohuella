@@ -22,8 +22,10 @@ const databaseModule = await import(
 );
 
 const {
+  createArchivedReportCleanupDatabase,
   createArchivedReportFinalizer,
   ReportCleanupDatabaseConfigurationError,
+  ReportCleanupDatabasePreflightError,
 } = databaseModule;
 
 const reportId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1';
@@ -47,7 +49,7 @@ test('falla de forma segura cuando falta la credencial y no crea cliente', async
   assert.equal(clientsCreated, 0);
 });
 
-test('rechaza una configuración TLS desconocida antes de conectar', async () => {
+test('rechaza una configuraciÃ³n TLS desconocida antes de conectar', async () => {
   let clientsCreated = 0;
   const finalize = createArchivedReportFinalizer({
     createClient() {
@@ -65,7 +67,7 @@ test('rechaza una configuración TLS desconocida antes de conectar', async () =>
   assert.equal(clientsCreated, 0);
 });
 
-test('usa un pool conservador y vincula report y actor como parámetros', async () => {
+test('usa un pool conservador y vincula report y actor como parÃ¡metros', async () => {
   const configs = [];
   const queries = [];
   const finalize = createArchivedReportFinalizer({
@@ -94,7 +96,66 @@ test('usa un pool conservador y vincula report y actor como parámetros', async 
   );
 });
 
-test('no confirma éxito si la función privada no devuelve deleted=true', async () => {
+test('el preflight conecta sin modificar datos y verifica EXECUTE para current_user', async () => {
+  const configs = [];
+  const queries = [];
+  const cleanup = createArchivedReportCleanupDatabase({
+    createClient(config) {
+      configs.push(config);
+      return {
+        async query(query) {
+          queries.push(query);
+          return query.text.includes('has_function_privilege')
+            ? { rows: [{ can_execute: true }] }
+            : { rows: [{ deleted: true }] };
+        },
+      };
+    },
+    getDatabaseUrl: () => 'postgresql://server-only.invalid/postgres',
+    getSslMode: () => 'require',
+  });
+
+  await cleanup.preflightArchivedReportDeletion();
+  assert.equal(
+    await cleanup.finalizeArchivedReportDeletion(reportId, actorUserId),
+    true,
+  );
+
+  assert.equal(configs.length, 1);
+  assert.equal(queries.length, 2);
+  assert.match(queries[0].text, /has_function_privilege/);
+  assert.match(queries[0].text, /current_user/);
+  assert.match(
+    queries[0].text,
+    /private\.finalize_archived_report_deletion\(uuid, uuid\)/,
+  );
+  assert.equal(queries[0].values, undefined);
+  assert.doesNotMatch(
+    queries[0].text,
+    /select\s+private\.finalize_archived_report_deletion/i,
+  );
+});
+
+test('el preflight falla explÃ­citamente cuando current_user no puede ejecutar', async () => {
+  const cleanup = createArchivedReportCleanupDatabase({
+    createClient() {
+      return {
+        async query() {
+          return { rows: [{ can_execute: false }] };
+        },
+      };
+    },
+    getDatabaseUrl: () => 'postgresql://server-only.invalid/postgres',
+    getSslMode: () => 'disable',
+  });
+
+  await assert.rejects(
+    cleanup.preflightArchivedReportDeletion(),
+    ReportCleanupDatabasePreflightError,
+  );
+});
+
+test('no confirma Ã©xito si la funciÃ³n privada no devuelve deleted=true', async () => {
   const finalize = createArchivedReportFinalizer({
     createClient() {
       return {
@@ -118,10 +179,11 @@ test('el adaptador sensible mantiene el marcador server-only', () => {
 
   assert.match(adapter, /^import 'server-only';/);
   assert.match(adapter, /REPORT_CLEANUP_DATABASE_URL/);
+  assert.match(adapter, /preflightArchivedReportDeletion/);
   assert.doesNotMatch(adapter, /NEXT_PUBLIC_/);
 });
 
-test('la acción toma actor_user_id de getUser y no del formulario', () => {
+test('la acciÃ³n toma actor_user_id de getUser y no del formulario', () => {
   const action = readFileSync(
     new URL(
       '../src/features/reports/actions/delete-archived-report.ts',
@@ -131,5 +193,7 @@ test('la acción toma actor_user_id de getUser y no del formulario', () => {
   );
 
   assert.match(action, /ownerId: user\.id/);
+  assert.match(action, /preflightDatabaseCleanup/);
+  assert.match(action, /report\.delete_archived\.database_preflight_failed/);
   assert.doesNotMatch(action, /formData\.get\(['"]actorUserId['"]\)/);
 });

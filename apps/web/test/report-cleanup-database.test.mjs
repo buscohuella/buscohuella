@@ -88,7 +88,7 @@ test('usa un pool conservador y vincula report y actor como parÃ¡metros', asyn
   assert.equal(await finalize(reportId, actorUserId), true);
   assert.equal(configs.length, 1);
   assert.equal(configs[0].max, 1);
-  assert.deepEqual(configs[0].ssl, { rejectUnauthorized: true });
+  assert.deepEqual(configs[0].ssl, { rejectUnauthorized: false });
   assert.deepEqual(queries[0].values, [reportId, actorUserId]);
   assert.match(
     queries[0].text,

@@ -211,3 +211,19 @@ test('FOUND_ANIMAL permite la confirmacion implicita al publicar', async () => {
   assert.match(source, /confirmationValue === 'on'/);
   assert.match(source, /confirmationValue === 'true'/);
 });
+test('el launcher movil habilita FOUND_ANIMAL', async () => {
+  const source = await readFile(
+    new URL('../src/components/layout/quick-action-launcher.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(
+    source,
+    /<QuickActionLink\s+href="\/mis-reportes\/nuevo\/encontrado"[\s\S]*?quickActions\.found\.title/,
+  );
+
+  assert.doesNotMatch(
+    source,
+    /<UnavailableAction\s+icon=\{<Search \/>\}[\s\S]*?quickActions\.found\.title/,
+  );
+});

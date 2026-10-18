@@ -109,7 +109,12 @@ export async function manageReportLifecycleAction(
   }
 
   revalidatePath('/mis-reportes');
+  revalidatePath('/mis-avisos/propios');
   revalidatePath('/reportes');
+  revalidatePath('/explorar-avisos');
+  revalidatePath('/mapa');
+  revalidatePath(`/avisos/${reportId}`);
+  revalidatePath(`/reportes/${reportId}`);
   revalidatePath(`/mis-reportes/${reportId}`);
 
   return {

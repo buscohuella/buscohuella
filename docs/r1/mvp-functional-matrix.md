@@ -9,7 +9,7 @@ Corte: 8 de septiembre de 2026, base GitHub ce304aa. «Implementado» significa 
 | Perfil privado/público | Implementado con P0 | features/profile; public_profiles | Proyección mínima, privacidad, grants y tests anon/A-B |
 | Mascotas y fotografías | Implementado con P0 de borrado | pet-domain, pet-data, features/pets | Ownership, Storage privado, fallos de cleanup y reintentos |
 | Reporte perdido/publicación | Implementado | report-domain, features/reports | Validación servidor, fotos, ubicación y estados |
-| Animal encontrado | Parcial/decisión pendiente | FOUND_ANIMAL en backend; flujo completo no acreditado | Completar y probar, o excluir explícitamente de Beta; foto obligatoria si se habilita según auditoría Notion |
+| Animal encontrado | Implementado, QA funcional pendiente | FOUND_ANIMAL en dominio/DB y flujo web completo sin `pet_id`; fotos opcionales | Verificar E2E local con publicación, mapa, listado, detalle y lifecycle |
 | Mapa/listado/detalle | Implementado | /mapa, /explorar-avisos, /avisos/[id] | Proyección segura, filtros, carga/error/vacío y teclado |
 | Avistamientos/fotos | Implementado | features/reports; migraciones sightings | A/B, ubicación manual honesta, fotos y revisión del propietario |
 | Notificaciones internas | Implementadas | features/notifications; FP-019 | Aislamiento por destinatario, lectura, contador, preferencias e idempotencia |

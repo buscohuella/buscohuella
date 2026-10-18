@@ -162,9 +162,11 @@ export async function PublicReportPage({
 
   const petTitle =
     report.petName ??
-    translate(
-      'publicReport.animalFallback',
-    );
+    (report.speciesCode
+      ? translate(`pets.form.speciesOptions.${report.speciesCode}`)
+      : translate(
+          'publicReport.animalFallback',
+        ));
 
   const displayTitle = report.title;
   const backHref = query.origen === 'mapa' ? '/mapa' : '/explorar-avisos';
@@ -254,7 +256,9 @@ export async function PublicReportPage({
                 <Detail
                   icon={<PawPrint />}
                   label={translate(
-                    'publicReport.details.name',
+                    report.reportType === 'LOST_PET'
+                      ? 'publicReport.details.name'
+                      : 'publicReport.details.species',
                   )}
                   value={petTitle}
                 />
@@ -273,7 +277,9 @@ export async function PublicReportPage({
                 <Detail
                   icon={<CalendarClock />}
                   label={translate(
-                    'publicReport.details.when',
+                    report.reportType === 'FOUND_ANIMAL'
+                      ? 'publicReport.details.foundWhen'
+                      : 'publicReport.details.when',
                   )}
                   value={
                     report.incidentAt

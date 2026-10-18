@@ -16,7 +16,7 @@ import {
   Radio,
 } from 'lucide-react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { PageContainer } from '@/components/layout/page-container';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +31,7 @@ import { getServerTranslator } from '@/features/i18n/server';
 import {
   PublishReportForm,
 } from '@/features/reports/components/publish-report-form';
+import { getReportPublishReadiness } from '@/features/reports/lib/report-publish-readiness';
 import { logServerError } from '@/lib/server-logger';
 import { createClient } from '@/services/supabase/server';
 
@@ -98,23 +99,21 @@ export default async function PublishReportPage({
     notFound();
   }
 
-  const hasLocation = Boolean(
+  if (data.report.reportType === 'FOUND_ANIMAL') {
+    redirect(`/mis-reportes/${id}/fotos`);
+  }
+
+  const readiness = getReportPublishReadiness({
+    reportType: data.report.reportType,
+    petId: data.report.petId,
+    speciesId: data.report.speciesId,
+    title: data.report.title,
+    description: data.report.description,
+    hasLocation: Boolean(
     data.report.publicLocation ||
       data.report.municipalityName,
-  );
-  const hasDescription =
-    Boolean(
-      data.report.description &&
-        data.report.description.trim()
-          .length >= 10,
-    );
-  const hasPet = Boolean(
-    data.report.petId,
-  );
-  const canPublish =
-    hasLocation &&
-    hasDescription &&
-    hasPet;
+    ),
+  });
 
   return (
     <PageContainer className="space-y-6">
@@ -157,9 +156,9 @@ export default async function PublishReportPage({
                 'reports.publish.draft',
               )}
             </Badge>
-            <Badge variant="danger">
+            <Badge variant={data.report.reportType === 'LOST_PET' ? 'danger' : 'info'}>
               {translate(
-                'reports.list.type.LOST_PET',
+                `reports.list.type.${data.report.reportType}`,
               )}
             </Badge>
           </div>
@@ -174,21 +173,23 @@ export default async function PublishReportPage({
 
         <CardContent className="grid gap-3 sm:grid-cols-2">
           <ChecklistItem
-            complete={hasPet}
+            complete={readiness.hasAnimalIdentity}
             icon={<PawPrint />}
             label={translate(
-              'reports.publish.checks.pet',
+              data.report.reportType === 'LOST_PET'
+                ? 'reports.publish.checks.pet'
+                : 'reports.publish.checks.foundAnimal',
             )}
           />
           <ChecklistItem
-            complete={hasLocation}
+            complete={readiness.hasLocation}
             icon={<MapPin />}
             label={translate(
               'reports.publish.checks.location',
             )}
           />
           <ChecklistItem
-            complete={hasDescription}
+            complete={readiness.hasTitle && readiness.hasDescription}
             icon={<Eye />}
             label={translate(
               'reports.publish.checks.description',
@@ -234,7 +235,7 @@ export default async function PublishReportPage({
         </CardHeader>
 
         <CardContent>
-          {canPublish ? (
+          {readiness.canPublish ? (
             <PublishReportForm
               reportId={id}
             />
@@ -256,6 +257,13 @@ export default async function PublishReportPage({
                 <p className="mt-1 text-sm text-muted-foreground">
                   {translate(
                     'reports.publish.incompleteDescription',
+                  {
+                    animal: translate(
+                      data.report.reportType === 'LOST_PET'
+                        ? 'reports.publish.incompleteAnimalLost'
+                        : 'reports.publish.incompleteAnimalFound',
+                    ),
+                  },
                   )}
                 </p>
               </div>

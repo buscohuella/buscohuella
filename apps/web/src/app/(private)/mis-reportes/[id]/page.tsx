@@ -2,6 +2,7 @@ import {
   ReportRepository,
   type Database as ReportDatabase,
 } from '@buscohuella/report-data';
+import { PetRepository } from '@buscohuella/pet-data';
 import type {
   SupabaseClient,
 } from '@supabase/supabase-js';
@@ -51,7 +52,12 @@ async function loadReportDetail(
       reportId,
     );
 
-  const [{ data: events, error }, { data: primaryPhoto, error: photoError }] = await Promise.all([
+  const [
+    { data: events, error },
+    { data: primaryPhoto, error: photoError },
+    pets,
+    species,
+  ] = await Promise.all([
     reportClient
       .from('report_events')
       .select(
@@ -68,6 +74,8 @@ async function loadReportDetail(
       .eq('report_id', reportId)
       .eq('is_primary', true)
       .maybeSingle(),
+    new PetRepository(supabase).listOwnPets(),
+    new PetRepository(supabase).listEnabledSpecies({ mvpOnly: true }),
   ]);
 
   if (error) throw error;
@@ -89,7 +97,16 @@ async function loadReportDetail(
     }
   }
 
-  return { report, events: events ?? [], primaryPhotoUrl };
+  return {
+    report,
+    events: events ?? [],
+    primaryPhotoUrl,
+    petName: report.petId
+      ? pets.find((pet) => pet.id === report.petId)?.name ?? null
+      : null,
+    speciesCode:
+      species.find((item) => item.id === report.speciesId)?.code ?? null,
+  };
 }
 
 export default async function ReportDetailPage({
@@ -265,13 +282,16 @@ export default async function ReportDetailPage({
                 <DetailItem
                   icon={<PawPrint />}
                   label={translate(
-                    'reports.detail.pet',
+                    data.report.reportType === 'LOST_PET'
+                      ? 'reports.detail.pet'
+                      : 'reports.detail.species',
                   )}
                   value={
-                    data.report.petId ??
-                    translate(
-                      'reports.detail.notAvailable',
-                    )
+                    data.report.reportType === 'LOST_PET'
+                      ? data.petName ?? translate('reports.detail.notAvailable')
+                      : data.speciesCode
+                        ? translate(`pets.form.speciesOptions.${data.speciesCode}`)
+                        : translate('reports.detail.notAvailable')
                   }
                 />
                 <DetailItem
@@ -378,6 +398,7 @@ export default async function ReportDetailPage({
             <ReportLifecycleActions
               reportId={id}
               status={data.report.status}
+              reportType={data.report.reportType}
             />
           </CardContent>
         </Card>

@@ -55,6 +55,7 @@
     "upcomingTitle": "Más formas de ayudar",
     "upcomingDescription": "Estas opciones llegarán en próximas entregas.",
     "lostFlow": "Mascota · Cuándo · Ubicación · Revisar y publicar",
+    "foundFlow": "Especie · Cuándo · Ubicación · Situación · Revisar y publicar",
     "lostTitle": "He perdido una mascota",
     "lostDescription": "Selecciona una de tus mascotas registradas y comunica dónde y cuándo se perdió.",
     "foundTitle": "He encontrado un animal",
@@ -97,6 +98,134 @@
     "registerPet": "Registrar mascota",
     "select": "Seleccionar"
   },
+  "found": {
+    "quick": {
+      "eyebrow": "Animal encontrado",
+      "title": "Publica el hallazgo en dos pasos",
+      "description": "Completa solo lo esencial. Después podrás añadir una foto opcional y publicar el aviso.",
+      "back": "Volver al tipo de aviso",
+      "formTitle": "Datos del hallazgo",
+      "formDescription": "La ubicación exacta será privada. Podrás completar o editar otros datos desde Gestionar aviso.",
+      "speciesLabel": "¿Qué animal has encontrado?",
+      "speciesPlaceholder": "Selecciona una especie",
+      "momentLabel": "¿Cuándo lo encontraste?",
+      "locationLabel": "¿Dónde lo encontraste?",
+      "locationHelp": "Usa tu ubicación actual o busca el lugar en el mapa.",
+      "locationError": "Indica dónde encontraste al animal antes de continuar.",
+      "approximateLocationReady": "Ubicación protegida preparada",
+      "privacy": "Guardaremos la coordenada exacta de forma privada y mostraremos solo una zona aproximada.",
+      "descriptionLabel": "Descripción breve (opcional)",
+      "descriptionHelp": "Puedes añadir color, collar o un rasgo distintivo. También podrás hacerlo después.",
+      "characterCount": "{count} de {max} caracteres",
+      "nextHint": "Siguiente y último paso: foto opcional y publicación.",
+      "continue": "Continuar a foto opcional",
+      "saving": "Preparando aviso…",
+      "generatedTitle": "{species} encontrado",
+      "photosTitle": "Añade una foto y publica",
+      "photosDescription": "La foto es opcional. Cuando estés listo, publica el aviso desde esta misma pantalla.",
+      "publishTitle": "¿Todo listo?",
+      "publishDescription": "Al publicar, el aviso aparecerá en Mis avisos, el listado público y el mapa."
+    },
+    "species": {
+      "eyebrow": "Animal encontrado",
+      "title": "¿Qué animal has encontrado?",
+      "description": "Selecciona la especie. No necesitas registrar una mascota ni conocer a su familia.",
+      "groupLabel": "Seleccionar la especie del animal encontrado",
+      "cardDescription": "Crear un aviso para esta especie",
+      "selectAria": "Seleccionar {species} como especie del animal encontrado",
+      "selectedTitle": "Especie seleccionada",
+      "selectedDescription": "Crearás un aviso de {species} sin asociarlo a una mascota registrada.",
+      "selectHint": "Selecciona una especie para continuar.",
+      "continue": "Continuar",
+      "back": "Volver al tipo de aviso",
+      "errorTitle": "No hemos podido cargar las especies",
+      "errorDescription": "Inténtalo de nuevo dentro de unos instantes."
+    },
+    "incidentTime": {
+      "eyebrow": "Animal encontrado",
+      "title": "¿Cuándo lo encontraste?",
+      "description": "Indica cuándo encontraste este {species}. Puedes responder de forma aproximada.",
+      "question": "¿Cuándo encontraste al animal?",
+      "questionHelp": "Elige la opción más cercana. No hace falta recordar la hora exacta.",
+      "speciesSelected": "Especie seleccionada",
+      "groupLabel": "Seleccionar cuándo se encontró el animal",
+      "back": "Volver a la especie"
+    },
+    "location": {
+      "eyebrow": "Animal encontrado",
+      "title": "¿Dónde lo encontraste?",
+      "description": "Indica el lugar del hallazgo. La coordenada exacta permanecerá privada.",
+      "question": "Selecciona la ubicación del hallazgo",
+      "questionHelp": "Puedes usar el GPS si estás allí o buscar el lugar en el mapa.",
+      "back": "Volver al momento"
+    },
+    "details": {
+      "eyebrow": "Animal encontrado",
+      "title": "Describe al animal y su situación",
+      "description": "Añade la información que ayudaría a su familia a reconocerlo.",
+      "formTitle": "Información esencial",
+      "formDescription": "El título, la descripción y la situación se mostrarán en el aviso.",
+      "titleLabel": "Título breve del aviso",
+      "titleHelp": "Ejemplo: Perro marrón encontrado cerca del Parc Catalunya.",
+      "titleError": "Escribe un título de al menos {min} caracteres.",
+      "descriptionLabel": "Descripción útil",
+      "descriptionHelp": "Describe aspecto, collar, comportamiento y cualquier detalle distintivo. Entre {min} y {max} caracteres.",
+      "characterCount": "{count} de {max} caracteres",
+      "descriptionError": "Escribe una descripción de al menos {min} caracteres.",
+      "careError": "Indica si el animal está bajo tu cuidado o sigue localizado.",
+      "reviewHint": "Las fotografías son opcionales y podrás añadirlas después de guardar el borrador.",
+      "continue": "Revisar aviso",
+      "back": "Volver a la ubicación"
+    },
+    "care": {
+      "title": "¿Cuál es la situación actual?",
+      "description": "Indica si el animal está contigo o si sigue localizado en la zona.",
+      "options": {
+        "IN_CARE": {
+          "label": "Está bajo mi cuidado",
+          "description": "El animal está a salvo temporalmente conmigo o con una persona responsable."
+        },
+        "LOCATED": {
+          "label": "Sigue localizado",
+          "description": "Sé dónde está, pero no está bajo mi cuidado."
+        }
+      }
+    },
+    "review": {
+      "eyebrow": "Animal encontrado",
+      "title": "Revisa el aviso",
+      "description": "Comprueba la especie, el lugar, el momento y la situación antes de guardar el borrador.",
+      "formTitle": "Resumen del hallazgo",
+      "formDescription": "Todavía no será público. Después podrás añadir fotos opcionales y publicarlo.",
+      "sections": {
+        "species": "Especie",
+        "moment": "Momento",
+        "location": "Ubicación",
+        "care": "Situación actual",
+        "description": "Título y descripción"
+      },
+      "careHeading": "Situación actual:",
+      "momentHeading": "Momento indicado:",
+      "locationGps": "Zona aproximada: {latitude}, {longitude}",
+      "draftPrivacy": "El borrador es privado. La ubicación exacta no se mostrará públicamente y no se publicará nada en este paso.",
+      "createHint": "Después podrás añadir fotografías opcionales y revisar la publicación final.",
+      "createDraft": "Guardar borrador",
+      "creating": "Guardando borrador…",
+      "loading": "Preparando la revisión…",
+      "missingTitle": "Faltan datos del aviso",
+      "missingDescription": "Vuelve a los pasos anteriores para completar la ubicación y la información del animal.",
+      "success": "Borrador de animal encontrado guardado correctamente.",
+      "back": "Volver a la información",
+      "errors": {
+        "incomplete": "Completa la especie, el momento y la situación actual del animal.",
+        "location": "La ubicación no es válida. Vuelve a seleccionarla.",
+        "session": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+        "species": "No hemos podido verificar la especie seleccionada.",
+        "validation": "Revisa la información antes de guardar el borrador.",
+        "create": "No hemos podido guardar el borrador. Inténtalo de nuevo."
+      }
+    }
+  },
   "incidentTime": {
     "groupLabel": "Seleccionar cuándo ocurrió la pérdida",
     "customHelp": "No puede ser una fecha futura.",
@@ -135,7 +264,7 @@
       },
       "custom": {
         "label": "Elegir fecha y hora",
-        "description": "Para pérdidas anteriores o cuando conoces el momento."
+        "description": "Para fechas anteriores o cuando conoces el momento."
       }
     },
     "nextHint": "Ahora indicaremos cuándo ocurrió.",
@@ -251,7 +380,7 @@
     "setPrimary": "Hacer principal",
     "uploadDescription": "Las imágenes se optimizan automáticamente y permanecen privadas mientras el aviso sea un borrador.",
     "finish": "Volver al borrador",
-    "description": "Añade imágenes claras que ayuden a reconocer a la mascota.",
+    "description": "Añade imágenes claras que ayuden a reconocer al animal.",
     "title": "Fotografías del aviso",
     "eyebrow": "Borrador privado",
     "uploadSuccess": "Se ha añadido {file}.",
@@ -265,7 +394,7 @@
       "title": "Arrastra una imagen o selecciónala",
       "description": "JPG, PNG o WEBP. Se convertirá a WEBP y se optimizará.",
       "altLabel": "Descripción accesible de la fotografía (opcional)",
-      "altPlaceholder": "Ejemplo: Pepa de cuerpo entero con collar rojo",
+      "altPlaceholder": "Ejemplo: animal de cuerpo entero con collar rojo",
       "count": "{count} de {max} fotografías",
       "upload": "Subir fotografía",
       "uploading": "Subiendo…"
@@ -293,11 +422,14 @@
   "publish": {
     "checks": {
       "pet": "Mascota asociada",
+      "foundAnimal": "Especie del animal",
       "location": "Ubicación protegida",
       "description": "Descripción suficiente",
       "photos": "{count} fotografías añadidas"
     },
-    "incompleteDescription": "Completa la mascota, la ubicación y una descripción de al menos 10 caracteres.",
+    "incompleteDescription": "Completa {animal}, la ubicación, el título y una descripción de al menos 10 caracteres.",
+    "incompleteAnimalLost": "la mascota",
+    "incompleteAnimalFound": "la especie del animal",
     "description": "Comprueba los datos esenciales antes de hacerlo visible para la comunidad.",
     "title": "Publicar aviso",
     "eyebrow": "Último paso",
@@ -401,6 +533,7 @@
     "incidentAt": "Momento del incidente",
     "draftTitle": "Este aviso sigue siendo un borrador",
     "pet": "Mascota asociada",
+    "species": "Especie",
     "resolutions": {
       "REUNITED": "Reunida con su familia",
       "OWNER_LOCATED": "Propietario localizado",

@@ -26,6 +26,9 @@ import {
 } from '@/components/ui/card';
 import { getServerTranslator } from '@/features/i18n/server';
 import {
+  PublishReportForm,
+} from '@/features/reports/components/publish-report-form';
+import {
   ReportPhotoGallery,
 } from '@/features/reports/components/report-photo-gallery';
 import {
@@ -154,6 +157,10 @@ export default async function ReportPhotosPage({
 
   const isDraft =
     data.report.status === 'DRAFT';
+  const isFoundDraft =
+    isDraft &&
+    data.report.reportType ===
+      'FOUND_ANIMAL';
   const backHref = isDraft
     ? '/mis-reportes'
     : `/mis-reportes/${id}`;
@@ -189,16 +196,21 @@ export default async function ReportPhotosPage({
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
           {translate(
-            'reports.photos.title',
+            isFoundDraft
+              ? 'reports.found.quick.photosTitle'
+              : 'reports.photos.title',
           )}
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           {translate(
-            'reports.photos.description',
+            isFoundDraft
+              ? 'reports.found.quick.photosDescription'
+              : 'reports.photos.description',
           )}
         </p>
       </header>
 
+      {!isFoundDraft ? (
       <div className="rounded-xl border border-primary/20 bg-primary-soft p-4">
         <p className="font-semibold text-foreground">
           {translate(
@@ -219,6 +231,7 @@ export default async function ReportPhotosPage({
           )}
         </Link>
       </div>
+      ) : null}
 
       <Card elevated>
         <CardHeader>
@@ -301,6 +314,28 @@ export default async function ReportPhotosPage({
         </div>
       )}
 
+      {isFoundDraft ? (
+        <Card elevated>
+          <CardHeader>
+            <CardTitle>
+              {translate(
+                'reports.found.quick.publishTitle',
+              )}
+            </CardTitle>
+            <CardDescription>
+              {translate(
+                'reports.found.quick.publishDescription',
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PublishReportForm
+              reportId={id}
+              confirmationMode="implicit"
+            />
+          </CardContent>
+        </Card>
+      ) : (
       <div className="flex justify-end">
         <Link
           href={nextHref}
@@ -313,6 +348,7 @@ export default async function ReportPhotosPage({
           {nextLabel}
         </Link>
       </div>
+      )}
     </PageContainer>
   );
 }

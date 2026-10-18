@@ -15,8 +15,10 @@
     "title": "Información del aviso",
     "description": "Datos públicos útiles para ayudar en la búsqueda.",
     "name": "Nombre",
+    "species": "Especie",
     "zone": "Zona aproximada",
     "when": "Última vez visto",
+    "foundWhen": "Fecha del hallazgo",
     "breed": "Raza",
     "size": "Tamaño",
     "color": "Color principal",
@@ -35,9 +37,9 @@
     "description": "BuscoHuella solo muestra una zona aproximada. No se publica el domicilio ni la coordenada privada del aviso."
   },
   "sighting": {
-    "title": "¿Has visto esta mascota?",
-    "description": "Un avistamiento reciente puede ser decisivo para encontrarla.",
-    "button": "He visto esta mascota",
+    "title": "¿Has visto este animal?",
+    "description": "Un avistamiento reciente puede ser decisivo para ayudarlo.",
+    "button": "He visto este animal",
     "comingSoon": "Los avistamientos se habilitarán en la siguiente entrega.",
     "successTitle": "Avistamiento enviado",
     "successDescription": "Gracias. La información se ha guardado y queda vinculada a este aviso."

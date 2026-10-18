@@ -53,7 +53,8 @@ Comprobar HTTP/respuesta/datos resultantes además de grants estáticos. Revocar
 - Publicar/pausar/reactivar/resolver/cerrar/archivar produce un único evento por cambio; no-op produce cero.
 - Notificaciones no duplicadas al repetir una acción o procesar el mismo evento.
 - Cuenta: dependencias, aportaciones a terceros, avatar y otros objetos; sesiones/tokens antiguos y reintentos según decisión de producto.
-- FOUND_ANIMAL: no marcar cubierto hasta decidir su alcance; si se habilita, validar foto obligatoria también en servidor.
+- FOUND_ANIMAL: validar creación sin `pet_id`, especie obligatoria, situación de custodia,
+  ubicación pública protegida, fotografías opcionales, publicación y lifecycle completo.
 
 ## E2E y calidad de interfaz
 

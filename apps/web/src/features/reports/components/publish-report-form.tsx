@@ -17,8 +17,10 @@ import {
 
 export function PublishReportForm({
   reportId,
+  confirmationMode = 'checkbox',
 }: {
   reportId: string;
+  confirmationMode?: 'checkbox' | 'implicit';
 }) {
   const { t } = useTranslations('reports');
   const [state, action, pending] =
@@ -38,27 +40,31 @@ export function PublishReportForm({
         value={reportId}
       />
 
-      <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-surface p-4">
-        <input
-          type="checkbox"
-          name="confirmation"
-          required
-          className="mt-1 size-5 rounded border-border accent-primary"
-        />
+      {confirmationMode === 'checkbox' ? (
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-surface p-4">
+          <input
+            type="checkbox"
+            name="confirmation"
+            required
+            className="mt-1 size-5 rounded border-border accent-primary"
+          />
 
-        <span>
-          <strong className="block">
-            {t(
-              'publish.confirmationTitle',
-            )}
-          </strong>
-          <span className="mt-1 block text-sm text-muted-foreground">
-            {t(
-              'publish.confirmationDescription',
-            )}
+          <span>
+            <strong className="block">
+              {t(
+                'publish.confirmationTitle',
+              )}
+            </strong>
+            <span className="mt-1 block text-sm text-muted-foreground">
+              {t(
+                'publish.confirmationDescription',
+              )}
+            </span>
           </span>
-        </span>
-      </label>
+        </label>
+      ) : (
+        <input type="hidden" name="confirmation" value="true" />
+      )}
 
       {state.status === 'error' ? (
         <div

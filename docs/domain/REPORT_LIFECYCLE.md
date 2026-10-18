@@ -40,7 +40,7 @@ Para pasar a `ACTIVE` se exige:
 - descripción mínima;
 - ubicación válida;
 - ubicación pública calculada;
-- al menos una fotografía cuando el tipo sea `FOUND_ANIMAL`;
+- fotografías opcionales para `FOUND_ANIMAL`, recomendadas para facilitar la identificación;
 - mascota activa cuando sea `LOST_PET`;
 - medio de contacto configurado.
 

@@ -28,6 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { CompactReportHistory } from '@/features/reports/components/compact-report-history';
 import { EditReportLink } from '@/features/reports/components/edit-report-link';
@@ -180,16 +181,6 @@ export default async function ReportDetailPage({
     );
   }
 
-  const dateFormatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      },
-    );
 
   return (
     <PageContainer className="space-y-6">
@@ -313,11 +304,10 @@ export default async function ReportDetailPage({
                   )}
                   value={
                     data.report.incidentAt
-                      ? dateFormatter.format(
-                          new Date(
-                            data.report.incidentAt,
-                          ),
-                        )
+                      ? formatDate(data.report.incidentAt, locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                        })
                       : translate(
                           'reports.detail.approximateMoment',
                         )
@@ -330,11 +320,10 @@ export default async function ReportDetailPage({
                   )}
                   value={
                     data.report.publishedAt
-                      ? dateFormatter.format(
-                          new Date(
-                            data.report.publishedAt,
-                          ),
-                        )
+                      ? formatDate(data.report.publishedAt, locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                        })
                       : translate(
                           'reports.detail.notAvailable',
                         )
@@ -368,7 +357,7 @@ export default async function ReportDetailPage({
                 events={data.events}
                 translate={translate}
                 formatDate={(value) =>
-                  dateFormatter.format(new Date(value))
+                  formatDate(value, locale, { dateStyle: 'medium', timeStyle: 'short' })
                 }
               />
             </CardContent>

@@ -54,3 +54,56 @@ test('formatea horas de la Beta en Europe/Madrid aunque el servidor esté en UTC
     process.env.TZ = previousTimezone;
   }
 });
+
+test('los detalles de reportes usan la zona horaria compartida de la app', async () => {
+  const [privateSource, publicSource] = await Promise.all([
+    readFile(
+      new URL(
+        '../src/app/(private)/mis-reportes/[id]/page.tsx',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+    readFile(
+      new URL(
+        '../src/app/(public)/reportes/[id]/page.tsx',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  ]);
+
+  assert.match(
+    privateSource,
+    /import \{ formatDate \} from '@\/features\/i18n\/format';/,
+  );
+  assert.doesNotMatch(
+    privateSource,
+    /new Intl\.DateTimeFormat/,
+  );
+  assert.match(
+    privateSource,
+    /formatDate\(data\.report\.incidentAt,\s*locale,\s*\{/,
+  );
+  assert.match(
+    privateSource,
+    /formatDate\(data\.report\.publishedAt,\s*locale,\s*\{/,
+  );
+  assert.match(
+    privateSource,
+    /formatDate\(value,\s*locale,\s*\{/,
+  );
+
+  assert.match(
+    publicSource,
+    /import \{ formatDate \} from '@\/features\/i18n\/format';/,
+  );
+  assert.doesNotMatch(
+    publicSource,
+    /new Intl\.DateTimeFormat/,
+  );
+  assert.match(
+    publicSource,
+    /formatDate\(report\.incidentAt,\s*locale,\s*\{/,
+  );
+});

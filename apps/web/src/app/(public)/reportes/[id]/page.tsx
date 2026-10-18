@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { formatDate } from '@/features/i18n/format';
 import { getServerTranslator } from '@/features/i18n/server';
 import { getCurrentUser } from '@/features/auth/queries/get-current-user';
 import { PublicReportGallery } from '@/features/reports/components/public-report-gallery';
@@ -149,16 +150,6 @@ export async function PublicReportPage({
     notFound();
   }
 
-  const formatter =
-    new Intl.DateTimeFormat(
-      locale === 'ca'
-        ? 'ca-ES'
-        : 'es-ES',
-      {
-        dateStyle: 'long',
-        timeStyle: 'short',
-      },
-    );
 
   const petTitle =
     report.petName ??
@@ -283,11 +274,10 @@ export async function PublicReportPage({
                   )}
                   value={
                     report.incidentAt
-                      ? formatter.format(
-                          new Date(
-                            report.incidentAt,
-                          ),
-                        )
+                      ? formatDate(report.incidentAt, locale, {
+                          dateStyle: 'long',
+                          timeStyle: 'short',
+                        })
                       : translate(
                           'publicReport.details.approximateTime',
                         )

@@ -63,7 +63,8 @@ export function QuickActionLauncher() {
             onNavigate={() => setOpen(false)}
           />
 
-          <UnavailableAction
+          <QuickActionLink
+            href="/mis-reportes/nuevo/encontrado"
             icon={<Search />}
             title={t(
               'quickActions.found.title',
@@ -71,9 +72,7 @@ export function QuickActionLauncher() {
             description={t(
               'quickActions.found.description',
             )}
-            status={t(
-              'quickActions.comingSoon',
-            )}
+            onNavigate={() => setOpen(false)}
           />
 
           <UnavailableAction

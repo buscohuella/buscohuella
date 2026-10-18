@@ -78,8 +78,15 @@ async function loadReportDetail(
     const { data: signed, error: signError } = await supabase.storage
       .from('report-photos')
       .createSignedUrl(primaryPhoto.storage_path, 600);
-    if (signError) throw signError;
-    primaryPhotoUrl = signed.signedUrl;
+    if (signError) {
+      logServerError(
+        'report.detail.primary_photo_sign_failed',
+        signError,
+        { reportId },
+      );
+    } else {
+      primaryPhotoUrl = signed.signedUrl;
+    }
   }
 
   return { report, events: events ?? [], primaryPhotoUrl };

@@ -66,22 +66,40 @@ export default async function NewReportPage() {
         >
           {translate('reports.create.availableTitle')}
         </h2>
-        <AvailableType
-          href="/mis-reportes/nuevo/perdida"
-          icon={<TriangleAlert />}
-          title={translate(
-            'reports.create.lostTitle',
-          )}
-          description={translate(
-            'reports.create.lostDescription',
-          )}
-          action={translate(
-            'reports.create.lostAction',
-          )}
-          flow={translate(
-            'reports.create.lostFlow',
-          )}
-        />
+        <div className="grid gap-4 lg:grid-cols-2">
+          <AvailableType
+            href="/mis-reportes/nuevo/perdida"
+            icon={<TriangleAlert />}
+            title={translate(
+              'reports.create.lostTitle',
+            )}
+            description={translate(
+              'reports.create.lostDescription',
+            )}
+            action={translate(
+              'reports.create.lostAction',
+            )}
+            flow={translate(
+              'reports.create.lostFlow',
+            )}
+          />
+          <AvailableType
+            href="/mis-reportes/nuevo/encontrado"
+            icon={<Search />}
+            title={translate(
+              'reports.create.foundTitle',
+            )}
+            description={translate(
+              'reports.create.foundDescription',
+            )}
+            action={translate(
+              'reports.create.foundAction',
+            )}
+            flow={translate(
+              'reports.create.foundFlow',
+            )}
+          />
+        </div>
       </section>
 
       <section
@@ -100,20 +118,7 @@ export default async function NewReportPage() {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <UnavailableType
-            icon={<Search />}
-            title={translate(
-              'reports.create.foundTitle',
-            )}
-            description={translate(
-              'reports.create.foundDescription',
-            )}
-            status={translate(
-              'reports.create.comingSoon',
-            )}
-          />
-
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <UnavailableType
             icon={<Eye />}
             title={translate(

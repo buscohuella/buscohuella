@@ -33,9 +33,11 @@ type ReportStatus =
 export function ReportLifecycleActions({
   reportId,
   status,
+  reportType,
 }: {
   reportId: string;
   status: ReportStatus;
+  reportType: 'LOST_PET' | 'FOUND_ANIMAL';
 }) {
   const router = useRouter();
   const { t } = useTranslations('reports');
@@ -116,6 +118,7 @@ export function ReportLifecycleActions({
         <>
           <ResolveAction
             reportId={reportId}
+            reportType={reportType}
             pending={pending}
             formAction={action}
           />
@@ -231,10 +234,12 @@ function SimpleAction({
 
 function ResolveAction({
   reportId,
+  reportType,
   pending,
   formAction,
 }: {
   reportId: string;
+  reportType: 'LOST_PET' | 'FOUND_ANIMAL';
   pending: boolean;
   formAction: (
     payload: FormData,
@@ -302,11 +307,13 @@ function ResolveAction({
             'detail.actions.selectResolution',
           )}
         </option>
-        <option value="REUNITED">
-          {t(
-            'detail.resolutions.REUNITED',
-          )}
-        </option>
+        {reportType === 'LOST_PET' ? (
+          <option value="REUNITED">
+            {t(
+              'detail.resolutions.REUNITED',
+            )}
+          </option>
+        ) : null}
         <option value="OWNER_LOCATED">
           {t(
             'detail.resolutions.OWNER_LOCATED',

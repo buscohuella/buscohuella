@@ -55,6 +55,7 @@
     "upcomingTitle": "Més maneres d'ajudar",
     "upcomingDescription": "Aquestes opcions arribaran en properes entregues.",
     "lostFlow": "Mascota · Quan · Ubicació · Revisa i publica",
+    "foundFlow": "Espècie · Quan · Ubicació · Situació · Revisa i publica",
     "lostTitle": "He perdut una mascota",
     "lostDescription": "Selecciona una de les teves mascotes registrades i comunica on i quan es va perdre.",
     "foundTitle": "He trobat un animal",
@@ -97,6 +98,134 @@
     "registerPet": "Registra una mascota",
     "select": "Selecciona"
   },
+  "found": {
+    "quick": {
+      "eyebrow": "Animal trobat",
+      "title": "Publica la troballa en dos passos",
+      "description": "Completa només l'essencial. Després podràs afegir una foto opcional i publicar l'avís.",
+      "back": "Tornar al tipus d'avís",
+      "formTitle": "Dades de la troballa",
+      "formDescription": "La ubicació exacta serà privada. Podràs completar o editar altres dades des de Gestionar avís.",
+      "speciesLabel": "Quin animal has trobat?",
+      "speciesPlaceholder": "Selecciona una espècie",
+      "momentLabel": "Quan el vas trobar?",
+      "locationLabel": "On el vas trobar?",
+      "locationHelp": "Fes servir la teva ubicació actual o cerca el lloc al mapa.",
+      "locationError": "Indica on vas trobar l'animal abans de continuar.",
+      "approximateLocationReady": "Ubicació protegida preparada",
+      "privacy": "Guardarem la coordenada exacta de manera privada i mostrarem només una zona aproximada.",
+      "descriptionLabel": "Descripció breu (opcional)",
+      "descriptionHelp": "Pots afegir color, collar o un tret distintiu. També ho podràs fer després.",
+      "characterCount": "{count} de {max} caràcters",
+      "nextHint": "Següent i últim pas: foto opcional i publicació.",
+      "continue": "Continuar a foto opcional",
+      "saving": "Preparant l'avís…",
+      "generatedTitle": "{species} trobat",
+      "photosTitle": "Afegeix una foto i publica",
+      "photosDescription": "La foto és opcional. Quan estiguis a punt, publica l'avís des d'aquesta mateixa pantalla.",
+      "publishTitle": "Tot a punt?",
+      "publishDescription": "En publicar, l'avís apareixerà a Els meus avisos, el llistat públic i el mapa."
+    },
+    "species": {
+      "eyebrow": "Animal trobat",
+      "title": "Quin animal has trobat?",
+      "description": "Selecciona l'espècie. No cal registrar una mascota ni conèixer la seva família.",
+      "groupLabel": "Selecciona l'espècie de l'animal trobat",
+      "cardDescription": "Crea un avís per a aquesta espècie",
+      "selectAria": "Selecciona {species} com a espècie de l'animal trobat",
+      "selectedTitle": "Espècie seleccionada",
+      "selectedDescription": "Crearàs un avís de {species} sense associar-lo a una mascota registrada.",
+      "selectHint": "Selecciona una espècie per continuar.",
+      "continue": "Continua",
+      "back": "Torna al tipus d'avís",
+      "errorTitle": "No hem pogut carregar les espècies",
+      "errorDescription": "Torna-ho a provar d'aquí a uns instants."
+    },
+    "incidentTime": {
+      "eyebrow": "Animal trobat",
+      "title": "Quan el vas trobar?",
+      "description": "Indica quan vas trobar aquest {species}. Pots respondre de manera aproximada.",
+      "question": "Quan vas trobar l'animal?",
+      "questionHelp": "Tria l'opció més propera. No cal recordar l'hora exacta.",
+      "speciesSelected": "Espècie seleccionada",
+      "groupLabel": "Selecciona quan es va trobar l'animal",
+      "back": "Torna a l'espècie"
+    },
+    "location": {
+      "eyebrow": "Animal trobat",
+      "title": "On el vas trobar?",
+      "description": "Indica el lloc de la troballa. La coordenada exacta es mantindrà privada.",
+      "question": "Selecciona la ubicació de la troballa",
+      "questionHelp": "Pots utilitzar el GPS si hi ets o cercar el lloc al mapa.",
+      "back": "Torna al moment"
+    },
+    "details": {
+      "eyebrow": "Animal trobat",
+      "title": "Descriu l'animal i la seva situació",
+      "description": "Afegeix la informació que ajudaria la seva família a reconèixer-lo.",
+      "formTitle": "Informació essencial",
+      "formDescription": "El títol, la descripció i la situació es mostraran a l'avís.",
+      "titleLabel": "Títol breu de l'avís",
+      "titleHelp": "Exemple: Gos marró trobat a prop del Parc Catalunya.",
+      "titleError": "Escriu un títol de com a mínim {min} caràcters.",
+      "descriptionLabel": "Descripció útil",
+      "descriptionHelp": "Descriu l'aspecte, el collar, el comportament i qualsevol detall distintiu. Entre {min} i {max} caràcters.",
+      "characterCount": "{count} de {max} caràcters",
+      "descriptionError": "Escriu una descripció de com a mínim {min} caràcters.",
+      "careError": "Indica si l'animal està sota la teva cura o continua localitzat.",
+      "reviewHint": "Les fotografies són opcionals i les podràs afegir després de desar l'esborrany.",
+      "continue": "Revisa l'avís",
+      "back": "Torna a la ubicació"
+    },
+    "care": {
+      "title": "Quina és la situació actual?",
+      "description": "Indica si l'animal és amb tu o si continua localitzat a la zona.",
+      "options": {
+        "IN_CARE": {
+          "label": "Està sota la meva cura",
+          "description": "L'animal està segur temporalment amb mi o amb una persona responsable."
+        },
+        "LOCATED": {
+          "label": "Continua localitzat",
+          "description": "Sé on és, però no està sota la meva cura."
+        }
+      }
+    },
+    "review": {
+      "eyebrow": "Animal trobat",
+      "title": "Revisa l'avís",
+      "description": "Comprova l'espècie, el lloc, el moment i la situació abans de desar l'esborrany.",
+      "formTitle": "Resum de la troballa",
+      "formDescription": "Encara no serà públic. Després podràs afegir fotos opcionals i publicar-lo.",
+      "sections": {
+        "species": "Espècie",
+        "moment": "Moment",
+        "location": "Ubicació",
+        "care": "Situació actual",
+        "description": "Títol i descripció"
+      },
+      "careHeading": "Situació actual:",
+      "momentHeading": "Moment indicat:",
+      "locationGps": "Zona aproximada: {latitude}, {longitude}",
+      "draftPrivacy": "L'esborrany és privat. La ubicació exacta no es mostrarà públicament i no es publicarà res en aquest pas.",
+      "createHint": "Després podràs afegir fotografies opcionals i revisar la publicació final.",
+      "createDraft": "Desa l'esborrany",
+      "creating": "Desant l'esborrany…",
+      "loading": "Preparant la revisió…",
+      "missingTitle": "Falten dades de l'avís",
+      "missingDescription": "Torna als passos anteriors per completar la ubicació i la informació de l'animal.",
+      "success": "Esborrany d'animal trobat desat correctament.",
+      "back": "Torna a la informació",
+      "errors": {
+        "incomplete": "Completa l'espècie, el moment i la situació actual de l'animal.",
+        "location": "La ubicació no és vàlida. Torna a seleccionar-la.",
+        "session": "La teva sessió ha caducat. Torna a iniciar-la.",
+        "species": "No hem pogut verificar l'espècie seleccionada.",
+        "validation": "Revisa la informació abans de desar l'esborrany.",
+        "create": "No hem pogut desar l'esborrany. Torna-ho a provar."
+      }
+    }
+  },
   "incidentTime": {
     "groupLabel": "Selecciona quan va passar la pèrdua",
     "customHelp": "No pot ser una data futura.",
@@ -135,7 +264,7 @@
       },
       "custom": {
         "label": "Tria la data i l'hora",
-        "description": "Per a pèrdues anteriors o quan coneixes el moment."
+        "description": "Per a dates anteriors o quan coneixes el moment."
       }
     },
     "nextHint": "Ara indicarem quan va passar.",
@@ -251,7 +380,7 @@
     "setPrimary": "Fes-la principal",
     "uploadDescription": "Les imatges s'optimitzen automàticament i es mantenen privades mentre l'avís sigui un esborrany.",
     "finish": "Torna a l'esborrany",
-    "description": "Afegeix imatges clares que ajudin a reconèixer la mascota.",
+    "description": "Afegeix imatges clares que ajudin a reconèixer l'animal.",
     "title": "Fotografies de l'avís",
     "eyebrow": "Esborrany privat",
     "uploadSuccess": "S'ha afegit {file}.",
@@ -265,7 +394,7 @@
       "title": "Arrossega una imatge o selecciona-la",
       "description": "JPG, PNG o WEBP. Es convertirà a WEBP i s'optimitzarà.",
       "altLabel": "Descripció accessible de la fotografia (opcional)",
-      "altPlaceholder": "Exemple: Pepa de cos sencer amb collar vermell",
+      "altPlaceholder": "Exemple: animal de cos sencer amb collar vermell",
       "count": "{count} de {max} fotografies",
       "upload": "Puja la fotografia",
       "uploading": "Pujant…"
@@ -293,11 +422,14 @@
   "publish": {
     "checks": {
       "pet": "Mascota associada",
+      "foundAnimal": "Espècie de l'animal",
       "location": "Ubicació protegida",
       "description": "Descripció suficient",
       "photos": "{count} fotografies afegides"
     },
-    "incompleteDescription": "Completa la mascota, la ubicació i una descripció d'almenys 10 caràcters.",
+    "incompleteDescription": "Completa {animal}, la ubicació, el títol i una descripció d'almenys 10 caràcters.",
+    "incompleteAnimalLost": "la mascota",
+    "incompleteAnimalFound": "l'espècie de l'animal",
     "description": "Comprova les dades essencials abans de fer-lo visible per a la comunitat.",
     "title": "Publica l'avís",
     "eyebrow": "Últim pas",
@@ -401,6 +533,7 @@
     "incidentAt": "Moment de l'incident",
     "draftTitle": "Aquest avís continua sent un esborrany",
     "pet": "Mascota associada",
+    "species": "Espècie",
     "resolutions": {
       "REUNITED": "Reunida amb la família",
       "OWNER_LOCATED": "Propietari localitzat",

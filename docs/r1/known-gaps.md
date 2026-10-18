@@ -9,7 +9,7 @@ Corte: 8 de septiembre de 2026. Todos los elementos técnicos siguen abiertos sa
 | R1-DOC-001 | AGENTS/README dan primacía absoluta al Maestro; handoff/Notion proponen fuentes operativas R1 | Registrar la discrepancia y trabajar dentro del alcance autorizado. No reemplazar el Maestro ni modificar decisiones estructurales sin resolverlas |
 | R1-DOC-002 | Maestro §§2.4/15 describe Expo; §6.2 y ADR-002 posponen la app nativa | R1 web; conservar documentos antiguos y registrar su desactualización |
 | R1-DOC-003 | Maestro §§6.1/6.7 incluye push; handoff excluye Web Push y FP-019 describe in-app | Mantener in-app en R1; no prometer push implementado |
-| R1-DOC-004 | FOUND_ANIMAL figura en alcance pero el flujo completo no está confirmado | Decisión explícita antes de Beta; no retirarlo ni implementarlo por inferencia |
+| R1-DOC-004 | FOUND_ANIMAL figura en alcance; el flujo web ya está autorizado e implementado localmente | Mantenerlo en Beta tras QA funcional y revisión; no declarar verificación LIVE sin evidencia |
 | R1-DOC-005 | Drive dice «faltan noindex/OG/canonical»; código ya tiene parte | Corregir diagnóstico: cobertura parcial; canonical apunta a ruta redirigida y faltan alternates ES/CA verificados |
 | R1-DOC-006 | docs/INDEX y docs/api/API_CONTRACT señalados como desactualizados en Notion | Revalidar referencias y contrato; no reescribir ni archivar masivamente en R1.0 |
 | R1-DOC-007 | 11 commits locales fuera de main remoto | Preservados en checkout original; PR documental desde remoto. Reconciliación separada, sin push implícito |

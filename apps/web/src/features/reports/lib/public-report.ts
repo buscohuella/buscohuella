@@ -20,6 +20,7 @@ export type PublicReportDetail = {
   id: string;
   reportType: 'LOST_PET' | 'FOUND_ANIMAL';
   speciesId: number;
+  speciesCode: string | null;
   title: string;
   description: string;
   incidentAt: string | null;
@@ -107,6 +108,15 @@ export async function getPublicReport(reportId: string): Promise<PublicReportDet
   }
 
   const rawPhotos = parseRawPhotos(report.photos);
+  const { data: species, error: speciesError } = await supabase
+    .from('pet_species')
+    .select('code')
+    .eq('id', report.species_id)
+    .maybeSingle();
+
+  if (speciesError) {
+    throw speciesError;
+  }
 
   let signedUrls: SignedUrlResult[] = [];
 
@@ -129,6 +139,7 @@ export async function getPublicReport(reportId: string): Promise<PublicReportDet
     id: report.id,
     reportType: report.report_type as 'LOST_PET' | 'FOUND_ANIMAL',
     speciesId: report.species_id,
+    speciesCode: species?.code ?? null,
     title: report.title,
     description: report.description,
     incidentAt: report.incident_at,

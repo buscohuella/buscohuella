@@ -6,7 +6,7 @@ import {
   type Database as ReportDatabase,
 } from '@buscohuella/report-data';
 import { PetPhotoRepository, type Database as PetDatabase } from '@buscohuella/pet-data';
-import { createReportSchema, type GeoPoint } from '@buscohuella/report-domain';
+import { createReportSchema } from '@buscohuella/report-domain';
 import { PetRepository } from '@buscohuella/pet-data';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
@@ -23,6 +23,13 @@ import {
   PetPhotoCopyError,
   rollbackFailedDraft,
 } from '../lib/lost-report-photo-copy';
+import {
+  getFormBoolean,
+  getFormNullableNumber,
+  getFormString,
+  parseReportDraftLocation,
+  resolveIncidentAt,
+} from '../lib/report-draft-input';
 
 const PET_PHOTOS_BUCKET = 'pet-photos';
 const REPORT_PHOTOS_BUCKET = 'report-photos';
@@ -166,44 +173,6 @@ async function compensateFailedDraft({
   });
 }
 
-function getString(formData: FormData, name: string) {
-  const value = formData.get(name);
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function getBoolean(formData: FormData, name: string) {
-  return getString(formData, name) === 'true';
-}
-
-function getNullableNumber(formData: FormData, name: string) {
-  const value = getString(formData, name);
-
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
-function resolveIncidentAt(moment: string, exactDate: string) {
-  if (moment === 'CUSTOM') {
-    const date = new Date(exactDate);
-
-    if (!exactDate || Number.isNaN(date.getTime()) || date.getTime() > Date.now()) {
-      return null;
-    }
-
-    return date.toISOString();
-  }
-
-  if (moment === 'NOW') {
-    return new Date().toISOString();
-  }
-
-  return null;
-}
-
 function composeDescription({
   description,
   hasCollarOrHarness,
@@ -252,19 +221,22 @@ export async function createLostReportDraftAction(
 ): Promise<CreateLostReportDraftState> {
   const { translate } = await getServerTranslator();
 
-  const petId = getString(formData, 'petId');
-  const moment = getString(formData, 'moment');
-  const exactDate = getString(formData, 'exactDate');
-  const description = getString(formData, 'description');
-  const usePetPhotos = getBoolean(formData, 'usePetPhotos');
+  const petId = getFormString(formData, 'petId');
+  const moment = getFormString(formData, 'moment');
+  const exactDate = getFormString(formData, 'exactDate');
+  const description = getFormString(formData, 'description');
+  const usePetPhotos = getFormBoolean(formData, 'usePetPhotos');
 
-  const locationSource = getString(formData, 'locationSource');
-  const exactLatitude = getNullableNumber(formData, 'exactLatitude');
-  const exactLongitude = getNullableNumber(formData, 'exactLongitude');
-  const publicLatitude = getNullableNumber(formData, 'publicLatitude');
-  const publicLongitude = getNullableNumber(formData, 'publicLongitude');
-  const placeLabel = getString(formData, 'placeLabel');
-  const municipalityName = getString(formData, 'municipalityName');
+  const locationSource = getFormString(formData, 'locationSource');
+  const parsedLocation = parseReportDraftLocation({
+    source: locationSource,
+    exactLatitude: getFormNullableNumber(formData, 'exactLatitude'),
+    exactLongitude: getFormNullableNumber(formData, 'exactLongitude'),
+    publicLatitude: getFormNullableNumber(formData, 'publicLatitude'),
+    publicLongitude: getFormNullableNumber(formData, 'publicLongitude'),
+    placeLabel: getFormString(formData, 'placeLabel'),
+    municipalityName: getFormString(formData, 'municipalityName'),
+  });
 
   if (!petId || description.length < 10 || !['GPS', 'MANUAL'].includes(locationSource)) {
     return {
@@ -273,35 +245,10 @@ export async function createLostReportDraftAction(
     };
   }
 
-  let exactLocation: GeoPoint | null = null;
-  let publicLocation: GeoPoint | null = null;
-
-  const hasManualCoordinates =
-    locationSource === 'MANUAL' &&
-    (exactLatitude !== null ||
-      exactLongitude !== null ||
-      publicLatitude !== null ||
-      publicLongitude !== null);
-  if (locationSource === 'GPS' || hasManualCoordinates) {
-    if (
-      exactLatitude === null ||
-      exactLongitude === null ||
-      publicLatitude === null ||
-      publicLongitude === null
-    ) {
-      return {
-        status: 'error',
-        message: translate('reports.review.errors.location'),
-      };
-    }
-
-    exactLocation = {
-      latitude: exactLatitude,
-      longitude: exactLongitude,
-    };
-    publicLocation = {
-      latitude: publicLatitude,
-      longitude: publicLongitude,
+  if (!parsedLocation) {
+    return {
+      status: 'error',
+      message: translate('reports.review.errors.location'),
     };
   }
 
@@ -351,10 +298,10 @@ export async function createLostReportDraftAction(
 
   const finalDescription = composeDescription({
     description,
-    hasCollarOrHarness: getBoolean(formData, 'hasCollarOrHarness'),
-    needsMedication: getBoolean(formData, 'needsMedication'),
-    isFearful: getBoolean(formData, 'isFearful'),
-    isFriendly: getBoolean(formData, 'isFriendly'),
+    hasCollarOrHarness: getFormBoolean(formData, 'hasCollarOrHarness'),
+    needsMedication: getFormBoolean(formData, 'needsMedication'),
+    isFearful: getFormBoolean(formData, 'isFearful'),
+    isFriendly: getFormBoolean(formData, 'isFriendly'),
     translate,
   });
 
@@ -367,16 +314,10 @@ export async function createLostReportDraftAction(
     titleSource: 'SYSTEM',
     description: finalDescription,
     incidentAt: resolveIncidentAt(moment, exactDate),
-    exactLocation,
-    publicLocation,
-    publicLocationPrecision:
-      exactLocation && publicLocation ? 'APPROXIMATE_500M' : 'MUNICIPALITY_ONLY',
-    municipalityName:
-      locationSource === 'MANUAL'
-        ? hasManualCoordinates
-          ? municipalityName || null
-          : placeLabel || null
-        : null,
+    exactLocation: parsedLocation.exactLocation,
+    publicLocation: parsedLocation.publicLocation,
+    publicLocationPrecision: parsedLocation.publicLocationPrecision,
+    municipalityName: parsedLocation.municipalityName,
     locationIsSensitive: true,
     contactMode: 'PLATFORM_ONLY',
     publicPhone: null,

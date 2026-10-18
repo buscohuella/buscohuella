@@ -15,8 +15,10 @@
     "title": "Informació de l'avís",
     "description": "Dades públiques útils per ajudar en la cerca.",
     "name": "Nom",
+    "species": "Espècie",
     "zone": "Zona aproximada",
     "when": "Última vegada vist",
+    "foundWhen": "Data de la troballa",
     "breed": "Raça",
     "size": "Mida",
     "color": "Color principal",
@@ -35,9 +37,9 @@
     "description": "BuscoHuella només mostra una zona aproximada. No es publica el domicili ni la coordenada privada de l'avís."
   },
   "sighting": {
-    "title": "Has vist aquesta mascota?",
-    "description": "Un avistament recent pot ser decisiu per trobar-la.",
-    "button": "He vist aquesta mascota",
+    "title": "Has vist aquest animal?",
+    "description": "Un avistament recent pot ser decisiu per ajudar-lo.",
+    "button": "He vist aquest animal",
     "comingSoon": "Els avistaments s'habilitaran en la propera entrega.",
     "successTitle": "Avistament enviat",
     "successDescription": "Gràcies. La informació s'ha desat i queda vinculada a aquest avís."

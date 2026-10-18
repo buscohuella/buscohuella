@@ -28,6 +28,8 @@ export type LostReportLocation =
   | GpsReportLocation
   | ManualReportLocation;
 
+export type ReportDraftLocation = LostReportLocation;
+
 export function approximateCoordinate(
   value: number,
 ) {
@@ -37,8 +39,18 @@ export function approximateCoordinate(
 export function saveLostReportLocation(
   location: LostReportLocation,
 ) {
-  window.sessionStorage.setItem(
+  saveReportDraftLocation(
     lostReportLocationStorageKey,
+    location,
+  );
+}
+
+export function saveReportDraftLocation(
+  storageKey: string,
+  location: ReportDraftLocation,
+) {
+  window.sessionStorage.setItem(
+    storageKey,
     JSON.stringify(location),
   );
 }
@@ -46,8 +58,16 @@ export function saveLostReportLocation(
 export function readLostReportLocation():
   | LostReportLocation
   | null {
-  const value = window.sessionStorage.getItem(
+  return readReportDraftLocation(
     lostReportLocationStorageKey,
+  );
+}
+
+export function readReportDraftLocation(
+  storageKey: string,
+): ReportDraftLocation | null {
+  const value = window.sessionStorage.getItem(
+    storageKey,
   );
 
   if (!value) {
@@ -60,7 +80,7 @@ export function readLostReportLocation():
     ) as LostReportLocation;
   } catch {
     window.sessionStorage.removeItem(
-      lostReportLocationStorageKey,
+      storageKey,
     );
     return null;
   }

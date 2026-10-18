@@ -38,6 +38,30 @@ test('crea un borrador mínimo de animal encontrado', () => {
   assert.equal(result.status, 'DRAFT');
 });
 
+test('acepta un animal encontrado activo sin mascota asociada', () => {
+  const result = createReportSchema.parse({
+    reportType: 'FOUND_ANIMAL',
+    petId: null,
+    speciesId: 1,
+    status: 'ACTIVE',
+    title: 'Perro marrón encontrado',
+    description: 'Lleva collar rojo y está a salvo temporalmente.',
+    incidentAt: past,
+    exactLocation: {
+      latitude: 41.5433,
+      longitude: 2.1094,
+    },
+    publicLocation: {
+      latitude: 41.544,
+      longitude: 2.11,
+    },
+  });
+
+  assert.equal(result.reportType, 'FOUND_ANIMAL');
+  assert.equal(result.petId, null);
+  assert.equal(result.status, 'ACTIVE');
+});
+
 test('rechaza una pérdida sin mascota', () => {
   const result = createReportSchema.safeParse({
     reportType: 'LOST_PET',

@@ -109,6 +109,7 @@ test('convierte creación de reporte a insert', () => {
   );
 
   assert.equal(insert.report_type, 'FOUND_ANIMAL');
+  assert.equal(insert.pet_id, null);
   assert.equal(insert.created_by, '11111111-1111-4111-8111-111111111111');
   assert.equal(insert.exact_location, null);
 });

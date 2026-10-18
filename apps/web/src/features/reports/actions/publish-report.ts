@@ -43,7 +43,9 @@ export async function publishReportAction(
 ): Promise<PublishReportState> {
   const { translate } = await getServerTranslator();
   const reportId = getString(formData, 'reportId');
-  const confirmation = getString(formData, 'confirmation') === 'on';
+  const confirmationValue = getString(formData, 'confirmation');
+  const confirmation =
+    confirmationValue === 'on' || confirmationValue === 'true';
 
   if (!reportId) {
     return {
@@ -93,7 +95,12 @@ export async function publishReportAction(
   }
 
   revalidatePath('/mis-reportes');
+  revalidatePath('/mis-avisos/propios');
   revalidatePath('/reportes');
+  revalidatePath('/explorar-avisos');
+  revalidatePath('/mapa');
+  revalidatePath(`/avisos/${reportId}`);
+  revalidatePath(`/reportes/${reportId}`);
   revalidatePath(`/mis-reportes/${reportId}/publicar`);
 
   redirect('/mis-reportes?publicado=1');
